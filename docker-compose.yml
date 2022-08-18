@@ -1,0 +1,11 @@
+version: "3.5"
+services:
+        app:
+                build:
+                        context: ./
+                image: "helpdesk_fe"
+                container_name: "helpdesk_fe"
+                restart: unless-stopped
+                command: bash -c "node index.js"
+                ports:
+                        - "4051:4051"
