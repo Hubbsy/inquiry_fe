@@ -128,7 +128,7 @@ RSI is proposing the following changes to the Life Brokers subpage:
 7. `git push`
 
 ## Assigning an Issue
-1. Go to [`GitLab`](https://gitlab.com/rsi-development-team/elany/web_portal)
+1. Go to [`GitLab`](https://gitlab.com/rsi-development-team/elany/aeros-frontend/inquiry)
 2. Click on Issues in the side nav bar
 3. Click on Boards
 4. Pick the task you want to do from the `Open` board and drag into the `In Progress` board.  
