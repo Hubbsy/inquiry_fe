@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@adobe/css-tools/-/css-tools-4.0.1.tgz#b38b444ad3aa5fedbb15f2f746dcd934226a12dd"
   integrity sha512-+u76oB43nOHrF4DDWRLWDCtci7f3QJoEBigemIdIeTi1ODqjx6Tad9NCVnPRwewWlKkVab5PlK8DCtPTyX7S8g==
 
-"@aeros-ui/components@^0.1.32":
-  version "0.1.32"
-  resolved "https://registry.yarnpkg.com/@aeros-ui/components/-/components-0.1.32.tgz#46eec90970bf5575ef95630ae5b153528f873be5"
-  integrity sha512-09VOO5SxFWOd23oRI9wF1pBIUASGsaGKuDNtn8uANNvDDO5ON7RP+kx93adeIXBijQtenJfr5djJd+JexAyhEQ==
+"@aeros-ui/components@^0.1.33":
+  version "0.1.33"
+  resolved "https://registry.yarnpkg.com/@aeros-ui/components/-/components-0.1.33.tgz#bd6800353a1e6bf3871b39ca1806fafeaaf461b3"
+  integrity sha512-H+ZSb0nlch7/+xoctz9wJuYJ0rqC3EWTOPSocxg4FCLg0C0IXu7ItnjQg+AvQFZyjQ2chRnUW/G5mNZ+Um3pyQ==
   dependencies:
     "@babel/polyfill" "^7.12.1"
     autonumeric "^4.6.0"
