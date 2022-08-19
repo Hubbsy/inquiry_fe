@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@adobe/css-tools/-/css-tools-4.0.1.tgz#b38b444ad3aa5fedbb15f2f746dcd934226a12dd"
   integrity sha512-+u76oB43nOHrF4DDWRLWDCtci7f3QJoEBigemIdIeTi1ODqjx6Tad9NCVnPRwewWlKkVab5PlK8DCtPTyX7S8g==
 
-"@aeros-ui/components@^0.1.33":
-  version "0.1.33"
-  resolved "https://registry.yarnpkg.com/@aeros-ui/components/-/components-0.1.33.tgz#bd6800353a1e6bf3871b39ca1806fafeaaf461b3"
-  integrity sha512-H+ZSb0nlch7/+xoctz9wJuYJ0rqC3EWTOPSocxg4FCLg0C0IXu7ItnjQg+AvQFZyjQ2chRnUW/G5mNZ+Um3pyQ==
+"@aeros-ui/components@^0.1.37":
+  version "0.1.37"
+  resolved "https://registry.yarnpkg.com/@aeros-ui/components/-/components-0.1.37.tgz#389c561de8a71be510c01f0eb3a2e6739bf4b140"
+  integrity sha512-kbCTavGeOIlL1BtwRh3Y3U7AC6RTOalO+ujj70zcTS/EijwJZkmBPHBc2yL85OPme/nmF4z8sBKhC//arndcLA==
   dependencies:
     "@babel/polyfill" "^7.12.1"
     autonumeric "^4.6.0"
@@ -26,10 +26,10 @@
     "@babel/polyfill" "^7.12.1"
     react-scripts "5.0.0"
 
-"@aeros-ui/tables@^0.1.17":
-  version "0.1.17"
-  resolved "https://registry.yarnpkg.com/@aeros-ui/tables/-/tables-0.1.17.tgz#444a05404e58a87fcd7c4812a08e29f725175d31"
-  integrity sha512-8ptEIF3ufcO354vDr+Vuyh9adMZC43mVqY80Iqhk+1jiDmU/I/W/O53Io8Qf18ZrPZRll/CG2PMuVJPd4iAAKQ==
+"@aeros-ui/tables@^0.1.24":
+  version "0.1.24"
+  resolved "https://registry.yarnpkg.com/@aeros-ui/tables/-/tables-0.1.24.tgz#bd9fe45222f61d06cf8846e080aec577a2c74fd9"
+  integrity sha512-DevAebbpuVq2P+mKk5jy+QYOVGK38Rpl39tSE0bswEhQiMMYuk/TOxVx0QWGrGCaEG9z5IIQKG1/iGLq04wxqA==
   dependencies:
     "@babel/polyfill" "^7.12.1"
     prop-types "^15.8.1"
