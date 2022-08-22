@@ -132,6 +132,7 @@ RSI is proposing the following changes to the Life Brokers subpage:
 2. Click on Issues in the side nav bar
 3. Click on Boards
 4. Pick the task you want to do from the `Open` board and drag into the `In Progress` board.  
+5. When you have completed all tasks on your assigned issue move the issue from `In Progress` to `Review`. 
 
 ## Push your code to Gitlab:
 1. `git status`
