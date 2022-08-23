@@ -1,7 +1,13 @@
-import Typography from '@mui/material/Typography';
+import SearchBox from '../components/ProducingBrokers/Search';
+import Table from '../components/ProducingBrokers/Table';
 
 const ProducingBrokers = () => {
-    return <Typography variant='h6'>Producing Brokers Inquiry Subpage</Typography>;
+    return (
+        <>
+            <SearchBox />
+            <Table />
+        </>
+    );
 };
 
 export default ProducingBrokers;
