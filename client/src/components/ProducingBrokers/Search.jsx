@@ -7,7 +7,7 @@ export default function Search() {
     const SearchBox = styled(Paper)(({theme}) => ({
         backgroundColor: theme.palette.background.paper,
         padding: "15px 10px 15px 20px",
-        margin: "10px 15px"
+        margin: "15px 25px"
     }));
 
     const StyledSearchButton = styled(SearchButton)(({theme}) => ({
