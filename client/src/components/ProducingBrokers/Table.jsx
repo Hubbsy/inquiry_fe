@@ -1,17 +1,48 @@
 import MaterialTable from '@material-table/core';
 import { TablePagination, useTheme, styled, ThemeProvider } from '@mui/material';
-import { TableToolbar } from '@aeros-ui/tables';
+import { TableToolbar, MainTableCell } from '@aeros-ui/tables';
 import { tableTheme } from '@aeros-ui/themes';
 import { useState } from 'react';
 
-export default function Table() {
+export default function Table({ rows }) {
     const theme = useTheme();
-    const [density, setDensity] = useState('dense');
+    const [density, setDensity] = useState('normal');
     const [showFilters, setFiltering] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
 
     const handleDensityClick = () => {
         density === 'normal' ? setDensity('dense') : setDensity('normal');
     };
+
+    const handleRowClick = (event, selectedRow) => {
+        setSelectedRow(selectedRow.tableData.id);
+    }
+
+    const columns = [
+        {
+            title: "License No.",
+            field: "licenseNo",
+            type: "string",
+        },
+        {
+            title: "Name",
+            field: "firstName",
+            type: "string",
+            render: rowData => (<MainTableCell>{rowData.firstName} {rowData.lastName}</MainTableCell>),
+        },
+        {
+            title: "Effective Date",
+            field: "effectiveDate",
+            type: "date",
+            align: "right"
+        },
+        {
+            title: "Expiration Date",
+            field: "expDate",
+            type: "date",
+            align: "right"
+        },
+    ];
 
     const options = {
         pageSize: 10,
@@ -21,13 +52,14 @@ export default function Table() {
         headerStyle: {
             backgroundColor: theme.palette.grid.main.header,
             color: theme.palette.background.paper,
-            textTransform: 'capitalize'
+            textTransform: 'capitalize',
+            padding: "1em"
         },
         rowStyle: (rowData) => ({
             backgroundColor:
                 selectedRow === rowData.tableData.id
-                    ? theme.palette.success.light
-                    : theme.palette.background.paper
+                    ? theme.palette.grid.main.active
+                    : theme.palette.grid.main.default
         }),
         exportAllData: true,
         exportMenu: [
@@ -50,6 +82,9 @@ export default function Table() {
                 <MaterialTable
                     title={''}
                     options={options}
+                    columns={columns}
+                    data={rows}
+                    onRowClick={handleRowClick}
                     components={{
                         Pagination: (props) => (
                             <TablePagination
@@ -65,7 +100,7 @@ export default function Table() {
                             <TableToolbar
                                 {...props}
                                 showFilters={showFilters}
-                                onFilterClick={() => setFiltering(!showFilters)}
+                                onFilterClick={() => setFiltering(false)}
                                 onDensityClick={handleDensityClick}
                             />
                         )

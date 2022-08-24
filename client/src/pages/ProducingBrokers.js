@@ -1,11 +1,15 @@
-import SearchBox from '../components/ProducingBrokers/Search';
+import Search from '../components/ProducingBrokers/Search';
 import Table from '../components/ProducingBrokers/Table';
+import { useProducingBrokersData } from '../hooks/useProducingBrokersData';
 
 const ProducingBrokers = () => {
+
+    const { showRows, rows } = useProducingBrokersData();
+
     return (
         <>
-            <SearchBox />
-            <Table />
+            <Search onShowRows={showRows}/>
+            <Table rows={rows} />
         </>
     );
 };

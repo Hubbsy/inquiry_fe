@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography, Paper, styled } from '@mui/material';
 import { SearchInput, SearchButton } from '@aeros-ui/components';
 
-export default function Search() {
+export default function Search({ onShowRows }) {
     const SearchBox = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.background.paper,
         padding: '1em',
@@ -31,7 +31,7 @@ export default function Search() {
                 value={''}
                 width={'40%'}
             />
-            <StyledSearchButton loading={false}>Search</StyledSearchButton>
+            <StyledSearchButton loading={false} onClick={onShowRows}>Search</StyledSearchButton>
         </SearchBox>
     );
 }
