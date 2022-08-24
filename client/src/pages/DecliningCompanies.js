@@ -1,10 +1,14 @@
-import Typography from '@mui/material/Typography';
 import { ErrorBoundary } from '@aeros-ui/components';
+import Header from '../components/HOC/DecliningCompanies/header';
+import DataTable from '../components/HOC/DecliningCompanies/table';
+import { useShowRows } from '../hooks/useShowRows';
 
 const DecliningCompanies = () => {
+    const { showRows, rows } = useShowRows();
     return (
         <ErrorBoundary>
-            <Typography variant='h6'>Declining Companies Inquiry Subpage</Typography>
+            <Header onShowRows={showRows} />
+            <DataTable rows={rows} />
         </ErrorBoundary>
     );
 };
