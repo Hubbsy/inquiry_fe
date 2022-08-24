@@ -5,8 +5,8 @@ import { SearchInput, SearchButton } from '@aeros-ui/components';
 export default function Search() {
     const SearchBox = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.background.paper,
-        padding: '15px 10px 15px 20px',
-        margin: '15px 25px'
+        padding: '1em',
+        margin: '1em'
     }));
 
     const StyledSearchButton = styled(SearchButton)(({ theme }) => ({

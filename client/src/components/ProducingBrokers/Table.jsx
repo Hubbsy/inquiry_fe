@@ -45,7 +45,7 @@ export default function Table() {
     };
 
     return (
-        <div style={{ margin: '15px 25px' }}>
+        <div style={{ margin: '1em' }}>
             <ThemeProvider theme={tableTheme}>
                 <MaterialTable
                     title={''}
