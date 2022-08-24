@@ -4,6 +4,7 @@ import { TableToolbar, MainTableCell } from '@aeros-ui/tables';
 import { tableTheme } from '@aeros-ui/themes';
 import { useState } from 'react';
 import { MoreVert } from "@mui/icons-material";
+import { format } from 'date-fns';
 
 export default function Table({ rows }) {
     const theme = useTheme();
@@ -55,7 +56,7 @@ export default function Table({ rows }) {
             title: "Effective Date",
             field: "effectiveDate",
             type: "date",
-            render: rowData => (<MainTableCell>{rowData.effectiveDate}</MainTableCell>),
+            render: rowData => (<MainTableCell>{format(new Date(rowData.effectiveDate), "MM/dd/yyyy")}</MainTableCell>),
         },
         {
             title: "Expiration Date",
@@ -63,7 +64,7 @@ export default function Table({ rows }) {
             type: "date",
             render: rowData => (
                 <Grid item container justifyContent="space-between" alignItems="center">
-                    <Typography>{rowData.expDate}</Typography>
+                    <Typography sx={{ fontSize: "14px" }}>{format(new Date(rowData.expDate), "MM/dd/yyyy")}</Typography>
                     <IconButton size="small" onClick={e => handleOpenPopover(e, rowData)} aria-describedby={id}>
                         <MoreVert fontSize="small"/>
                     </IconButton>
@@ -83,11 +84,12 @@ export default function Table({ rows }) {
                         onClose={() => handleClosePopover()} >
                         <CardHeader
                             title={<Typography variant="subtitle2">Affidavit No 1234556</Typography>}
-                            sx={{borderBottom: "solid lightgray 1px",
-                            backgroundColor: theme.palette.background.default,
-                            height: 5,
-                            padding: "20px 25px 20px 10px",
-                            whitespace: "nowrap"}} />
+                            sx={{
+                                borderBottom: "solid lightgray 1px",
+                                backgroundColor: theme.palette.background.default,
+                                height: 5,
+                                padding: "20px 25px 20px 10px",
+                                whitespace: "nowrap"}} />
                         <CardContent sx={{padding: "5px 15px 10px 15px !important"}}>
                             <Typography variant="subtitle2">Company(s):</Typography>
                             <Typography sx={{ textTransform: "uppercase", paddingBottom: "5px"}} variant="subtitle1">company name</Typography>
