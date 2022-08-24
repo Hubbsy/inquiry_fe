@@ -62,7 +62,7 @@ export default function Table({ rows }) {
             </Grid>
             <Grid item container>
                 <Typography variant='body2' sx={{ textTransform: 'none' }}>
-                    Retro occupy marfa iceland austin, humblebrag lumbersexual gluten-free.
+                    {currentRowData.address}
                 </Typography>
             </Grid>
         </Grid>
@@ -84,17 +84,16 @@ export default function Table({ rows }) {
         {
             title: "Effective Date",
             field: "effectiveDate",
-            type: "date",
             render: rowData => (<MainTableCell>{format(new Date(rowData.effectiveDate), "MM/dd/yyyy")}</MainTableCell>),
         },
         {
             title: "Expiration Date",
             field: "expDate",
-            type: "date",
             render: rowData => (
                 <>
                     <Grid item container justifyContent="space-between" alignItems="center">
-                        <Typography sx={{ fontSize: "14px" }}>{format(new Date(rowData.expDate), "MM/dd/yyyy")}</Typography>
+                        <Typography sx={{ fontSize: "14px" }}>
+                            {format(new Date(rowData.expDate), "MM/dd/yyyy")}</Typography>
                         <StyledMoreVertIcon onClick={e => handlePopoverOpen(e, rowData)} fontSize="small"/>
                     </Grid>
                     <Grid item container>
