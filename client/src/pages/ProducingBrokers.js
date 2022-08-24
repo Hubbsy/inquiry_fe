@@ -1,6 +1,6 @@
 import Search from '../components/ProducingBrokers/Search';
 import Table from '../components/ProducingBrokers/Table';
-import { useProducingBrokersData } from '../hooks/useProducingBrokersData';
+import { useProducingBrokersData } from '../hooks/ProducingBrokers/useProducingBrokersData';
 
 const ProducingBrokers = () => {
 

@@ -1,4 +1,4 @@
-import mockProdBrokData from '../api/mockProdBrokers';
+import mockProdBrokData from '../../api/mockProdBrokers';
 import { useState } from 'react';
 
 const useProducingBrokersData = () => {
@@ -12,8 +12,7 @@ const useProducingBrokersData = () => {
             effectiveDate: company.EFFECTIVEDATE,
             expDate: company.EXPIRATIONDATE
         }));
-
-        console.log(data);
+        
         setRows(data);
     };
 
