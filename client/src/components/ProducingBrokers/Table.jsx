@@ -1,8 +1,15 @@
 import MaterialTable from '@material-table/core';
-import { TablePagination, useTheme, styled, ThemeProvider, Grid, Chip, IconButton, Popover, Typography, CardHeader, CardContent } from '@mui/material';
-import { TableToolbar, MainTableCell } from '@aeros-ui/tables';
+import { 
+    TablePagination,
+    useTheme,
+    ThemeProvider, 
+    Grid,
+    Typography, 
+    styled
+} from '@mui/material';
+import { TableToolbar, MainTableCell, DetailCard } from '@aeros-ui/tables';
 import { tableTheme } from '@aeros-ui/themes';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { MoreVert } from "@mui/icons-material";
 import { format } from 'date-fns';
 
@@ -11,12 +18,14 @@ export default function Table({ rows }) {
     const [density, setDensity] = useState('normal');
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
+    const [currentRowData, setCurrentRowData] = useState({
+        licenseNo: "no current license No.",
+        address: "no current address"
+    });
 
     const [anchorEl, setAnchorEl] = useState(null);
     const popoverOpen = Boolean(anchorEl);
     const id = popoverOpen ? 'menu-popover' : undefined;
-    const [yTarget, setYTarget] = useState(0)
-    const [xTarget, setXTarget] = useState(0)
 
     const handleDensityClick = () => {
         density === 'normal' ? setDensity('dense') : setDensity('normal');
@@ -26,18 +35,38 @@ export default function Table({ rows }) {
         setSelectedRow(selectedRow.tableData.id);
     }
 
-    const handleOpenPopover = (e, rowData) => {
-        setYTarget(e.pageY)
-        setXTarget(e.pageX)
-        setAnchorEl(e.currentTarget);
-        setSelectedRow(rowData);
-    }
+    const handlePopoverOpen = useCallback((event) => {
+        const anchorPosition = anchorPositionByAnchorEl(event);
+        setAnchorEl(anchorPosition);
+    }, []);
 
-    const handleClosePopover = () => {
-        setAnchorEl(null)
-        setSelectedRow(null)
-    }
-    
+    const handlePopoverClose = useCallback(() => {
+        setAnchorEl(null);
+    }, []);
+
+    const anchorPositionByAnchorEl = (event) => {
+        const elementDetailedPosition = event.currentTarget.getBoundingClientRect();
+        const anchorPosition = {
+            left: elementDetailedPosition.left + elementDetailedPosition.width / 2,
+            top: elementDetailedPosition.top + elementDetailedPosition.height
+        };
+        return anchorPosition;
+    };
+
+    const content = (
+        <Grid container>
+            <Grid item container>
+                <Typography variant='subtitle2' gutterBottom>
+                    Address:
+                </Typography>
+            </Grid>
+            <Grid item container>
+                <Typography variant='body2' sx={{ textTransform: 'none' }}>
+                    Retro occupy marfa iceland austin, humblebrag lumbersexual gluten-free.
+                </Typography>
+            </Grid>
+        </Grid>
+    );
 
     const columns = [
         {
@@ -63,45 +92,54 @@ export default function Table({ rows }) {
             field: "expDate",
             type: "date",
             render: rowData => (
-                <Grid item container justifyContent="space-between" alignItems="center">
-                    <Typography sx={{ fontSize: "14px" }}>{format(new Date(rowData.expDate), "MM/dd/yyyy")}</Typography>
-                    <IconButton size="small" onClick={e => handleOpenPopover(e, rowData)} aria-describedby={id}>
-                        <MoreVert fontSize="small"/>
-                    </IconButton>
-                    <Popover
-                        id={id}
-                        open={popoverOpen}
-                        anchorReference='anchorPosition'
-                        anchorPosition={{ top: yTarget, left: xTarget }}
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left'
-                        }}
-                        transformOrigin={{
-                            vertical: "top",
-                            horizontal: "right"
-                        }}
-                        onClose={() => handleClosePopover()} >
-                        <CardHeader
-                            title={<Typography variant="subtitle2">Affidavit No 1234556</Typography>}
-                            sx={{
-                                borderBottom: "solid lightgray 1px",
-                                backgroundColor: theme.palette.background.default,
-                                height: 5,
-                                padding: "20px 25px 20px 10px",
-                                whitespace: "nowrap"}} />
-                        <CardContent sx={{padding: "5px 15px 10px 15px !important"}}>
-                            <Typography variant="subtitle2">Company(s):</Typography>
-                            <Typography sx={{ textTransform: "uppercase", paddingBottom: "5px"}} variant="subtitle1">company name</Typography>
-                            <Typography variant="subtitle2">Coverage:</Typography>
-                            <Typography sx={{ textTransform: "uppercase"}} variant="subtitle1">coverage type</Typography>
-                        </CardContent>
-                    </Popover>
-                </Grid>
+                <>
+                    <Grid item container justifyContent="space-between" alignItems="center">
+                        <Typography sx={{ fontSize: "14px" }}>{format(new Date(rowData.expDate), "MM/dd/yyyy")}</Typography>
+                        <StyledMoreVertIcon onClick={e => handlePopoverOpen(e, rowData)} fontSize="small"/>
+                    </Grid>
+                    <Grid item container>
+                        <DetailCard
+                            popoverId="detailPopover"
+                            open={popoverOpen}
+                            anchorPosition={anchorEl}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right'
+                            }}
+                            handleClose={handlePopoverClose}
+                            width={300}
+                            title={`License No. ${currentRowData.licenseNo}`}
+                            content={content}
+                        />
+                    </Grid>
+                </>
             ),
             width: "15em"
         },
     ];
+
+    const StyledMoreVertIcon = styled(MoreVert)(({theme}) => ({
+        height: 32,
+        width: 18,
+        display: "flex",
+        color: "gray",
+        "&:active": {
+            height: 32,
+            width: 18,
+            borderRadius: "50%",
+            backgroundColor: theme.palette.grid.main.active,
+            padding: 0,
+            color: "gray"
+        },
+        "&:focus": {
+            height: 32,
+            width: 18,
+            borderRadius: "50%",
+            backgroundColor: theme.palette.grid.main.active,
+            padding: 0,
+            color: "gray"
+        },
+    }))
 
     const options = {
         pageSize: 10,
