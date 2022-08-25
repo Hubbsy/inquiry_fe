@@ -4,11 +4,7 @@ import {
     useTheme,
     ThemeProvider, 
     Grid,
-    Typography,
-    Popover,
-    CardHeader,
-    CardContent,
-    Paper
+    Typography
 } from '@mui/material';
 import { TableToolbar, MainTableCell, DetailCard } from '@aeros-ui/tables';
 import { tableTheme } from '@aeros-ui/themes';
@@ -36,15 +32,16 @@ export default function Table({ rows }) {
 
     const handleRowClick = (event, selectedRow) => {
         setSelectedRow(selectedRow.tableData.id);
-        console.log(selectedRow);
     }
 
-    const handlePopoverOpen = useCallback((event, rowData) => {
+    const handlePopoverOpen = useCallback(
+        (event, rowData) => {
         const anchorPosition = anchorPositionByAnchorEl(event);
         setAnchorEl(anchorPosition);
     }, []);
 
-    const handlePopoverClose = useCallback(() => {
+    const handlePopoverClose = useCallback(
+        () => {
         setAnchorEl(null);
     }, []);
 
@@ -100,7 +97,7 @@ export default function Table({ rows }) {
                             {format(new Date(rowData.expDate), "MM/dd/yyyy")}</Typography>
                         <StyledMoreVertIcon onClick={e => handlePopoverOpen(e, rowData)} fontSize="small"/>
                     </Grid>
-                    <Grid item container sx={{boxShadow: "none !important"}}>
+                    <Grid item container>
                         <DetailCard
                             popoverId="detailPopover"
                             open={popoverOpen}
@@ -206,12 +203,12 @@ export default function Table({ rows }) {
                                 onDensityClick={handleDensityClick}
                             />
                         ),
-                        Container: props => {
-                            return (
-                                <Paper elevation={4} {...props}/>
-                            )
+                        // Container: props => {
+                        //     return (
+                        //         <Paper elevation={4} {...props}/>
+                        //     )
 
-                        }
+                        // }
                     }}
                 />
             </ThemeProvider>
