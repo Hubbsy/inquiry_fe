@@ -4,13 +4,17 @@ import {
     useTheme,
     ThemeProvider, 
     Grid,
-    Typography, 
-    styled
+    Typography,
+    Popover,
+    CardHeader,
+    CardContent,
+    Paper
 } from '@mui/material';
 import { TableToolbar, MainTableCell, DetailCard } from '@aeros-ui/tables';
 import { tableTheme } from '@aeros-ui/themes';
 import { useState, useCallback } from 'react';
-import { MoreVert } from "@mui/icons-material";
+import styled from '@emotion/styled';
+import { MoreVert } from '@mui/icons-material';
 import { format } from 'date-fns';
 
 export default function Table({ rows }) {
@@ -25,7 +29,6 @@ export default function Table({ rows }) {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const popoverOpen = Boolean(anchorEl);
-    const id = popoverOpen ? 'menu-popover' : undefined;
 
     const handleDensityClick = () => {
         density === 'normal' ? setDensity('dense') : setDensity('normal');
@@ -33,11 +36,11 @@ export default function Table({ rows }) {
 
     const handleRowClick = (event, selectedRow) => {
         setSelectedRow(selectedRow.tableData.id);
+        console.log(selectedRow);
     }
 
     const handlePopoverOpen = useCallback((event, rowData) => {
         const anchorPosition = anchorPositionByAnchorEl(event);
-        handleRowClick(event, rowData);
         setAnchorEl(anchorPosition);
     }, []);
 
@@ -97,7 +100,7 @@ export default function Table({ rows }) {
                             {format(new Date(rowData.expDate), "MM/dd/yyyy")}</Typography>
                         <StyledMoreVertIcon onClick={e => handlePopoverOpen(e, rowData)} fontSize="small"/>
                     </Grid>
-                    <Grid item container>
+                    <Grid item container sx={{boxShadow: "none !important"}}>
                         <DetailCard
                             popoverId="detailPopover"
                             open={popoverOpen}
@@ -123,6 +126,7 @@ export default function Table({ rows }) {
         width: 18,
         display: "flex",
         color: "gray",
+
         "&:active": {
             height: 32,
             width: 18,
@@ -201,7 +205,13 @@ export default function Table({ rows }) {
                                 onFilterClick={() => setFiltering(false)}
                                 onDensityClick={handleDensityClick}
                             />
-                        )
+                        ),
+                        Container: props => {
+                            return (
+                                <Paper elevation={4} {...props}/>
+                            )
+
+                        }
                     }}
                 />
             </ThemeProvider>
