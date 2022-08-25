@@ -1,13 +1,8 @@
-import React, { useState } from 'react';
-import { Typography, Paper, styled, Grid } from '@mui/material';
+import React from 'react';
+import { Typography, Paper, Grid } from '@mui/material';
 import { SearchInput, SearchButton } from '@aeros-ui/components';
 
 const Search = ({ searchValue, handleChange, showRows }) => {
-
-    const StyledSearchButton = styled(SearchButton)(({ theme }) => ({
-        marginLeft: 20,
-        marginTop: 5
-    }));
 
     return (
             <Paper sx={{padding: '1em', margin: "1em"}}  variant={'outlined'}>

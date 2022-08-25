@@ -7,6 +7,7 @@ import {
     Typography
 } from '@mui/material';
 import { TableToolbar, MainTableCell, DetailCard } from '@aeros-ui/tables';
+import { ExportCsv, ExportPdf } from "@material-table/exporters";
 import { tableTheme } from '@aeros-ui/themes';
 import { useState, useCallback } from 'react';
 import styled from '@emotion/styled';
@@ -174,7 +175,7 @@ export default function Table({ rows }) {
         filtering: showFilters,
         searchFieldStyle: { marginRight: "1em" }
     };
-
+3
     return (
         <div style={{ margin: '1em' }}>
             <ThemeProvider theme={tableTheme}>
