@@ -35,8 +35,9 @@ export default function Table({ rows }) {
         setSelectedRow(selectedRow.tableData.id);
     }
 
-    const handlePopoverOpen = useCallback((event) => {
+    const handlePopoverOpen = useCallback((event, rowData) => {
         const anchorPosition = anchorPositionByAnchorEl(event);
+        handleRowClick(event, rowData);
         setAnchorEl(anchorPosition);
     }, []);
 
