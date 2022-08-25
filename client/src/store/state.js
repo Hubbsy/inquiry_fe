@@ -1,6 +1,10 @@
 const storeState = {
     session: {
-        token: null,
+        auth: {
+            loading: false,
+            token: null,
+            error: null
+        },
         ip: null,
         endpoint: null,
         sessionTimeout: false
