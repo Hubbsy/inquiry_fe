@@ -1,4 +1,4 @@
-import mockDeclData from '../api/mockDeclData';
+import mockDeclData from '../../api/mockDeclData';
 import { useState } from 'react';
 
 const useShowRows = () => {

@@ -3,7 +3,7 @@ export const columns = [
         title: 'NAIC',
         field: 'naic',
         emptyValue: '-',
-        type: 'string',
+        type: 'number',
         width: '100px'
     },
     {
