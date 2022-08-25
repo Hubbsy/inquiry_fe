@@ -15,11 +15,14 @@
     "rules": {
         "react/react-in-jsx-scope": "off",
         "react/display-name": "off",
-        "prettier/prettier": "warn",
+<<<<<<< HEAD
+=======
         "no-unused-vars": "warn",
+        "prettier/prettier": "warn",
         "no-undef": "warn",
-        "react/prop-types": "warn",
-        "no-debugger": "warn"
+        "react/prop-types": "off",
+        "no-prototype-builtins": "off"
+>>>>>>> dev
     },
     "settings": {
         "react": {
