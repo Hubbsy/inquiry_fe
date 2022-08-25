@@ -6,10 +6,10 @@ import { useShowOrg } from '../hooks/DecliningCompanies/useShowOrg';
 
 const DecliningCompanies = () => {
     const { showRows, rows } = useShowRows();
-    const { organization } = useShowOrg();
+    const { organizations } = useShowOrg();
     return (
         <ErrorBoundary>
-            <Header onShowRows={showRows} organization={organization} />
+            <Header onShowRows={showRows} organizations={organizations} />
             <DataTable rows={rows} />
         </ErrorBoundary>
     );

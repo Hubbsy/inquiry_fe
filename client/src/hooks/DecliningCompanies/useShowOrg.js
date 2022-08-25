@@ -7,9 +7,12 @@ const useShowOrg = () => {
         description: company.DESCRIPTION
     }));
 
-    const [organization, setOrganization] = useState([{ code: ' ', description: 'ALL' }, ...data]);
+    const [organizations, setOrganizations] = useState([
+        { code: ' ', description: 'ALL' },
+        ...data
+    ]);
 
-    return { organization, setOrganization };
+    return { organizations, setOrganizations };
 };
 
 export { useShowOrg };
