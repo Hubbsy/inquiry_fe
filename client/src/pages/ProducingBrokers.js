@@ -37,7 +37,6 @@ class ProducingBrokers extends React.Component {
     }
 
     showRows = () => {
-        console.log("show rows");
         const data = {
             COMBOSEARCH: this.state.searchValue, 
             ACTIVEONLY: "TRUE",
@@ -61,7 +60,6 @@ class ProducingBrokers extends React.Component {
                     })
                 }
                 else if (this.props.error) {
-                    console.log("1:", this.props.error)
                     this.setState({
                         serverError: true,
                         errorMessage: this.props.error, 
@@ -87,7 +85,6 @@ class ProducingBrokers extends React.Component {
     render() {
         return (
             <>
-            {console.log(this.state)}
                 <Search loading={this.props.loading} errorStyle={this.state.errorStyle} searchValue={this.state.searchValue} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} showRows={this.showRows}/>
                 <Table loading={this.props.loading} rows={this.state.rows} />
                 <Snackbar anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }} message={this.state.errorMessage} open={this.state.serverError} severity={"error"} title={"Something went wrong"}/>
