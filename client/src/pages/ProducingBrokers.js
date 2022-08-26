@@ -84,10 +84,6 @@ class ProducingBrokers extends React.Component {
         }
     };
 
-
-    // const [searchValue, setSearchValue] = useState("");
-    // const { showRows, rows } = useProducingBrokersData({searchValue});
-
     render() {
         return (
             <>
