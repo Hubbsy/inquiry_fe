@@ -9,29 +9,36 @@ const Header = ({ onShowRows, organizations }) => {
     const [errorStyle, setErrorStyle] = useState(false);
     const [query, setQuery] = useState({
         search: '',
-        org: ' '
+        org: 'ALL'
     });
 
     const handleOnChange = (e) => {
         const { name, value } = e.target;
 
         if (name === 'search') {
-            console.log(e.target);
             setQuery({ ...query, search: value });
             e.target.value.length < 3 && e.target.value.length > 0
                 ? setErrorStyle(true)
                 : setErrorStyle(false);
         } else {
             setQuery({ ...query, org: value });
-            console.log(e.target);
         }
     };
 
     const { search, org } = query;
 
     const handleOnClick = () => {
-        console.log({ search, org });
-        onShowRows();
+        if (!errorStyle && search) {
+            console.log({ search, org });
+            onShowRows();
+        }
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key.toLowerCase() === 'enter' && !errorStyle && search) {
+            console.log({ search, org });
+            onShowRows();
+        }
     };
 
     return (
@@ -43,12 +50,13 @@ const Header = ({ onShowRows, organizations }) => {
                 <Grid item xs={4}>
                     <Stack>
                         <SearchInput
-                            label='Search by Company Name, NAIC,...'
+                            label={'Search by Company Name, NAIC,...'}
                             width={350}
                             onChange={handleOnChange}
                             error={errorStyle}
                             name='search'
                             value={search}
+                            onKeyDown={handleKeyDown}
                         />
 
                         {errorStyle ? (
@@ -56,12 +64,11 @@ const Header = ({ onShowRows, organizations }) => {
                                 Must be atleast 3 characters
                             </Typography>
                         ) : (
-                            <Typography variant='caption'> </Typography>
+                            <Typography variant='caption'>{''}</Typography>
                         )}
                     </Stack>
                 </Grid>
                 <Grid item xs={4}>
-                    {' '}
                     <Box
                         sx={{
                             mx: 2

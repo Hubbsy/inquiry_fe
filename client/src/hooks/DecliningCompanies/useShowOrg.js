@@ -8,7 +8,7 @@ const useShowOrg = () => {
     }));
 
     const [organizations, setOrganizations] = useState([
-        { code: ' ', description: 'ALL' },
+        { code: 'ALL', description: 'ALL' },
         ...data
     ]);
 

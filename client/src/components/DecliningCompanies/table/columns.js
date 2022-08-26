@@ -5,27 +5,27 @@ export const columns = [
         emptyValue: '-',
         align: 'left',
         type: 'numeric',
-        width: '100px'
+        width: '10%'
     },
     {
         title: 'Company Name',
         field: 'companyName',
         emptyValue: '-',
         type: 'string',
-        width: '100px'
+        width: '50%'
     },
     {
         title: 'Domicile',
         field: 'domicile',
         emptyValue: '-',
         type: 'string',
-        width: '100px'
+        width: '20%'
     },
     {
         title: 'Organizaton Type',
         field: 'orgType',
         emptyValue: '-',
         type: 'string',
-        width: '100px'
+        width: '20%'
     }
 ];
