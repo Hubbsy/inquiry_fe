@@ -7,17 +7,16 @@ import Table from '../components/ProducingBrokers/Table';
 import { useProducingBrokersData } from '../hooks/ProducingBrokers/useProducingBrokersData';
 const ProducingBrokers = () => {
 
-    const { showRows, rows } = useProducingBrokersData();
     const [searchValue, setSearchValue] = useState("");
+    const { showRows, rows } = useProducingBrokersData({searchValue});
     
-    const handleChange = (e) => {
-        console.log(e.target.value);
-        setSearchValue(e.target.value);
-    }
+    // const handleChange = (e) => {
+    //     setSearchValue(e.currentTarget.value);
+    // }
 
     return (
         <>
-            <Search searchValue={searchValue} handleChange={handleChange} showRows={showRows}/>
+            <Search searchValue={searchValue} setSearchValue={setSearchValue} showRows={showRows}/>
             <Table rows={rows} />
         </>
     );

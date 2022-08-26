@@ -1,8 +1,20 @@
 import React from 'react';
 import { Typography, Paper, Grid } from '@mui/material';
 import { SearchInput, SearchButton } from '@aeros-ui/components';
+import { TextDecreaseTwoTone } from '@mui/icons-material';
 
-const Search = ({ searchValue, handleChange, showRows }) => {
+function Search ({ searchValue, setSearchValue, showRows }) {
+
+    const handleChange = (e) => {
+        setSearchValue(e.currentTarget.value);
+    }
+
+    const handleKeyPress = (e) => {
+        console.log(e.target);
+        if (e.charCode === 13 && e.target.value.length >= 3) {
+            showRows({searchValue});
+        }
+    };
 
     return (
             <Paper sx={{padding: '1em', margin: "1em"}}  variant={'outlined'}>
@@ -18,6 +30,7 @@ const Search = ({ searchValue, handleChange, showRows }) => {
                             sx={{ mr: 1}}
                             label={'Search by License No, Broker name...'}
                             onChange={handleChange}
+                            onKeyPress={handleKeyPress}
                             value={searchValue}
                             width={'97%'}
                         />  
