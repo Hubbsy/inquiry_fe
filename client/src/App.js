@@ -20,14 +20,14 @@ class App extends Component {
         this.props.setEndpoint(endpoint);
         const data = {
             DEV: 'SARAH',
-            SESSIONTYPE: 'ElanyWeb',
+            SESSIONTYPE: 'BrokerPortal',
             SECPAYLOAD: {
                 ENV: env,
                 OWNERSECURITYID: 1,
                 SECURITYID: 59,
                 BROKERID: 103,
                 USERID: 'RSIDEV',
-                IP: '10.8.0.14'
+                IP: '10.233.51.122'
             }
         };
 
