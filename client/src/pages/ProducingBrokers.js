@@ -1,20 +1,18 @@
+import React from "react";
 import Search from '../components/ProducingBrokers/Search';
-import { SearchButton, SearchInput } from '@aeros-ui/components';
-import styled from '@emotion/styled';
-import { Paper, Typography } from '@mui/material';
-import React, { useState } from 'react';
 import Table from '../components/ProducingBrokers/Table';
-import { useProducingBrokersData } from '../hooks/ProducingBrokers/useProducingBrokersData';
-import { RemoveDoneRounded } from '@mui/icons-material';
 import { connect } from 'react-redux';
 import { getProducingBrokers} from '../store/actions/brokers';
+import { Snackbar } from '@aeros-ui/components';
 
 class ProducingBrokers extends React.Component {
 
     state = {
         searchValue: "",
         rows: [],
-        errorStyle: false
+        errorStyle: false,
+        serverError: false,
+        errorMessage: ""
     }
 
     componentDidMount() {
@@ -26,7 +24,8 @@ class ProducingBrokers extends React.Component {
         if (e.target.value.length < 3) {
             this.setState({
                 searchValue: e.target.value,
-                errorStyle: true
+                errorStyle: true,
+                rows: []
             })
         }
         else {
@@ -61,22 +60,29 @@ class ProducingBrokers extends React.Component {
                         rows: data
                     })
                 }
-                else {
+                else if (this.props.error) {
+                    console.log("1:", this.props.error)
                     this.setState({
-                        rows: []
+                        serverError: true,
+                        errorMessage: this.props.error, 
+                        rows: [],
                     })
                 }
             })
         }
+        else {
+            this.setState({
+                rows: []
+            })
+        }
     }
 
-    // handleKeyPress = (e) => {
-    //     console.log(e.target);
-    //     if (e.charCode === 13 && e.target.value.length >= 3) {
-    //         // showRows({searchValue});
-    //         useProducingBrokersData({searchValue});
-    //     }
-    // };
+    handleKeyPress = (e) => {
+        console.log(e.target);
+        if (e.charCode === 13 && e.target.value.length >= 3) {
+            this.showRows();
+        }
+    };
 
 
     // const [searchValue, setSearchValue] = useState("");
@@ -86,8 +92,9 @@ class ProducingBrokers extends React.Component {
         return (
             <>
             {console.log(this.state)}
-                <Search errorStyle={this.state.errorStyle} searchValue={this.state.searchValue} handleChange={this.handleChange} showRows={this.showRows}/>
-                <Table rows={this.state.rows} />
+                <Search loading={this.props.loading} errorStyle={this.state.errorStyle} searchValue={this.state.searchValue} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} showRows={this.showRows}/>
+                <Table loading={this.props.loading} rows={this.state.rows} />
+                <Snackbar anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }} message={this.state.errorMessage} open={this.state.serverError} severity={"error"} title={"Something went wrong"}/>
             </>
         );
     }

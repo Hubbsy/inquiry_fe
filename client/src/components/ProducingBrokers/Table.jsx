@@ -14,7 +14,7 @@ import styled from '@emotion/styled';
 import { MoreVert } from '@mui/icons-material';
 import { format } from 'date-fns';
 
-export default function Table({ rows }) {
+export default function Table({ loading, rows }) {
     const theme = useTheme();
     const [density, setDensity] = useState('normal');
     const [showFilters, setFiltering] = useState(false);
@@ -146,7 +146,7 @@ export default function Table({ rows }) {
     const options = {
         pageSize: 10,
         padding: density,
-        showEmptyDataSourceMessage: true,
+        showEmptyDataSourceMessage: !loading,
         actionsColumnIndex: -1,
         headerStyle: {
             backgroundColor: theme.palette.grid.main.header,
@@ -173,9 +173,9 @@ export default function Table({ rows }) {
         ],
         columnsButton: true,
         filtering: showFilters,
-        searchFieldStyle: { marginRight: "1em" }
+        searchFieldStyle: { marginRight: "1em" },
     };
-3
+
     return (
         <div style={{ margin: '1em' }}>
             <ThemeProvider theme={tableTheme}>
@@ -184,6 +184,7 @@ export default function Table({ rows }) {
                     options={options}
                     columns={columns}
                     data={rows}
+                    isLoading={loading}
                     onRowClick={handleRowClick}
                     components={{
                         Pagination: (props) => (
@@ -204,12 +205,6 @@ export default function Table({ rows }) {
                                 onDensityClick={handleDensityClick}
                             />
                         ),
-                        // Container: props => {
-                        //     return (
-                        //         <Paper elevation={4} {...props}/>
-                        //     )
-
-                        // }
                     }}
                 />
             </ThemeProvider>
