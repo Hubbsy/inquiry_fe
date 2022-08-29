@@ -10,21 +10,8 @@ const storeState = {
         sessionTimeout: false
     },
     decliningCompanies: {
-        companies: [
-            {
-                code: 'ALL',
-                description: 'ALL'
-            }
-        ],
-        data: [
-            {
-                companyName: '',
-                naic: null,
-                domicile: '',
-                orgType: '',
-                id: null
-            }
-        ]
+        companies: { data: [], loading: false, error: null },
+        decliningData: { data: [], loading: false, error: null }
     }
 };
 

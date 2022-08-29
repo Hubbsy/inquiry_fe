@@ -2,42 +2,59 @@ import { combineReducers } from 'redux';
 import storeState from '../state';
 import { TYPES } from '../actions/decliningCompanies';
 
-// const auth = (state = storeState.session.auth, action) => {
-//     switch (action.type) {
-//         case TYPES.GET_TOKEN_BEGIN:
-//             return {
-//                 ...state,
-//                 loading: !state.loading,
-//                 token: null,
-//                 error: null
-//             };
-//         case TYPES.GET_TOKEN_SUCCESS:
-//             return {
-//                 ...state,
-//                 loading: !state.loading,
-//                 token: action.value
-//             };
-//         case TYPES.GET_TOKEN_FAILURE:
-//             return {
-//                 ...state,
-//                 loading: !state.loading,
-//                 error: action.value,
-//                 token: null
-//             };
-//         default:
-//             return { ...state };
-//     }
-// };
-const companies = (state = storeState.companies, action) => {
+const companies = (state = storeState.decliningCompanies.companies, action) => {
     switch (action.type) {
         case TYPES.GET_COMPANIES_BEGIN:
-            return [{ ...state, code: 'ALL', description: 'ALL' }];
+            return {
+                ...state,
+                loading: !state.loading,
+                data: [],
+                error: null
+            };
         case TYPES.GET_COMPANIES_SUCCESS:
-            return [...state, action.payload];
+            return {
+                ...state,
+                loading: !state.loading,
+                data: action.value
+            };
+        case TYPES.GET_COMPANIES_FAILURE:
+            return {
+                ...state,
+                loading: !state.loading,
+                error: action.value,
+                data: []
+            };
         default:
             return { ...state };
     }
 };
 
-const decliningCompanies = combineReducers({ companies });
+const decliningData = (state = storeState.decliningCompanies.decliningData, action) => {
+    switch (action.type) {
+        case TYPES.GET_DECLINING_DATA_BEGIN:
+            return {
+                ...state,
+                loading: !state.loading,
+                data: [],
+                error: null
+            };
+        case TYPES.GET_DECLINING_DATA_SUCCESS:
+            return {
+                ...state,
+                loading: !state.loading,
+                data: action.value
+            };
+        case TYPES.GET_DECLINING_DATA_FAILURE:
+            return {
+                ...state,
+                loading: !state.loading,
+                error: action.value,
+                data: []
+            };
+        default:
+            return { ...state };
+    }
+};
+
+const decliningCompanies = combineReducers({ companies, decliningData });
 export default decliningCompanies;

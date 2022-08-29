@@ -10,11 +10,6 @@ import { TableToolbar } from '@aeros-ui/tables';
 import { Box, TablePagination } from '@mui/material';
 
 const DataTable = ({ rows }) => {
-    {
-        {
-            console.log(rows);
-        }
-    }
     const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
 
@@ -63,7 +58,6 @@ const DataTable = ({ rows }) => {
                             />
                         ),
                         Cell: (props) => {
-                            console.log(props);
                             return (
                                 <MTableCell
                                     style={{

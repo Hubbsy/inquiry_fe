@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { SearchButton, SearchInput, SelectInput } from '@aeros-ui/components';
 import { Grid, MenuItem, Paper, Typography } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import { theme } from '@aeros-ui/themes';
 
-const Header = ({ onShowRows, organizations }) => {
-    const [errorStyle, setErrorStyle] = useState(false);
+const Header = ({ onShowRows, organizations, onSearch }) => {
+    const [error, setError] = useState(false);
+    const [companies, setCompanies] = useState([]);
     const [query, setQuery] = useState({
         search: '',
-        org: 'ALL'
+        org: ''
     });
+
+    //runs when organization is updated
+    useEffect(() => {
+        setCompanies([{ CODE: ' ', DESCRIPTION: 'ALL' }, ...organizations]);
+        console.log('org', companies);
+        setQuery({ ...query, org: ' ' });
+    }, [organizations]);
+
+    const { search, org } = query;
 
     const handleOnChange = (e) => {
         const { name, value } = e.target;
@@ -18,26 +28,24 @@ const Header = ({ onShowRows, organizations }) => {
         if (name === 'search') {
             setQuery({ ...query, search: value });
             e.target.value.length < 3 && e.target.value.length > 0
-                ? setErrorStyle(true)
-                : setErrorStyle(false);
+                ? setError(true)
+                : setError(false);
         } else {
             setQuery({ ...query, org: value });
         }
     };
 
-    const { search, org } = query;
-
     const handleOnClick = () => {
-        if (!errorStyle && search) {
-            console.log({ search, org });
-            onShowRows();
+        if (!error && search) {
+            onSearch(org, search);
+            // onShowRows();
         }
     };
 
     const handleKeyDown = (e) => {
-        if (e.key.toLowerCase() === 'enter' && !errorStyle && search) {
-            console.log({ search, org });
-            onShowRows();
+        if (e.key.toLowerCase() === 'enter' && !error && search) {
+            onSearch(org, search);
+            // onShowRows();
         }
     };
 
@@ -53,13 +61,13 @@ const Header = ({ onShowRows, organizations }) => {
                             label={'Search by Company Name, NAIC,...'}
                             width={350}
                             onChange={handleOnChange}
-                            error={errorStyle}
+                            error={error}
                             name='search'
                             value={search}
                             onKeyDown={handleKeyDown}
                         />
 
-                        {errorStyle ? (
+                        {error ? (
                             <Typography variant='caption' color={theme.palette.error.main}>
                                 Must be atleast 3 characters
                             </Typography>
@@ -79,13 +87,10 @@ const Header = ({ onShowRows, organizations }) => {
                             name='org'
                             value={org}
                             width={300}>
-                            {organizations.map((organization) => {
+                            {companies.map((company) => {
                                 return (
-                                    <MenuItem
-                                        name='org'
-                                        key={organization.code}
-                                        value={organization.code}>
-                                        {organization.description}
+                                    <MenuItem name='org' key={company.CODE} value={company.CODE}>
+                                        {company.DESCRIPTION}
                                     </MenuItem>
                                 );
                             })}
@@ -102,7 +107,8 @@ const Header = ({ onShowRows, organizations }) => {
 
 Header.propTypes = {
     onShowRows: PropTypes.func,
-    organizations: PropTypes.array
+    organizations: PropTypes.array,
+    onSearch: PropTypes.func
 };
 
 export default Header;

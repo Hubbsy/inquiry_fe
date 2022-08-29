@@ -1,11 +1,11 @@
 import mockDeclData from '../../api/mockDeclData';
 import { useState } from 'react';
 
-const useShowRows = () => {
+const useShowRows = (declData) => {
     const [rows, setRows] = useState([]);
 
     const showRows = () => {
-        const data = mockDeclData.map((company) => ({
+        const data = declData.map((company) => ({
             id: company.DECLINECOMPID,
             naic: company.NAIC,
             companyName: company.COMPANYNAME,

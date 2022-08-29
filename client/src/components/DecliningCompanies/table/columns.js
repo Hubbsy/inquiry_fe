@@ -4,7 +4,7 @@ export const columns = [
         field: 'naic',
         emptyValue: '-',
         align: 'left',
-        type: 'numeric',
+        type: 'string',
         width: '10%'
     },
     {
