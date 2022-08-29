@@ -90,6 +90,7 @@ export default function Table({ loading, rows }) {
         {
             title: "Effective Date",
             field: "effectiveDate",
+            width: "15em",
             render: rowData => (<MainTableCell sx={{width: {xs: "0.5em", sm: "5em"}}}>{format(new Date(rowData.effectiveDate), "MM/dd/yyyy")}</MainTableCell>)
         },
         {
@@ -106,7 +107,7 @@ export default function Table({ loading, rows }) {
             render: rowData => ( 
                 <>
                     <StyledMoreVertIcon onClick={(e) => handlePopoverOpen(e, rowData)}/>
-                    <DetailCard
+                    {/* <DetailCard
                     popoverId="detailPopover"
                     open={popoverOpen}
                     anchorPosition={anchorEl}
@@ -118,7 +119,7 @@ export default function Table({ loading, rows }) {
                     width={300}
                     title={`License No. ${currentRowData.licenseNo}`}
                     content={content}
-                    />
+                    /> */}
                 </> 
         ),
             hiddenByColumnsButton: true,
@@ -215,6 +216,19 @@ export default function Table({ loading, rows }) {
                         ),
                     }}
                 />
+                 <DetailCard
+                    popoverId="detailPopover"
+                    open={popoverOpen}
+                    anchorPosition={anchorEl}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right'
+                    }}
+                    handleClose={handlePopoverClose}
+                    width={300}
+                    title={`License No. ${currentRowData.licenseNo}`}
+                    content={content}
+                    />
             </ThemeProvider>
         </div>
     );
