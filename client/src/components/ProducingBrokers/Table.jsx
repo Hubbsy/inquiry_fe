@@ -124,7 +124,14 @@ export default function Table({ loading, rows }) {
         width: 18,
         display: "flex",
         color: "gray",
-
+        "&:hover": {
+            height: 32,
+            width: 18,
+            borderRadius: "50%",
+            backgroundColor: theme.palette.grid.main.active,
+            padding: 0,
+            color: "gray"
+        },
         "&:active": {
             height: 32,
             width: 18,
