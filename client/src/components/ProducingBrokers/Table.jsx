@@ -82,7 +82,7 @@ export default function Table({ loading, rows }) {
             title: "Name",
             field: "brokerName",
             type: "string",
-            width: "15em",
+            width: "50em",
             render: rowData => (<MainTableCell sx={{whiteSpace: "nowrap"}}>{rowData.brokerName}</MainTableCell>)
         },
         {
