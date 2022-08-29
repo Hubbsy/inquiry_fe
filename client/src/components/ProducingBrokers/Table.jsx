@@ -103,7 +103,24 @@ export default function Table({ loading, rows }) {
             title: "",
             field: "detailsPopover",
             width: "1em",
-            render: rowData => ( <StyledMoreVertIcon onClick={(e) => handlePopoverOpen(e, rowData)}/>),
+            render: rowData => ( 
+                <>
+                    <StyledMoreVertIcon onClick={(e) => handlePopoverOpen(e, rowData)}/>
+                    <DetailCard
+                    popoverId="detailPopover"
+                    open={popoverOpen}
+                    anchorPosition={anchorEl}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right'
+                    }}
+                    handleClose={handlePopoverClose}
+                    width={300}
+                    title={`License No. ${currentRowData.licenseNo}`}
+                    content={content}
+                    />
+                </> 
+        ),
             hiddenByColumnsButton: true,
             filtering: false
         },
@@ -131,14 +148,6 @@ export default function Table({ loading, rows }) {
             color: "gray",
         },
     }));
-
-    // const actions = [
-    //     {
-    //         icon: () => <StyledMoreVertIcon/>,
-    //         tooltip: "Company Details",
-    //         onClick: (event, rowData) => handlePopoverOpen(event, rowData),
-    //     }
-    // ]
 
     const options = {
         pageSize: 10,
@@ -182,11 +191,9 @@ export default function Table({ loading, rows }) {
                     title={''}
                     options={options}
                     columns={columns}
-                    // actions={actions}
                     data={rows}
                     isLoading={loading}
                     onRowClick={handleRowClick}
-                    // localization={{header : {actions: ''}}}
                     components={{
                         Pagination: (props) => (
                             <TablePagination
@@ -208,19 +215,6 @@ export default function Table({ loading, rows }) {
                         ),
                     }}
                 />
-                <DetailCard
-                            popoverId="detailPopover"
-                            open={popoverOpen}
-                            anchorPosition={anchorEl}
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right'
-                            }}
-                            handleClose={handlePopoverClose}
-                            width={300}
-                            title={`License No. ${currentRowData.licenseNo}`}
-                            content={content}
-                        />
             </ThemeProvider>
         </div>
     );
