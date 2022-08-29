@@ -49,8 +49,6 @@ class ProducingBrokers extends React.Component {
                 if (this.props.data && this.props.data.length) {
                     const data = this.props.data.map((company) => ({
                         licenseNo: company.LICENSENO,
-                        // firstName: company.BROKERNAME1,
-                        // lastName: company.BROKERNAME2,
                         brokerName: `${company.BROKERNAME1} ${company.BROKERNAME2}`,
                         effectiveDate: company.EFFECTIVEDATE,
                         expDate: company.EXPIRATIONDATE
@@ -83,12 +81,18 @@ class ProducingBrokers extends React.Component {
         }
     };
 
+    handleClose = (e) => {
+        this.setState({
+            serverError: !this.state.serverError
+        })
+    }
+
     render() {
         return (
             <>
                 <Search loading={this.props.loading} errorStyle={this.state.errorStyle} searchValue={this.state.searchValue} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} showRows={this.showRows}/>
                 <Table loading={this.props.loading} rows={this.state.rows} />
-                <Snackbar anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }} message={this.state.errorMessage} open={this.state.serverError} severity={"error"} title={"Something went wrong"}/>
+                <Snackbar anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }} handleClose={this.handleClose} message={this.state.errorMessage} open={this.state.serverError} severity={"error"} title={"Something went wrong"}/>
             </>
         );
     }

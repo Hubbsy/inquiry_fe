@@ -174,7 +174,7 @@ export default function Table({ loading, rows }) {
         columnsButton: true,
         filtering: showFilters,
         searchFieldStyle: { marginRight: "1em" },
-        emptyRowsWhenPaging: false
+        emptyRowsWhenPaging: rows.length ? false : true
     };
 
     return (
