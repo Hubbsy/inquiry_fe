@@ -103,8 +103,9 @@ export default function Table({ loading, rows }) {
             title: "",
             field: "detailsPopover",
             width: "1em",
-            render: rowData => ( <MainTableCell><StyledMoreVertIcon onClick={(e) => handlePopoverOpen(e, rowData)}/></MainTableCell>),
-            hiddenByColumnsButton: true
+            render: rowData => ( <StyledMoreVertIcon onClick={(e) => handlePopoverOpen(e, rowData)}/>),
+            hiddenByColumnsButton: true,
+            filtering: false
         },
     ];
 
