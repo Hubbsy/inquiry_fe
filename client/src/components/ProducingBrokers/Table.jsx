@@ -4,7 +4,8 @@ import {
     useTheme,
     ThemeProvider, 
     Grid,
-    Typography
+    Typography,
+    ButtonBase
 } from '@mui/material';
 import { TableToolbar, MainTableCell, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from "@material-table/exporters";
@@ -84,7 +85,7 @@ export default function Table({ loading, rows }) {
             field: "brokerName",
             type: "string",
             width: "50em",
-            render: rowData => (<MainTableCell sx={{whiteSpace: "nowrap"}}>{rowData.brokerName}</MainTableCell>)
+            render: rowData => (<MainTableCell sx={{whiteSpace: "nowrap"}}>{rowData.brokerName}</MainTableCell>),
         },
         {
             title: "Effective Date",
@@ -105,14 +106,6 @@ export default function Table({ loading, rows }) {
         width: 18,
         display: "flex",
         color: "gray",
-        // "&:hover": {
-        //     height: 32,
-        //     width: 18,
-        //     borderRadius: "50%",
-        //     backgroundColor: theme.palette.grid.main.active,
-        //     padding: 0,
-        //     color: "gray"
-        // },
         "&:active": {
             height: 32,
             width: 18,
@@ -127,7 +120,7 @@ export default function Table({ loading, rows }) {
             borderRadius: "50%",
             backgroundColor: theme.palette.grid.main.active,
             padding: 0,
-            color: "gray"
+            color: "gray",
         },
     }));
 
@@ -136,7 +129,6 @@ export default function Table({ loading, rows }) {
             icon: () => <StyledMoreVertIcon/>,
             tooltip: "Company Details",
             onClick: (event, rowData) => handlePopoverOpen(event, rowData),
-            title: ""
         }
     ]
 
@@ -149,7 +141,8 @@ export default function Table({ loading, rows }) {
             backgroundColor: theme.palette.grid.main.header,
             color: theme.palette.background.paper,
             textTransform: 'capitalize',
-            padding: "1em"
+            padding: "1em",
+            whiteSpace: "nowrap"
         },
         rowStyle: (rowData) => ({
             backgroundColor:
