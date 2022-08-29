@@ -82,13 +82,13 @@ export default function Table({ loading, rows }) {
             title: "Name",
             field: "brokerName",
             type: "string",
-            render: rowData => (<MainTableCell>{rowData.brokerName}</MainTableCell>)
+            width: "15em",
+            render: rowData => (<MainTableCell sx={{whiteSpace: "nowrap"}}>{rowData.brokerName}</MainTableCell>)
         },
         {
             title: "Effective Date",
             field: "effectiveDate",
-            render: rowData => (<MainTableCell sx={{width: {xs: "0.5em", sm: "5em"}}}>{format(new Date(rowData.effectiveDate), "MM/dd/yyyy")}</MainTableCell>),
-            width: "15em"
+            render: rowData => (<MainTableCell sx={{width: {xs: "0.5em", sm: "5em"}}}>{format(new Date(rowData.effectiveDate), "MM/dd/yyyy")}</MainTableCell>)
         },
         {
             title: "Expiration Date",
