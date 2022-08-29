@@ -87,6 +87,7 @@ export default function Table({ loading, rows }) {
             title: "Effective Date",
             field: "effectiveDate",
             render: rowData => (<MainTableCell>{format(new Date(rowData.effectiveDate), "MM/dd/yyyy")}</MainTableCell>),
+            width: "15em"
         },
         {
             title: "Expiration Date",
