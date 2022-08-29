@@ -93,30 +93,8 @@ export default function Table({ loading, rows }) {
         {
             title: "Expiration Date",
             field: "expDate",
-            render: rowData => (
-                <>
-                    <Grid item container justifyContent="space-between" alignItems="center" whiteSpace="nowrap">
-                        <Typography sx={{ fontSize: "14px" }}>
-                            {format(new Date(rowData.expDate), "MM/dd/yyyy")}
-                        </Typography>
-                        <StyledMoreVertIcon onClick={e => handlePopoverOpen(e, rowData)} fontSize="small"/>
-                    </Grid>
-                    <Grid item container>
-                        <DetailCard
-                            popoverId="detailPopover"
-                            open={popoverOpen}
-                            anchorPosition={anchorEl}
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right'
-                            }}
-                            handleClose={handlePopoverClose}
-                            width={300}
-                            title={`License No. ${currentRowData.licenseNo}`}
-                            content={content}
-                        />
-                    </Grid>
-                </>
+            width: "10em",
+            render: rowData => ( <MainTableCell sx={{width: {xs: "0.5em", sm: "5em"}}}>{format(new Date(rowData.expDate), "MM/dd/yyyy")}</MainTableCell>
             )
         },
     ];
@@ -126,14 +104,14 @@ export default function Table({ loading, rows }) {
         width: 18,
         display: "flex",
         color: "gray",
-        "&:hover": {
-            height: 32,
-            width: 18,
-            borderRadius: "50%",
-            backgroundColor: theme.palette.grid.main.active,
-            padding: 0,
-            color: "gray"
-        },
+        // "&:hover": {
+        //     height: 32,
+        //     width: 18,
+        //     borderRadius: "50%",
+        //     backgroundColor: theme.palette.grid.main.active,
+        //     padding: 0,
+        //     color: "gray"
+        // },
         "&:active": {
             height: 32,
             width: 18,
@@ -150,7 +128,16 @@ export default function Table({ loading, rows }) {
             padding: 0,
             color: "gray"
         },
-    }))
+    }));
+
+    const actions = [
+        {
+            icon: () => <StyledMoreVertIcon/>,
+            tooltip: "Company Details",
+            onClick: (event, rowData) => handlePopoverOpen(event, rowData),
+            title: ""
+        }
+    ]
 
     const options = {
         pageSize: 10,
@@ -193,9 +180,11 @@ export default function Table({ loading, rows }) {
                     title={''}
                     options={options}
                     columns={columns}
+                    actions={actions}
                     data={rows}
                     isLoading={loading}
                     onRowClick={handleRowClick}
+                    localization={{header : {actions: ''}}}
                     components={{
                         Pagination: (props) => (
                             <TablePagination
@@ -211,12 +200,25 @@ export default function Table({ loading, rows }) {
                             <TableToolbar
                                 {...props}
                                 showFilters={showFilters}
-                                onFilterClick={() => setFiltering(false)}
+                                onFilterClick={() => setFiltering(!showFilters)}
                                 onDensityClick={handleDensityClick}
                             />
                         ),
                     }}
                 />
+                <DetailCard
+                            popoverId="detailPopover"
+                            open={popoverOpen}
+                            anchorPosition={anchorEl}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right'
+                            }}
+                            handleClose={handlePopoverClose}
+                            width={300}
+                            title={`License No. ${currentRowData.licenseNo}`}
+                            content={content}
+                        />
             </ThemeProvider>
         </div>
     );
