@@ -93,10 +93,9 @@ export default function Table({ loading, rows }) {
         {
             title: "Expiration Date",
             field: "expDate",
-            width: "15em",
             render: rowData => (
                 <>
-                    <Grid item container justifyContent="space-between" alignItems="center">
+                    <Grid item container justifyContent="space-between" alignItems="center" whiteSpace="nowrap">
                         <Typography sx={{ fontSize: "14px" }}>
                             {format(new Date(rowData.expDate), "MM/dd/yyyy")}
                         </Typography>
