@@ -76,6 +76,7 @@ export default function Table({ loading, rows }) {
             field: "licenseNo",
             type: "string",
             render: rowData => (<MainTableCell>{rowData.licenseNo}</MainTableCell>),
+            width: "15em"
         },
         {
             title: "Name",
