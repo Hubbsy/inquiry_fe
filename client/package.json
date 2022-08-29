@@ -1,70 +1,69 @@
 {
-    "name": "client",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-        "@aeros-ui/components": "^0.1.37",
-        "@aeros-ui/icons": "^0.1.6",
-        "@aeros-ui/tables": "^0.1.26",
-        "@aeros-ui/themes": "^0.1.18",
-        "@emotion/react": "^11.10.0",
-        "@emotion/styled": "^11.10.0",
-        "@material-table/core": "^0.2.35",
-        "@material-table/exporters": "^1.0.12",
-        "@mui/icons-material": "^5.8.4",
-        "@mui/lab": "^5.0.0-alpha.94",
-        "@mui/material": "^5.10.0",
-        "@mui/x-date-pickers": "^5.0.0-beta.5",
-        "@testing-library/jest-dom": "^5.14.1",
-        "@testing-library/react": "^13.0.0",
-        "@testing-library/user-event": "^13.2.1",
-        "axios": "^0.27.2",
-        "date-fns": "^2.29.2",
-        "query-string": "^7.1.1",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "react-redux": "^8.0.2",
-        "react-router": "^6.3.0",
-        "react-router-dom": "^6.3.0",
-        "react-scripts": "5.0.1",
-        "redux": "^4.2.0",
-        "redux-thunk": "^2.4.1",
-        "web-vitals": "^2.1.0"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build && rm -rf ../server/build && mv build ../server/build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject",
-        "lint": "eslint .",
-        "lint:fix": "eslint . --fix",
-        "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
-    },
-    "eslintConfig": {
-        "extends": [
-            "react-app",
-            "react-app/jest"
-        ]
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    },
-    "devDependencies": {
-        "@redux-devtools/extension": "^3.2.3",
-        "eslint": "^8.22.0",
-        "eslint-config-prettier": "^8.5.0",
-        "eslint-plugin-prettier": "^4.2.1",
-        "eslint-plugin-react": "^7.30.1",
-        "prettier": "^2.7.1"
-    },
-    "homepage": "./"
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@aeros-ui/components": "^0.1.37",
+    "@aeros-ui/icons": "^0.1.6",
+    "@aeros-ui/tables": "^0.1.24",
+    "@aeros-ui/themes": "^0.1.18",
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
+    "@material-table/core": "^0.2.35",
+    "@material-table/exporters": "^1.0.12",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/lab": "^5.0.0-alpha.94",
+    "@mui/material": "^5.10.0",
+    "@mui/x-date-pickers": "^5.0.0-beta.5",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^13.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "axios": "^0.27.2",
+    "query-string": "^7.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.2",
+    "react-router": "^6.3.0",
+    "react-router-dom": "^6.3.0",
+    "react-scripts": "5.0.1",
+    "redux": "^4.2.0",
+    "redux-thunk": "^2.4.1",
+    "web-vitals": "^2.1.0"
+  },
+  "scripts": {
+    "start": "FAST_REFRESH=true react-scripts start",
+    "build": "react-scripts build && rm -rf ../server/build && mv build ../server/build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@redux-devtools/extension": "^3.2.3",
+    "eslint": "^8.22.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.30.1",
+    "prettier": "^2.7.1"
+  },
+  "homepage": "./"
 }
