@@ -75,8 +75,8 @@ export default function Table({ loading, rows }) {
             title: "License No.",
             field: "licenseNo",
             type: "string",
-            render: rowData => (<MainTableCell>{rowData.licenseNo}</MainTableCell>),
-            width: "15em"
+            render: rowData => (<MainTableCell sx={{width: {xs: "0.5em", sm: "5em"}}}>{rowData.licenseNo}</MainTableCell>),
+           
         },
         {
             title: "Name",
@@ -87,17 +87,19 @@ export default function Table({ loading, rows }) {
         {
             title: "Effective Date",
             field: "effectiveDate",
-            render: rowData => (<MainTableCell>{format(new Date(rowData.effectiveDate), "MM/dd/yyyy")}</MainTableCell>),
+            render: rowData => (<MainTableCell sx={{width: {xs: "0.5em", sm: "5em"}}}>{format(new Date(rowData.effectiveDate), "MM/dd/yyyy")}</MainTableCell>),
             width: "15em"
         },
         {
             title: "Expiration Date",
             field: "expDate",
+            width: "15em",
             render: rowData => (
                 <>
                     <Grid item container justifyContent="space-between" alignItems="center">
                         <Typography sx={{ fontSize: "14px" }}>
-                            {format(new Date(rowData.expDate), "MM/dd/yyyy")}</Typography>
+                            {format(new Date(rowData.expDate), "MM/dd/yyyy")}
+                        </Typography>
                         <StyledMoreVertIcon onClick={e => handlePopoverOpen(e, rowData)} fontSize="small"/>
                     </Grid>
                     <Grid item container>
@@ -116,8 +118,7 @@ export default function Table({ loading, rows }) {
                         />
                     </Grid>
                 </>
-            ),
-            width: "15em"
+            )
         },
     ];
 
