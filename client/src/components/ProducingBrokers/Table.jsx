@@ -99,6 +99,13 @@ export default function Table({ loading, rows }) {
             render: rowData => ( <MainTableCell sx={{width: {xs: "0.5em", sm: "5em"}}}>{format(new Date(rowData.expDate), "MM/dd/yyyy")}</MainTableCell>
             )
         },
+        {
+            title: "",
+            field: "detailsPopover",
+            width: "1em",
+            render: rowData => ( <MainTableCell><StyledMoreVertIcon onClick={(e) => handlePopoverOpen(e, rowData)}/></MainTableCell>),
+            hiddenByColumnsButton: true
+        },
     ];
 
     const StyledMoreVertIcon = styled(MoreVert)(({theme}) => ({
@@ -124,13 +131,13 @@ export default function Table({ loading, rows }) {
         },
     }));
 
-    const actions = [
-        {
-            icon: () => <StyledMoreVertIcon/>,
-            tooltip: "Company Details",
-            onClick: (event, rowData) => handlePopoverOpen(event, rowData),
-        }
-    ]
+    // const actions = [
+    //     {
+    //         icon: () => <StyledMoreVertIcon/>,
+    //         tooltip: "Company Details",
+    //         onClick: (event, rowData) => handlePopoverOpen(event, rowData),
+    //     }
+    // ]
 
     const options = {
         pageSize: 10,
@@ -174,11 +181,11 @@ export default function Table({ loading, rows }) {
                     title={''}
                     options={options}
                     columns={columns}
-                    actions={actions}
+                    // actions={actions}
                     data={rows}
                     isLoading={loading}
                     onRowClick={handleRowClick}
-                    localization={{header : {actions: ''}}}
+                    // localization={{header : {actions: ''}}}
                     components={{
                         Pagination: (props) => (
                             <TablePagination
