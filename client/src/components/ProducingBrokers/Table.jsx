@@ -79,9 +79,9 @@ export default function Table({ loading, rows }) {
         },
         {
             title: "Name",
-            field: "name",
+            field: "brokerName",
             type: "string",
-            render: rowData => (<MainTableCell>{rowData.firstName} {rowData.lastName}</MainTableCell>),
+            render: rowData => (<MainTableCell>{rowData.brokerName}</MainTableCell>)
         },
         {
             title: "Effective Date",

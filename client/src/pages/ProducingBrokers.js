@@ -49,8 +49,9 @@ class ProducingBrokers extends React.Component {
                 if (this.props.data && this.props.data.length) {
                     const data = this.props.data.map((company) => ({
                         licenseNo: company.LICENSENO,
-                        firstName: company.BROKERNAME1,
-                        lastName: company.BROKERNAME2,
+                        // firstName: company.BROKERNAME1,
+                        // lastName: company.BROKERNAME2,
+                        brokerName: `${company.BROKERNAME1} ${company.BROKERNAME2}`,
                         effectiveDate: company.EFFECTIVEDATE,
                         expDate: company.EXPIRATIONDATE
                     }));
