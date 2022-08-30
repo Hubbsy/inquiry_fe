@@ -64,12 +64,20 @@ const getDecliningCompanies = (endpoint, token) => {
                 } else if (res.data.hasOwnProperty('ERRORMESSAGE')) {
                     dispatch(getCompaniesFailure(res.data.ERRORMESSAGE));
                 } else {
-                    dispatch(getCompaniesFailure('Error processing request'));
+                    dispatch(
+                        getCompaniesFailure(
+                            'An error occured while the request was processesing, please try again.'
+                        )
+                    );
                 }
             })
             .catch((err) => {
                 console.log(err);
-                dispatch(getCompaniesFailure('Error processing request'));
+                dispatch(
+                    getCompaniesFailure(
+                        'An error occured while the request was processesing, please try again.'
+                    )
+                );
             });
     };
 };
@@ -87,12 +95,20 @@ const getDecliningData = (endpoint, token, data) => {
                 } else if (res.data.hasOwnProperty('ERRORMESSAGE')) {
                     dispatch(getDecliningDataFailure(res.data.ERRORMESSAGE));
                 } else {
-                    dispatch(getDecliningDataFailure('Error processing request'));
+                    dispatch(
+                        getDecliningDataFailure(
+                            'An error occured while the request was processesing, please try again.'
+                        )
+                    );
                 }
             })
             .catch((err) => {
                 console.log(err);
-                dispatch(getDecliningDataFailure('Error processing request'));
+                dispatch(
+                    getDecliningDataFailure(
+                        'An error occured while the request was processesing, please try again.'
+                    )
+                );
             });
     };
 };

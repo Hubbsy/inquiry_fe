@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import MaterialTable, { MTableCell } from '@material-table/core';
+import MaterialTable, { MTableCell, MTableHeader } from '@material-table/core';
 import { columns } from './columns';
 import { options } from './options';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
@@ -9,7 +9,7 @@ import { tableTheme, theme } from '@aeros-ui/themes';
 import { TableToolbar } from '@aeros-ui/tables';
 import { Box, TablePagination } from '@mui/material';
 
-const DataTable = ({ rows }) => {
+const DataTable = ({ rows, loading }) => {
     const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
 
@@ -22,13 +22,15 @@ const DataTable = ({ rows }) => {
                 <MaterialTable
                     title=''
                     columns={columns}
+                    isLoading={loading}
                     options={{
                         ...options,
+                        emptyRowsWhenPaging: rows.length ? false : true,
                         cellStyle: theme.typography,
                         headerStyle: {
                             ...theme.components.headerStyle,
                             backgroundColor: theme.palette.grid.main.header,
-                            padding: '1em'
+                            padding: '0.7em 2em'
                         },
                         exportMenu: [
                             {
@@ -47,6 +49,16 @@ const DataTable = ({ rows }) => {
                     }}
                     data={rows}
                     components={{
+                        Header: (props) => (
+                            <MTableHeader
+                                sx={{
+                                    alignItems: 'center',
+                                    display: 'flex',
+                                    justifyContent: 'center'
+                                }}
+                                {...props}
+                            />
+                        ),
                         Pagination: (props) => (
                             <TablePagination
                                 count={props.count}
@@ -68,7 +80,6 @@ const DataTable = ({ rows }) => {
                                     {...props}></MTableCell>
                             );
                         },
-                        // Row: (props) => <MTableBodyRow {...props} />,
                         Toolbar: (props) => (
                             <TableToolbar
                                 {...props}
@@ -85,7 +96,8 @@ const DataTable = ({ rows }) => {
 
 DataTable.propTypes = {
     rowData: PropTypes.object,
-    rows: PropTypes.array
+    rows: PropTypes.array,
+    loading: PropTypes.bool
 };
 
 export default DataTable;

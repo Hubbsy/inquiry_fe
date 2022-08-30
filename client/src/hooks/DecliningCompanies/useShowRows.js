@@ -1,8 +1,9 @@
-import mockDeclData from '../../api/mockDeclData';
 import { useState } from 'react';
 
 const useShowRows = (declData) => {
     const [rows, setRows] = useState([]);
+    // const []
+    console.log(declData);
 
     const showRows = () => {
         const data = declData.map((company) => ({

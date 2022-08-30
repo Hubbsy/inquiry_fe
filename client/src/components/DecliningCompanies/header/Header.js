@@ -5,7 +5,7 @@ import { Grid, MenuItem, Paper, Typography } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import { theme } from '@aeros-ui/themes';
 
-const Header = ({ onShowRows, organizations, onSearch }) => {
+const Header = ({ organizations, onSearch, loading }) => {
     const [error, setError] = useState(false);
     const [companies, setCompanies] = useState([]);
     const [query, setQuery] = useState({
@@ -27,7 +27,7 @@ const Header = ({ onShowRows, organizations, onSearch }) => {
 
         if (name === 'search') {
             setQuery({ ...query, search: value });
-            e.target.value.length < 3 && e.target.value.length > 0
+            e.target.value.trim().length < 3 && e.target.value.trim().length > 0
                 ? setError(true)
                 : setError(false);
         } else {
@@ -37,14 +37,14 @@ const Header = ({ onShowRows, organizations, onSearch }) => {
 
     const handleOnClick = () => {
         if (!error && search) {
-            onSearch(org, search);
+            onSearch(org, search.trim());
             // onShowRows();
         }
     };
 
     const handleKeyDown = (e) => {
         if (e.key.toLowerCase() === 'enter' && !error && search) {
-            onSearch(org, search);
+            onSearch(org, search.trim());
             // onShowRows();
         }
     };
@@ -59,12 +59,13 @@ const Header = ({ onShowRows, organizations, onSearch }) => {
                     <Stack>
                         <SearchInput
                             label={'Search by Company Name, NAIC,...'}
-                            width={350}
+                            width={'80%'}
                             onChange={handleOnChange}
                             error={error}
                             name='search'
                             value={search}
                             onKeyDown={handleKeyDown}
+                            disabled={loading}
                         />
 
                         {error ? (
@@ -86,7 +87,8 @@ const Header = ({ onShowRows, organizations, onSearch }) => {
                             onChange={handleOnChange}
                             name='org'
                             value={org}
-                            width={300}>
+                            disabled={loading}
+                            width={'80%'}>
                             {companies.map((company) => {
                                 return (
                                     <MenuItem name='org' key={company.CODE} value={company.CODE}>
@@ -98,7 +100,7 @@ const Header = ({ onShowRows, organizations, onSearch }) => {
                     </Box>
                 </Grid>
                 <Grid item xs={4}>
-                    <SearchButton onClick={handleOnClick} loading={false} />
+                    <SearchButton onClick={handleOnClick} loading={loading} />
                 </Grid>
             </Grid>
         </Paper>
@@ -108,7 +110,8 @@ const Header = ({ onShowRows, organizations, onSearch }) => {
 Header.propTypes = {
     onShowRows: PropTypes.func,
     organizations: PropTypes.array,
-    onSearch: PropTypes.func
+    onSearch: PropTypes.func,
+    loading: PropTypes.bool
 };
 
 export default Header;
