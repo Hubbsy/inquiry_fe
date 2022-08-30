@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { SearchButton, SearchInput, SelectInput } from '@aeros-ui/components';
 import { Grid, MenuItem, Paper, Typography } from '@mui/material';
-import { Box, Stack } from '@mui/system';
+import { Stack } from '@mui/system';
 import { theme } from '@aeros-ui/themes';
 
 const Header = ({ organizations, onSearch, loading }) => {
@@ -16,7 +16,6 @@ const Header = ({ organizations, onSearch, loading }) => {
     //runs when organization is updated
     useEffect(() => {
         setCompanies([{ CODE: ' ', DESCRIPTION: 'ALL' }, ...organizations]);
-        // console.log('org', companies);
         setQuery({ ...query, org: ' ' });
     }, [organizations]);
 
@@ -38,20 +37,18 @@ const Header = ({ organizations, onSearch, loading }) => {
     const handleOnClick = () => {
         if (!error && search) {
             onSearch(org, search.trim());
-            // onShowRows();
         }
     };
 
     const handleKeyDown = (e) => {
         if (e.key.toLowerCase() === 'enter' && !error && search) {
             onSearch(org, search.trim());
-            // onShowRows();
         }
     };
 
     return (
         <Paper sx={{ m: 2, p: 3 }}>
-            <Grid container spacing={2} alignItems="center">
+            <Grid container spacing={2} alignItems='center'>
                 <Grid item container>
                     <Typography variant='h6'>Declining Companies Inquiry</Typography>
                 </Grid>
@@ -66,39 +63,26 @@ const Header = ({ organizations, onSearch, loading }) => {
                             value={search}
                             onKeyDown={handleKeyDown}
                             disabled={loading}
-                            helperText={error ? "Must be at least 3 characters" : null}
+                            helperText={error ? 'Must be at least 3 characters' : null}
                         />
-
-                        {/* {error ? (
-                            <Typography variant='caption' color={theme.palette.error.main}>
-                                Must be atleast 3 characters
-                            </Typography>
-                        ) : (
-                            <Typography variant='caption'>{''}</Typography>
-                        )} */}
                     </Stack>
                 </Grid>
                 <Grid item xs={4}>
-                    {/* <Box
-                        sx={{
-                            mx: 2
-                        }}> */}
-                        <SelectInput
-                            label='Organization Type'
-                            onChange={handleOnChange}
-                            name='org'
-                            value={org}
-                            disabled={loading}
-                            width={'80%'}>
-                            {companies.map((company) => {
-                                return (
-                                    <MenuItem name='org' key={company.CODE} value={company.CODE}>
-                                        {company.DESCRIPTION}
-                                    </MenuItem>
-                                );
-                            })}
-                        </SelectInput>
-                    {/* </Box> */}
+                    <SelectInput
+                        label='Organization Type'
+                        onChange={handleOnChange}
+                        name='org'
+                        value={org}
+                        disabled={loading}
+                        width={'80%'}>
+                        {companies.map((company) => {
+                            return (
+                                <MenuItem name='org' key={company.CODE} value={company.CODE}>
+                                    {company.DESCRIPTION}
+                                </MenuItem>
+                            );
+                        })}
+                    </SelectInput>
                 </Grid>
                 <Grid item xs={4}>
                     <SearchButton onClick={handleOnClick} loading={loading} />
