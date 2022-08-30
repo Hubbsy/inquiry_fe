@@ -26,18 +26,15 @@ const DecliningCompanies = ({
         if (!token || error) {
             setErrorMessage(error);
             setShowSnackBar(true);
-            console.log('showSnackbar: ', showSnackBar);
         }
 
         if (declError) {
             setErrorMessage(declError);
             setShowSnackBar(true);
-            console.log('showSnackbar: ', showSnackBar);
         }
         if (compError) {
             setErrorMessage(compError);
             setShowSnackBar(true);
-            console.log('showSnackbar: ', showSnackBar);
         }
     }, [error, declError, compError]);
 
@@ -46,7 +43,6 @@ const DecliningCompanies = ({
             getDecliningCompanies(endpoint, token);
         } else if (!token || error) {
             setShowSnackBar(true);
-            console.log('showSnackbar: ', showSnackBar);
         }
     }, [token]);
 
@@ -60,25 +56,6 @@ const DecliningCompanies = ({
 
     const handleClose = () => {
         setShowSnackBar(false);
-    };
-
-    const handleSearch = (org, search) => {
-        console.log({ org, search });
-        let data = {
-            COMBOSEARCH: search,
-            ACTIVEONLY: 'TRUE',
-            ORGANIZATIONTYPE: org
-        };
-        getDecliningData(endpoint, token, data);
-        console.log('handleSearch: ', declData);
-    };
-
-    const handleOrgType = (type) => {
-        for (const comp in compData) {
-            if (type === compData[comp].CODE) {
-                return compData[comp].DESCRIPTION;
-            }
-        }
     };
 
     useEffect(() => {
@@ -95,10 +72,24 @@ const DecliningCompanies = ({
         } else if (declError) {
             setShowSnackBar(true);
         }
-        // else if (typeof declData === 'object') {
-        //     setRows([]);
-        // }
     }, [declData.length]);
+
+    const handleSearch = (org, search) => {
+        let data = {
+            COMBOSEARCH: search,
+            ACTIVEONLY: 'TRUE',
+            ORGANIZATIONTYPE: org
+        };
+        getDecliningData(endpoint, token, data);
+    };
+
+    const handleOrgType = (type) => {
+        for (const comp in compData) {
+            if (type === compData[comp].CODE) {
+                return compData[comp].DESCRIPTION;
+            }
+        }
+    };
 
     return (
         <ErrorBoundary>
@@ -115,7 +106,6 @@ const DecliningCompanies = ({
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}></Snackbar>
                 ) : null}
             </Grid>
-            {console.log(compError, showSnackBar)}
         </ErrorBoundary>
     );
 };

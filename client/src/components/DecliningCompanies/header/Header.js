@@ -16,7 +16,6 @@ const Header = ({ organizations, onSearch, loading }) => {
     //runs when organization is updated
     useEffect(() => {
         setCompanies([{ CODE: ' ', DESCRIPTION: 'ALL' }, ...organizations]);
-        console.log('org', companies);
         setQuery({ ...query, org: ' ' });
     }, [organizations]);
 

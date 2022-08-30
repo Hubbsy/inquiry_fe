@@ -1,32 +1,32 @@
-// export const options = {
-//     Selection: true,
-//     columnsButton: true,
-//     paging: true,
-//     pageSize: 10,
-//     emptyRowsWhenPaging: false,
-//     exportAllData: true,
-//     exportButton: true,
-//     pageSizeOptions: [10, 25, 50, 100],
-//     tableLayout: 'fixed',
-//     // cellStyle: theme.typography,
-//     minBodyHeight: '500px',
-//     maxBodyWidth: '125px',
-//     // headerStyle: {
-//     //   ...theme.components.headerStyle,
-//     //   backgroundColor: theme.palette.grid.main.header,
-//     // },
-
-//     // filtering: filter,
-//     // padding: density,
-//     actionsColumnIndex: -1
-// };
-export const options = {
-    Selection: true,
-    columnsButton: true,
-    paging: true,
-    pageSize: 10,
-    pageSizeOptions: [10, 25, 50, 100],
-    tableLayout: 'fixed',
-    showEmptyDataSourceMessage: true,
-    actionsColumnIndex: -1
+export const options = (theme, ExportCsv, ExportPdf, showFilters, density, rows) => {
+    return {
+        Selection: true,
+        columnsButton: true,
+        exportAllData: true,
+        paging: true,
+        pageSize: 10,
+        pageSizeOptions: [10, 25, 50, 100],
+        tableLayout: 'fixed',
+        showEmptyDataSourceMessage: true,
+        actionsColumnIndex: -1,
+        emptyRowsWhenPaging: rows.length ? false : true,
+        cellStyle: theme.typography,
+        headerStyle: {
+            ...theme.components.headerStyle,
+            backgroundColor: theme.palette.grid.main.header,
+            padding: '0.7em 2em'
+        },
+        exportMenu: [
+            {
+                label: 'Export PDF',
+                exportFunc: (cols, datas) => ExportPdf(cols, datas, 'Declining Companies Inquiry')
+            },
+            {
+                label: 'Export CSV',
+                exportFunc: (cols, datas) => ExportCsv(cols, datas, 'Declining Companies Inquiry')
+            }
+        ],
+        filtering: showFilters,
+        padding: density
+    };
 };
