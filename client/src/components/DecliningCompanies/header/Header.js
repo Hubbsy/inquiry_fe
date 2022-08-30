@@ -16,7 +16,7 @@ const Header = ({ organizations, onSearch, loading }) => {
     //runs when organization is updated
     useEffect(() => {
         setCompanies([{ CODE: ' ', DESCRIPTION: 'ALL' }, ...organizations]);
-        console.log('org', companies);
+        // console.log('org', companies);
         setQuery({ ...query, org: ' ' });
     }, [organizations]);
 
@@ -51,8 +51,8 @@ const Header = ({ organizations, onSearch, loading }) => {
 
     return (
         <Paper sx={{ m: 2, p: 3 }}>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
+            <Grid container spacing={2} alignItems="center">
+                <Grid item container>
                     <Typography variant='h6'>Declining Companies Inquiry</Typography>
                 </Grid>
                 <Grid item xs={4}>
@@ -66,22 +66,23 @@ const Header = ({ organizations, onSearch, loading }) => {
                             value={search}
                             onKeyDown={handleKeyDown}
                             disabled={loading}
+                            helperText={error ? "Must be at least 3 characters" : null}
                         />
 
-                        {error ? (
+                        {/* {error ? (
                             <Typography variant='caption' color={theme.palette.error.main}>
                                 Must be atleast 3 characters
                             </Typography>
                         ) : (
                             <Typography variant='caption'>{''}</Typography>
-                        )}
+                        )} */}
                     </Stack>
                 </Grid>
                 <Grid item xs={4}>
-                    <Box
+                    {/* <Box
                         sx={{
                             mx: 2
-                        }}>
+                        }}> */}
                         <SelectInput
                             label='Organization Type'
                             onChange={handleOnChange}
@@ -97,7 +98,7 @@ const Header = ({ organizations, onSearch, loading }) => {
                                 );
                             })}
                         </SelectInput>
-                    </Box>
+                    {/* </Box> */}
                 </Grid>
                 <Grid item xs={4}>
                     <SearchButton onClick={handleOnClick} loading={loading} />

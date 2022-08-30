@@ -45,30 +45,34 @@ const DataTable = ({ rows, loading }) => {
                             }
                         ],
                         filtering: showFilters,
-                        padding: density
+                        padding: density,
+                        initialPage: 0,
+                        pageSize: 10,
+                        pageSizeOptions: [10,25,50,100],
+                        paginationType: 'normal',
                     }}
                     data={rows}
                     components={{
-                        Header: (props) => (
-                            <MTableHeader
-                                sx={{
-                                    alignItems: 'center',
-                                    display: 'flex',
-                                    justifyContent: 'center'
-                                }}
-                                {...props}
-                            />
-                        ),
-                        Pagination: (props) => (
-                            <TablePagination
-                                count={props.count}
-                                page={props.page}
-                                onPageChange={props.onPageChange}
-                                rowsPerPage={props.rowsPerPage}
-                                rowsPerPageOptions={[10, 25, 50, 100]}
-                                onRowsPerPageChange={props.onRowsPerPageChange}
-                            />
-                        ),
+                        // Header: (props) => (
+                        //     <MTableHeader
+                        //         style={{
+                        //             alignItems: 'center',
+                        //             display: 'flex',
+                        //             justifyContent: 'center'
+                        //         }}
+                        //         {...props}
+                        //     />
+                        // ),
+                        // Pagination: (props) => (
+                        //     <TablePagination
+                        //         count={props.count}
+                        //         page={props.page}
+                        //         onPageChange={props.onPageChange}
+                        //         rowsPerPage={props.rowsPerPage}
+                        //         rowsPerPageOptions={[10, 25, 50, 100]}
+                        //         onRowsPerPageChange={props.onRowsPerPageChange}
+                        //     />
+                        // ),
                         Cell: (props) => {
                             return (
                                 <MTableCell

@@ -23,10 +23,10 @@
 export const options = {
     Selection: true,
     columnsButton: true,
-    paging: true,
-    pageSize: 10,
-    pageSizeOptions: [10, 25, 50, 100],
-    tableLayout: 'fixed',
+    // paging: true,
+    // pageSize: 10,
+    // pageSizeOptions: [10, 25, 50, 100],
+    // tableLayout: 'fixed',
     showEmptyDataSourceMessage: true,
     actionsColumnIndex: -1
 };

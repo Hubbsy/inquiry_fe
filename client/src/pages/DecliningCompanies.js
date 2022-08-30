@@ -26,27 +26,28 @@ const DecliningCompanies = ({
         if (!token || error) {
             setErrorMessage(error);
             setShowSnackBar(true);
-            console.log('showSnackbar: ', showSnackBar);
+            // console.log('showSnackbar: ', showSnackBar);
         }
 
         if (declError) {
             setErrorMessage(declError);
             setShowSnackBar(true);
-            console.log('showSnackbar: ', showSnackBar);
+            // console.log('showSnackbar: ', showSnackBar);
         }
         if (compError) {
             setErrorMessage(compError);
             setShowSnackBar(true);
-            console.log('showSnackbar: ', showSnackBar);
+            // console.log('showSnackbar: ', showSnackBar);
         }
     }, [error, declError, compError]);
 
     useEffect(() => {
         if (token) {
+            console.log("GET DECLINING COMPANIES CALLED")
             getDecliningCompanies(endpoint, token);
         } else if (!token || error) {
             setShowSnackBar(true);
-            console.log('showSnackbar: ', showSnackBar);
+            // console.log('showSnackbar: ', showSnackBar);
         }
     }, [token]);
 
@@ -63,14 +64,14 @@ const DecliningCompanies = ({
     };
 
     const handleSearch = (org, search) => {
-        console.log({ org, search });
+        // console.log({ org, search });
         let data = {
             COMBOSEARCH: search,
             ACTIVEONLY: 'TRUE',
             ORGANIZATIONTYPE: org
         };
         getDecliningData(endpoint, token, data);
-        console.log('handleSearch: ', declData);
+        // console.log('handleSearch: ', declData);
     };
 
     const handleOrgType = (type) => {
@@ -115,7 +116,7 @@ const DecliningCompanies = ({
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}></Snackbar>
                 ) : null}
             </Grid>
-            {console.log(compError, showSnackBar)}
+            {/* {console.log(compError, showSnackBar)} */}
         </ErrorBoundary>
     );
 };
