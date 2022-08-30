@@ -1,14 +1,14 @@
 import MaterialTable from '@material-table/core';
-import { 
+import {
     TablePagination,
     useTheme,
-    ThemeProvider, 
+    ThemeProvider,
     Grid,
     Typography,
     ButtonBase
 } from '@mui/material';
 import { TableToolbar, MainTableCell, DetailCard } from '@aeros-ui/tables';
-import { ExportCsv, ExportPdf } from "@material-table/exporters";
+import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme } from '@aeros-ui/themes';
 import { useState, useCallback } from 'react';
 import styled from '@emotion/styled';
@@ -23,8 +23,8 @@ export default function Table({ loading, rows }) {
     const [selectedRow, setSelectedRow] = useState(null);
 
     const [currentRowData, setCurrentRowData] = useState({
-        licenseNo: "no current license No.",
-        address: "no current address"
+        licenseNo: 'no current license No.',
+        address: 'no current address'
     });
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -42,20 +42,21 @@ export default function Table({ loading, rows }) {
         return {
             line1: `${options.address1} ${options.address2} ${options.address3}`,
             line2: `${options.city}, ${options.state}, ${options.zip}`
-        }
+        };
     };
 
-    const handlePopoverOpen = useCallback(
-        (event, rowData) => {
+    const handlePopoverOpen = useCallback((event, rowData) => {
         setSelectedRow(rowData.tableData.id);
         console.log(rowData);
-        setCurrentRowData({licenseNo: rowData.licenseNo, address: compileFullAddress(rowData.address)})
+        setCurrentRowData({
+            licenseNo: rowData.licenseNo,
+            address: compileFullAddress(rowData.address)
+        });
         const anchorPosition = anchorPositionByAnchorEl(event);
         setAnchorEl(anchorPosition);
     }, []);
 
-    const handlePopoverClose = useCallback(
-        () => {
+    const handlePopoverClose = useCallback(() => {
         setAnchorEl(null);
     }, []);
 
@@ -90,71 +91,85 @@ export default function Table({ loading, rows }) {
 
     const columns = [
         {
-            title: "License No.",
-            field: "licenseNo",
-            type: "string",
-            render: rowData => (<MainTableCell sx={{width: {xs: "0.5em", sm: "5em"}}}>{rowData.licenseNo}</MainTableCell>),
-           
-        },
-        {
-            title: "Name",
-            field: "brokerName",
-            type: "string",
-            width: "50em",
-            render: rowData => (<MainTableCell sx={{whiteSpace: "nowrap"}}>{rowData.brokerName}</MainTableCell>),
-        },
-        {
-            title: "Effective Date",
-            field: "effectiveDate",
-            width: "15em",
-            render: rowData => (<MainTableCell sx={{width: {xs: "0.5em", sm: "5em"}}}>{format(new Date(rowData.effectiveDate), "MM/dd/yyyy")}</MainTableCell>)
-        },
-        {
-            title: "Expiration Date",
-            field: "expDate",
-            width: "10em",
-            render: rowData => ( <MainTableCell sx={{width: {xs: "0.5em", sm: "5em"}}}>{format(new Date(rowData.expDate), "MM/dd/yyyy")}</MainTableCell>
+            title: 'License No.',
+            field: 'licenseNo',
+            type: 'string',
+            render: (rowData) => (
+                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
+                    {rowData.licenseNo}
+                </MainTableCell>
             )
         },
         {
-            title: "",
-            field: "detailsPopoverIcon",
-            width: "1em",
-            render: rowData => ( <StyledMoreVertIcon onClick={(e) => handlePopoverOpen(e, rowData)}/>),
+            title: 'Name',
+            field: 'brokerName',
+            type: 'string',
+            width: '50em',
+            render: (rowData) => (
+                <MainTableCell sx={{ whiteSpace: 'nowrap' }}>{rowData.brokerName}</MainTableCell>
+            )
+        },
+        {
+            title: 'Effective Date',
+            field: 'effectiveDate',
+            width: '15em',
+            render: (rowData) => (
+                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
+                    {format(new Date(rowData.effectiveDate), 'MM/dd/yyyy')}
+                </MainTableCell>
+            )
+        },
+        {
+            title: 'Expiration Date',
+            field: 'expDate',
+            width: '10em',
+            render: (rowData) => (
+                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
+                    {format(new Date(rowData.expDate), 'MM/dd/yyyy')}
+                </MainTableCell>
+            )
+        },
+        {
+            title: '',
+            field: 'detailsPopoverIcon',
+            width: '1em',
+            render: (rowData) => (
+                <StyledMoreVertIcon onClick={(e) => handlePopoverOpen(e, rowData)} />
+            ),
             hiddenByColumnsButton: true,
             filtering: false
-        },
+        }
     ];
 
-    const StyledMoreVertIcon = styled(MoreVert)(({theme}) => ({
+    const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
         height: 32,
         width: 18,
-        display: "flex",
-        color: "gray",
-        "&:hover": {
+        display: 'flex',
+        color: 'gray',
+        '&:hover': {
             height: 32,
             width: 18,
-            borderRadius: "50%",
+            borderRadius: '50%',
             backgroundColor: theme.palette.grid.main.active,
             padding: 0,
-            color: "gray"
+            color: 'gray'
         },
-        "&:active": {
+        '&:active': {
             height: 32,
             width: 18,
-            borderRadius: "50%",
+            borderRadius: '50%',
             backgroundColor: theme.palette.grid.main.active,
             padding: 0,
-            color: "gray"
+            color: 'gray'
         },
-        "&:focus": {
+        '&:focus': {
             height: 32,
             width: 18,
-            borderRadius: "50%",
+            borderRadius: '50%',
             backgroundColor: theme.palette.grid.main.active,
             padding: 0,
-            color: "gray",
-        },
+            color: 'gray'
+        }
     }));
 
     const options = {
@@ -166,8 +181,8 @@ export default function Table({ loading, rows }) {
             backgroundColor: theme.palette.grid.main.header,
             color: theme.palette.background.paper,
             textTransform: 'capitalize',
-            padding: "1em",
-            whiteSpace: "nowrap",
+            padding: '1em',
+            whiteSpace: 'nowrap'
         },
         rowStyle: (rowData) => ({
             backgroundColor:
@@ -188,7 +203,7 @@ export default function Table({ loading, rows }) {
         ],
         columnsButton: true,
         filtering: showFilters,
-        searchFieldStyle: { marginRight: "1em" },
+        searchFieldStyle: { marginRight: '1em' },
         emptyRowsWhenPaging: rows.length ? false : true
     };
 
@@ -220,11 +235,11 @@ export default function Table({ loading, rows }) {
                                 onFilterClick={() => setFiltering(!showFilters)}
                                 onDensityClick={handleDensityClick}
                             />
-                        ),
+                        )
                     }}
                 />
-                 <DetailCard
-                    popoverId="detailPopover"
+                <DetailCard
+                    popoverId='detailPopover'
                     open={popoverOpen}
                     anchorPosition={anchorEl}
                     transformOrigin={{
@@ -235,7 +250,7 @@ export default function Table({ loading, rows }) {
                     width={300}
                     title={`License No. ${currentRowData.licenseNo}`}
                     content={content}
-                    />
+                />
             </ThemeProvider>
         </div>
     );
