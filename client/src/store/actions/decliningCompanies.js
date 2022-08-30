@@ -59,6 +59,7 @@ const getDecliningCompanies = (endpoint, token) => {
                 headers: { Authorization: `Bearer ${token}` }
             })
             .then((res) => {
+                console.log("RESPONSE DECLINING COMPANIES:", res.data)
                 if (res.data.hasOwnProperty('DATA')) {
                     dispatch(getCompaniesSuccess(res.data.DATA));
                 } else if (res.data.hasOwnProperty('ERRORMESSAGE')) {
@@ -90,6 +91,7 @@ const getDecliningData = (endpoint, token, data) => {
                 headers: { Authorization: `Bearer ${token}` }
             })
             .then((res) => {
+                console.log("RESPONSE DECLINING DATA:", res.data)
                 if (res.data.hasOwnProperty('DATA')) {
                     dispatch(getDecliningDataSuccess(res.data.DATA));
                 } else if (res.data.hasOwnProperty('ERRORMESSAGE')) {

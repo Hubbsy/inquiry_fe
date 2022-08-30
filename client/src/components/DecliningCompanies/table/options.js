@@ -3,10 +3,7 @@ export const options = (theme, ExportCsv, ExportPdf, showFilters, density, rows)
         Selection: true,
         columnsButton: true,
         exportAllData: true,
-        paging: true,
-        pageSize: 10,
-        pageSizeOptions: [10, 25, 50, 100],
-        tableLayout: 'fixed',
+
         showEmptyDataSourceMessage: true,
         actionsColumnIndex: -1,
         emptyRowsWhenPaging: rows.length ? false : true,

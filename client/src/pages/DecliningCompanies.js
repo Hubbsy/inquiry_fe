@@ -40,6 +40,7 @@ const DecliningCompanies = ({
 
     useEffect(() => {
         if (token) {
+            console.log('GET DECLINING COMPANIES CALLED');
             getDecliningCompanies(endpoint, token);
         } else if (!token || error) {
             setShowSnackBar(true);
@@ -58,22 +59,6 @@ const DecliningCompanies = ({
         setShowSnackBar(false);
     };
 
-    useEffect(() => {
-        if (declData.length !== undefined) {
-            setRows(
-                declData.map((company) => ({
-                    id: company.DECLINECOMPID,
-                    naic: company.NAIC,
-                    companyName: company.COMPANYNAME,
-                    domicile: company.DOMICILE,
-                    orgType: handleOrgType(company.ORGTYPE)
-                }))
-            );
-        } else if (declError) {
-            setShowSnackBar(true);
-        }
-    }, [declData.length]);
-
     const handleSearch = (org, search) => {
         let data = {
             COMBOSEARCH: search,
@@ -90,6 +75,22 @@ const DecliningCompanies = ({
             }
         }
     };
+
+    useEffect(() => {
+        if (declData.length !== undefined) {
+            setRows(
+                declData.map((company) => ({
+                    id: company.DECLINECOMPID,
+                    naic: company.NAIC,
+                    companyName: company.COMPANYNAME,
+                    domicile: company.DOMICILE,
+                    orgType: handleOrgType(company.ORGTYPE)
+                }))
+            );
+        } else if (declError) {
+            setShowSnackBar(true);
+        }
+    }, [declData.length]);
 
     return (
         <ErrorBoundary>
