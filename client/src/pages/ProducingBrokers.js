@@ -35,6 +35,17 @@ class ProducingBrokers extends React.Component {
             })
         }
     }
+    
+    setCompanyAddress(company) {
+        return {
+            address1: company.ADDRESS1,
+            address2: company.ADDRESS2,
+            address3: company.ADDRESS3,
+            city: company.CITY, 
+            state: company.STATE, 
+            zip: company.ZIPCODE
+        }
+    }
 
     showRows = () => {
         const data = {
@@ -51,7 +62,8 @@ class ProducingBrokers extends React.Component {
                         licenseNo: company.LICENSENO,
                         brokerName: `${company.BROKERNAME1} ${company.BROKERNAME2}`,
                         effectiveDate: company.EFFECTIVEDATE,
-                        expDate: company.EXPIRATIONDATE
+                        expDate: company.EXPIRATIONDATE,
+                        address: this.setCompanyAddress(company)
                     }));
 
                     this.setState({

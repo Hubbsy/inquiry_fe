@@ -14,12 +14,14 @@ import { useState, useCallback } from 'react';
 import styled from '@emotion/styled';
 import { MoreVert } from '@mui/icons-material';
 import { format } from 'date-fns';
+import { Stack } from '@mui/system';
 
 export default function Table({ loading, rows }) {
     const theme = useTheme();
     const [density, setDensity] = useState('normal');
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
+
     const [currentRowData, setCurrentRowData] = useState({
         licenseNo: "no current license No.",
         address: "no current address"
@@ -34,11 +36,20 @@ export default function Table({ loading, rows }) {
 
     const handleRowClick = (event, selectedRow) => {
         setSelectedRow(selectedRow.tableData.id);
-    }
+    };
+
+    const compileFullAddress = (options) => {
+        return {
+            line1: `${options.address1} ${options.address2} ${options.address3}`,
+            line2: `${options.city}, ${options.state}, ${options.zip}`
+        }
+    };
 
     const handlePopoverOpen = useCallback(
         (event, rowData) => {
         setSelectedRow(rowData.tableData.id);
+        console.log(rowData);
+        setCurrentRowData({licenseNo: rowData.licenseNo, address: compileFullAddress(rowData.address)})
         const anchorPosition = anchorPositionByAnchorEl(event);
         setAnchorEl(anchorPosition);
     }, []);
@@ -65,9 +76,14 @@ export default function Table({ loading, rows }) {
                 </Typography>
             </Grid>
             <Grid item container>
-                <Typography variant='body2' sx={{ textTransform: 'none' }}>
-                    {currentRowData.address}
-                </Typography>
+                <Stack>
+                    <Typography variant='body2' sx={{ textTransform: 'none' }}>
+                        {currentRowData.address.line1}
+                    </Typography>
+                    <Typography variant='body2' sx={{ textTransform: 'none' }}>
+                        {currentRowData.address.line2}
+                    </Typography>
+                </Stack>
             </Grid>
         </Grid>
     );
@@ -102,26 +118,9 @@ export default function Table({ loading, rows }) {
         },
         {
             title: "",
-            field: "detailsPopover",
+            field: "detailsPopoverIcon",
             width: "1em",
-            render: rowData => ( 
-                <>
-                    <StyledMoreVertIcon onClick={(e) => handlePopoverOpen(e, rowData)}/>
-                    {/* <DetailCard
-                    popoverId="detailPopover"
-                    open={popoverOpen}
-                    anchorPosition={anchorEl}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right'
-                    }}
-                    handleClose={handlePopoverClose}
-                    width={300}
-                    title={`License No. ${currentRowData.licenseNo}`}
-                    content={content}
-                    /> */}
-                </> 
-        ),
+            render: rowData => ( <StyledMoreVertIcon onClick={(e) => handlePopoverOpen(e, rowData)}/>),
             hiddenByColumnsButton: true,
             filtering: false
         },
@@ -132,6 +131,14 @@ export default function Table({ loading, rows }) {
         width: 18,
         display: "flex",
         color: "gray",
+        "&:hover": {
+            height: 32,
+            width: 18,
+            borderRadius: "50%",
+            backgroundColor: theme.palette.grid.main.active,
+            padding: 0,
+            color: "gray"
+        },
         "&:active": {
             height: 32,
             width: 18,
@@ -160,7 +167,8 @@ export default function Table({ loading, rows }) {
             color: theme.palette.background.paper,
             textTransform: 'capitalize',
             padding: "1em",
-            whiteSpace: "nowrap"
+            whiteSpace: "nowrap",
+            align: "right"
         },
         rowStyle: (rowData) => ({
             backgroundColor:
