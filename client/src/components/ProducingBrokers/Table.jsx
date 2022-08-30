@@ -168,7 +168,6 @@ export default function Table({ loading, rows }) {
             textTransform: 'capitalize',
             padding: "1em",
             whiteSpace: "nowrap",
-            align: "right"
         },
         rowStyle: (rowData) => ({
             backgroundColor:

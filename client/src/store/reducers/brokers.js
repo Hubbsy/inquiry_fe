@@ -30,7 +30,7 @@ const producing = (state = storeState.brokers.producing, action) => {
 };
 
 const brokers = combineReducers({
-    producing,
+    producing
 });
 
 export default brokers;

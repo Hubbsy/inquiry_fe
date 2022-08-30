@@ -29,34 +29,32 @@ const getProducingFailure = (error) => {
 };
 
 export const getProducingBrokers = (endpoint, token, data) => {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(getProducingBegin());
-        return axios.post(`${endpoint}/code-service/broker/producing-brokers`, data, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        .then(response => {
-            console.log(response.data);
-            if (response.data.hasOwnProperty("DATA")) {
-                dispatch(getProducingSuccess(response.data.DATA))
-            }
-            else if (response.data.hasOwnProperty("ERRORMESSAGE")) {
-                dispatch(getProducingFailure(response.data.ERRORMESSAGE))
-            }
-            else {
-                dispatch(getProducingFailure("An Error occurred while the request was processing"));
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            dispatch(getProducingFailure("An Error occurred while the request was processing"));
-        })
-    }
-}
-
-
-
+        return axios
+            .post(`${endpoint}/code-service/broker/producing-brokers`, data, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                console.log(response.data);
+                if (response.data.hasOwnProperty('DATA')) {
+                    dispatch(getProducingSuccess(response.data.DATA));
+                } else if (response.data.hasOwnProperty('ERRORMESSAGE')) {
+                    dispatch(getProducingFailure(response.data.ERRORMESSAGE));
+                } else {
+                    dispatch(
+                        getProducingFailure('An Error occurred while the request was processing')
+                    );
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                dispatch(getProducingFailure('An Error occurred while the request was processing'));
+            });
+    };
+};
 
 const getLifeBegin = () => {
     return {

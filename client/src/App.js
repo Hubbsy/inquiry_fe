@@ -33,7 +33,7 @@ class App extends Component {
 
         this.props.getToken(endpoint, data);
     }
-    
+
     render() {
         return (
             <ThemeProvider theme={theme}>
