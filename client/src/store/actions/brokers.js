@@ -8,6 +8,8 @@ export const TYPES = {
     GET_LIFE_FAILURE: 'GET_LIFE_FAILURE'
 };
 
+///////// PRODUCING BROKERS
+
 const getProducingBegin = () => {
     return {
         type: TYPES.GET_PRODUCING_BEGIN
@@ -56,6 +58,8 @@ export const getProducingBrokers = (endpoint, token, data) => {
     };
 };
 
+///////// LIFE BROKERS 
+
 const getLifeBegin = () => {
     return {
         type: TYPES.GET_LIFE_BEGIN
@@ -73,5 +77,33 @@ const getLifeFailure = (error) => {
     return {
         type: TYPES.GET_LIFE_FAILURE,
         value: error
+    };
+};
+
+export const getLifeBrokers = (endpoint, token, data) => {
+    return (dispatch) => {
+        dispatch(getLifeBegin());
+        return axios
+            .post(`${endpoint}/code-service/broker/producing-brokers`, data, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                console.log(response.data);
+                if (response.data.hasOwnProperty('DATA')) {
+                    dispatch(getLifeSuccess(response.data.DATA));
+                } else if (response.data.hasOwnProperty('ERRORMESSAGE')) {
+                    dispatch(getLifeFailure(response.data.ERRORMESSAGE));
+                } else {
+                    dispatch(
+                        getLifeFailure('An Error occurred while the request was processing')
+                    );
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                dispatch(getLifeFailure('An Error occurred while the request was processing'));
+            });
     };
 };

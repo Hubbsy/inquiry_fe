@@ -29,8 +29,36 @@ const producing = (state = storeState.brokers.producing, action) => {
     }
 };
 
+const life = (state = storeState.brokers.life, action) => {
+    switch (action.type) {
+        case TYPES.GET_LIFE_BEGIN:
+            return {
+                ...state,
+                loading: !state.loading,
+                data: [],
+                error: null
+            };
+        case TYPES.GET_LIFE_SUCCESS:
+            return {
+                ...state,
+                loading: !state.loading,
+                data: action.value
+            };
+        case TYPES.GET_LIFE_FAILURE:
+            return {
+                ...state,
+                loading: !state.loading,
+                error: action.value,
+                data: []
+            };
+        default:
+            return { ...state };
+    }
+};
+
 const brokers = combineReducers({
-    producing
+    producing, 
+    life
 });
 
 export default brokers;
