@@ -1,8 +1,9 @@
 import React from 'react';
-import { Typography, Paper, Grid } from '@mui/material';
+import { Typography, Paper, Grid, Button, IconButton, useTheme } from '@mui/material';
 import { SearchInput, SearchButton, DateInput } from '@aeros-ui/components';
 import styled from '@emotion/styled';
 import { Box } from '@mui/system';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 function Search({
     loading,
@@ -15,10 +16,11 @@ function Search({
     handleHelperText
 }) {
 
+    const theme = useTheme();
+
     const Item = styled(Box)(({ theme }) => ({
         ...theme.typography.body2,
         padding: theme.spacing(2),
-        textAlign: 'center',
         color: theme.palette.text.secondary,
     }));
 
@@ -52,22 +54,25 @@ function Search({
                 </Grid>
                 <Grid item>
                     <Item>
-                        <Typography variant={"body1"}>
-                            TO
-                        </Typography>
+                        TO
                     </Item>
                 </Grid>
                 <Grid item sx={{ mr: 3 }} >
                     <DateInput 
-                        label={"Expiration Date"}    
+                        label={"Inception Date"}    
                         onChange={() => {console.log("date changed")}}
                         value={null}
                     />
                 </Grid>
-                <Grid item sx={{ mt: 1 }} xs={2}>
+                <Grid item sx={{ mt: 1, mr: 2 }}>
                     <SearchButton sx={{ ml: 1 }} loading={loading} onClick={showRows}>
                         Search
                     </SearchButton>
+                </Grid>
+                <Grid item>
+                    <IconButton sx={{backgroundColor: "#004A8F", color: "#FFFFFF"}}>
+                        <KeyboardArrowDownIcon />
+                    </IconButton>
                 </Grid>
             </Grid>
         </Paper>
