@@ -46,7 +46,6 @@ export default function Table({ loading, rows }) {
 
     const handlePopoverOpen = useCallback((event, rowData) => {
         setSelectedRow(rowData.tableData.id);
-        console.log(rowData);
         setCurrentRowData({
             licenseNo: rowData.licenseNo,
             address: compileFullAddress(rowData.address)

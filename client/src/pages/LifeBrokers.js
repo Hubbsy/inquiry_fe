@@ -78,7 +78,6 @@ class LifeBrokers extends React.Component {
     };
 
     handleKeyPress = (e) => {
-        console.log(e.target);
         if (e.charCode === 13 && e.target.value.length >= 3) {
             this.showRows();
         }
@@ -124,7 +123,7 @@ class LifeBrokers extends React.Component {
                 <Snackbar
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     handleClose={this.handleClose}
-                    message={this.state.errorMessage}
+                    message={this.props.error ? this.props.error : ''}
                     open={this.state.serverError}
                     severity={'error'}
                     title={'Something went wrong'}
