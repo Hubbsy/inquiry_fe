@@ -4,7 +4,7 @@ import { SearchInput, SearchButton } from '@aeros-ui/components';
 // import { TextDecreaseTwoTone } from '@mui/icons-material';
 // import { Stack } from '@mui/system';
 
-function Search({ loading, errorStyle, searchValue, handleChange, handleKeyPress, showRows, handleClearInput }) {
+function Search({ loading, errorStyle, searchValue, handleChange, handleKeyPress, showRows, handleClearInput, handleHelperText }) {
     return (
         <Paper sx={{ padding: '1em', margin: '1em' }} variant={'outlined'}>
             <Typography variant='h6' sx={{ paddingBottom: 1 }}>
@@ -17,6 +17,7 @@ function Search({ loading, errorStyle, searchValue, handleChange, handleKeyPress
                         label={'Search by License No, Broker name...'}
                         onChange={handleChange}
                         onKeyPress={handleKeyPress}
+                        onClick={handleHelperText}
                         value={searchValue}
                         width={'97%'}
                         error={errorStyle}

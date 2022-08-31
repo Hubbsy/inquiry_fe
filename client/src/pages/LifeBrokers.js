@@ -4,6 +4,7 @@ import Table from '../components/LifeBrokers/Table';
 import { connect } from 'react-redux';
 import { getLifeBrokers } from '../store/actions/brokers';
 import { Snackbar } from '@aeros-ui/components';
+import isEmpty from '../functions/isEmpty';
 
 class LifeBrokers extends React.Component {
     state = {
@@ -62,27 +63,29 @@ class LifeBrokers extends React.Component {
         if (this.state.searchValue.length >= 3) {
             this.props.getLifeBrokers(this.props.endpoint, this.props.token, data);
         }
+        else {
+            this.setState({
+                errorStyle: true
+            });
+        }
     };
 
     handleChange = (e) => {
-        console.log(e.target);
-        if (e.target.value.length < 3) {
-            this.setState({
-                searchValue: e.target.value,
-                errorStyle: true
-            });
-        } else {
-            this.setState({
-                searchValue: e.target.value,
-                errorStyle: false
-            });
-        }
+        this.setState({
+            searchValue: e.target.value,
+            errorStyle: false
+        });
     };
 
     handleKeyPress = (e) => {
         console.log(e.target);
         if (e.charCode === 13 && e.target.value.length >= 3) {
             this.showRows();
+        }
+        else if (e.charCode === 13) {
+            this.setState({
+                errorStyle: true
+            });
         }
     };
 
@@ -98,6 +101,12 @@ class LifeBrokers extends React.Component {
         });
     };
 
+    handleHelperText = () => {
+        this.setState({
+            errorStyle: false
+        });
+    }
+
     render() {
         return (
             <>
@@ -109,6 +118,7 @@ class LifeBrokers extends React.Component {
                     handleKeyPress={this.handleKeyPress}
                     showRows={this.showRows}
                     handleClearInput={this.handleClearInput}
+                    handleHelperText={this.handleHelperText}
                 />
                 <Table loading={this.props.loading} rows={this.state.rows} />
                 <Snackbar
