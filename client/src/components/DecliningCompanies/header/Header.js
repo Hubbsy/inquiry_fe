@@ -34,9 +34,10 @@ const Header = ({ organizations, onSearch, loading }) => {
     const handleSubmit = () => {
         console.log({ search, org });
 
-        if (search.length < 3 && search.length > 0 && org === ' ') {
+        if (search.length === 0 && org === ' ') {
             setError(true);
             errorRef.current = true;
+            console.log(errorRef.current);
         } else {
             errorRef.current = false;
         }
@@ -74,7 +75,7 @@ const Header = ({ organizations, onSearch, loading }) => {
                         onKeyDown={handleKeyDown}
                         disabled={loading}
                         onClick={() => setError(false)}
-                        helperText={error ? 'Must be at least 3 characters' : null}
+                        helperText={error ? 'Must be at least 1 characters' : null}
                     />
                 </Grid>
                 <Grid item xs={4}>

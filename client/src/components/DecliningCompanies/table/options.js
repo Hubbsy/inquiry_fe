@@ -7,6 +7,8 @@ export const options = (theme, ExportCsv, ExportPdf, showFilters, density, rows)
         actionsColumnIndex: -1,
         emptyRowsWhenPaging: rows.length ? false : true,
         cellStyle: theme.typography,
+        pageSize: 10,
+        pageSizeOptions: [10, 25, 50, 100],
         headerStyle: {
             ...theme.components.headerStyle,
             backgroundColor: theme.palette.grid.main.header,

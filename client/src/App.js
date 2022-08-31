@@ -20,7 +20,7 @@ class App extends Component {
         this.props.setEndpoint(endpoint);
         const data = {
             DEV: 'SARAH',
-            SESSIONTYPE: 'ElanyWeb',
+            SESSIONTYPE: 'BrokerPortal',
             SECPAYLOAD: {
                 ENV: env,
                 OWNERSECURITYID: 1,
@@ -33,6 +33,7 @@ class App extends Component {
 
         this.props.getToken(endpoint, data);
     }
+
     render() {
         return (
             <ThemeProvider theme={theme}>

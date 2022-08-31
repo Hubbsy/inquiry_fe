@@ -32,15 +32,12 @@ const DecliningCompanies = ({
         }
 
         if (declError) {
-            console.log(declError);
-            if (declError === 'Either COMBOSEARCH or ORGANIZATIONTYPE is required.') {
-                setErrorMessage('Either "Search" or "Organiation Type" is required.');
-            } else if (declError === 'DATA') {
+            if (declError === 'DATA') {
                 setShowSnackBar(true);
             } else {
                 setErrorMessage(declError);
+                setShowSnackBar(true);
             }
-            setShowSnackBar(true);
         }
         if (compError) {
             setErrorMessage(compError);
