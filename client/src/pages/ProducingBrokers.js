@@ -4,27 +4,48 @@ import Table from '../components/ProducingBrokers/Table';
 import { connect } from 'react-redux';
 import { getProducingBrokers } from '../store/actions/brokers';
 import { Snackbar } from '@aeros-ui/components';
+import isEmpty from '../functions/isEmpty';
 
 class ProducingBrokers extends React.Component {
     state = {
         searchValue: '',
         rows: [],
         errorStyle: false,
-        serverError: false,
-        errorMessage: ''
+        serverError: false
     };
 
-    componentDidMount() {
-        console.log(this.props);
+    componentDidUpdate(prevProps) {
+        if (
+            JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data) &&
+            !isEmpty(this.props.data)
+        ) {
+            if (this.props.data.hasOwnProperty('NODATA')) {
+                this.setState({ rows: [] });
+            } else {
+                const data = this.props.data.map((company) => ({
+                    licenseNo: company.LICENSENO,
+                    brokerName: `${company.BROKERNAME1} ${company.BROKERNAME2}`,
+                    effectiveDate: company.EFFECTIVEDATE,
+                    expDate: company.EXPIRATIONDATE,
+                    address: this.setCompanyAddress(company)
+                }));
+
+                this.setState({
+                    rows: data
+                });
+            }
+        }
+
+        if (prevProps.error !== this.props.error && this.props.error !== null) {
+            this.setState({ serverError: !this.state.serverError });
+        }
     }
 
     handleChange = (e) => {
-        console.log(e.target);
         if (e.target.value.length < 3) {
             this.setState({
                 searchValue: e.target.value,
-                errorStyle: true,
-                rows: []
+                errorStyle: true
             });
         } else {
             this.setState({
@@ -32,6 +53,12 @@ class ProducingBrokers extends React.Component {
                 errorStyle: false
             });
         }
+    };
+
+    handleClearInput = () => {
+        this.setState({
+            searchValue: ''
+        });
     };
 
     setCompanyAddress(company) {
@@ -53,38 +80,11 @@ class ProducingBrokers extends React.Component {
         };
 
         if (this.state.searchValue.length >= 3) {
-            this.props
-                .getProducingBrokers(this.props.endpoint, this.props.token, data)
-                .then((response) => {
-                    if (this.props.data && this.props.data.length) {
-                        const data = this.props.data.map((company) => ({
-                            licenseNo: company.LICENSENO,
-                            brokerName: `${company.BROKERNAME1} ${company.BROKERNAME2}`,
-                            effectiveDate: company.EFFECTIVEDATE,
-                            expDate: company.EXPIRATIONDATE,
-                            address: this.setCompanyAddress(company)
-                        }));
-
-                        this.setState({
-                            rows: data
-                        });
-                    } else if (this.props.error) {
-                        this.setState({
-                            serverError: true,
-                            errorMessage: this.props.error,
-                            rows: []
-                        });
-                    }
-                });
-        } else {
-            this.setState({
-                rows: []
-            });
+            this.props.getProducingBrokers(this.props.endpoint, this.props.token, data);
         }
     };
 
     handleKeyPress = (e) => {
-        console.log(e.target);
         if (e.charCode === 13 && e.target.value.length >= 3) {
             this.showRows();
         }
@@ -106,12 +106,13 @@ class ProducingBrokers extends React.Component {
                     handleChange={this.handleChange}
                     handleKeyPress={this.handleKeyPress}
                     showRows={this.showRows}
+                    handleClearInput={this.handleClearInput}
                 />
                 <Table loading={this.props.loading} rows={this.state.rows} />
                 <Snackbar
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     handleClose={this.handleClose}
-                    message={this.state.errorMessage}
+                    message={this.props.error ? this.props.error : ''}
                     open={this.state.serverError}
                     severity={'error'}
                     title={'Something went wrong'}
