@@ -27,7 +27,7 @@ class App extends Component {
                 SECURITYID: 59,
                 BROKERID: 103,
                 USERID: 'RSIDEV',
-                IP: '10.233.51.122'
+                IP: '10.233.51.123'
             }
         };
 
