@@ -1,6 +1,8 @@
 import React from 'react';
 import { Typography, Paper, Grid } from '@mui/material';
-import { SearchInput, SearchButton } from '@aeros-ui/components';
+import { SearchInput, SearchButton, DateInput } from '@aeros-ui/components';
+import styled from '@emotion/styled';
+import { Box } from '@mui/system';
 
 function Search({
     loading,
@@ -12,6 +14,14 @@ function Search({
     handleClearInput,
     handleHelperText
 }) {
+
+    const Item = styled(Box)(({ theme }) => ({
+        ...theme.typography.body2,
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    }));
+
     return (
         <Paper sx={{ padding: '1em', margin: '1em' }} variant={'outlined'}>
             <Typography variant='h6' sx={{ paddingBottom: 1 }}>
@@ -21,7 +31,7 @@ function Search({
                 <Grid item xs={5}>
                     <SearchInput
                         sx={{ mr: 1 }}
-                        label={'Search by License No, Broker name...'}
+                        label={'Search by Affidavit No, Policy No, Batch or Insured Name...'}
                         onChange={handleChange}
                         onKeyPress={handleKeyPress}
                         onClick={handleHelperText}
@@ -33,7 +43,28 @@ function Search({
                         handleClearInput={handleClearInput}
                     />
                 </Grid>
-                <Grid sx={{ mt: 1 }} item xs={2}>
+                <Grid item >
+                    <DateInput 
+                        label={"Inception Date"}    
+                        onChange={() => {console.log("date changed")}}
+                        value={null}
+                    />
+                </Grid>
+                <Grid item>
+                    <Item>
+                        <Typography variant={"body1"}>
+                            TO
+                        </Typography>
+                    </Item>
+                </Grid>
+                <Grid item sx={{ mr: 3 }} >
+                    <DateInput 
+                        label={"Expiration Date"}    
+                        onChange={() => {console.log("date changed")}}
+                        value={null}
+                    />
+                </Grid>
+                <Grid item sx={{ mt: 1 }} xs={2}>
                     <SearchButton sx={{ ml: 1 }} loading={loading} onClick={showRows}>
                         Search
                     </SearchButton>
