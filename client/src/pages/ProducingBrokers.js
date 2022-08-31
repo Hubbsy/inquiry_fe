@@ -74,8 +74,7 @@ class ProducingBrokers extends React.Component {
 
         if (this.state.searchValue.length >= 3) {
             this.props.getProducingBrokers(this.props.endpoint, this.props.token, data);
-        }
-        else {
+        } else {
             this.setState({
                 errorStyle: true
             });
@@ -85,8 +84,7 @@ class ProducingBrokers extends React.Component {
     handleKeyPress = (e) => {
         if (e.charCode === 13 && e.target.value.length >= 3) {
             this.showRows();
-        }
-        else if (e.charCode === 13) {
+        } else if (e.charCode === 13) {
             this.setState({
                 errorStyle: true
             });
@@ -103,7 +101,7 @@ class ProducingBrokers extends React.Component {
         this.setState({
             errorStyle: false
         });
-    }
+    };
 
     render() {
         return (

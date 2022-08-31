@@ -62,8 +62,7 @@ class LifeBrokers extends React.Component {
 
         if (this.state.searchValue.length >= 3) {
             this.props.getLifeBrokers(this.props.endpoint, this.props.token, data);
-        }
-        else {
+        } else {
             this.setState({
                 errorStyle: true
             });
@@ -80,8 +79,7 @@ class LifeBrokers extends React.Component {
     handleKeyPress = (e) => {
         if (e.charCode === 13 && e.target.value.length >= 3) {
             this.showRows();
-        }
-        else if (e.charCode === 13) {
+        } else if (e.charCode === 13) {
             this.setState({
                 errorStyle: true
             });
@@ -104,7 +102,7 @@ class LifeBrokers extends React.Component {
         this.setState({
             errorStyle: false
         });
-    }
+    };
 
     render() {
         return (
@@ -139,14 +137,13 @@ const mapStateToProps = (state) => {
         token: state.session.auth.token,
         loading: state.brokers.life.loading,
         data: state.brokers.life.data,
-        error: state.brokers.life.error,
+        error: state.brokers.life.error
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getLifeBrokers: (endpoint, token, data) =>
-            dispatch(getLifeBrokers(endpoint, token, data))
+        getLifeBrokers: (endpoint, token, data) => dispatch(getLifeBrokers(endpoint, token, data))
     };
 };
 

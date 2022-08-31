@@ -57,7 +57,7 @@ export const getProducingBrokers = (endpoint, token, data) => {
     };
 };
 
-///////// LIFE BROKERS 
+///////// LIFE BROKERS
 
 const getLifeBegin = () => {
     return {
@@ -94,9 +94,7 @@ export const getLifeBrokers = (endpoint, token, data) => {
                 } else if (response.data.hasOwnProperty('ERRORMESSAGE')) {
                     dispatch(getLifeFailure(response.data.ERRORMESSAGE));
                 } else {
-                    dispatch(
-                        getLifeFailure('An Error occurred while the request was processing')
-                    );
+                    dispatch(getLifeFailure('An Error occurred while the request was processing'));
                 }
             })
             .catch((err) => {

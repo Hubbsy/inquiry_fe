@@ -3,7 +3,16 @@ import { Typography, Paper, Grid } from '@mui/material';
 import { SearchInput, SearchButton } from '@aeros-ui/components';
 import { Stack } from '@mui/system';
 
-function Search({ loading, errorStyle, searchValue, handleChange, handleKeyPress, showRows, handleClearInput, handleHelperText }) {
+function Search({
+    loading,
+    errorStyle,
+    searchValue,
+    handleChange,
+    handleKeyPress,
+    showRows,
+    handleClearInput,
+    handleHelperText
+}) {
     return (
         <Paper sx={{ padding: '1em', margin: '1em' }} variant={'outlined'}>
             <Typography variant='h6' sx={{ paddingBottom: 1 }}>

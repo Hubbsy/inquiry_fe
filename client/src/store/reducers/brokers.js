@@ -57,7 +57,7 @@ const life = (state = storeState.brokers.life, action) => {
 };
 
 const brokers = combineReducers({
-    producing, 
+    producing,
     life
 });
 
