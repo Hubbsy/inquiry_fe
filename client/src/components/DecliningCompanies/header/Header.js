@@ -22,7 +22,9 @@ const Header = ({ organizations, onSearch, loading }) => {
 
     const handleOnChange = (e) => {
         const { name, value } = e.target;
-        setError(false);
+        if (value.length > 0 && error) {
+            setError(false);
+        }
 
         if (name === 'search') {
             setQuery({ ...query, search: value });
@@ -71,8 +73,11 @@ const Header = ({ organizations, onSearch, loading }) => {
                         value={search}
                         onKeyDown={handleKeyDown}
                         disabled={loading}
-                        onClick={() => setError(false)}
-                        helperText={error ? 'Must be at least 1 characters' : null}
+                        helperText={
+                            error
+                                ? 'Search input is required when Organization Type is "ALL"'
+                                : null
+                        }
                     />
                 </Grid>
                 <Grid item xs={4}>
