@@ -14,25 +14,32 @@ class LifeBrokers extends React.Component {
         errorMessage: ''
     };
 
-    componentDidMount() {
-        console.log(this.props);
-    }
+    componentDidUpdate(prevProps) {
+        if (
+            JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data) &&
+            !isEmpty(this.props.data)
+        ) {
+            if (this.props.data.hasOwnProperty('NODATA')) {
+                this.setState({ rows: [] });
+            } else {
+                const data = this.props.data.map((company) => ({
+                    licenseNo: company.LICENSENO,
+                    brokerName: `${company.BROKERNAME1} ${company.BROKERNAME2}`,
+                    effectiveDate: company.EFFECTIVEDATE,
+                    expDate: company.EXPIRATIONDATE,
+                    address: this.setCompanyAddress(company)
+                }));
 
-    handleChange = (e) => {
-        console.log(e.target);
-        if (e.target.value.length < 3) {
-            this.setState({
-                searchValue: e.target.value,
-                errorStyle: true,
-                rows: []
-            });
-        } else {
-            this.setState({
-                searchValue: e.target.value,
-                errorStyle: false
-            });
+                this.setState({
+                    rows: data
+                });
+            }
         }
-    };
+
+        if (prevProps.error !== this.props.error && this.props.error !== null) {
+            this.setState({ serverError: !this.state.serverError });
+        }
+    }
 
     setCompanyAddress(company) {
         return {
@@ -53,32 +60,21 @@ class LifeBrokers extends React.Component {
         };
 
         if (this.state.searchValue.length >= 3) {
-            this.props
-                .getLifeBrokers(this.props.endpoint, this.props.token, data)
-                .then((response) => {
-                    if (this.props.data && this.props.data.length) {
-                        const data = this.props.data.map((company) => ({
-                            licenseNo: company.LICENSENO,
-                            brokerName: `${company.BROKERNAME1} ${company.BROKERNAME2}`,
-                            effectiveDate: company.EFFECTIVEDATE,
-                            expDate: company.EXPIRATIONDATE,
-                            address: this.setCompanyAddress(company)
-                        }));
+            this.props.getLifeBrokers(this.props.endpoint, this.props.token, data);
+        }
+    };
 
-                        this.setState({
-                            rows: data
-                        });
-                    } else if (this.props.error) {
-                        this.setState({
-                            serverError: true,
-                            errorMessage: this.props.error,
-                            rows: []
-                        });
-                    }
-                });
+    handleChange = (e) => {
+        console.log(e.target);
+        if (e.target.value.length < 3) {
+            this.setState({
+                searchValue: e.target.value,
+                errorStyle: true
+            });
         } else {
             this.setState({
-                rows: []
+                searchValue: e.target.value,
+                errorStyle: false
             });
         }
     };
@@ -96,6 +92,12 @@ class LifeBrokers extends React.Component {
         });
     };
 
+    handleClearInput = () => {
+        this.setState({
+            searchValue: ''
+        });
+    };
+
     render() {
         return (
             <>
@@ -106,6 +108,7 @@ class LifeBrokers extends React.Component {
                     handleChange={this.handleChange}
                     handleKeyPress={this.handleKeyPress}
                     showRows={this.showRows}
+                    handleClearInput={this.handleClearInput}
                 />
                 <Table loading={this.props.loading} rows={this.state.rows} />
                 <Snackbar
