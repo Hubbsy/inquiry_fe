@@ -11,13 +11,8 @@ class ProducingBrokers extends React.Component {
         searchValue: '',
         rows: [],
         errorStyle: false,
-        serverError: false,
-        errorMessage: ''
+        serverError: false
     };
-
-    // componentDidMount() {
-    //     console.log(this.props);
-    // }
 
     componentDidUpdate(prevProps) {
         if (
@@ -47,12 +42,10 @@ class ProducingBrokers extends React.Component {
     }
 
     handleChange = (e) => {
-        // console.log(e.target);
         if (e.target.value.length < 3) {
             this.setState({
                 searchValue: e.target.value,
                 errorStyle: true
-                // rows: []
             });
         } else {
             this.setState({
@@ -60,6 +53,12 @@ class ProducingBrokers extends React.Component {
                 errorStyle: false
             });
         }
+    };
+
+    handleClearSearch = () => {
+        this.setState({
+            searchValue: ''
+        });
     };
 
     setCompanyAddress(company) {
@@ -75,44 +74,17 @@ class ProducingBrokers extends React.Component {
 
     showRows = () => {
         const data = {
-            // COMBOSEARCH: this.state.searchValue,
+            COMBOSEARCH: this.state.searchValue,
             ACTIVEONLY: 'TRUE',
             BROKERTYPE: 'P'
         };
 
         if (this.state.searchValue.length >= 3) {
             this.props.getProducingBrokers(this.props.endpoint, this.props.token, data);
-            // .then((response) => {
-            //     if (this.props.data && this.props.data.length) {
-            //         const data = this.props.data.map((company) => ({
-            //             licenseNo: company.LICENSENO,
-            //             brokerName: `${company.BROKERNAME1} ${company.BROKERNAME2}`,
-            //             effectiveDate: company.EFFECTIVEDATE,
-            //             expDate: company.EXPIRATIONDATE,
-            //             address: this.setCompanyAddress(company)
-            //         }));
-
-            //         this.setState({
-            //             rows: data
-            //         });
-            //     } else if (this.props.error) {
-            //         this.setState({
-            //             serverError: true,
-            //             errorMessage: this.props.error,
-            //             rows: []
-            //         });
-            //     }
-            // });
         }
-        // } else {
-        //     this.setState({
-        //         rows: []
-        //     });
-        // }
     };
 
     handleKeyPress = (e) => {
-        // console.log(e.target);
         if (e.charCode === 13 && e.target.value.length >= 3) {
             this.showRows();
         }
@@ -134,15 +106,14 @@ class ProducingBrokers extends React.Component {
                     handleChange={this.handleChange}
                     handleKeyPress={this.handleKeyPress}
                     showRows={this.showRows}
+                    handleClearSearch={this.handleClearSearch}
                 />
                 <Table loading={this.props.loading} rows={this.state.rows} />
                 <Snackbar
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     handleClose={this.handleClose}
-                    message={this.props.error}
+                    message={this.props.error ? this.props.error : ''}
                     open={this.state.serverError}
-                    // message={this.state.errorMessage}
-                    // open={this.state.serverError}
                     severity={'error'}
                     title={'Something went wrong'}
                 />
