@@ -4,7 +4,7 @@ import { SearchInput, SearchButton } from '@aeros-ui/components';
 // import { TextDecreaseTwoTone } from '@mui/icons-material';
 // import { Stack } from '@mui/system';
 
-function Search({ loading, errorStyle, searchValue, handleChange, handleKeyPress, showRows }) {
+function Search({ loading, errorStyle, searchValue, handleChange, handleKeyPress, showRows, handleClearInput }) {
     return (
         <Paper sx={{ padding: '1em', margin: '1em' }} variant={'outlined'}>
             <Typography variant='h6' sx={{ paddingBottom: 1 }}>
@@ -21,6 +21,8 @@ function Search({ loading, errorStyle, searchValue, handleChange, handleKeyPress
                         width={'97%'}
                         error={errorStyle}
                         helperText={errorStyle ? 'Must be at least 3 characters' : null}
+                        includeEndAdornment={true}
+                        handleClearInput={handleClearInput}
                     />
                 </Grid>
                 <Grid sx={{ mt: 1 }} item xs={2}>

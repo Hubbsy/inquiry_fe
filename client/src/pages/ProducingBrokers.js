@@ -55,7 +55,7 @@ class ProducingBrokers extends React.Component {
         }
     };
 
-    handleClearSearch = () => {
+    handleClearInput = () => {
         this.setState({
             searchValue: ''
         });
@@ -106,7 +106,7 @@ class ProducingBrokers extends React.Component {
                     handleChange={this.handleChange}
                     handleKeyPress={this.handleKeyPress}
                     showRows={this.showRows}
-                    handleClearSearch={this.handleClearSearch}
+                    handleClearInput={this.handleClearInput}
                 />
                 <Table loading={this.props.loading} rows={this.state.rows} />
                 <Snackbar
