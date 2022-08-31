@@ -1,63 +1,131 @@
-import Typography from '@mui/material/Typography';
-import { Component } from 'react';
+import React from 'react';
+import Search from '../components/Affidavits/Search';
+import Table from '../components/Affidavits/Table';
 import { connect } from 'react-redux';
+import { getAffidavits } from '../store/actions/affidavits';
 import { Snackbar } from '@aeros-ui/components';
-import Button from '@mui/material/Button';
+import isEmpty from '../functions/isEmpty';
 
-class Affidavits extends Component {
+class Affidavits extends React.Component {
     state = {
-        snackbarOpen: false
+        searchValue: '',
+        rows: [],
+        errorStyle: false,
+        serverError: false,
+        errorMessage: ''
     };
-    componentDidMount() {
-        console.log('PROPS MOUNT:', this.props);
-    }
 
     componentDidUpdate(prevProps) {
-        // console.log("PREV PROPS:", prevProps)
-        // console.log("PROPS:", this.props)
-        console.log(
-            'CONDITION:',
-            prevProps.token !== this.props.token &&
-                this.props.token !== null &&
-                this.props.endpoint !== null
-        );
         if (
-            prevProps.token !== this.props.token &&
-            this.props.token !== null &&
-            this.props.endpoint !== null
+            JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data) &&
+            !isEmpty(this.props.data)
         ) {
-            // make initial load request if needed
-            console.log('PROPS:', this.props);
+            if (this.props.data.hasOwnProperty('NODATA')) {
+                this.setState({ rows: [] });
+            } else {
+                const data = this.props.data.map((company) => ({
+                    licenseNo: company.LICENSENO,
+                    brokerName: `${company.BROKERNAME1} ${company.BROKERNAME2}`,
+                    effectiveDate: company.EFFECTIVEDATE,
+                    expDate: company.EXPIRATIONDATE,
+                    address: this.setCompanyAddress(company)
+                }));
+
+                this.setState({
+                    rows: data
+                });
+            }
         }
 
         if (prevProps.error !== this.props.error && this.props.error !== null) {
-            this.setState({ snackbarOpen: true });
+            this.setState({ serverError: !this.state.serverError });
         }
     }
 
-    handleClose = () => {
-        this.setState({ snackbarOpen: false });
+    setCompanyAddress(company) {
+        return {
+            address1: company.ADDRESS1,
+            address2: company.ADDRESS2,
+            address3: company.ADDRESS3,
+            city: company.CITY,
+            state: company.STATE,
+            zip: company.ZIPCODE
+        };
+    }
+
+    showRows = () => {
+        const data = {
+            COMBOSEARCH: this.state.searchValue,
+            ACTIVEONLY: 'TRUE',
+            BROKERTYPE: 'L'
+        };
+
+        if (this.state.searchValue.length >= 3) {
+            this.props.getAffidavits(this.props.endpoint, this.props.token, data);
+        } else {
+            this.setState({
+                errorStyle: true
+            });
+        }
     };
 
-    search = () => {
-        // make axios request
+    handleChange = (e) => {
+        this.setState({
+            searchValue: e.target.value,
+            errorStyle: false
+        });
+    };
+
+    handleKeyPress = (e) => {
+        if (e.charCode === 13 && e.target.value.length >= 3) {
+            this.showRows();
+        } else if (e.charCode === 13) {
+            this.setState({
+                errorStyle: true
+            });
+        }
+    };
+
+    handleClose = () => {
+        this.setState({
+            serverError: !this.state.serverError
+        });
+    };
+
+    handleClearInput = () => {
+        this.setState({
+            searchValue: ''
+        });
+    };
+
+    handleHelperText = () => {
+        this.setState({
+            errorStyle: false
+        });
     };
 
     render() {
         return (
             <>
-                <Typography variant='h6'>Affidavit Inquiry Subpage</Typography>
-                <Button onClick={() => this.search()}>Search</Button>
-                {this.state.snackbarOpen ? (
-                    <Snackbar
-                        open={this.state.snackbarOpen}
-                        handleClose={this.handleClose}
-                        severity='error'
-                        title='Something went wrong'
-                        message={this.props.error}
-                        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                    />
-                ) : null}
+                <Search
+                    loading={this.props.loading}
+                    errorStyle={this.state.errorStyle}
+                    searchValue={this.state.searchValue}
+                    handleChange={this.handleChange}
+                    handleKeyPress={this.handleKeyPress}
+                    showRows={this.showRows}
+                    handleClearInput={this.handleClearInput}
+                    handleHelperText={this.handleHelperText}
+                />
+                <Table loading={this.props.loading} rows={this.state.rows} />
+                <Snackbar
+                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                    handleClose={this.handleClose}
+                    message={this.props.error ? this.props.error : ''}
+                    open={this.state.serverError}
+                    severity={'error'}
+                    title={'Something went wrong'}
+                />
             </>
         );
     }
@@ -67,9 +135,16 @@ const mapStateToProps = (state) => {
     return {
         endpoint: state.session.endpoint,
         token: state.session.auth.token,
-        // change to the search error
-        error: state.session.auth.error
+        loading: state.affidavits.loading,
+        data: state.affidavits.data,
+        error: state.affidavits.error
     };
 };
 
-export default connect(mapStateToProps, null)(Affidavits);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getAffidavits: (endpoint, token, data) => dispatch(getAffidavits(endpoint, token, data))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Affidavits);

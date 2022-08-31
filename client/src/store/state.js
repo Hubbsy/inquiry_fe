@@ -20,6 +20,11 @@ const storeState = {
             data: [],
             error: null
         }
+    },
+    affidavits: {
+        loading: false,
+        data: [],
+        error: null
     }
 };
 
