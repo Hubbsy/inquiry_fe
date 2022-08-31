@@ -1,5 +1,5 @@
 import mockProdBrokData from '../../api/mockProdBrokers';
-import { React, useState } from 'react';
+import { useState } from 'react';
 
 const useProducingBrokersData = ({ searchValue }) => {
     const [rows, setRows] = useState([]);

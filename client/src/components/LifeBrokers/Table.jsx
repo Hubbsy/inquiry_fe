@@ -186,11 +186,11 @@ export default function Table({ loading, rows }) {
         exportMenu: [
             {
                 label: 'Export as PDF',
-                exportFunc: (cols, datas) => ExportPdf(cols, datas, 'Producing Brokers Data')
+                exportFunc: (cols, datas) => ExportPdf(cols, datas, 'Life Brokers Data')
             },
             {
                 label: 'Export as CSV',
-                exportFunc: (cols, datas) => ExportCsv(cols, datas, 'Producing Brokers Data')
+                exportFunc: (cols, datas) => ExportCsv(cols, datas, 'Life Brokers Data')
             }
         ],
         columnsButton: true,

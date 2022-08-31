@@ -42,17 +42,10 @@ class ProducingBrokers extends React.Component {
     }
 
     handleChange = (e) => {
-        if (e.target.value.length < 3) {
-            this.setState({
-                searchValue: e.target.value,
-                errorStyle: true
-            });
-        } else {
-            this.setState({
-                searchValue: e.target.value,
-                errorStyle: false
-            });
-        }
+        this.setState({
+            searchValue: e.target.value,
+            errorStyle: false
+        });
     };
 
     handleClearInput = () => {
@@ -81,18 +74,32 @@ class ProducingBrokers extends React.Component {
 
         if (this.state.searchValue.length >= 3) {
             this.props.getProducingBrokers(this.props.endpoint, this.props.token, data);
+        } else {
+            this.setState({
+                errorStyle: true
+            });
         }
     };
 
     handleKeyPress = (e) => {
         if (e.charCode === 13 && e.target.value.length >= 3) {
             this.showRows();
+        } else if (e.charCode === 13) {
+            this.setState({
+                errorStyle: true
+            });
         }
     };
 
     handleClose = (e) => {
         this.setState({
             serverError: !this.state.serverError
+        });
+    };
+
+    handleHelperText = () => {
+        this.setState({
+            errorStyle: false
         });
     };
 
@@ -107,6 +114,7 @@ class ProducingBrokers extends React.Component {
                     handleKeyPress={this.handleKeyPress}
                     showRows={this.showRows}
                     handleClearInput={this.handleClearInput}
+                    handleHelperText={this.handleHelperText}
                 />
                 <Table loading={this.props.loading} rows={this.state.rows} />
                 <Snackbar
