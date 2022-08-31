@@ -1,7 +1,6 @@
 import React from 'react';
 import { Typography, Paper, Grid } from '@mui/material';
 import { SearchInput, SearchButton } from '@aeros-ui/components';
-import { Stack } from '@mui/system';
 
 function Search({
     loading,
