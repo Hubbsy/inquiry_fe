@@ -32,12 +32,9 @@ const Header = ({ organizations, onSearch, loading }) => {
     };
 
     const handleSubmit = () => {
-        console.log({ search, org });
-
         if (search.length === 0 && org === ' ') {
             setError(true);
             errorRef.current = true;
-            console.log(errorRef.current);
         } else {
             errorRef.current = false;
         }
