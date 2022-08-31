@@ -1,6 +1,6 @@
 import React from 'react';
 import Search from '../components/Affidavits/Search';
-import Table from '../components/Affidavits/Table';
+import Table from '../components/Affidavits/Table/Table';
 import { connect } from 'react-redux';
 import { getAffidavits } from '../store/actions/affidavits';
 import { Snackbar } from '@aeros-ui/components';
