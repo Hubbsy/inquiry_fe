@@ -3,7 +3,7 @@ import Header from '../components/DecliningCompanies/header';
 import DataTable from '../components/DecliningCompanies/table';
 import { connect } from 'react-redux';
 import { getDecliningCompanies, getDecliningData } from '../store/actions/decliningCompanies';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Grid } from '@mui/material';
 
 const DecliningCompanies = ({
@@ -20,7 +20,10 @@ const DecliningCompanies = ({
 }) => {
     const [rows, setRows] = useState([]);
     const [showSnackBar, setShowSnackBar] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('An error occured.');
+    const [errorMessage, setErrorMessage] = useState(
+        'An error occured while the request was processesing, please try again.'
+    );
+    const getDeclRan = useRef(false);
 
     useEffect(() => {
         if (!token || error) {
@@ -29,7 +32,14 @@ const DecliningCompanies = ({
         }
 
         if (declError) {
-            setErrorMessage(declError);
+            console.log(declError);
+            if (declError === 'Either COMBOSEARCH or ORGANIZATIONTYPE is required.') {
+                setErrorMessage('Either "Search" or "Organiation Type" is required.');
+            } else if (declError === 'DATA') {
+                setShowSnackBar(true);
+            } else {
+                setErrorMessage(declError);
+            }
             setShowSnackBar(true);
         }
         if (compError) {
@@ -39,9 +49,12 @@ const DecliningCompanies = ({
     }, [error, declError, compError]);
 
     useEffect(() => {
-        if (token) {
-            console.log('GET DECLINING COMPANIES CALLED');
+        if (token && getDeclRan.current === false) {
             getDecliningCompanies(endpoint, token);
+
+            return () => {
+                getDeclRan.current = true;
+            };
         } else if (!token || error) {
             setShowSnackBar(true);
         }

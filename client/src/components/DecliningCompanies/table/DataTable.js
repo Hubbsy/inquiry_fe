@@ -18,8 +18,8 @@ const DataTable = ({ rows, loading }) => {
     return (
         <ThemeProvider theme={tableTheme}>
             <MaterialTable
-                sx={{ m: 2 }}
                 title={''}
+                style={{ margin: '1em' }}
                 columns={columns}
                 isLoading={loading}
                 options={options(theme, ExportCsv, ExportPdf, showFilters, density, rows)}
@@ -34,7 +34,6 @@ const DataTable = ({ rows, loading }) => {
 };
 
 DataTable.propTypes = {
-    rowData: PropTypes.object,
     rows: PropTypes.array,
     loading: PropTypes.bool
 };
