@@ -12,7 +12,8 @@ class Affidavits extends React.Component {
         rows: [],
         errorStyle: false,
         serverError: false,
-        errorMessage: ''
+        errorMessage: '',
+        adjustPadding: false
     };
 
     componentDidUpdate(prevProps) {
@@ -104,6 +105,12 @@ class Affidavits extends React.Component {
         });
     };
 
+    handleAdjustPadding = () => {
+        this.setState({
+            adjustPadding: !this.state.adjustPadding
+        })
+    };
+
     render() {
         return (
             <>
@@ -116,8 +123,14 @@ class Affidavits extends React.Component {
                     showRows={this.showRows}
                     handleClearInput={this.handleClearInput}
                     handleHelperText={this.handleHelperText}
+                    adjustPadding={this.state.adjustPadding}
+                    handleAdjustPadding={this.handleAdjustPadding}
                 />
-                <Table loading={this.props.loading} rows={this.state.rows} />
+                <Table 
+                    loading={this.props.loading} 
+                    rows={this.state.rows} 
+                    adjustPadding={this.state.adjustPadding}
+                />
                 <Snackbar
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     handleClose={this.handleClose}

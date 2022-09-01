@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 import { Stack } from '@mui/system';
 import Columns from './columns';
 
-export default function Table({ loading, rows }) {
+export default function Table({ loading, rows, adjustPadding }) {
     const theme = useTheme();
     const [density, setDensity] = useState('normal');
     const [showFilters, setFiltering] = useState(false);
@@ -110,7 +110,7 @@ export default function Table({ loading, rows }) {
             },
             {
                 label: 'Export as CSV',
-                exportFunc: (cols, datas) => ExportCsv(cols, datas, 'Affidavit Data')
+                exportFunc: (cols, datas) => ExportCsv(cols, datas, ' Data')
             }
         ],
         columnsButton: true,
@@ -120,7 +120,7 @@ export default function Table({ loading, rows }) {
     };
 
     return (
-        <div style={{ margin: '1em' }}>
+        <div style={{ marginTop: "1em", marginRight: `${adjustPadding ? "0.15em" : "1em"}`, marginLeft: "1em", marginBottom: "1em"  }}>
             <ThemeProvider theme={tableTheme}>
                 <MaterialTable
                     title={''}

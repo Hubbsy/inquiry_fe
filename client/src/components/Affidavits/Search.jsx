@@ -14,7 +14,9 @@ function Search({
     handleKeyPress,
     showRows,
     handleClearInput,
-    handleHelperText
+    handleHelperText,
+    adjustPadding,
+    handleAdjustPadding
 }) {
 
     const theme = useTheme();
@@ -39,9 +41,9 @@ function Search({
     }));
 
     const handleShowAdvancedSearch = useCallback(() => {
-        advancedSearchRef.current.style.transform = "rotate(180deg)";
+        handleAdjustPadding();
+
         if (!showAdvancedSearch) {
-            advancedSearchRef.current.style.transform = "rotate(180deg)";
             setShowAdvancedSearch(true);
         }
         else {
@@ -52,7 +54,7 @@ function Search({
     }, [showAdvancedSearch, advancedSearchRef]);
 
     return (
-        <Paper sx={{ padding: '1em', margin: "1em" }} variant={'outlined'}>
+        <Paper sx={{ padding: '1em', marginTop: "1em", marginRight: `${adjustPadding ? "0.15em" : "1em"}`, marginLeft: "1em", marginBottom: "1em" }} variant={'outlined'}>
             <Typography variant='h6' sx={{ paddingBottom: 1 }}>
                 Affidavit Inquiry
             </Typography>
@@ -105,7 +107,6 @@ function Search({
                         </Tooltip>
                     </Grid>
                 </Grid>
-
                 {showAdvancedSearch && 
                 <>
                     <Typography variant='subtitle1' sx={{ paddingBottom: 1, mt: 1 }}>
