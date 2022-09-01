@@ -6,6 +6,23 @@ import { Box } from '@mui/system';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
+const TextItem = styled(Box)(({ theme }) => ({
+    ...theme.typography.body2,
+    padding: theme.spacing(2),
+    color: theme.palette.text.secondary,
+}));
+
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+    backgroundColor: "#004A8F", 
+    color: "#FFFFFF", 
+    height: "1.5em", 
+    width: "1.5em",
+    '&:hover': {
+        backgroundColor: "#002746",
+        color: '#FFFFFF'
+    },
+}));
+
 function Search({
     loading,
     errorStyle,
@@ -19,42 +36,26 @@ function Search({
     handleAdjustPadding
 }) {
 
-    const theme = useTheme();
     const advancedSearchRef = useRef(null);
+    const searchToolTipRef = useRef(null);
     const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+    const [closeTooltip, setCloseTooltip] = useState(false)
 
-    const TextItem = styled(Box)(({ theme }) => ({
-        ...theme.typography.body2,
-        padding: theme.spacing(2),
-        color: theme.palette.text.secondary,
-    }));
-
-    const StyledIconButton = styled(IconButton)(({ theme }) => ({
-        backgroundColor: "#004A8F", 
-        color: "#FFFFFF", 
-        height: "1.5em", 
-        width: "1.5em",
-        '&:hover': {
-            backgroundColor: "#002746",
-            color: '#FFFFFF'
-        },
-    }));
+    
 
     const handleShowAdvancedSearch = useCallback(() => {
         handleAdjustPadding();
-
         if (!showAdvancedSearch) {
             setShowAdvancedSearch(true);
         }
         else {
-            advancedSearchRef.current.style.transform = "none";
             setShowAdvancedSearch(false);
         }     
         
-    }, [showAdvancedSearch, advancedSearchRef]);
+    }, [showAdvancedSearch]);
 
     return (
-        <Paper sx={{ padding: '1em', marginTop: "1em", marginRight: `${adjustPadding ? "0.15em" : "1em"}`, marginLeft: "1em", marginBottom: "1em" }} variant={'outlined'}>
+        <Paper sx={{ padding: '1em', marginTop: "1em", marginRight: `${adjustPadding ? "0.10em" : "1em"}`, marginLeft: "1em", marginBottom: "1em" }} variant={'outlined'}>
             <Typography variant='h6' sx={{ paddingBottom: 1 }}>
                 Affidavit Inquiry
             </Typography>
@@ -71,6 +72,7 @@ function Search({
                             width={'97%'}
                             error={errorStyle}
                             helperText={errorStyle ? 'Must be at least 3 characters' : null}
+                            disabled={showAdvancedSearch}
                             includeEndAdornment={true}
                             handleClearInput={handleClearInput}
                         />
@@ -100,8 +102,8 @@ function Search({
                         </SearchButton>
                     </Grid>
                     <Grid item sx={{mt: 1}}>
-                        <Tooltip title="Show Advanced Search" arrow placement='top'>
-                            <StyledIconButton ref={advancedSearchRef} onClick={handleShowAdvancedSearch}>
+                        <Tooltip ref={searchToolTipRef} title="Toggle Advanced Search" arrow placement='top'>
+                            <StyledIconButton ref={advancedSearchRef} aria-label={"Toggle Advanced Search"} onClick={handleShowAdvancedSearch}>
                                 {showAdvancedSearch ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                             </StyledIconButton>
                         </Tooltip>
