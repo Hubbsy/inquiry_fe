@@ -1,44 +1,40 @@
-import { MainTableCell } from "@aeros-ui/tables";
-import { useTheme } from "@emotion/react";
-import styled from "@emotion/styled";
-import { MoreVert } from "@mui/icons-material";
+import { MainTableCell } from '@aeros-ui/tables';
+import styled from '@emotion/styled';
+import { MoreVert } from '@mui/icons-material';
 import { format } from 'date-fns';
 
-export default function Columns(handlePopoverOpen) {
-
-    const theme = useTheme();
-
-    const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
+const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
+    height: 32,
+    width: 18,
+    display: 'flex',
+    color: 'gray',
+    '&:hover': {
         height: 32,
         width: 18,
-        display: 'flex',
-        color: 'gray',
-        '&:hover': {
-            height: 32,
-            width: 18,
-            borderRadius: '50%',
-            backgroundColor: theme.palette.grid.main.active,
-            padding: 0,
-            color: 'gray'
-        },
-        '&:active': {
-            height: 32,
-            width: 18,
-            borderRadius: '50%',
-            backgroundColor: theme.palette.grid.main.active,
-            padding: 0,
-            color: 'gray'
-        },
-        '&:focus': {
-            height: 32,
-            width: 18,
-            borderRadius: '50%',
-            backgroundColor: theme.palette.grid.main.active,
-            padding: 0,
-            color: 'gray'
-        }
-    }));
+        borderRadius: '50%',
+        backgroundColor: theme.palette.grid.main.active,
+        padding: 0,
+        color: 'gray'
+    },
+    '&:active': {
+        height: 32,
+        width: 18,
+        borderRadius: '50%',
+        backgroundColor: theme.palette.grid.main.active,
+        padding: 0,
+        color: 'gray'
+    },
+    '&:focus': {
+        height: 32,
+        width: 18,
+        borderRadius: '50%',
+        backgroundColor: theme.palette.grid.main.active,
+        padding: 0,
+        color: 'gray'
+    }
+}));
 
+export default function Columns(handlePopoverOpen) {
     const cols = [
         {
             title: 'Affidavit No.',
@@ -68,9 +64,7 @@ export default function Columns(handlePopoverOpen) {
             type: 'string',
             width: '30em',
             render: (rowData) => (
-                <MainTableCell sx={{ whiteSpace: 'nowrap' }}>
-                    {rowData.insuredName}
-                </MainTableCell>
+                <MainTableCell sx={{ whiteSpace: 'nowrap' }}>{rowData.insuredName}</MainTableCell>
             )
         },
         {

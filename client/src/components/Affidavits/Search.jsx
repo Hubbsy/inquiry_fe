@@ -1,6 +1,12 @@
 import React, { useRef, useState, useCallback } from 'react';
-import { Typography, Paper, Grid, Button, IconButton, useTheme, Tooltip, Stack } from '@mui/material';
-import { SearchInput, SearchButton, DateInput, TextInput, CurrencyInput } from '@aeros-ui/components';
+import { Typography, Paper, Grid, IconButton, Tooltip, Stack } from '@mui/material';
+import { 
+    SearchInput, 
+    SearchButton, 
+    DateInput, 
+    TextInput, 
+    CurrencyInput 
+} from '@aeros-ui/components';
 import styled from '@emotion/styled';
 import { Box } from '@mui/system';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -55,7 +61,7 @@ function Search({
     }, [showAdvancedSearch]);
 
     return (
-        <Paper sx={{ padding: '1em', marginTop: "1em", marginRight: `${adjustPadding ? "0.10em" : "1em"}`, marginLeft: "1em", marginBottom: "1em" }} variant={'outlined'}>
+        <Paper sx={{ padding: '1em', mt: "1em", mr: `${adjustPadding ? "0.10em" : "1em"}`, ml: "1em", mb: "1em" }} variant={'outlined'}>
             <Typography variant='h6' sx={{ paddingBottom: 1 }}>
                 Affidavit Inquiry
             </Typography>

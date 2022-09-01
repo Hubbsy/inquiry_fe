@@ -2,7 +2,7 @@ import axios from 'axios';
 export const TYPES = {
     GET_AFFIDAVITS_BEGIN: 'GET_AFFIDAVITS_BEGIN',
     GET_AFFIDAVITS_SUCCESS: 'GET_AFFIDAVITS_SUCCESS',
-    GET_AFFIDAVITS_FAILURE: 'GET_AFFIDAVITS_FAILURE',
+    GET_AFFIDAVITS_FAILURE: 'GET_AFFIDAVITS_FAILURE'
 };
 
 ///////// PRODUCING BROKERS
@@ -49,7 +49,9 @@ export const getAffidavits = (endpoint, token, data) => {
             })
             .catch((err) => {
                 console.error(err);
-                dispatch(getAffidavitsFailure('An Error occurred while the request was processing'));
+                dispatch(
+                    getAffidavitsFailure('An Error occurred while the request was processing')
+                );
             });
     };
 };

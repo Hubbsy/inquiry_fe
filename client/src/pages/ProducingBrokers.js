@@ -91,7 +91,7 @@ class ProducingBrokers extends React.Component {
         }
     };
 
-    handleClose = (e) => {
+    handleClose = () => {
         this.setState({
             serverError: !this.state.serverError
         });

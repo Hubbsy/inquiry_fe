@@ -108,7 +108,7 @@ class Affidavits extends React.Component {
     handleAdjustPadding = () => {
         this.setState({
             adjustPadding: !this.state.adjustPadding
-        })
+        });
     };
 
     render() {
@@ -126,9 +126,9 @@ class Affidavits extends React.Component {
                     adjustPadding={this.state.adjustPadding}
                     handleAdjustPadding={this.handleAdjustPadding}
                 />
-                <Table 
-                    loading={this.props.loading} 
-                    rows={this.state.rows} 
+                <Table
+                    loading={this.props.loading}
+                    rows={this.state.rows}
                     adjustPadding={this.state.adjustPadding}
                 />
                 <Snackbar

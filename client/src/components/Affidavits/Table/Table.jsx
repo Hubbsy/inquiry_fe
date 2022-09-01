@@ -1,12 +1,9 @@
 import MaterialTable from '@material-table/core';
 import { TablePagination, useTheme, ThemeProvider, Grid, Typography } from '@mui/material';
-import { TableToolbar, MainTableCell, DetailCard } from '@aeros-ui/tables';
+import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme } from '@aeros-ui/themes';
 import { useState, useCallback } from 'react';
-import styled from '@emotion/styled';
-import { MoreVert } from '@mui/icons-material';
-import { format } from 'date-fns';
 import { Stack } from '@mui/system';
 import Columns from './columns';
 
