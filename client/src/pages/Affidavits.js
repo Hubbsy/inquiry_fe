@@ -13,17 +13,32 @@ class Affidavits extends React.Component {
         errorStyle: false,
         serverError: false,
         errorMessage: '',
-        adjustPadding: false
+        adjustPadding: false,
+        advancedSearch: {
+            AFFIDAVITNUMBER: '',
+            POLICYNUMBER: '',
+            INSUREDNAME: '',
+            INCEPTIONFROM: '',
+            INCEPTIONTO: '',
+            CONTACTNAME: '',
+            BROKERREFERENCE: '',
+            BATCH: '',
+            PREMIUMFROM: '',
+            PREMIUMTO: ''
+        }
     };
 
     componentDidUpdate(prevProps) {
+        console.log("prev Props:", prevProps);
+        console.log("props:", this.props)
         if (
             JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data) &&
-            !isEmpty(this.props.data)
-        ) {
+            !isEmpty(this.props.data))
+            {
             if (this.props.data.hasOwnProperty('NODATA')) {
                 this.setState({ rows: [] });
             } else {
+                console.log(this.props.data);
                 const data = this.props.data.map((company) => ({
                     licenseNo: company.LICENSENO,
                     brokerName: `${company.BROKERNAME1} ${company.BROKERNAME2}`,
@@ -55,10 +70,19 @@ class Affidavits extends React.Component {
     }
 
     showRows = () => {
+        console.log(this.state.searchValue)
         const data = {
             COMBOSEARCH: this.state.searchValue,
-            ACTIVEONLY: 'TRUE',
-            BROKERTYPE: 'L'
+            AFFIDAVITNUMBER: this.state.advancedSearch.AFFIDAVITNUMBER,
+            POLICYNUMBER: this.state.advancedSearch.POLICYNUMBER,
+            INSUREDNAME: this.state.advancedSearch.INSUREDNAME,
+            INCEPTIONFROM: this.state.advancedSearch.INCEPTIONFROM,
+            INCEPTIONTO: this.state.advancedSearch.INCEPTIONTO,
+            CONTACTNAME: this.state.advancedSearch.CONTACTNAME,
+            BROKERREFERENCE: this.state.advancedSearch.BROKERREFERENCE,
+            BATCH: this.state.advancedSearch.BATCH,
+            PREMIUMFROM: this.state.advancedSearch.PREMIUMFROM,
+            PREMIUMTO: this.state.advancedSearch.PREMIUMTO
         };
 
         if (this.state.searchValue.length >= 3) {

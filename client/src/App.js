@@ -31,7 +31,7 @@ class App extends Component {
             }
         };
 
-        // this.props.getToken(endpoint, data);
+        this.props.getToken(endpoint, data);
     }
 
     render() {
