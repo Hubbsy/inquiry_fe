@@ -7,5 +7,6 @@ import affidavits from './affidavits';
 export const rootReducer = combineReducers({
     session,
     brokers,
+    affidavits,
     decliningCompanies
 });
