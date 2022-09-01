@@ -1,5 +1,4 @@
 {
-
     "name": "client",
     "version": "0.1.0",
     "private": true,
@@ -32,7 +31,7 @@
         "web-vitals": "^2.1.0"
     },
     "scripts": {
-        "start": "FAST_REFRESH=true react-scripts start",
+        "start": "GENERATE_SOURCEMAP=false FAST_REFRESH=true react-scripts start",
         "build": "react-scripts build && rm -rf ../server/build && mv build ../server/build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",

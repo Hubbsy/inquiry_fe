@@ -1,11 +1,11 @@
 import React, { useRef, useState, useCallback } from 'react';
 import { Typography, Paper, Grid, IconButton, Tooltip, Stack } from '@mui/material';
-import { 
-    SearchInput, 
-    SearchButton, 
-    DateInput, 
-    TextInput, 
-    CurrencyInput 
+import {
+    SearchInput,
+    SearchButton,
+    DateInput,
+    TextInput,
+    CurrencyInput
 } from '@aeros-ui/components';
 import styled from '@emotion/styled';
 import { Box } from '@mui/system';
@@ -15,18 +15,18 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 const TextItem = styled(Box)(({ theme }) => ({
     ...theme.typography.body2,
     padding: theme.spacing(2),
-    color: theme.palette.text.secondary,
+    color: theme.palette.text.secondary
 }));
 
-const StyledIconButton = styled(IconButton)(({ theme }) => ({
-    backgroundColor: "#004A8F", 
-    color: "#FFFFFF", 
-    height: "1.5em", 
-    width: "1.5em",
+const StyledIconButton = styled(IconButton)(() => ({
+    backgroundColor: '#004A8F',
+    color: '#FFFFFF',
+    height: '1.5em',
+    width: '1.5em',
     '&:hover': {
-        backgroundColor: "#002746",
+        backgroundColor: '#002746',
         color: '#FFFFFF'
-    },
+    }
 }));
 
 function Search({
@@ -41,27 +41,28 @@ function Search({
     adjustPadding,
     handleAdjustPadding
 }) {
-
     const advancedSearchRef = useRef(null);
-    const searchToolTipRef = useRef(null);
     const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
-    const [closeTooltip, setCloseTooltip] = useState(false)
-
-    
 
     const handleShowAdvancedSearch = useCallback(() => {
         handleAdjustPadding();
         if (!showAdvancedSearch) {
             setShowAdvancedSearch(true);
-        }
-        else {
+        } else {
             setShowAdvancedSearch(false);
-        }     
-        
+        }
     }, [showAdvancedSearch]);
 
     return (
-        <Paper sx={{ padding: '1em', mt: "1em", mr: `${adjustPadding ? "0.10em" : "1em"}`, ml: "1em", mb: "1em" }} variant={'outlined'}>
+        <Paper
+            sx={{
+                padding: '1em',
+                mt: '1em',
+                mr: `${adjustPadding ? '0.10em' : '1em'}`,
+                ml: '1em',
+                mb: '1em'
+            }}
+            variant={'outlined'}>
             <Typography variant='h6' sx={{ paddingBottom: 1 }}>
                 Affidavit Inquiry
             </Typography>
@@ -83,22 +84,24 @@ function Search({
                             handleClearInput={handleClearInput}
                         />
                     </Grid>
-                    <Grid item >
-                        <DateInput 
-                            label={"Inception Date"}    
-                            onChange={() => {console.log("date changed")}}
+                    <Grid item>
+                        <DateInput
+                            label={'Inception Date'}
+                            onChange={() => {
+                                console.log('date changed');
+                            }}
                             value={null}
                         />
                     </Grid>
                     <Grid item>
-                        <TextItem>
-                            TO
-                        </TextItem>
+                        <TextItem>TO</TextItem>
                     </Grid>
-                    <Grid item sx={{ mr: 3 }} >
-                        <DateInput 
-                            label={"Inception Date"}    
-                            onChange={() => {console.log("date changed")}}
+                    <Grid item sx={{ mr: 3 }}>
+                        <DateInput
+                            label={'Inception Date'}
+                            onChange={() => {
+                                console.log('date changed');
+                            }}
                             value={null}
                         />
                     </Grid>
@@ -107,63 +110,93 @@ function Search({
                             Search
                         </SearchButton>
                     </Grid>
-                    <Grid item sx={{mt: 1}}>
-                        <Tooltip title="Toggle Advanced Search" arrow placement='top'>
-                            <StyledIconButton ref={advancedSearchRef} aria-label={"Toggle Advanced Search"} onClick={handleShowAdvancedSearch}>
-                                {showAdvancedSearch ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    <Grid item sx={{ mt: 1 }}>
+                        <Tooltip title='Toggle Advanced Search' arrow placement='top'>
+                            <StyledIconButton
+                                ref={advancedSearchRef}
+                                aria-label={'Toggle Advanced Search'}
+                                onClick={handleShowAdvancedSearch}>
+                                {showAdvancedSearch ? (
+                                    <KeyboardArrowUpIcon />
+                                ) : (
+                                    <KeyboardArrowDownIcon />
+                                )}
                             </StyledIconButton>
                         </Tooltip>
                     </Grid>
                 </Grid>
-                {showAdvancedSearch && 
-                <>
-                    <Typography variant='subtitle1' sx={{ paddingBottom: 1, mt: 1 }}>
-                        Advanced Search
-                    </Typography>
-                    <Grid container sx={{ flexGrow: 1 }} spacing={2} >
-                        <Grid item xs={2.5}>
-                            <TextInput width={"100%"} value={""} label={"Search by Affidavit No"}/>
+                {showAdvancedSearch && (
+                    <>
+                        <Typography variant='subtitle1' sx={{ paddingBottom: 1, mt: 1 }}>
+                            Advanced Search
+                        </Typography>
+                        <Grid container sx={{ flexGrow: 1 }} spacing={2}>
+                            <Grid item xs={2.5}>
+                                <TextInput
+                                    width={'100%'}
+                                    value={''}
+                                    label={'Search by Affidavit No'}
+                                />
+                            </Grid>
+                            <Grid item xs={2.5}>
+                                <TextInput
+                                    width={'100%'}
+                                    value={''}
+                                    label={'Search by Policy No'}
+                                />
+                            </Grid>
+                            <Grid item xs={2.5}>
+                                <TextInput width={'100%'} value={''} label={'Search by Batch'} />
+                            </Grid>
                         </Grid>
-                        <Grid item xs={2.5}>
-                            <TextInput width={"100%"} value={""} label={"Search by Policy No"}/>
+                        <Grid container sx={{ flexGrow: 1, pt: 3 }} spacing={2}>
+                            <Grid item xs={2.5}>
+                                <TextInput
+                                    width={'100%'}
+                                    value={''}
+                                    label={'Search by Insured Name'}
+                                />
+                            </Grid>
+                            <Grid item xs={2.5}>
+                                <TextInput
+                                    width={'100%'}
+                                    value={''}
+                                    label={'Search by Batch Contact'}
+                                />
+                            </Grid>
+                            <Grid item xs={2.5}>
+                                <TextInput
+                                    width={'100%'}
+                                    value={''}
+                                    label={'Search by Reference'}
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item xs={2.5}>
-                            <TextInput width={"100%"} value={""} label={"Search by Batch"}/>
+                        <Grid container sx={{ flexGrow: 1, pt: 3 }}>
+                            <Grid item>
+                                <CurrencyInput
+                                    label={'Premuim'}
+                                    onChange={() => {
+                                        console.log('premium changed');
+                                    }}
+                                    value={''}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <TextItem>TO</TextItem>
+                            </Grid>
+                            <Grid item sx={{ mr: 3 }}>
+                                <CurrencyInput
+                                    label={'Premium'}
+                                    onChange={() => {
+                                        console.log('premium changed');
+                                    }}
+                                    value={''}
+                                />
+                            </Grid>
                         </Grid>
-                    </Grid>
-                    <Grid container sx={{ flexGrow: 1, pt: 3 }} spacing={2} >
-                        <Grid item xs={2.5}>
-                            <TextInput width={"100%"} value={""} label={"Search by Insured Name"}/>
-                        </Grid>
-                        <Grid item xs={2.5}>
-                            <TextInput width={"100%"} value={""} label={"Search by Batch Contact"}/>
-                        </Grid>
-                        <Grid item xs={2.5}>
-                            <TextInput width={"100%"} value={""} label={"Search by Reference"}/>
-                        </Grid>
-                    </Grid>
-                    <Grid container sx={{ flexGrow: 1, pt: 3 }} >
-                        <Grid item >
-                            <CurrencyInput 
-                                label={"Premuim"}    
-                                onChange={() => {console.log("premium changed")}}
-                                value={""}
-                            />
-                        </Grid>
-                        <Grid item>
-                            <TextItem>
-                                TO
-                            </TextItem>
-                        </Grid>
-                        <Grid item sx={{ mr: 3 }} >
-                            <CurrencyInput 
-                                label={"Premium"}    
-                                onChange={() => {console.log("premium changed")}}
-                                value={""}
-                            />
-                        </Grid>
-                    </Grid>
-                </>}
+                    </>
+                )}
             </Stack>
         </Paper>
     );
