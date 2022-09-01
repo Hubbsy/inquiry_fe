@@ -102,7 +102,7 @@ function Search({
                         </SearchButton>
                     </Grid>
                     <Grid item sx={{mt: 1}}>
-                        <Tooltip ref={searchToolTipRef} title="Toggle Advanced Search" arrow placement='top'>
+                        <Tooltip title="Toggle Advanced Search" arrow placement='top'>
                             <StyledIconButton ref={advancedSearchRef} aria-label={"Toggle Advanced Search"} onClick={handleShowAdvancedSearch}>
                                 {showAdvancedSearch ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                             </StyledIconButton>
