@@ -24,6 +24,18 @@ function Search({
         color: theme.palette.text.secondary,
     }));
 
+    const StyledIconButton = styled(IconButton)(({ theme }) => ({
+        backgroundColor: "#004A8F", 
+        color: "#FFFFFF", 
+        height: "1.5em", 
+        width: "1.5em", 
+        '&:hover': {
+            backgroundColor: "#002746",
+            color: '#FFFFFF'
+        },
+    }));
+
+
     return (
         <Paper sx={{ padding: '1em', margin: '1em' }} variant={'outlined'}>
             <Typography variant='h6' sx={{ paddingBottom: 1 }}>
@@ -64,15 +76,15 @@ function Search({
                         value={null}
                     />
                 </Grid>
-                <Grid item sx={{ mt: 1, mr: 2 }}>
+                <Grid item sx={{ mt: 1, mr: 3 }}>
                     <SearchButton sx={{ ml: 1 }} loading={loading} onClick={showRows}>
                         Search
                     </SearchButton>
                 </Grid>
-                <Grid item>
-                    <IconButton sx={{backgroundColor: "#004A8F", color: "#FFFFFF"}}>
-                        <KeyboardArrowDownIcon />
-                    </IconButton>
+                <Grid item sx={{mt: 1}}>
+                        <StyledIconButton>
+                            <KeyboardArrowDownIcon />
+                        </StyledIconButton>
                 </Grid>
             </Grid>
         </Paper>
