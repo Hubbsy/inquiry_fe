@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Paper, Grid, Button, IconButton, useTheme } from '@mui/material';
+import { Typography, Paper, Grid, Button, IconButton, useTheme, Tooltip } from '@mui/material';
 import { SearchInput, SearchButton, DateInput } from '@aeros-ui/components';
 import styled from '@emotion/styled';
 import { Box } from '@mui/system';
@@ -82,9 +82,12 @@ function Search({
                     </SearchButton>
                 </Grid>
                 <Grid item sx={{mt: 1}}>
+                    <Tooltip title="Show Advanced Search" arrow placement='top'>
                         <StyledIconButton>
                             <KeyboardArrowDownIcon />
                         </StyledIconButton>
+                    </Tooltip>
+                        
                 </Grid>
             </Grid>
         </Paper>
