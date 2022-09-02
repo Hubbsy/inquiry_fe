@@ -14,6 +14,7 @@ class Affidavits extends React.Component {
         serverError: false,
         errorMessage: '',
         adjustPadding: false,
+        advancedSearchActive: false,
         advancedSearch: {
             AFFIDAVITNUMBER: '',
             POLICYNUMBER: '',
@@ -46,7 +47,7 @@ class Affidavits extends React.Component {
         
         //  Check for token returned from API response, if different from current sessionToken,
         //  update local storage reference and set new sessionToken from api token
-        if (this.props.apiToken && (this.props.apiToken !== this.state.sessionToken)) {
+        if (this.props.apiToken !== null && (this.props.apiToken !== this.state.sessionToken)) {
             window.localStorage.setItem('TOKEN', JSON.stringify(this.props.apiToken));
             this.setState({
                 sessionToken: this.props.apiToken
@@ -154,6 +155,15 @@ class Affidavits extends React.Component {
         });
     };
 
+    handleShowAdvancedSearch = () => {
+        this.handleAdjustPadding();
+        if (!this.state.advancedSearchActive) {
+            this.setState({advancedSearchActive: true})
+        } else {
+            this.setState({advancedSearchActive: false})
+        }
+    };
+
     render() {
         return (
             <>
@@ -168,6 +178,9 @@ class Affidavits extends React.Component {
                     handleHelperText={this.handleHelperText}
                     adjustPadding={this.state.adjustPadding}
                     handleAdjustPadding={this.handleAdjustPadding}
+                    advancedSearchActive={this.state.advancedSearchActive}
+                    handleShowAdvancedSearch={this.handleShowAdvancedSearch}
+
                 />
                 <Table
                     loading={this.props.loading}

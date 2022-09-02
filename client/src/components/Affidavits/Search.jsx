@@ -39,19 +39,20 @@ function Search({
     handleClearInput,
     handleHelperText,
     adjustPadding,
-    handleAdjustPadding
+    advancedSearchActive, 
+    handleShowAdvancedSearch
 }) {
     const advancedSearchRef = useRef(null);
-    const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+    // const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
 
-    const handleShowAdvancedSearch = useCallback(() => {
-        handleAdjustPadding();
-        if (!showAdvancedSearch) {
-            setShowAdvancedSearch(true);
-        } else {
-            setShowAdvancedSearch(false);
-        }
-    }, [showAdvancedSearch]);
+    // const handleShowAdvancedSearch = useCallback(() => {
+    //     handleAdjustPadding();
+    //     if (!showAdvancedSearch) {
+    //         setShowAdvancedSearch(true);
+    //     } else {
+    //         setShowAdvancedSearch(false);
+    //     }
+    // }, [showAdvancedSearch]);
 
     return (
         <Paper
@@ -79,7 +80,7 @@ function Search({
                             width={'97%'}
                             error={errorStyle}
                             helperText={errorStyle ? 'Must be at least 3 characters' : null}
-                            disabled={showAdvancedSearch}
+                            disabled={advancedSearchActive}
                             includeEndAdornment={true}
                             handleClearInput={handleClearInput}
                         />
@@ -116,7 +117,7 @@ function Search({
                                 ref={advancedSearchRef}
                                 aria-label={'Toggle Advanced Search'}
                                 onClick={handleShowAdvancedSearch}>
-                                {showAdvancedSearch ? (
+                                {advancedSearchActive ? (
                                     <KeyboardArrowUpIcon />
                                 ) : (
                                     <KeyboardArrowDownIcon />
@@ -125,7 +126,7 @@ function Search({
                         </Tooltip>
                     </Grid>
                 </Grid>
-                {showAdvancedSearch && (
+                {advancedSearchActive && (
                     <>
                         <Typography variant='subtitle1' sx={{ paddingBottom: 1, mt: 1 }}>
                             Advanced Search

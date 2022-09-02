@@ -47,8 +47,8 @@ class App extends Component {
 
     componentDidUpdate(prevProps){
         if(prevProps.token !== this.props.token && this.props.token !== null && !this.state.token){
-            console.log("COMPONENT DID UPDATE:", this.props.token)
-            window.localStorage.setItem("TOKEN", this.props.token)
+            console.log("COMPONENT DID UPDATE:", this.props.token);
+            window.localStorage.setItem("TOKEN", this.props.token);
         }
     }
 
