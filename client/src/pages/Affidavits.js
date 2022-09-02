@@ -30,7 +30,26 @@ class Affidavits extends React.Component {
 
     componentDidUpdate(prevProps) {
         console.log("prev Props:", prevProps);
-        console.log("props:", this.props)
+        console.log("props:", this.props);
+        console.log("state", this.state);
+        console.log("Main Token", this.props.token);
+        console.log("API Token", this.props.apiToken);
+        console.log("Session Token", this.state.sessionToken);
+        if (!this.state.sessionToken) {
+            this.setState({
+                sessionToken: window.localStorage.getItem('TOKEN')
+            })
+        }
+        
+        if (this.props.apiToken && (this.props.apiToken !== this.state.sessionToken)) {
+            console.log("setting local storage token!!!")
+            window.localStorage.setItem('TOKEN', JSON.stringify(this.props.apiToken));
+            console.log("Stored Token", window.localStorage.getItem('TOKEN'));
+            this.setState({
+                sessionToken: this.props.apiToken
+            })
+        }
+
         if (
             JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data) &&
             !isEmpty(this.props.data))
@@ -70,7 +89,6 @@ class Affidavits extends React.Component {
     }
 
     showRows = () => {
-        console.log(this.state.searchValue)
         const data = {
             COMBOSEARCH: this.state.searchValue,
             AFFIDAVITNUMBER: this.state.advancedSearch.AFFIDAVITNUMBER,
@@ -86,7 +104,7 @@ class Affidavits extends React.Component {
         };
 
         if (this.state.searchValue.length >= 3) {
-            this.props.getAffidavits(this.props.endpoint, this.props.token, data);
+            this.props.getAffidavits(this.props.endpoint, this.state.sessionToken, data);
         } else {
             this.setState({
                 errorStyle: true
@@ -174,7 +192,8 @@ const mapStateToProps = (state) => {
         token: state.session.auth.token,
         loading: state.affidavits.loading,
         data: state.affidavits.data,
-        error: state.affidavits.error
+        error: state.affidavits.error,
+        apiToken: state.affidavits.token
     };
 };
 

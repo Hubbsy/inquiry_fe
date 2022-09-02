@@ -13,10 +13,11 @@ const getAffidavitsBegin = () => {
     };
 };
 
-const getAffidavitsSuccess = (data) => {
+const getAffidavitsSuccess = ({data, token}) => {
     return {
         type: TYPES.GET_AFFIDAVITS_SUCCESS,
-        value: data
+        value: data,
+        token: token
     };
 };
 
@@ -39,7 +40,9 @@ export const getAffidavits = (endpoint, token, data) => {
             .then((response) => {
                 if (response.data.hasOwnProperty('DATA')) {
                     console.log("API response", response)
-                    dispatch(getAffidavitsSuccess(response.data.DATA));
+                    dispatch(getAffidavitsSuccess({ data: response.data.DATA, token: response.data.TOKEN }));
+                } else if (response.data.ERRORMESSAGE.toLowerCase().includes('security')) {
+                    window.localStorage.removeItem('TOKEN');
                 } else if (response.data.hasOwnProperty('ERRORMESSAGE')) {
                     dispatch(getAffidavitsFailure(response.data.ERRORMESSAGE));
                 } else {

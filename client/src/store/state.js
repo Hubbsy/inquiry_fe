@@ -28,6 +28,7 @@ const storeState = {
     affidavits: {
         loading: false,
         data: [],
+        token: null,
         error: null
     }
 };
