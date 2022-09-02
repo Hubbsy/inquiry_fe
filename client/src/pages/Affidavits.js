@@ -39,17 +39,17 @@ class Affidavits extends React.Component {
                 this.setState({ rows: [] });
             } else {
                 console.log(this.props.data);
-                const data = this.props.data.map((company) => ({
-                    licenseNo: company.LICENSENO,
-                    brokerName: `${company.BROKERNAME1} ${company.BROKERNAME2}`,
-                    effectiveDate: company.EFFECTIVEDATE,
-                    expDate: company.EXPIRATIONDATE,
-                    address: this.setCompanyAddress(company)
-                }));
+                // const data = this.props.data.map((company) => ({
+                //     licenseNo: company.LICENSENO,
+                //     brokerName: `${company.BROKERNAME1} ${company.BROKERNAME2}`,
+                //     effectiveDate: company.EFFECTIVEDATE,
+                //     expDate: company.EXPIRATIONDATE,
+                //     address: this.setCompanyAddress(company)
+                // }));
 
-                this.setState({
-                    rows: data
-                });
+                // this.setState({
+                //     rows: data
+                // });
             }
         }
 
