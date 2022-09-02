@@ -32,19 +32,22 @@ class Affidavits extends React.Component {
         console.log("prev Props:", prevProps);
         console.log("props:", this.props);
         console.log("state", this.state);
-        console.log("Main Token", this.props.token);
-        console.log("API Token", this.props.apiToken);
-        console.log("Session Token", this.state.sessionToken);
+
+        if (prevProps.error !== this.props.error && this.props.error !== null) {
+            this.setState({ serverError: !this.state.serverError });
+        }
+
+        //  If no session Token, use reference in local storage
         if (!this.state.sessionToken) {
             this.setState({
                 sessionToken: window.localStorage.getItem('TOKEN')
             })
         }
         
+        //  Check for token returned from API response, if different from current sessionToken,
+        //  update local storage reference and set new sessionToken from api token
         if (this.props.apiToken && (this.props.apiToken !== this.state.sessionToken)) {
-            console.log("setting local storage token!!!")
             window.localStorage.setItem('TOKEN', JSON.stringify(this.props.apiToken));
-            console.log("Stored Token", window.localStorage.getItem('TOKEN'));
             this.setState({
                 sessionToken: this.props.apiToken
             })
@@ -72,9 +75,7 @@ class Affidavits extends React.Component {
             }
         }
 
-        if (prevProps.error !== this.props.error && this.props.error !== null) {
-            this.setState({ serverError: !this.state.serverError });
-        }
+        
     }
 
     setCompanyAddress(company) {
