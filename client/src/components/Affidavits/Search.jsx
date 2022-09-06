@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef } from 'react';
 import { Typography, Paper, Grid, IconButton, Tooltip, Stack } from '@mui/material';
 import {
     SearchInput,
@@ -40,19 +40,12 @@ function Search({
     handleHelperText,
     adjustPadding,
     advancedSearchActive, 
-    handleShowAdvancedSearch
+    handleShowAdvancedSearch,
+    handleFromDateInput,
+    handleToDateInput,
+    standardSearch
 }) {
     const advancedSearchRef = useRef(null);
-    // const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
-
-    // const handleShowAdvancedSearch = useCallback(() => {
-    //     handleAdjustPadding();
-    //     if (!showAdvancedSearch) {
-    //         setShowAdvancedSearch(true);
-    //     } else {
-    //         setShowAdvancedSearch(false);
-    //     }
-    // }, [showAdvancedSearch]);
 
     return (
         <Paper
@@ -88,10 +81,8 @@ function Search({
                     <Grid item>
                         <DateInput
                             label={'Inception Date'}
-                            onChange={() => {
-                                console.log('date changed');
-                            }}
-                            value={null}
+                            onChange={handleFromDateInput}
+                            value={standardSearch.INCEPTIONFROM}
                         />
                     </Grid>
                     <Grid item>
@@ -100,10 +91,8 @@ function Search({
                     <Grid item sx={{ mr: 3 }}>
                         <DateInput
                             label={'Inception Date'}
-                            onChange={() => {
-                                console.log('date changed');
-                            }}
-                            value={null}
+                            onChange={handleToDateInput}
+                            value={standardSearch.INCEPTIONTO}
                         />
                     </Grid>
                     <Grid item sx={{ mt: 1, mr: 3 }}>

@@ -5,19 +5,21 @@ import { connect } from 'react-redux';
 import { getAffidavits } from '../store/actions/affidavits';
 import { Snackbar } from '@aeros-ui/components';
 import isEmpty from '../functions/isEmpty';
+import { format } from 'date-fns';
 
 class Affidavits extends React.Component {
     state = {
         rows: [],
         errorStyle: false,
+        datesRangeError: false,
         serverError: false,
         errorMessage: '',
         adjustPadding: false,
         advancedSearchActive: false,
         standardSearch: {
             searchValue: '',
-            INCEPTIONFROM: '',
-            INCEPTIONTO: '',
+            INCEPTIONFROM: null,
+            INCEPTIONTO: null,
         },
         advancedSearch: {
             AFFIDAVITNUMBER: '',
@@ -41,37 +43,12 @@ class Affidavits extends React.Component {
         if (prevProps.error !== this.props.error && this.props.error !== null) {
             this.setState({ serverError: !this.state.serverError });
         }
-
-        this.setSessionToken();
-        this.checkCurrentData(prevProps);
-    }
-
-    checkCurrentData = (prevProps) => {
-        if ((JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) &&
-            !isEmpty(this.props.data)){
-
+        if ((JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) && !isEmpty(this.props.data)){
             if (this.props.data.hasOwnProperty('NODATA')) {
                 this.setState({ rows: [] });
             } else {
                 console.log(this.props.data);
             }
-        }
-    }
-
-    setSessionToken = () => {
-        //  If no session Token, use reference in local storage
-        if (!this.state.sessionToken) {
-            this.setState({
-                sessionToken: window.localStorage.getItem('TOKEN')
-            })
-        }
-        //  Check for token returned from API response, if different from current sessionToken,
-        //  update local storage reference and set new sessionToken from api token
-        if (this.props.apiToken !== null && (this.props.apiToken !== this.state.sessionToken)) {
-            window.localStorage.setItem('TOKEN', this.props.apiToken);
-            this.setState({
-                sessionToken: this.props.apiToken
-            })
         }
     }
 
@@ -101,33 +78,67 @@ class Affidavits extends React.Component {
             PREMIUMTO: this.state.advancedSearch.PREMIUMTO
         };
 
-        if (this.state.standardSearch.searchValue.length >= 3) {
-            this.props.getAffidavits(this.props.endpoint, this.state.sessionToken, data);
-        } else {
-            this.setState({
-                errorStyle: true
-            });
+        if (this.checkValidSearchParams()) {
+            this.props.getAffidavits(this.props.endpoint, this.props.token, data);
         }
     };
 
     //  WIP
     checkValidSearchParams = () => {
         if (!this.state.advancedSearchActive) {
-            if (this.state.standardSearch.searchValue.length >= 3) {
-                return true;
-            } else {
+            console.log("checking params 1!!")
+            if (this.state.standardSearch.searchValue.length < 3) {
                 this.setState({
                     errorStyle: true
-                });
+                })
+
+                return false;
+            }
+            else if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
+                return this.checkInceptionDateRange();
+            }
+           
+            return true;
+        }
+    }
+
+    checkInceptionDateRange = () => {
+        if (this.state.standardSearch.INCEPTIONFROM.length && this.state.standardSearch.INCEPTIONTO.length) {
+            if (new Date(this.state.standardSearch.INCEPTIONFROM).getTime() < new Date(this.state.standardSearch.INCEPTIONTO).getTime()) {
+                return true;
             }
         }
+        else {
+            this.setState({
+                datesRangeError: true
+            })
+        
+            return false;
+        }
+    }
 
-        return false;
+    handleFromDateInput = (value) => {
+        this.setState({
+            standardSearch: {
+                ...this.state.standardSearch,
+                INCEPTIONFROM: format(new Date(value), 'MM/dd/yyyy'),
+            }
+        })
+    }
+
+    handleToDateInput = (value) => {
+        this.setState({
+            standardSearch: {
+                ...this.state.standardSearch,
+                INCEPTIONTO: format(new Date(value), 'MM/dd/yyyy'),
+            }
+        })
     }
 
     handleChange = (e) => {
         this.setState({
             standardSearch: {
+                ...this.state.standardSearch, 
                 searchValue: e.target.value
             },
             errorStyle: false
@@ -195,6 +206,9 @@ class Affidavits extends React.Component {
                     handleAdjustPadding={this.handleAdjustPadding}
                     advancedSearchActive={this.state.advancedSearchActive}
                     handleShowAdvancedSearch={this.handleShowAdvancedSearch}
+                    handleFromDateInput={this.handleFromDateInput}
+                    handleToDateInput={this.handleToDateInput}
+                    standardSearch={this.state.standardSearch}
                 />
                 <Table
                     loading={this.props.loading}
@@ -221,7 +235,6 @@ const mapStateToProps = (state) => {
         loading: state.affidavits.loading,
         data: state.affidavits.data,
         error: state.affidavits.error,
-        apiToken: state.affidavits.token
     };
 };
 

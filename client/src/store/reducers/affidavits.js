@@ -15,8 +15,7 @@ const affidavits = (state = storeState.affidavits, action) => {
             return {
                 ...state,
                 loading: !state.loading,
-                data: action.value, 
-                token: action.token
+                data: action.value
             };
         case TYPES.GET_AFFIDAVITS_FAILURE:
             return {
