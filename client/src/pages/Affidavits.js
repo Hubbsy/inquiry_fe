@@ -8,13 +8,17 @@ import isEmpty from '../functions/isEmpty';
 
 class Affidavits extends React.Component {
     state = {
-        searchValue: '',
         rows: [],
         errorStyle: false,
         serverError: false,
         errorMessage: '',
         adjustPadding: false,
         advancedSearchActive: false,
+        standardSearch: {
+            searchValue: '',
+            INCEPTIONFROM: '',
+            INCEPTIONTO: '',
+        },
         advancedSearch: {
             AFFIDAVITNUMBER: '',
             POLICYNUMBER: '',
@@ -38,45 +42,37 @@ class Affidavits extends React.Component {
             this.setState({ serverError: !this.state.serverError });
         }
 
+        this.setSessionToken();
+        this.checkCurrentData(prevProps);
+    }
+
+    checkCurrentData = (prevProps) => {
+        if ((JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) &&
+            !isEmpty(this.props.data)){
+
+            if (this.props.data.hasOwnProperty('NODATA')) {
+                this.setState({ rows: [] });
+            } else {
+                console.log(this.props.data);
+            }
+        }
+    }
+
+    setSessionToken = () => {
         //  If no session Token, use reference in local storage
         if (!this.state.sessionToken) {
             this.setState({
                 sessionToken: window.localStorage.getItem('TOKEN')
             })
         }
-        
         //  Check for token returned from API response, if different from current sessionToken,
         //  update local storage reference and set new sessionToken from api token
         if (this.props.apiToken !== null && (this.props.apiToken !== this.state.sessionToken)) {
-            window.localStorage.setItem('TOKEN', JSON.stringify(this.props.apiToken));
+            window.localStorage.setItem('TOKEN', this.props.apiToken);
             this.setState({
                 sessionToken: this.props.apiToken
             })
         }
-
-        if (
-            JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data) &&
-            !isEmpty(this.props.data))
-            {
-            if (this.props.data.hasOwnProperty('NODATA')) {
-                this.setState({ rows: [] });
-            } else {
-                console.log(this.props.data);
-                // const data = this.props.data.map((company) => ({
-                //     licenseNo: company.LICENSENO,
-                //     brokerName: `${company.BROKERNAME1} ${company.BROKERNAME2}`,
-                //     effectiveDate: company.EFFECTIVEDATE,
-                //     expDate: company.EXPIRATIONDATE,
-                //     address: this.setCompanyAddress(company)
-                // }));
-
-                // this.setState({
-                //     rows: data
-                // });
-            }
-        }
-
-        
     }
 
     setCompanyAddress(company) {
@@ -90,9 +86,9 @@ class Affidavits extends React.Component {
         };
     }
 
-    showRows = () => {
+    executeSearch = () => {
         const data = {
-            COMBOSEARCH: this.state.searchValue,
+            COMBOSEARCH: this.state.standardSearch.searchValue,
             AFFIDAVITNUMBER: this.state.advancedSearch.AFFIDAVITNUMBER,
             POLICYNUMBER: this.state.advancedSearch.POLICYNUMBER,
             INSUREDNAME: this.state.advancedSearch.INSUREDNAME,
@@ -105,7 +101,7 @@ class Affidavits extends React.Component {
             PREMIUMTO: this.state.advancedSearch.PREMIUMTO
         };
 
-        if (this.state.searchValue.length >= 3) {
+        if (this.state.standardSearch.searchValue.length >= 3) {
             this.props.getAffidavits(this.props.endpoint, this.state.sessionToken, data);
         } else {
             this.setState({
@@ -114,16 +110,33 @@ class Affidavits extends React.Component {
         }
     };
 
+    //  WIP
+    checkValidSearchParams = () => {
+        if (!this.state.advancedSearchActive) {
+            if (this.state.standardSearch.searchValue.length >= 3) {
+                return true;
+            } else {
+                this.setState({
+                    errorStyle: true
+                });
+            }
+        }
+
+        return false;
+    }
+
     handleChange = (e) => {
         this.setState({
-            searchValue: e.target.value,
+            standardSearch: {
+                searchValue: e.target.value
+            },
             errorStyle: false
         });
     };
 
     handleKeyPress = (e) => {
         if (e.charCode === 13 && e.target.value.length >= 3) {
-            this.showRows();
+            this.executeSearch();
         } else if (e.charCode === 13) {
             this.setState({
                 errorStyle: true
@@ -139,7 +152,9 @@ class Affidavits extends React.Component {
 
     handleClearInput = () => {
         this.setState({
-            searchValue: ''
+            standardSearch: {
+                searchValue: ''
+            }
         });
     };
 
@@ -170,17 +185,16 @@ class Affidavits extends React.Component {
                 <Search
                     loading={this.props.loading}
                     errorStyle={this.state.errorStyle}
-                    searchValue={this.state.searchValue}
+                    searchValue={this.state.standardSearch.searchValue}
                     handleChange={this.handleChange}
                     handleKeyPress={this.handleKeyPress}
-                    showRows={this.showRows}
+                    executeSearch={this.executeSearch}
                     handleClearInput={this.handleClearInput}
                     handleHelperText={this.handleHelperText}
                     adjustPadding={this.state.adjustPadding}
                     handleAdjustPadding={this.handleAdjustPadding}
                     advancedSearchActive={this.state.advancedSearchActive}
                     handleShowAdvancedSearch={this.handleShowAdvancedSearch}
-
                 />
                 <Table
                     loading={this.props.loading}

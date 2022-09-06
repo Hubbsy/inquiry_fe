@@ -35,7 +35,7 @@ function Search({
     searchValue,
     handleChange,
     handleKeyPress,
-    showRows,
+    executeSearch,
     handleClearInput,
     handleHelperText,
     adjustPadding,
@@ -107,7 +107,7 @@ function Search({
                         />
                     </Grid>
                     <Grid item sx={{ mt: 1, mr: 3 }}>
-                        <SearchButton sx={{ ml: 1 }} loading={loading} onClick={showRows}>
+                        <SearchButton sx={{ ml: 1 }} loading={loading} onClick={executeSearch}>
                             Search
                         </SearchButton>
                     </Grid>
