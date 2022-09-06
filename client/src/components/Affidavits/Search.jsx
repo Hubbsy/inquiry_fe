@@ -83,7 +83,7 @@ function Search({
                         <DateInput
                             label={'Inception Date'}
                             onChange={handleFromDateInput}
-                            value={standardSearch.INCEPTIONFROM}
+                            value={datesRangeError.active ? "" : standardSearch.INCEPTIONFROM}
                             helperText={datesRangeError.message}
                         />
                     </Grid>

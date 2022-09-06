@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { getAffidavits } from '../store/actions/affidavits';
 import { Snackbar } from '@aeros-ui/components';
 import isEmpty from '../functions/isEmpty';
-import { format, isValid } from 'date-fns';
+import { format, isBefore } from 'date-fns';
 
 class Affidavits extends React.Component {
     state = {
@@ -50,7 +50,7 @@ class Affidavits extends React.Component {
             if (this.props.data.hasOwnProperty('NODATA')) {
                 this.setState({ rows: [] });
             } else {
-                console.log(this.props.data);
+                console.log("DATA RES", this.props.data);
             }
         }
     }
@@ -72,8 +72,8 @@ class Affidavits extends React.Component {
             AFFIDAVITNUMBER: this.state.advancedSearch.AFFIDAVITNUMBER,
             POLICYNUMBER: this.state.advancedSearch.POLICYNUMBER,
             INSUREDNAME: this.state.advancedSearch.INSUREDNAME,
-            INCEPTIONFROM: this.state.advancedSearch.INCEPTIONFROM,
-            INCEPTIONTO: this.state.advancedSearch.INCEPTIONTO,
+            INCEPTIONFROM: this.state.standardSearch.INCEPTIONFROM ? format(new Date(this.state.standardSearch.INCEPTIONFROM), "MM/dd/yyyy") : "",
+            INCEPTIONTO: this.state.standardSearch.INCEPTIONTO ? format(new Date(this.state.standardSearch.INCEPTIONTO), "MM/dd/yyyy") : "",
             CONTACTNAME: this.state.advancedSearch.CONTACTNAME,
             BROKERREFERENCE: this.state.advancedSearch.BROKERREFERENCE,
             BATCH: this.state.advancedSearch.BATCH,
@@ -82,32 +82,36 @@ class Affidavits extends React.Component {
         };
 
         if (this.checkValidSearchParams()) {
+            console.log(data)
             this.props.getAffidavits(this.props.endpoint, this.props.token, data);
         }
     };
 
     //  WIP
     checkValidSearchParams = () => {
-        if (!this.state.advancedSearchActive) {
-            console.log("checking params 1!!")
-            if (this.state.standardSearch.searchValue.length < 3) {
-                this.setState({
-                    errorStyle: true
-                })
+        if (this.state.standardSearch.searchValue.length < 3) {
+            this.setState({
+                errorStyle: true
+            })
 
-                return false;
-            }
-            else if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
-                return this.checkInceptionDateRange();
-            }
-           
-            return true;
+            return false;
         }
+        
+        if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
+            return this.checkInceptionDateRange();
+        }
+
+        // if (this.state.advancedSearchActive) {
+        //     return this.checkPremiumRange();
+        // }
+        
+        return true;
+     
     }
 
     checkInceptionDateRange = () => {
         if (this.state.standardSearch.INCEPTIONFROM && this.state.standardSearch.INCEPTIONTO) {
-            if (new Date(this.state.standardSearch.INCEPTIONFROM).getTime() < new Date(this.state.standardSearch.INCEPTIONTO).getTime()) {
+            if (isBefore(new Date(this.state.standardSearch.INCEPTIONFROM), new Date(this.state.standardSearch.INCEPTIONTO))) {
                 return true;
             }
             else {
@@ -153,7 +157,7 @@ class Affidavits extends React.Component {
             },
             standardSearch: {
                 ...this.state.standardSearch,
-                INCEPTIONTO: format(new Date(value), 'MM/dd/yyyy'),
+                INCEPTIONTO: value,
             }
         })
     }
@@ -207,7 +211,21 @@ class Affidavits extends React.Component {
     handleShowAdvancedSearch = () => {
         this.handleAdjustPadding();
         if (!this.state.advancedSearchActive) {
-            this.setState({advancedSearchActive: true})
+            this.setState({
+                advancedSearchActive: true, 
+                advancedSearch: {
+                    AFFIDAVITNUMBER: '',
+                    POLICYNUMBER: '',
+                    INSUREDNAME: '',
+                    INCEPTIONFROM: '',
+                    INCEPTIONTO: '',
+                    CONTACTNAME: '',
+                    BROKERREFERENCE: '',
+                    BATCH: '',
+                    PREMIUMFROM: '',
+                    PREMIUMTO: ''
+                }
+            })
         } else {
             this.setState({advancedSearchActive: false})
         }
