@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { getAffidavits } from '../store/actions/affidavits';
 import { Snackbar } from '@aeros-ui/components';
 import isEmpty from '../functions/isEmpty';
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 
 class Affidavits extends React.Component {
     state = {
@@ -121,6 +121,7 @@ class Affidavits extends React.Component {
                 return false;
             }
         }
+
         this.setState({
             datesRangeError: {
                 active: true,
@@ -139,7 +140,7 @@ class Affidavits extends React.Component {
             },
             standardSearch: {
                 ...this.state.standardSearch,
-                INCEPTIONFROM: format(new Date(value), 'MM/dd/yyyy'),
+                INCEPTIONFROM: value,
             }
         })
     }
