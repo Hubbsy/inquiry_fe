@@ -43,6 +43,7 @@ function Search({
     handleShowAdvancedSearch,
     handleFromDateInput,
     handleToDateInput,
+    datesRangeError, 
     standardSearch
 }) {
     const advancedSearchRef = useRef(null);
@@ -82,7 +83,8 @@ function Search({
                         <DateInput
                             label={'Inception Date'}
                             onChange={handleFromDateInput}
-                            value={standardSearch.INCEPTIONFROM}
+                            value={datesRangeError.active ? "" : standardSearch.INCEPTIONFROM}
+                            helperText={datesRangeError.message}
                         />
                     </Grid>
                     <Grid item>
@@ -92,7 +94,8 @@ function Search({
                         <DateInput
                             label={'Inception Date'}
                             onChange={handleToDateInput}
-                            value={standardSearch.INCEPTIONTO}
+                            value={datesRangeError.active ? "" : standardSearch.INCEPTIONTO}
+                            helperText={datesRangeError.message}
                         />
                     </Grid>
                     <Grid item sx={{ mt: 1, mr: 3 }}>

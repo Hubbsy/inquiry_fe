@@ -11,7 +11,10 @@ class Affidavits extends React.Component {
     state = {
         rows: [],
         errorStyle: false,
-        datesRangeError: false,
+        datesRangeError: {
+            active: false, 
+            message: null
+        },
         serverError: false,
         errorMessage: '',
         adjustPadding: false,
@@ -103,22 +106,37 @@ class Affidavits extends React.Component {
     }
 
     checkInceptionDateRange = () => {
-        if (this.state.standardSearch.INCEPTIONFROM.length && this.state.standardSearch.INCEPTIONTO.length) {
+        if (this.state.standardSearch.INCEPTIONFROM && this.state.standardSearch.INCEPTIONTO) {
             if (new Date(this.state.standardSearch.INCEPTIONFROM).getTime() < new Date(this.state.standardSearch.INCEPTIONTO).getTime()) {
                 return true;
             }
+            else {
+                this.setState({
+                    datesRangeError: {
+                        active: true,
+                        message: "TO date cannot precede FROM date"
+                    }
+                })
+
+                return false;
+            }
         }
-        else {
-            this.setState({
-                datesRangeError: true
-            })
-        
-            return false;
-        }
+        this.setState({
+            datesRangeError: {
+                active: true,
+                message: "Must include both FROM and TO Inception dates"
+            }
+        })
+    
+        return false;
     }
 
     handleFromDateInput = (value) => {
         this.setState({
+            datesRangeError: {
+                active: false, 
+                message: null
+            },
             standardSearch: {
                 ...this.state.standardSearch,
                 INCEPTIONFROM: format(new Date(value), 'MM/dd/yyyy'),
@@ -128,6 +146,10 @@ class Affidavits extends React.Component {
 
     handleToDateInput = (value) => {
         this.setState({
+            datesRangeError: {
+                active: false, 
+                message: null
+            },
             standardSearch: {
                 ...this.state.standardSearch,
                 INCEPTIONTO: format(new Date(value), 'MM/dd/yyyy'),
@@ -208,6 +230,7 @@ class Affidavits extends React.Component {
                     handleShowAdvancedSearch={this.handleShowAdvancedSearch}
                     handleFromDateInput={this.handleFromDateInput}
                     handleToDateInput={this.handleToDateInput}
+                    datesRangeError={this.state.datesRangeError}
                     standardSearch={this.state.standardSearch}
                 />
                 <Table
