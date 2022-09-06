@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { getAffidavits } from '../store/actions/affidavits';
 import { Snackbar } from '@aeros-ui/components';
 import isEmpty from '../functions/isEmpty';
-import { format, isBefore } from 'date-fns';
+import { format, isBefore, isValid } from 'date-fns';
 
 class Affidavits extends React.Component {
     state = {
@@ -72,8 +72,8 @@ class Affidavits extends React.Component {
             AFFIDAVITNUMBER: this.state.advancedSearch.AFFIDAVITNUMBER,
             POLICYNUMBER: this.state.advancedSearch.POLICYNUMBER,
             INSUREDNAME: this.state.advancedSearch.INSUREDNAME,
-            INCEPTIONFROM: this.state.standardSearch.INCEPTIONFROM ? format(new Date(this.state.standardSearch.INCEPTIONFROM), "MM/dd/yyyy") : "",
-            INCEPTIONTO: this.state.standardSearch.INCEPTIONTO ? format(new Date(this.state.standardSearch.INCEPTIONTO), "MM/dd/yyyy") : "",
+            INCEPTIONFROM: isValid(this.state.standardSearch.INCEPTIONFROM) ? format(new Date(this.state.standardSearch.INCEPTIONFROM), "MM/dd/yyyy") : "",
+            INCEPTIONTO: isValid(this.state.standardSearch.INCEPTIONTO) ? format(new Date(this.state.standardSearch.INCEPTIONTO), "MM/dd/yyyy") : "",
             CONTACTNAME: this.state.advancedSearch.CONTACTNAME,
             BROKERREFERENCE: this.state.advancedSearch.BROKERREFERENCE,
             BATCH: this.state.advancedSearch.BATCH,
@@ -82,7 +82,6 @@ class Affidavits extends React.Component {
         };
 
         if (this.checkValidSearchParams()) {
-            console.log(data)
             this.props.getAffidavits(this.props.endpoint, this.props.token, data);
         }
     };
@@ -110,7 +109,7 @@ class Affidavits extends React.Component {
     }
 
     checkInceptionDateRange = () => {
-        if (this.state.standardSearch.INCEPTIONFROM && this.state.standardSearch.INCEPTIONTO) {
+        if (isValid(this.state.standardSearch.INCEPTIONFROM) && isValid(this.state.standardSearch.INCEPTIONTO)) {
             if (isBefore(new Date(this.state.standardSearch.INCEPTIONFROM), new Date(this.state.standardSearch.INCEPTIONTO))) {
                 return true;
             }
@@ -211,8 +210,11 @@ class Affidavits extends React.Component {
     handleShowAdvancedSearch = () => {
         this.handleAdjustPadding();
         if (!this.state.advancedSearchActive) {
+            this.setState({advancedSearchActive: true})
+        } 
+        else {
             this.setState({
-                advancedSearchActive: true, 
+                advancedSearchActive: false, 
                 advancedSearch: {
                     AFFIDAVITNUMBER: '',
                     POLICYNUMBER: '',
@@ -226,10 +228,20 @@ class Affidavits extends React.Component {
                     PREMIUMTO: ''
                 }
             })
-        } else {
-            this.setState({advancedSearchActive: false})
         }
     };
+
+    handleAdvancedSearchInputs = (e) => {
+        if (this.state.advancedSearch.hasOwnProperty(e.target.name)) {
+            console.log(e.target.name)
+            this.setState({
+                advancedSearch: {
+                    ...this.state.advancedSearch,
+                    [e.target.name]: e.target.value
+                } 
+            })
+        }
+    }
 
     render() {
         return (
@@ -251,6 +263,8 @@ class Affidavits extends React.Component {
                     handleToDateInput={this.handleToDateInput}
                     datesRangeError={this.state.datesRangeError}
                     standardSearch={this.state.standardSearch}
+                    advancedSearch={this.state.advancedSearch}
+                    handleAdvancedSearchInputs={this.handleAdvancedSearchInputs}
                 />
                 <Table
                     loading={this.props.loading}

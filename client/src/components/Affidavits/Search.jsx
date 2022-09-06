@@ -44,7 +44,9 @@ function Search({
     handleFromDateInput,
     handleToDateInput,
     datesRangeError, 
-    standardSearch
+    standardSearch,
+    handleAdvancedSearchInputs,
+    advancedSearch
 }) {
     const advancedSearchRef = useRef(null);
 
@@ -127,52 +129,67 @@ function Search({
                             <Grid item xs={2.5}>
                                 <TextInput
                                     width={'100%'}
-                                    value={''}
+                                    value={advancedSearch.AFFIDAVITNUMBER}
                                     label={'Search by Affidavit No'}
+                                    name={'AFFIDAVITNUMBER'}
+                                    onChange={handleAdvancedSearchInputs}
                                 />
                             </Grid>
                             <Grid item xs={2.5}>
                                 <TextInput
                                     width={'100%'}
-                                    value={''}
+                                    value={advancedSearch.POLICYNUMBER}
                                     label={'Search by Policy No'}
+                                    name={'POLICYNUMBER'}
+                                    onChange={handleAdvancedSearchInputs}
                                 />
                             </Grid>
                             <Grid item xs={2.5}>
-                                <TextInput width={'100%'} value={''} label={'Search by Batch'} />
+                                <TextInput 
+                                width={'100%'} 
+                                value={advancedSearch.BATCH} 
+                                label={'Search by Batch'} 
+                                name={'BATCH'}
+                                onChange={handleAdvancedSearchInputs}
+                                />
                             </Grid>
                         </Grid>
                         <Grid container sx={{ flexGrow: 1, pt: 3 }} spacing={2}>
                             <Grid item xs={2.5}>
                                 <TextInput
                                     width={'100%'}
-                                    value={''}
+                                    value={advancedSearch.INSUREDNAME}
                                     label={'Search by Insured Name'}
+                                    name={'INSUREDNAME'}
+                                    onChange={handleAdvancedSearchInputs}
                                 />
                             </Grid>
                             <Grid item xs={2.5}>
                                 <TextInput
                                     width={'100%'}
-                                    value={''}
+                                    value={advancedSearch.CONTACTNAME}
                                     label={'Search by Batch Contact'}
+                                    name={'CONTACTNAME'}
+                                    onChange={handleAdvancedSearchInputs}
                                 />
                             </Grid>
                             <Grid item xs={2.5}>
                                 <TextInput
                                     width={'100%'}
-                                    value={''}
+                                    value={advancedSearch.BROKERREFERENCE}
                                     label={'Search by Reference'}
+                                    name={'BROKERREFERENCE'}
+                                    onChange={handleAdvancedSearchInputs}
                                 />
                             </Grid>
                         </Grid>
                         <Grid container sx={{ flexGrow: 1, pt: 3 }}>
                             <Grid item>
                                 <CurrencyInput
-                                    label={'Premuim'}
-                                    onChange={() => {
-                                        console.log('premium changed');
-                                    }}
-                                    value={''}
+                                    label={'Premuim From'}
+                                    name={'PREMIUMFROM'}
+                                    onChange={handleAdvancedSearchInputs}
+                                    value={advancedSearch.PREMIUMFROM}
                                 />
                             </Grid>
                             <Grid item>
@@ -180,11 +197,10 @@ function Search({
                             </Grid>
                             <Grid item sx={{ mr: 3 }}>
                                 <CurrencyInput
-                                    label={'Premium'}
-                                    onChange={() => {
-                                        console.log('premium changed');
-                                    }}
-                                    value={''}
+                                    label={'Premium To'}
+                                    name={'PREMIUMTO'}
+                                    onChange={handleAdvancedSearchInputs}
+                                    value={advancedSearch.PREMIUMTO}
                                 />
                             </Grid>
                         </Grid>
