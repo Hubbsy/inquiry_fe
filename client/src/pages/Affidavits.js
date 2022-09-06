@@ -68,7 +68,7 @@ class Affidavits extends React.Component {
 
     executeSearch = () => {
         const data = {
-            COMBOSEARCH: this.state.standardSearch.searchValue,
+            COMBOSEARCH: this.state.advancedSearchActive ? this.state.standardSearch.searchValue : "",
             AFFIDAVITNUMBER: this.state.advancedSearch.AFFIDAVITNUMBER,
             POLICYNUMBER: this.state.advancedSearch.POLICYNUMBER,
             INSUREDNAME: this.state.advancedSearch.INSUREDNAME,
@@ -88,24 +88,50 @@ class Affidavits extends React.Component {
 
     //  WIP
     checkValidSearchParams = () => {
-        if (this.state.standardSearch.searchValue.length < 3) {
-            this.setState({
-                errorStyle: true
-            })
 
-            return false;
+        if (!this.state.advancedSearchActive) {
+            if (this.state.standardSearch.searchValue.length < 3) {
+                this.setState({
+                    errorStyle: true
+                })
+
+                return false;
+            }
         }
-        
+
         if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
             return this.checkInceptionDateRange();
         }
 
-        // if (this.state.advancedSearchActive) {
-        //     return this.checkPremiumRange();
-        // }
+        if (this.state.advancedSearchActive) {
+            return this.checkAdvancedSearchValid();
+        }
         
         return true;
      
+    }
+
+    checkAdvancedSearchValid = () => {
+        let advancedSearchValid = false;
+
+        for (let control in this.state.advancedSearch) {
+            if (this.state.advancedSearch[control].length >= 3) {
+                advancedSearchValid = true;
+                break;
+            }
+        }
+
+        if (this.state.advancedSearch.PREMIUMFROM || this.state.advancedSearch.PREMIUMTO) {
+            if (this.state.advancedSearch.PREMIUMFROM && this.state.advancedSearch.PREMIUMTO && 
+                (this.state.advancedSearch.PREMIUMFROM <= this.state.advancedSearch.PREMIUMTO)) {
+                advancedSearchValid = true;
+            }
+            else {
+                advancedSearchValid = false;
+            }
+        }
+
+        return advancedSearchValid;
     }
 
     checkInceptionDateRange = () => {
@@ -233,7 +259,6 @@ class Affidavits extends React.Component {
 
     handleAdvancedSearchInputs = (e) => {
         if (this.state.advancedSearch.hasOwnProperty(e.target.name)) {
-            console.log(e.target.name)
             this.setState({
                 advancedSearch: {
                     ...this.state.advancedSearch,
