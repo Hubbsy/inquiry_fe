@@ -50,7 +50,7 @@ class Affidavits extends React.Component {
             } else {
                 console.log("DATA RES", this.props.data.DATA);
                 const data = this.mapAPIResponse(this.props.data.DATA);
-                if (data.length) {
+                if (data.length > 8) {
                     this.handleAdjustPadding(true);
                 }
 
@@ -273,11 +273,16 @@ class Affidavits extends React.Component {
     handleShowAdvancedSearch = () => {
         
         if (!this.state.advancedSearchActive) {
-            this.handleAdjustPadding(true);
+            if (this.state.rows.length > 8) {
+                this.handleAdjustPadding(true);
+            }
             this.setState({advancedSearchActive: true})
         } 
         else {
-            // this.handleAdjustPadding(false);
+            if (this.state.rows.length <= 8) {
+                this.handleAdjustPadding(false);
+            }
+            
             this.setState({
                 advancedSearchActive: false, 
                 advancedSearch: {
