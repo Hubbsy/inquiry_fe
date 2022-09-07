@@ -70,7 +70,7 @@ class Affidavits extends React.Component {
             "AMOUNT":true,
             "EFFECTIVEDATE":true,
             "EXPIRATIONDATE":true,
-            "BATCHID":true,
+            "BATCHNO":true,
             "RECEIVEDATE":true,
             "PROCESSEDSTATE":true,
         }

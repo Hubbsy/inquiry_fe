@@ -50,9 +50,8 @@ export default function Columns(handlePopoverOpen) {
             title: 'Policy No.',
             field: 'POLICYNO',
             type: 'string',
-            width: '25em',
             render: (rowData) => (
-                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em'} }}>
+                <MainTableCell sx={{ width: "10em", whiteSpace: "nowrap" }}>
                     {rowData.POLICYNO}
                 </MainTableCell>
             )
@@ -61,7 +60,7 @@ export default function Columns(handlePopoverOpen) {
             title: 'Insured Name',
             field: 'RISKINSUREDNAME',
             type: 'string',
-            width: '40em',
+            width: '20em',
             render: (rowData) => (
                 <MainTableCell sx={{ whiteSpace: 'nowrap' }}>{rowData.RISKINSUREDNAME}</MainTableCell>
             )
@@ -71,7 +70,7 @@ export default function Columns(handlePopoverOpen) {
             field: 'TRANSACTIONTYPE',
             type: 'string',
             render: (rowData) => (
-                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
+                <MainTableCell sx={{ width: '5em' }}>
                     {rowData.TRANSACTIONTYPE}
                 </MainTableCell>
             )
@@ -128,6 +127,7 @@ export default function Columns(handlePopoverOpen) {
             field: 'PROCESSEDSTATE',
             type: 'string',
             width: '1em',
+            align: "center",
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
                     {rowData.PROCESSEDSTATE}
