@@ -112,7 +112,7 @@ export default function Table({ loading, rows, adjustPadding }) {
         ],
         columnsButton: true,
         filtering: showFilters,
-        searchFieldStyle: { marginRight: '1em' },
+        searchFieldStyle: { marginRight: '1em', width: "100%" },
         emptyRowsWhenPaging: rows.length ? false : true
     };
 

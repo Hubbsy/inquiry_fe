@@ -25,13 +25,18 @@ class Affidavits extends React.Component {
             PREMIUMFROM: '',
             PREMIUMTO: ''
         },
-        errorStyle: false,
         datesRangeError: {
+            active: false, 
+            startDateError: false,
+            endDateError: false,
+            message: null
+        },
+        advancedInputsError: {
             active: false, 
             message: null
         },
+        errorStyle: false,
         serverError: false,
-        errorMessage: '',
         adjustPadding: false,
         advancedSearchActive: false
     };
@@ -50,6 +55,7 @@ class Affidavits extends React.Component {
             } else {
                 console.log("DATA RES", this.props.data.DATA);
                 const data = this.mapAPIResponse(this.props.data.DATA);
+
                 if (data.length > 8) {
                     this.handleAdjustPadding(true);
                 }
@@ -179,7 +185,7 @@ class Affidavits extends React.Component {
             else {
                 this.setState({
                     datesRangeError: {
-                        active: true,
+                        endDateError: true,
                         message: "Start date cannot precede End date"
                     }
                 })
@@ -187,14 +193,24 @@ class Affidavits extends React.Component {
                 return false;
             }
         }
+        
+        if (!isValid(this.state.standardSearch.INCEPTIONFROM)) {
+            this.setState({
+                datesRangeError: {
+                    startDateError: true,
+                    message: "Must enter a valid start date"
+                }
+            })
+        }
+        else {
+            this.setState({
+                datesRangeError: {
+                    endDateError: true,
+                    message: "Must enter a valid end date"
+                }
+            })
+        }
 
-        this.setState({
-            datesRangeError: {
-                active: true,
-                message: "Must include both Start and End dates"
-            }
-        })
-    
         return false;
     }
 
@@ -244,6 +260,19 @@ class Affidavits extends React.Component {
         }
     };
 
+    handleAdvancedKeyPress = (e) => {
+        if (e.charCode === 13 && e.target.value.length >= 3) {
+            this.executeSearch();
+        } else if (e.charCode === 13) {
+            this.setState({
+                advancedInputsError: {
+                    error: true, 
+                    message: "Must be at least 3 characters"
+                }
+            });
+        }
+    };
+
     handleClose = () => {
         this.setState({
             serverError: !this.state.serverError
@@ -273,9 +302,7 @@ class Affidavits extends React.Component {
     handleShowAdvancedSearch = () => {
         
         if (!this.state.advancedSearchActive) {
-            if (this.state.rows.length > 8) {
-                this.handleAdjustPadding(true);
-            }
+            this.handleAdjustPadding(true)
             this.setState({advancedSearchActive: true})
         } 
         else {
@@ -332,6 +359,8 @@ class Affidavits extends React.Component {
                     standardSearch={this.state.standardSearch}
                     advancedSearch={this.state.advancedSearch}
                     handleAdvancedSearchInputs={this.handleAdvancedSearchInputs}
+                    handleAdvancedKeyPress={this.handleAdvancedKeyPress}
+                    advancedInputsError={this.state.advancedInputsError}
                 />
                 <Table
                     loading={this.props.loading}

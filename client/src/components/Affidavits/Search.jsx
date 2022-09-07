@@ -46,7 +46,9 @@ function Search({
     datesRangeError, 
     standardSearch,
     handleAdvancedSearchInputs,
-    advancedSearch
+    advancedSearch,
+    handleAdvancedKeyPress,
+    advancedInputsError
 }) {
     const advancedSearchRef = useRef(null);
 
@@ -85,8 +87,8 @@ function Search({
                         <DateInput
                             label={'Inception Date'}
                             onChange={handleFromDateInput}
-                            value={datesRangeError.active ? "" : standardSearch.INCEPTIONFROM}
-                            helperText={datesRangeError.message}
+                            value={datesRangeError.startDateError ? "" : standardSearch.INCEPTIONFROM}
+                            helperText={datesRangeError.startDateError ? datesRangeError.message : null}
                         />
                     </Grid>
                     <Grid item>
@@ -96,8 +98,8 @@ function Search({
                         <DateInput
                             label={'Inception Date'}
                             onChange={handleToDateInput}
-                            value={datesRangeError.active ? "" : standardSearch.INCEPTIONTO}
-                            helperText={datesRangeError.message}
+                            value={datesRangeError.endDateError ? "" : standardSearch.INCEPTIONTO}
+                            helperText={datesRangeError.endDateError ? datesRangeError.message : null}
                         />
                     </Grid>
                     <Grid item sx={{ mt: 1, mr: 3 }}>
@@ -133,6 +135,7 @@ function Search({
                                     label={'Search by Affidavit No'}
                                     name={'AFFIDAVITNUMBER'}
                                     onChange={handleAdvancedSearchInputs}
+                                    onKeyPress={handleAdvancedKeyPress}
                                 />
                             </Grid>
                             <Grid item xs={2.5}>
@@ -142,15 +145,17 @@ function Search({
                                     label={'Search by Policy No'}
                                     name={'POLICYNUMBER'}
                                     onChange={handleAdvancedSearchInputs}
+                                    onKeyPress={handleAdvancedKeyPress}
                                 />
                             </Grid>
                             <Grid item xs={2.5}>
                                 <TextInput 
-                                width={'100%'} 
-                                value={advancedSearch.BATCH} 
-                                label={'Search by Batch'} 
-                                name={'BATCH'}
-                                onChange={handleAdvancedSearchInputs}
+                                    width={'100%'} 
+                                    value={advancedSearch.BATCH} 
+                                    label={'Search by Batch'} 
+                                    name={'BATCH'}
+                                    onChange={handleAdvancedSearchInputs}
+                                    onKeyPress={handleAdvancedKeyPress}
                                 />
                             </Grid>
                         </Grid>
@@ -162,6 +167,7 @@ function Search({
                                     label={'Search by Insured Name'}
                                     name={'INSUREDNAME'}
                                     onChange={handleAdvancedSearchInputs}
+                                    onKeyPress={handleAdvancedKeyPress}
                                 />
                             </Grid>
                             <Grid item xs={2.5}>
@@ -171,6 +177,7 @@ function Search({
                                     label={'Search by Batch Contact'}
                                     name={'CONTACTNAME'}
                                     onChange={handleAdvancedSearchInputs}
+                                    onKeyPress={handleAdvancedKeyPress}
                                 />
                             </Grid>
                             <Grid item xs={2.5}>
@@ -180,6 +187,7 @@ function Search({
                                     label={'Search by Reference'}
                                     name={'BROKERREFERENCE'}
                                     onChange={handleAdvancedSearchInputs}
+                                    onKeyPress={handleAdvancedKeyPress}
                                 />
                             </Grid>
                         </Grid>
