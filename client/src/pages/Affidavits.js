@@ -10,15 +10,6 @@ import { format, isBefore, isValid } from 'date-fns';
 class Affidavits extends React.Component {
     state = {
         rows: [],
-        errorStyle: false,
-        datesRangeError: {
-            active: false, 
-            message: null
-        },
-        serverError: false,
-        errorMessage: '',
-        adjustPadding: false,
-        advancedSearchActive: false,
         standardSearch: {
             searchValue: '',
             INCEPTIONFROM: null,
@@ -33,10 +24,17 @@ class Affidavits extends React.Component {
             BATCH: '',
             PREMIUMFROM: '',
             PREMIUMTO: ''
-        }
+        },
+        errorStyle: false,
+        datesRangeError: {
+            active: false, 
+            message: null
+        },
+        serverError: false,
+        errorMessage: '',
+        adjustPadding: false,
+        advancedSearchActive: false
     };
-
-    
 
     componentDidUpdate(prevProps) {
         console.log("prev Props:", prevProps);
@@ -52,6 +50,10 @@ class Affidavits extends React.Component {
             } else {
                 console.log("DATA RES", this.props.data.DATA);
                 const data = this.mapAPIResponse(this.props.data.DATA);
+                if (data.length) {
+                    this.handleAdjustPadding(true);
+                }
+
                 this.setState({
                     rows: data
                 });
@@ -118,7 +120,7 @@ class Affidavits extends React.Component {
         };
 
         if (this.checkValidSearchParams()) {
-            this.props.getAffidavits(this.props.endpoint, this.props.token, data);
+            this.props.getAffidavits(this.props.endpoint, window.localStorage.getItem("TOKEN") ? window.localStorage.getItem("TOKEN") : this.props.token, data);
         }
     };
 
@@ -262,18 +264,20 @@ class Affidavits extends React.Component {
         });
     };
 
-    handleAdjustPadding = () => {
+    handleAdjustPadding = (flag) => {
         this.setState({
-            adjustPadding: !this.state.adjustPadding
+            adjustPadding: flag
         });
     };
 
     handleShowAdvancedSearch = () => {
-        this.handleAdjustPadding();
+        
         if (!this.state.advancedSearchActive) {
+            this.handleAdjustPadding(true);
             this.setState({advancedSearchActive: true})
         } 
         else {
+            // this.handleAdjustPadding(false);
             this.setState({
                 advancedSearchActive: false, 
                 advancedSearch: {
