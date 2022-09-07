@@ -26,7 +26,6 @@ class Affidavits extends React.Component {
             PREMIUMTO: ''
         },
         datesRangeError: {
-            active: false, 
             startDateError: false,
             endDateError: false,
             message: null
@@ -124,6 +123,7 @@ class Affidavits extends React.Component {
             PREMIUMFROM: this.state.advancedSearch.PREMIUMFROM,
             PREMIUMTO: this.state.advancedSearch.PREMIUMTO
         };
+        console.log(data)
 
         if (this.checkValidSearchParams()) {
             this.props.getAffidavits(this.props.endpoint, window.localStorage.getItem("TOKEN") ? window.localStorage.getItem("TOKEN") : this.props.token, data);
@@ -132,6 +132,10 @@ class Affidavits extends React.Component {
 
     //  WIP
     checkValidSearchParams = () => {
+
+        if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
+            return this.checkInceptionDateRange();
+        }
 
         if (!this.state.advancedSearchActive) {
             if (this.state.standardSearch.searchValue.length < 3) {
@@ -146,10 +150,6 @@ class Affidavits extends React.Component {
             return this.checkAdvancedSearchValid();
         }
 
-        if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
-            return this.checkInceptionDateRange();
-        }
-
         return true;
     }
 
@@ -157,7 +157,7 @@ class Affidavits extends React.Component {
         let advancedSearchValid = false;
 
         for (let control in this.state.advancedSearch) {
-            if (this.state.advancedSearch[control].length >= 3) {
+            if (this.state.advancedSearch[control].length && this.state.advancedSearch[control].length >= 3) {
                 advancedSearchValid = true;
                 break;
             }
@@ -165,13 +165,39 @@ class Affidavits extends React.Component {
 
         // Validate Premium To/From range
         if (this.state.advancedSearch.PREMIUMFROM || this.state.advancedSearch.PREMIUMTO) {
-            if (this.state.advancedSearch.PREMIUMFROM && this.state.advancedSearch.PREMIUMTO && 
-                (this.state.advancedSearch.PREMIUMFROM <= this.state.advancedSearch.PREMIUMTO)) {
+            if (this.state.advancedSearch.PREMIUMFROM && 
+                this.state.advancedSearch.PREMIUMTO && 
+                (parseFloat(this.state.advancedSearch.PREMIUMFROM.replace(/,/g, "")) <= parseFloat(this.state.advancedSearch.PREMIUMTO.replace(/,/g, "")))) {
                 advancedSearchValid = true;
+            }
+            else if (
+                !this.state.advancedSearch.PREMIUMFROM || 
+                !this.state.advancedSearch.PREMIUMTO) {
+                    advancedSearchValid = false;
+                    this.setState({
+                        advancedInputsError: {
+                            active: true, 
+                            message: "Must include both Premium From and To amounts"
+                        },
+                    })  
             }
             else {
                 advancedSearchValid = false;
+                this.setState({
+                    advancedInputsError: {
+                        active: true, 
+                        message: "Premium From amount cannot be greater than To amount"
+                    },
+                })
             }
+        }
+        else if (!advancedSearchValid) {
+            this.setState({
+                advancedInputsError: {
+                    active: true, 
+                    message: "At least 1 search input with 3 or more characters is required"
+                },
+            })
         }
 
         return advancedSearchValid;
@@ -303,7 +329,7 @@ class Affidavits extends React.Component {
         
         if (!this.state.advancedSearchActive) {
             this.handleAdjustPadding(true)
-            this.setState({advancedSearchActive: true})
+            this.setState({advancedSearchActive: true, errorStyle: false, standardSearch: {...this.state.standardSearch, searchValue: ""}})
         } 
         else {
             if (this.state.rows.length <= 8) {
@@ -332,6 +358,10 @@ class Affidavits extends React.Component {
                 advancedSearch: {
                     ...this.state.advancedSearch,
                     [e.target.name]: e.target.value
+                },
+                advancedInputsError: {
+                    active: false,
+                    message: ""
                 } 
             })
         }

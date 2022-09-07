@@ -5,7 +5,8 @@ import {
     SearchButton,
     DateInput,
     TextInput,
-    CurrencyInput
+    CurrencyInput,
+    ErrorSideNote
 } from '@aeros-ui/components';
 import styled from '@emotion/styled';
 import { Box } from '@mui/system';
@@ -197,7 +198,6 @@ function Search({
                                     label={'Premuim From'}
                                     name={'PREMIUMFROM'}
                                     onChange={handleAdvancedSearchInputs}
-                                    value={advancedSearch.PREMIUMFROM}
                                 />
                             </Grid>
                             <Grid item>
@@ -208,11 +208,18 @@ function Search({
                                     label={'Premium To'}
                                     name={'PREMIUMTO'}
                                     onChange={handleAdvancedSearchInputs}
-                                    value={advancedSearch.PREMIUMTO}
                                 />
                             </Grid>
+                            {advancedInputsError.active && (<Grid item xs={2.5}>
+                                <ErrorSideNote 
+                                    title={"Advanced Search Error"} 
+                                    data={[{message: advancedInputsError.message}]} 
+                                />
+                            </Grid>)}
+                            
                         </Grid>
                     </>
+                    
                 )}
             </Stack>
         </Paper>
