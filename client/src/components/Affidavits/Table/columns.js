@@ -38,107 +38,107 @@ export default function Columns(handlePopoverOpen) {
     const cols = [
         {
             title: 'Affidavit No.',
-            field: 'affidavitNo',
+            field: 'AFFIDAVITNO',
             type: 'string',
             width: '15em',
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.affidavitNo}
+                    {rowData.AFFIDAVITNO}
                 </MainTableCell>
             )
         },
         {
             title: 'Policy No.',
-            field: 'policyNo',
+            field: 'POLICYNO',
             type: 'string',
             width: '15em',
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.policyNo}
+                    {rowData.POLICYNO}
                 </MainTableCell>
             )
         },
         {
             title: 'Insured Name',
-            field: 'insuredName',
+            field: 'RISKINSUREDNAME',
             type: 'string',
             width: '30em',
             render: (rowData) => (
-                <MainTableCell sx={{ whiteSpace: 'nowrap' }}>{rowData.insuredName}</MainTableCell>
+                <MainTableCell sx={{ whiteSpace: 'nowrap' }}>{rowData.RISKINSUREDNAME}</MainTableCell>
             )
         },
         {
             title: 'Type',
-            field: 'type',
+            field: 'TRANSACTIONTYPE',
             type: 'string',
             width: '15em',
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.type}
+                    {rowData.TRANSACTIONTYPE}
                 </MainTableCell>
             )
         },
         {
             title: 'Premium',
-            field: 'premium',
+            field: 'AMOUNT',
             type: 'string',
             width: '15em',
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.premium}
+                    {rowData.AMOUNT}
                 </MainTableCell>
             )
         },
         {
             title: 'Inception',
-            field: 'inceptionDate',
+            field: 'EFFECTIVEDATE',
             width: '15em',
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {format(new Date(rowData.inceptionDate), 'MM/dd/yyyy')}
+                    {format(new Date(rowData.EFFECTIVEDATE), 'MM/dd/yyyy')}
                 </MainTableCell>
             )
         },
         {
             title: 'Expiration',
-            field: 'expDate',
+            field: 'EXPIRATIONDATE',
             width: '15em',
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {format(new Date(rowData.expDate), 'MM/dd/yyyy')}
+                    {format(new Date(rowData.EXPIRATIONDATE), 'MM/dd/yyyy')}
                 </MainTableCell>
             )
         },
         {
             title: 'Batch',
-            field: 'batch',
+            field: 'BATCHNO',
             type: 'string',
             width: '15em',
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.batch}
+                    {rowData.BATCHNO}
                 </MainTableCell>
             )
         },
         {
             title: 'Submitted',
-            field: 'submitted',
+            field: 'RECEIVEDATE',
             type: 'string',
             width: '15em',
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.submitted}
+                    {rowData.RECEIVEDATE}
                 </MainTableCell>
             )
         },
         {
             title: 'Proc State',
-            field: 'procState',
+            field: 'PROCESSEDSTATE',
             type: 'string',
             width: '5em',
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.procState}
+                    {rowData.PROCESSEDSTATE}
                 </MainTableCell>
             )
         },

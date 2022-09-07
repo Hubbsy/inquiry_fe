@@ -36,6 +36,8 @@ class Affidavits extends React.Component {
         }
     };
 
+    
+
     componentDidUpdate(prevProps) {
         console.log("prev Props:", prevProps);
         console.log("props:", this.props);
@@ -49,8 +51,44 @@ class Affidavits extends React.Component {
                 this.setState({ rows: [] });
             } else {
                 console.log("DATA RES", this.props.data.DATA);
+                const data = this.mapAPIResponse(this.props.data.DATA);
+                this.setState({
+                    rows: data
+                });
             }
         }
+    }
+
+    mapAPIResponse = (data) => {
+        const tableFields = {
+            "AFFIDAVITNO":true,
+            "POLICYNO":true,
+            "RISKINSUREDNAME":true,
+            "TRANSACTIONTYPE":true,
+            "AMOUNT":true,
+            "EFFECTIVEDATE":true,
+            "EXPIRATIONDATE":true,
+            "BATCHID":true,
+            "RECEIVEDATE":true,
+            "PROCESSEDSTATE":true,
+        }
+
+        return data.map((record) => {
+            let transaction = record.PARTA_TRANSACTION;
+            let mappedData = {};
+            for (const key in transaction) {
+                if (tableFields.hasOwnProperty(key)) {
+                    if (transaction[key] === null || !transaction[key]) {
+                        mappedData[key] = "N/A";
+                    }
+                    else {
+                        mappedData[key] = transaction[key];
+                    }
+                }
+            }
+
+            return mappedData;
+        });
     }
 
     setCompanyAddress(company) {
@@ -78,7 +116,7 @@ class Affidavits extends React.Component {
             PREMIUMFROM: this.state.advancedSearch.PREMIUMFROM,
             PREMIUMTO: this.state.advancedSearch.PREMIUMTO
         };
-        
+
         if (this.checkValidSearchParams()) {
             this.props.getAffidavits(this.props.endpoint, this.props.token, data);
         }
