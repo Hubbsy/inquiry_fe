@@ -28,8 +28,6 @@ class Affidavits extends React.Component {
             AFFIDAVITNUMBER: '',
             POLICYNUMBER: '',
             INSUREDNAME: '',
-            INCEPTIONFROM: '',
-            INCEPTIONTO: '',
             CONTACTNAME: '',
             BROKERREFERENCE: '',
             BATCH: '',
@@ -50,7 +48,7 @@ class Affidavits extends React.Component {
             if (this.props.data.hasOwnProperty('NODATA')) {
                 this.setState({ rows: [] });
             } else {
-                console.log("DATA RES", this.props.data);
+                console.log("DATA RES", this.props.data.DATA);
             }
         }
     }
@@ -68,7 +66,7 @@ class Affidavits extends React.Component {
 
     executeSearch = () => {
         const data = {
-            COMBOSEARCH: this.state.advancedSearchActive ? this.state.standardSearch.searchValue : "",
+            COMBOSEARCH: this.state.advancedSearchActive ? "" : this.state.standardSearch.searchValue,
             AFFIDAVITNUMBER: this.state.advancedSearch.AFFIDAVITNUMBER,
             POLICYNUMBER: this.state.advancedSearch.POLICYNUMBER,
             INSUREDNAME: this.state.advancedSearch.INSUREDNAME,
@@ -80,7 +78,7 @@ class Affidavits extends React.Component {
             PREMIUMFROM: this.state.advancedSearch.PREMIUMFROM,
             PREMIUMTO: this.state.advancedSearch.PREMIUMTO
         };
-
+        
         if (this.checkValidSearchParams()) {
             this.props.getAffidavits(this.props.endpoint, this.props.token, data);
         }
@@ -98,17 +96,15 @@ class Affidavits extends React.Component {
                 return false;
             }
         }
+        else {
+            return this.checkAdvancedSearchValid();
+        }
 
         if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
             return this.checkInceptionDateRange();
         }
 
-        if (this.state.advancedSearchActive) {
-            return this.checkAdvancedSearchValid();
-        }
-        
         return true;
-     
     }
 
     checkAdvancedSearchValid = () => {
@@ -121,6 +117,7 @@ class Affidavits extends React.Component {
             }
         }
 
+        // Validate Premium To/From range
         if (this.state.advancedSearch.PREMIUMFROM || this.state.advancedSearch.PREMIUMTO) {
             if (this.state.advancedSearch.PREMIUMFROM && this.state.advancedSearch.PREMIUMTO && 
                 (this.state.advancedSearch.PREMIUMFROM <= this.state.advancedSearch.PREMIUMTO)) {
@@ -245,8 +242,6 @@ class Affidavits extends React.Component {
                     AFFIDAVITNUMBER: '',
                     POLICYNUMBER: '',
                     INSUREDNAME: '',
-                    INCEPTIONFROM: '',
-                    INCEPTIONTO: '',
                     CONTACTNAME: '',
                     BROKERREFERENCE: '',
                     BATCH: '',
