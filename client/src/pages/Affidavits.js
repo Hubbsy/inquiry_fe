@@ -180,7 +180,7 @@ class Affidavits extends React.Component {
                 this.setState({
                     datesRangeError: {
                         active: true,
-                        message: "TO date cannot precede FROM date"
+                        message: "Start date cannot precede End date"
                     }
                 })
 
@@ -191,7 +191,7 @@ class Affidavits extends React.Component {
         this.setState({
             datesRangeError: {
                 active: true,
-                message: "Must include both FROM and TO Inception dates"
+                message: "Must include both Start and End dates"
             }
         })
     

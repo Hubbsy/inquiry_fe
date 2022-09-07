@@ -34,6 +34,11 @@ const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
     }
 }));
 
+const floatToDollarsConverter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+})
+
 export default function Columns(handlePopoverOpen) {
     const cols = [
         {
@@ -79,9 +84,10 @@ export default function Columns(handlePopoverOpen) {
             title: 'Premium',
             field: 'AMOUNT',
             type: 'string',
+            customSort: (a, b) => parseFloat(a.AMOUNT.replace(",", ".")) - parseFloat(b.AMOUNT.replace(",", ".")),
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.AMOUNT}
+                    {floatToDollarsConverter.format(rowData.AMOUNT)}
                 </MainTableCell>
             )
         },
