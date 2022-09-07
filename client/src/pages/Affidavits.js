@@ -133,12 +133,11 @@ class Affidavits extends React.Component {
     //  WIP
     checkValidSearchParams = () => {
 
-        if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
-            return this.checkInceptionDateRange();
-        }
-
         if (!this.state.advancedSearchActive) {
-            if (this.state.standardSearch.searchValue.length < 3) {
+            if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
+                this.checkInceptionDateRange();
+            }
+            else if (this.state.standardSearch.searchValue.length < 3) {
                 this.setState({
                     errorStyle: true
                 })
@@ -147,6 +146,9 @@ class Affidavits extends React.Component {
             }
         }
         else {
+            if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
+                this.checkInceptionDateRange();
+            }
             return this.checkAdvancedSearchValid();
         }
 
