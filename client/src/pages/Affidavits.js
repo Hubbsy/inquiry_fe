@@ -54,6 +54,7 @@ class Affidavits extends React.Component {
             } else {
                 console.log("DATA RES", this.props.data.DATA);
                 const data = this.mapAPIResponse(this.props.data.DATA);
+                console.log(data)
 
                 this.setState({
                     rows: data
@@ -91,7 +92,9 @@ class Affidavits extends React.Component {
 
         return data.map((record) => {
             let transaction = record.PARTA_TRANSACTION;
-            let mappedData = {};
+            let mappedData = {
+                CHILDTRANSACTIONS: []
+            };
             for (const key in transaction) {
                 if (tableFields.hasOwnProperty(key)) {
                     if (transaction[key] === null || !transaction[key]) {
@@ -99,6 +102,22 @@ class Affidavits extends React.Component {
                     }
                     else {
                         mappedData[key] = transaction[key];
+                    }
+                }
+                else if (key === "CHILD_TRANSACTION" && transaction[key].length > 0 && !isEmpty(transaction[key][0])) {
+                    for (const child of transaction[key]) {
+                        mappedData.CHILDTRANSACTIONS.push({
+                            AFFIDAVITNO: child.AFFIDAVITNO, 
+                            POLICYNO: child.POLICYNO,
+                            RISKINSUREDNAME: child.RISKINSUREDNAME ? child.RISKINSUREDNAME : null,
+                            TRANSACTIONTYPE: child.TRANSACTIONTYPE,
+                            AMOUNT: child.AMOUNT,
+                            EFFECTIVEDATE: child.EFFECTIVEDATE,
+                            EXPIRATIONDATE: child.EXPIRATIONDATE,
+                            BATCHNO: child.BATCHNO,
+                            RECEIVEDATE: child.RECEIVEDATE,
+                            PROCESSEDSTATE: child.PROCESSEDSTATE,
+                        })
                     }
                 }
             }
@@ -369,8 +388,6 @@ class Affidavits extends React.Component {
             errorStyle: false
         });
     };
-
-    
 
     toggleAdvancedSearchPanel = () => {
         

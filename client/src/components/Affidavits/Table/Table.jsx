@@ -1,10 +1,12 @@
 import MaterialTable from '@material-table/core';
+import NestedTable from './NestedTable';
 import { TablePagination, useTheme, ThemeProvider, Grid, Typography } from '@mui/material';
 import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme } from '@aeros-ui/themes';
 import { useState, useCallback } from 'react';
 import { Stack } from '@mui/system';
+import { TableIcons } from '@aeros-ui/icons';
 import Columns from './columns';
 
 export default function Table({ loading, rows, adjustPadding }) {
@@ -12,6 +14,7 @@ export default function Table({ loading, rows, adjustPadding }) {
     const [density, setDensity] = useState('normal');
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
+    const [selectedChildId, setSelectedChildId] = useState(null);
 
     const [currentRowData, setCurrentRowData] = useState({
         licenseNo: 'no current license No.',
@@ -25,8 +28,26 @@ export default function Table({ loading, rows, adjustPadding }) {
         density === 'normal' ? setDensity('dense') : setDensity('normal');
     };
 
-    const handleRowClick = (event, selectedRow) => {
-        setSelectedRow(selectedRow.tableData.id);
+    const handleSelectChild = rowData => {
+        setSelectedChildId(rowData.id)
+    };
+
+    const handleRowClick = (row) => {
+        closeRow();
+        
+        const rowCopy = {...row};
+        setSelectedRow(rowCopy);
+    };
+
+    const closeRow = () => {
+        if(selectedRow !== null){
+            const rowCopy = {...selectedRow};
+            if(rowCopy.tableData.showDetailPanel){
+                rowCopy.tableData.showDetailPanel = false;
+            }
+        }
+        setSelectedRow(null)
+        setSelectedChildId(null)
     };
 
     const compileFullAddress = (options) => {
@@ -37,7 +58,7 @@ export default function Table({ loading, rows, adjustPadding }) {
     };
 
     const handlePopoverOpen = useCallback((event, rowData) => {
-        setSelectedRow(rowData.tableData.id);
+        setSelectedRow(rowData);
         setCurrentRowData({
             licenseNo: rowData.licenseNo,
             address: compileFullAddress(rowData.address)
@@ -95,7 +116,7 @@ export default function Table({ loading, rows, adjustPadding }) {
         },
         rowStyle: (rowData) => ({
             backgroundColor:
-                selectedRow === rowData.tableData.id
+                selectedRow && selectedRow.tableData.id === rowData.tableData.id
                     ? theme.palette.grid.main.active
                     : theme.palette.grid.main.default
         }),
@@ -131,7 +152,17 @@ export default function Table({ loading, rows, adjustPadding }) {
                     columns={columns}
                     data={rows}
                     isLoading={loading}
-                    onRowClick={handleRowClick}
+                    icons={TableIcons}
+                    onRowClick={(e, selectedRow, togglePanel) => {handleRowClick(selectedRow); togglePanel()}}
+                    detailPanel={({rowData}) => (
+                        rowData.CHILDTRANSACTIONS.length > 0 ? (
+                            <NestedTable 
+                                rowData={rowData}
+                                handleSelectChild={handleSelectChild}
+                                selectedChildId={selectedChildId}
+                            /> 
+                        ) : null
+                    )}
                     components={{
                         Pagination: (props) => (
                             <TablePagination
