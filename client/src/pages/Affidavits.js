@@ -37,7 +37,7 @@ class Affidavits extends React.Component {
         errorStyle: false,
         serverError: false,
         adjustPadding: false,
-        advancedSearchActive: false
+        advancedSearchActive: false,
     };
 
     componentDidUpdate(prevProps) {
@@ -54,7 +54,6 @@ class Affidavits extends React.Component {
             } else {
                 console.log("DATA RES", this.props.data.DATA);
                 const data = this.mapAPIResponse(this.props.data.DATA);
-
                 if (data.length > 8) {
                     this.handleAdjustPadding(true);
                 }
@@ -123,83 +122,66 @@ class Affidavits extends React.Component {
             PREMIUMFROM: this.state.advancedSearch.PREMIUMFROM,
             PREMIUMTO: this.state.advancedSearch.PREMIUMTO
         };
-        console.log(data)
 
         if (this.checkValidSearchParams()) {
             this.props.getAffidavits(this.props.endpoint, window.localStorage.getItem("TOKEN") ? window.localStorage.getItem("TOKEN") : this.props.token, data);
         }
     };
 
-    //  WIP
     checkValidSearchParams = () => {
+        let validSearch = true;
 
         if (!this.state.advancedSearchActive) {
+            
             if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
-                this.checkInceptionDateRange();
+                validSearch = this.checkInceptionDateRange();
             }
             else if (this.state.standardSearch.searchValue.length < 3) {
-                this.setState({
-                    errorStyle: true
-                })
-
-                return false;
+                this.handleErrorMessages("standardSearch");
+                validSearch = false;
             }
         }
         else {
-            if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
-                this.checkInceptionDateRange();
-            }
-            return this.checkAdvancedSearchValid();
+            validSearch = this.validateAdvancedSearch();
         }
 
-        return true;
+        this.setState({validSearch});
+
+        return validSearch;
     }
 
-    checkAdvancedSearchValid = () => {
-        let advancedSearchValid = false;
+    validateAdvancedSearch = () => {
+        let advancedSearchValid = true;
 
-        for (let control in this.state.advancedSearch) {
-            if (this.state.advancedSearch[control].length && this.state.advancedSearch[control].length >= 3) {
-                advancedSearchValid = true;
-                break;
-            }
+        if ((this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO)) {
+            advancedSearchValid = this.checkInceptionDateRange();
         }
-
-        // Validate Premium To/From range
-        if (this.state.advancedSearch.PREMIUMFROM || this.state.advancedSearch.PREMIUMTO) {
+        if ((this.state.advancedSearch.PREMIUMFROM || this.state.advancedSearch.PREMIUMTO) && advancedSearchValid) {
             if (this.state.advancedSearch.PREMIUMFROM && 
                 this.state.advancedSearch.PREMIUMTO && 
                 (parseFloat(this.state.advancedSearch.PREMIUMFROM.replace(/,/g, "")) <= parseFloat(this.state.advancedSearch.PREMIUMTO.replace(/,/g, "")))) {
-                advancedSearchValid = true;
             }
             else if (
                 !this.state.advancedSearch.PREMIUMFROM || 
                 !this.state.advancedSearch.PREMIUMTO) {
                     advancedSearchValid = false;
-                    this.setState({
-                        advancedInputsError: {
-                            active: true, 
-                            message: "Must include both Premium From and To amounts"
-                        },
-                    })  
+                    this.handleErrorMessages("premiumRange");
             }
             else {
                 advancedSearchValid = false;
-                this.setState({
-                    advancedInputsError: {
-                        active: true, 
-                        message: "Premium From amount cannot be greater than To amount"
-                    },
-                })
+                this.handleErrorMessages("premiumValid");
             }
         }
-        else if (!advancedSearchValid) {
-            this.setState({
-                advancedInputsError: {
-                    active: true, 
-                    message: "At least 1 search input with 3 or more characters is required"
-                },
-            })
+        else if (advancedSearchValid) {
+            for (let control in this.state.advancedSearch) {
+                if (this.state.advancedSearch[control].length && this.state.advancedSearch[control].length >= 3) {
+                    break;
+                }
+                else {
+                    advancedSearchValid = false;
+                    this.handleErrorMessages("advancedSearch");
+                }
+            }
         }
 
         return advancedSearchValid;
@@ -211,39 +193,94 @@ class Affidavits extends React.Component {
                 return true;
             }
             else {
-                this.setState({
-                    datesRangeError: {
-                        endDateError: true,
-                        message: "Start date cannot precede End date"
-                    }
-                })
-
+                this.handleErrorMessages("dates", "endRange");
                 return false;
             }
         }
-        
         if (!isValid(this.state.standardSearch.INCEPTIONFROM)) {
-            this.setState({
-                datesRangeError: {
-                    startDateError: true,
-                    message: "Must enter a valid start date"
-                }
-            })
+            this.handleErrorMessages("dates", "startValid");
         }
         else {
-            this.setState({
-                datesRangeError: {
-                    endDateError: true,
-                    message: "Must enter a valid end date"
-                }
-            })
+            this.handleErrorMessages("dates", "endValid");
         }
 
         return false;
     }
 
+    handleErrorMessages = (type, pos = null) => {
+        const errorMessages = {
+            standardSearch: "Must be at least 3 characters",
+            advancedSearch: "At least 1 search input with 3 or more characters is required",
+            datesEndRange: "Start date cannot precede End date",
+            datesEndValid: "Must enter a valid end date",
+            datesStartValid: "Must enter a valid start date",
+            premiumRange: "Must include both Premium From and To amounts",
+            premiumValid: "Premium From amount cannot be greater than To amount"
+        }
+
+        let newState = null;
+        if (type === "standardSearch") {
+            newState = {
+                errorStyle: true
+            }
+        }
+        else if (type === "advancedSearch") {
+            newState = {
+                advancedInputsError: {
+                    active: true, 
+                    message: "At least 1 search input with 3 or more characters is required"
+                },
+            }
+        }
+        else if (type === "dates") {
+            if (pos === "endRange") {
+                newState = {
+                    datesRangeError: {
+                        endDateError: true,
+                        message: errorMessages.datesEndRange
+                    }
+                }
+            }
+            else if (pos === "endValid") {
+                newState = {
+                    datesRangeError: {
+                        endDateError: true,
+                        message: errorMessages.datesEndValid
+                    }
+                }
+            }
+            else if (pos === "startValid") {
+                newState = {
+                    datesRangeError: {
+                        startDateError: true,
+                        message: errorMessages.datesStartValid
+                    }
+                }
+            }
+        }
+        else if (type === "premiumRange") {
+            newState = {
+                advancedInputsError: {
+                    active: true, 
+                    message: errorMessages.premiumRange
+                },
+            }
+        }
+        else if (type === "premiumValid") {
+            newState = {
+                advancedInputsError: {
+                    active: true, 
+                    message: errorMessages.premiumValid
+                },
+            }
+        }
+
+        return this.setState(newState);
+    }
+
     handleFromDateInput = (value) => {
         this.setState({
+            errorStyle: false,
             datesRangeError: {
                 active: false, 
                 message: null
@@ -251,12 +288,17 @@ class Affidavits extends React.Component {
             standardSearch: {
                 ...this.state.standardSearch,
                 INCEPTIONFROM: value,
-            }
+            },
+            advancedInputsError: {
+                active: false,
+                message: ""
+            } 
         })
     }
 
     handleToDateInput = (value) => {
         this.setState({
+            errorStyle: false,
             datesRangeError: {
                 active: false, 
                 message: null
@@ -264,7 +306,11 @@ class Affidavits extends React.Component {
             standardSearch: {
                 ...this.state.standardSearch,
                 INCEPTIONTO: value,
-            }
+            },
+            advancedInputsError: {
+                active: false,
+                message: ""
+            } 
         })
     }
 
@@ -282,9 +328,7 @@ class Affidavits extends React.Component {
         if (e.charCode === 13 && e.target.value.length >= 3) {
             this.executeSearch();
         } else if (e.charCode === 13) {
-            this.setState({
-                errorStyle: true
-            });
+            this.handleErrorMessages("standardSearch");
         }
     };
 
@@ -292,12 +336,7 @@ class Affidavits extends React.Component {
         if (e.charCode === 13 && e.target.value.length >= 3) {
             this.executeSearch();
         } else if (e.charCode === 13) {
-            this.setState({
-                advancedInputsError: {
-                    error: true, 
-                    message: "Must be at least 3 characters"
-                }
-            });
+            this.handleErrorMessages("advancedSearch")
         }
     };
 
@@ -328,7 +367,6 @@ class Affidavits extends React.Component {
     };
 
     handleShowAdvancedSearch = () => {
-        
         if (!this.state.advancedSearchActive) {
             this.handleAdjustPadding(true)
             this.setState({advancedSearchActive: true, errorStyle: false, standardSearch: {...this.state.standardSearch, searchValue: ""}})
