@@ -41,7 +41,7 @@ function Search({
     handleHelperText,
     adjustPadding,
     advancedSearchActive, 
-    handleShowAdvancedSearch,
+    toggleAdvancedSearchPanel,
     handleFromDateInput,
     handleToDateInput,
     datesRangeError, 
@@ -113,7 +113,7 @@ function Search({
                             <StyledIconButton
                                 ref={advancedSearchRef}
                                 aria-label={'Toggle Advanced Search'}
-                                onClick={handleShowAdvancedSearch}>
+                                onClick={toggleAdvancedSearchPanel}>
                                 {advancedSearchActive ? (
                                     <KeyboardArrowUpIcon />
                                 ) : (

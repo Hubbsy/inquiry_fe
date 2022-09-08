@@ -54,16 +54,26 @@ class Affidavits extends React.Component {
             } else {
                 console.log("DATA RES", this.props.data.DATA);
                 const data = this.mapAPIResponse(this.props.data.DATA);
-                if (data.length > 8) {
-                    this.handleAdjustPadding(true);
-                }
 
                 this.setState({
                     rows: data
                 });
             }
         }
+        if (window.innerHeight < document.body.clientHeight && !this.state.adjustPadding) {
+            this.handleAdjustPadding(true);
+        }
+        else if (window.innerHeight > document.body.clientHeight && this.state.adjustPadding) {
+            this.handleAdjustPadding(false);
+        }
+        
     }
+
+    handleAdjustPadding = (flag) => {
+        this.setState({
+            adjustPadding: flag
+        })
+    };
 
     mapAPIResponse = (data) => {
         const tableFields = {
@@ -360,22 +370,21 @@ class Affidavits extends React.Component {
         });
     };
 
-    handleAdjustPadding = (flag) => {
-        this.setState({
-            adjustPadding: flag
-        });
-    };
+    
 
-    handleShowAdvancedSearch = () => {
+    toggleAdvancedSearchPanel = () => {
+        
         if (!this.state.advancedSearchActive) {
-            this.handleAdjustPadding(true)
-            this.setState({advancedSearchActive: true, errorStyle: false, standardSearch: {...this.state.standardSearch, searchValue: ""}})
+            this.setState({
+                advancedSearchActive: true, 
+                errorStyle: false, 
+                standardSearch: {
+                    ...this.state.standardSearch, 
+                    searchValue: ""
+                }
+            })
         } 
         else {
-            if (this.state.rows.length <= 8) {
-                this.handleAdjustPadding(false);
-            }
-            
             this.setState({
                 advancedSearchActive: false, 
                 advancedSearch: {
@@ -422,7 +431,7 @@ class Affidavits extends React.Component {
                     adjustPadding={this.state.adjustPadding}
                     handleAdjustPadding={this.handleAdjustPadding}
                     advancedSearchActive={this.state.advancedSearchActive}
-                    handleShowAdvancedSearch={this.handleShowAdvancedSearch}
+                    toggleAdvancedSearchPanel={this.toggleAdvancedSearchPanel}
                     handleFromDateInput={this.handleFromDateInput}
                     handleToDateInput={this.handleToDateInput}
                     datesRangeError={this.state.datesRangeError}

@@ -42,6 +42,7 @@ export const getAffidavits = (endpoint, token, data) => {
                     dispatch(getAffidavitsSuccess(response.data));
                 } else if (response.data.ERRORMESSAGE.toLowerCase().includes('security')) {
                     window.localStorage.removeItem('TOKEN');
+                    dispatch(getAffidavitsFailure(response.data.ERRORMESSAGE));
                 } else if (response.data.hasOwnProperty('ERRORMESSAGE')) {
                     dispatch(getAffidavitsFailure(response.data.ERRORMESSAGE));
                 } else {
