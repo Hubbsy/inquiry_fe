@@ -3,6 +3,7 @@ import React from 'react';
 import { NestedColumnHeaders, NestedTableHeader, NestedTableCell, NestedTableRow } from '@aeros-ui/tables';
 import styled from '@emotion/styled';
 import { MoreVert } from '@mui/icons-material';
+import { format, isValid } from 'date-fns';
 
 const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
     height: 32,
@@ -35,6 +36,8 @@ const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
     }
 }));
 
+
+
 const NestedTable = ({rowData, selectedChildId}) => {
 
     let columnHeaders = [
@@ -50,6 +53,8 @@ const NestedTable = ({rowData, selectedChildId}) => {
         "Proc State",
         ""
     ]
+
+    const NO_VALUE = "-";
 
     return (
         <TableContainer >
@@ -72,16 +77,16 @@ const NestedTable = ({rowData, selectedChildId}) => {
                         // onClick={() => handleSelectChild(c)} 
                         selected={c.id === selectedChildId}
                         >
-                            <NestedTableCell dense="dense" width={"10em"}>{c.AFFIDAVITNO}</NestedTableCell>
-                            <NestedTableCell dense="dense" width={"10em"}>{c.POLICYNO}</NestedTableCell>
-                            <NestedTableCell dense="dense" width={"15em"} >{c.RISKINSUREDNAME !== null ? c.RISKINSUREDNAME : "-"}</NestedTableCell>
-                            <NestedTableCell dense="dense" width={"5em"}>{c.TRANSACTIONTYPE}</NestedTableCell>
-                            <NestedTableCell dense="dense" width={"5em"}>{c.AMOUNT}</NestedTableCell>
-                            <NestedTableCell dense="dense" width={"5em"}>{c.EFFECTIVEDATE}</NestedTableCell>
-                            <NestedTableCell dense="dense" width={"5em"}>{c.EXPIRATIONDATE !== null ? c.EXPIRATIONDATE : "-"}</NestedTableCell>
-                            <NestedTableCell dense="dense" width={"5em"}>{c.BATCHNO}</NestedTableCell>
-                            <NestedTableCell dense="dense" width={"5em"}>{c.RECEIVEDATE}</NestedTableCell>
-                            <NestedTableCell dense="dense" width={"5em"}>{c.PROCESSEDSTATE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"10em"}>{c.AFFIDAVITNO ? c.AFFIDAVITNO : NO_VALUE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"10em"}>{c.POLICYNO ? c.POLICYNO : NO_VALUE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"15em"} >{c.RISKINSUREDNAME ? c.RISKINSUREDNAME : NO_VALUE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"5em"}>{c.TRANSACTIONTYPE ? c.TRANSACTIONTYPE : NO_VALUE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"5em"}>{c.AMOUNT ? c.AMOUNT : NO_VALUE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"5em"}>{c.EFFECTIVEDATE ? format(new Date(c.EFFECTIVEDATE), 'MM/dd/yyyy') : NO_VALUE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"5em"}>{c.EXPIRATIONDATE ? format(new Date(c.EXPIRATIONDATE), 'MM/dd/yyyy') : NO_VALUE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"5em"}>{c.BATCHNO ? c.BATCHNO : NO_VALUE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"5em"}>{c.RECEIVEDATE ? format(new Date(c.RECEIVEDATE), 'MM/dd/yyyy') : NO_VALUE}</NestedTableCell>
+                            <NestedTableCell dense="dense" align={"center"} width={"4em"}>{c.PROCESSEDSTATE ? c.PROCESSEDSTATE : NO_VALUE}</NestedTableCell>
                             <NestedTableCell dense="dense" width={"1em"}><StyledMoreVertIcon disabled={true} /></NestedTableCell>
                         </NestedTableRow>
                     ))}

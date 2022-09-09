@@ -52,7 +52,7 @@ export default function Table({ loading, rows, adjustPadding }) {
 
     const compileFullAddress = (options) => {
         return {
-            line1: `${options.address1} ${options.address2} ${options.address3}`,
+            line1: `${options.address}`,
             line2: `${options.city}, ${options.state}, ${options.zip}`
         };
     };
@@ -60,8 +60,11 @@ export default function Table({ loading, rows, adjustPadding }) {
     const handlePopoverOpen = useCallback((event, rowData) => {
         setSelectedRow(rowData);
         setCurrentRowData({
-            licenseNo: rowData.licenseNo,
-            address: compileFullAddress(rowData.address)
+            licenseNo: rowData.AFFIDAVITNO,
+            address: compileFullAddress(rowData.companyDetails),
+            company: rowData.companyDetails.company,
+            coverage: rowData.companyDetails.coverage,
+            risk: rowData.companyDetails.risk
         });
         const anchorPosition = anchorPositionByAnchorEl(event);
         setAnchorEl(anchorPosition);
@@ -84,16 +87,52 @@ export default function Table({ loading, rows, adjustPadding }) {
         <Grid container>
             <Grid item container>
                 <Typography variant='subtitle2' gutterBottom>
-                    Address:
+                    Risk Address:
                 </Typography>
             </Grid>
-            <Grid item container>
+            <Grid item container sx={{pb: 1}}>
                 <Stack>
                     <Typography variant='body2' sx={{ textTransform: 'none' }}>
                         {currentRowData.address.line1}
                     </Typography>
                     <Typography variant='body2' sx={{ textTransform: 'none' }}>
                         {currentRowData.address.line2}
+                    </Typography>
+                </Stack>
+            </Grid>
+            <Grid item container>
+                <Typography variant='subtitle2' gutterBottom>
+                    Company(s):
+                </Typography>
+            </Grid>
+            <Grid item container sx={{pb: 1}}>
+                <Stack>
+                    <Typography variant='body2' sx={{ textTransform: 'none' }}>
+                        {currentRowData.company}
+                    </Typography>
+                </Stack>
+            </Grid>
+            <Grid item container>
+                <Typography variant='subtitle2' gutterBottom>
+                    Coverage:
+                </Typography>
+            </Grid>
+            <Grid item container sx={{pb: 1}}>
+                <Stack>
+                    <Typography variant='body2' sx={{ textTransform: 'none' }}>
+                        {currentRowData.coverage}
+                    </Typography>
+                </Stack>
+            </Grid>
+            <Grid item container>
+                <Typography variant='subtitle2' gutterBottom>
+                    Risk:
+                </Typography>
+            </Grid>
+            <Grid item container>
+                <Stack>
+                    <Typography variant='body2' sx={{ textTransform: 'none' }}>
+                        {currentRowData.risk}
                     </Typography>
                 </Stack>
             </Grid>
@@ -140,7 +179,7 @@ export default function Table({ loading, rows, adjustPadding }) {
 
     const detailPanel = [
         rowData => ({
-            disabled: !rowData.expandable,
+            tooltip: "Show Child Transactions",
             icon: () => rowData.expandable ? <CaratIcon color={"primary"} sx={{pt: 1, pl: 1}} /> : null,
             render: ({rowData}) => (
                     <NestedTable 

@@ -91,36 +91,22 @@ class Affidavits extends React.Component {
         }
 
         return data.map((record) => {
+            let mappedData = {};
             let transaction = record.PARTA_TRANSACTION;
-            let mappedData = {
-                CHILDTRANSACTIONS: []
-            };
+            mappedData.companyDetails = this.setCompanyDetails(transaction)
+
             for (const key in transaction) {
                 if (tableFields.hasOwnProperty(key)) {
-                    if (transaction[key] === null || !transaction[key]) {
+                    if (transaction[key] === null || !transaction[key] || transaction[key].trim().length === 0) {
                         mappedData[key] = "-";
                     }
                     else {
                         mappedData[key] = transaction[key];
                     }
                 }
-                else if (key === "CHILD_TRANSACTION" && transaction[key].length > 0 && !isEmpty(transaction[key][0])) {
+                else if (key === "CHILD_TRANSACTION" && !isEmpty(transaction[key][0])) {
                     mappedData.expandable = true;
-
-                    for (const child of transaction[key]) {
-                        mappedData.CHILDTRANSACTIONS.push({
-                            AFFIDAVITNO: child.AFFIDAVITNO, 
-                            POLICYNO: child.POLICYNO,
-                            RISKINSUREDNAME: child.RISKINSUREDNAME ? child.RISKINSUREDNAME : null,
-                            TRANSACTIONTYPE: child.TRANSACTIONTYPE,
-                            AMOUNT: child.AMOUNT,
-                            EFFECTIVEDATE: child.EFFECTIVEDATE,
-                            EXPIRATIONDATE: child.EXPIRATIONDATE,
-                            BATCHNO: child.BATCHNO,
-                            RECEIVEDATE: child.RECEIVEDATE,
-                            PROCESSEDSTATE: child.PROCESSEDSTATE,
-                        })
-                    }
+                    mappedData.CHILDTRANSACTIONS = transaction.CHILD_TRANSACTION;
                 }
             }
 
@@ -128,14 +114,15 @@ class Affidavits extends React.Component {
         });
     }
 
-    setCompanyAddress(company) {
+    setCompanyDetails(transaction) {
         return {
-            address1: company.ADDRESS1,
-            address2: company.ADDRESS2,
-            address3: company.ADDRESS3,
-            city: company.CITY,
-            state: company.STATE,
-            zip: company.ZIPCODE
+            address: transaction.RISKADDRESS,
+            city: transaction.RISKCITY,
+            state: transaction.RISKSTATE,
+            zip: transaction.RISKZIPCODE,
+            company: `${transaction.COMPANY[0].COMPANYNUMBER} ${transaction.COMPANY.COMPANYNAME}`,
+            coverage: transaction.COVERAGE,
+            risk: transaction.RISK
         };
     }
 
