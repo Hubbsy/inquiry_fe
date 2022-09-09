@@ -1,24 +1,26 @@
 import MaterialTable from '@material-table/core';
 import NestedTable from './NestedTable';
-import { TablePagination, useTheme, ThemeProvider, Grid, Typography, TableCell, Box } from '@mui/material';
+import { TablePagination, useTheme, ThemeProvider, Grid, Typography, TableCell, Box, Button } from '@mui/material';
 import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme } from '@aeros-ui/themes';
 import { useState, useCallback } from 'react';
 import { Stack } from '@mui/system';
 import { TableIcons, CaratIcon } from '@aeros-ui/icons';
+import FontDownloadIcon from '@mui/icons-material/FontDownload';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Columns from './columns';
 
 export default function Table({ loading, rows, adjustPadding }) {
     const theme = useTheme();
-    const [density, setDensity] = useState('normal');
+    const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
     const [selectedChildId, setSelectedChildId] = useState(null);
 
     const [currentRowData, setCurrentRowData] = useState({
         licenseNo: 'no current license No.',
-        address: 'no current address'
+        address: 'no current Company Info'
     });
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -59,13 +61,7 @@ export default function Table({ loading, rows, adjustPadding }) {
 
     const handlePopoverOpen = useCallback((event, rowData) => {
         setSelectedRow(rowData);
-        setCurrentRowData({
-            licenseNo: rowData.AFFIDAVITNO,
-            address: compileFullAddress(rowData.companyDetails),
-            company: rowData.companyDetails.company,
-            coverage: rowData.companyDetails.coverage,
-            risk: rowData.companyDetails.risk
-        });
+        setCurrentRowData(rowData.companyDetails);
         const anchorPosition = anchorPositionByAnchorEl(event);
         setAnchorEl(anchorPosition);
     }, []);
@@ -86,7 +82,7 @@ export default function Table({ loading, rows, adjustPadding }) {
     const content = (
         <Grid container>
             <Grid item container>
-                <Typography variant='subtitle2' gutterBottom>
+                <Typography sx={{mb: 0}} variant='subtitle2' gutterBottom>
                     Risk Address:
                 </Typography>
             </Grid>
@@ -101,7 +97,7 @@ export default function Table({ loading, rows, adjustPadding }) {
                 </Stack>
             </Grid>
             <Grid item container>
-                <Typography variant='subtitle2' gutterBottom>
+                <Typography sx={{mb: 0}} variant='subtitle2' gutterBottom>
                     Company(s):
                 </Typography>
             </Grid>
@@ -113,7 +109,7 @@ export default function Table({ loading, rows, adjustPadding }) {
                 </Stack>
             </Grid>
             <Grid item container>
-                <Typography variant='subtitle2' gutterBottom>
+                <Typography sx={{mb: 0}} variant='subtitle2' gutterBottom>
                     Coverage:
                 </Typography>
             </Grid>
@@ -125,7 +121,7 @@ export default function Table({ loading, rows, adjustPadding }) {
                 </Stack>
             </Grid>
             <Grid item container>
-                <Typography variant='subtitle2' gutterBottom>
+                <Typography sx={{mb: 0}} variant='subtitle2' gutterBottom>
                     Risk:
                 </Typography>
             </Grid>
@@ -139,6 +135,17 @@ export default function Table({ loading, rows, adjustPadding }) {
         </Grid>
     );
 
+    const actions = (
+        <Grid item container justifyContent='flex-end'>
+            <Button href={currentRowData.batchLink} size='small' variant='outlined' startIcon={currentRowData.batchView === "VIEW" ? <FontDownloadIcon/> : <ModeEditIcon/>} >
+                {currentRowData.batchView} Affidavits
+            </Button>
+        </Grid>
+    );
+
+{/* <Button variant="outlined" >
+        Delete
+      </Button> */}
     const columns = Columns(handlePopoverOpen);
 
     const options = {
@@ -189,7 +196,7 @@ export default function Table({ loading, rows, adjustPadding }) {
                     /> 
                 )
         })
-    ]
+    ];
 
     return (
         <div
@@ -242,6 +249,7 @@ export default function Table({ loading, rows, adjustPadding }) {
                     width={300}
                     title={`License No. ${currentRowData.licenseNo}`}
                     content={content}
+                    actions={actions}
                 />
             </ThemeProvider>
         </div>

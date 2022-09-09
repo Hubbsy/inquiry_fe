@@ -122,7 +122,9 @@ class Affidavits extends React.Component {
             zip: transaction.RISKZIPCODE,
             company: `${transaction.COMPANY[0].COMPANYNUMBER} ${transaction.COMPANY.COMPANYNAME}`,
             coverage: transaction.COVERAGE,
-            risk: transaction.RISK
+            risk: transaction.RISK,
+            batchView: transaction.BATCHLINKEDITVIEW,
+            batchLink: transaction.BATCHLINK
         };
     }
 
