@@ -39,8 +39,20 @@ const floatToDollarsConverter = new Intl.NumberFormat("en-US", {
     currency: "USD",
 })
 
-export default function Columns(handlePopoverOpen) {
+export default function Columns(handlePopoverOpen, showLicenseCol) {
+    console.log('!!!show license!!!: ', showLicenseCol)
     const cols = [
+        {
+            title: 'License No.',
+            field: 'LICENSENO',
+            type: 'string',
+            hidden: !showLicenseCol,
+            render: (rowData) => (
+                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
+                    {rowData.LICENSENO.substring(rowData.LICENSENO.indexOf("-") + 1)}
+                </MainTableCell>
+            )
+        },
         {
             title: 'Affidavit No.',
             field: 'AFFIDAVITNO',

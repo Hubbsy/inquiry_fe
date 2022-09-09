@@ -11,7 +11,7 @@ import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Columns from './columns';
 
-export default function Table({ loading, rows, adjustPadding }) {
+export default function Table({ loading, rows, adjustPadding, showLicenseCol }) {
     const theme = useTheme();
     const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
@@ -143,10 +143,7 @@ export default function Table({ loading, rows, adjustPadding }) {
         </Grid>
     );
 
-{/* <Button variant="outlined" >
-        Delete
-      </Button> */}
-    const columns = Columns(handlePopoverOpen);
+    const columns = Columns(handlePopoverOpen, showLicenseCol);
 
     const options = {
         pageSize: 10,

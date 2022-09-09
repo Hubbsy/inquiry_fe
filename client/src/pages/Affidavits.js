@@ -38,6 +38,7 @@ class Affidavits extends React.Component {
         serverError: false,
         adjustPadding: false,
         advancedSearchActive: false,
+        showLicenseCol: false
     };
 
     componentDidUpdate(prevProps) {
@@ -52,7 +53,7 @@ class Affidavits extends React.Component {
             if (this.props.data.hasOwnProperty('NODATA')) {
                 this.setState({ rows: [] });
             } else {
-                console.log("DATA RES", this.props.data.DATA);
+                console.log("DATA RES", this.props.data);
                 const data = this.mapAPIResponse(this.props.data.DATA);
                 console.log(data)
 
@@ -88,12 +89,16 @@ class Affidavits extends React.Component {
             "BATCHNO":true,
             "RECEIVEDATE":true,
             "PROCESSEDSTATE":true,
+            "LICENSENO": true
         }
 
         return data.map((record) => {
             let mappedData = {};
             let transaction = record.PARTA_TRANSACTION;
-            mappedData.companyDetails = this.setCompanyDetails(transaction)
+            mappedData.companyDetails = this.setCompanyDetails(transaction);
+            this.setState({
+                showLicenseCol: this.props.data.SHOW_LICENSE_COLUMN
+            })
 
             for (const key in transaction) {
                 if (tableFields.hasOwnProperty(key)) {
@@ -176,7 +181,7 @@ class Affidavits extends React.Component {
         if ((this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO)) {
             advancedSearchValid = this.checkInceptionDateRange();
         }
-        if ((this.state.advancedSearch.PREMIUMFROM || this.state.advancedSearch.PREMIUMTO) && advancedSearchValid) {
+        else if ((this.state.advancedSearch.PREMIUMFROM || this.state.advancedSearch.PREMIUMTO) && advancedSearchValid) {
             if (this.state.advancedSearch.PREMIUMFROM && 
                 this.state.advancedSearch.PREMIUMTO && 
                 (parseFloat(this.state.advancedSearch.PREMIUMFROM.replace(/,/g, "")) <= parseFloat(this.state.advancedSearch.PREMIUMTO.replace(/,/g, "")))) {
@@ -453,6 +458,7 @@ class Affidavits extends React.Component {
                     loading={this.props.loading}
                     rows={this.state.rows}
                     adjustPadding={this.state.adjustPadding}
+                    showLicenseCol={this.state.showLicenseCol}
                 />
                 <Snackbar
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
