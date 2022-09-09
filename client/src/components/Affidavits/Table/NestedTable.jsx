@@ -1,6 +1,39 @@
 import { Table, TableBody, TableContainer } from '@mui/material';
 import React from 'react';
 import { NestedColumnHeaders, NestedTableHeader, NestedTableCell, NestedTableRow } from '@aeros-ui/tables';
+import styled from '@emotion/styled';
+import { MoreVert } from '@mui/icons-material';
+
+const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
+    height: 32,
+    width: 18,
+    display: 'flex',
+    color: 'gray',
+    // '&:hover': {
+    //     height: 32,
+    //     width: 18,
+    //     borderRadius: '50%',
+    //     backgroundColor: theme.palette.grid.main.active,
+    //     padding: 0,
+    //     color: 'gray'
+    // },
+    '&:active': {
+        height: 32,
+        width: 18,
+        borderRadius: '50%',
+        backgroundColor: theme.palette.grid.main.active,
+        padding: 0,
+        color: 'gray'
+    },
+    '&:focus': {
+        height: 32,
+        width: 18,
+        borderRadius: '50%',
+        backgroundColor: theme.palette.grid.main.active,
+        padding: 0,
+        color: 'gray'
+    }
+}));
 
 const NestedTable = ({rowData, selectedChildId}) => {
 
@@ -15,6 +48,7 @@ const NestedTable = ({rowData, selectedChildId}) => {
         "Batch",
         "Submitted",
         "Proc State",
+        ""
     ]
 
     return (
@@ -22,8 +56,9 @@ const NestedTable = ({rowData, selectedChildId}) => {
             <Table>
                 <NestedTableHeader
                     tableHeader="Related Child Transactions"
-                    colSpan={10}
+                    colSpan={11}
                     dense="dense"
+                    sx={{pl: 5}}
                 />
                 <NestedColumnHeaders
                     columnHeaders={columnHeaders}
@@ -37,16 +72,17 @@ const NestedTable = ({rowData, selectedChildId}) => {
                         // onClick={() => handleSelectChild(c)} 
                         selected={c.id === selectedChildId}
                         >
-                            <NestedTableCell dense="dense">{c.AFFIDAVITNO}</NestedTableCell>
-                            <NestedTableCell dense="dense">{c.POLICYNO}</NestedTableCell>
-                            <NestedTableCell dense="dense">{c.RISKINSUREDNAME !== null ? c.RISKINSUREDNAME : "-"}</NestedTableCell>
-                            <NestedTableCell dense="dense">{c.TRANSACTIONTYPE}</NestedTableCell>
-                            <NestedTableCell dense="dense">{c.AMOUNT}</NestedTableCell>
-                            <NestedTableCell dense="dense">{c.EFFECTIVEDATE}</NestedTableCell>
-                            <NestedTableCell dense="dense">{c.EXPIRATIONDATE !== null ? c.EXPIRATIONDATE : "-"}</NestedTableCell>
-                            <NestedTableCell dense="dense">{c.BATCHNO}</NestedTableCell>
-                            <NestedTableCell dense="dense">{c.RECEIVEDATE}</NestedTableCell>
-                            <NestedTableCell dense="dense">{c.PROCESSEDSTATE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"10em"}>{c.AFFIDAVITNO}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"10em"}>{c.POLICYNO}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"15em"} >{c.RISKINSUREDNAME !== null ? c.RISKINSUREDNAME : "-"}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"5em"}>{c.TRANSACTIONTYPE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"5em"}>{c.AMOUNT}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"5em"}>{c.EFFECTIVEDATE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"5em"}>{c.EXPIRATIONDATE !== null ? c.EXPIRATIONDATE : "-"}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"5em"}>{c.BATCHNO}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"5em"}>{c.RECEIVEDATE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"5em"}>{c.PROCESSEDSTATE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"1em"}><StyledMoreVertIcon disabled={true} /></NestedTableCell>
                         </NestedTableRow>
                     ))}
                 </TableBody>

@@ -98,7 +98,7 @@ class Affidavits extends React.Component {
             for (const key in transaction) {
                 if (tableFields.hasOwnProperty(key)) {
                     if (transaction[key] === null || !transaction[key]) {
-                        mappedData[key] = "N/A";
+                        mappedData[key] = "-";
                     }
                     else {
                         mappedData[key] = transaction[key];

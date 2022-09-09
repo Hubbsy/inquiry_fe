@@ -134,7 +134,8 @@ export default function Table({ loading, rows, adjustPadding }) {
         columnsButton: true,
         filtering: showFilters,
         searchFieldStyle: { marginRight: '1em', width: "100%" },
-        emptyRowsWhenPaging: rows.length ? false : true
+        emptyRowsWhenPaging: rows.length ? false : true,
+        detailPanelColumnAlignment: "left"
     };
 
     const detailPanel = [

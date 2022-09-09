@@ -96,7 +96,7 @@ export default function Columns(handlePopoverOpen) {
             field: 'EFFECTIVEDATE',
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.EFFECTIVEDATE !== "N/A" ? format(new Date(rowData.EFFECTIVEDATE), 'MM/dd/yyyy') : rowData.EFFECTIVEDATE}
+                    {rowData.EFFECTIVEDATE !== "-" ? format(new Date(rowData.EFFECTIVEDATE), 'MM/dd/yyyy') : rowData.EFFECTIVEDATE}
                 </MainTableCell>
             )
         },
@@ -105,7 +105,7 @@ export default function Columns(handlePopoverOpen) {
             field: 'EXPIRATIONDATE',
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.EXPIRATIONDATE !== "N/A" ? format(new Date(rowData.EXPIRATIONDATE), 'MM/dd/yyyy') : rowData.EXPIRATIONDATE}
+                    {rowData.EXPIRATIONDATE !== "-" ? format(new Date(rowData.EXPIRATIONDATE), 'MM/dd/yyyy') : rowData.EXPIRATIONDATE}
                 </MainTableCell>
             )
         },
@@ -124,7 +124,7 @@ export default function Columns(handlePopoverOpen) {
             field: 'RECEIVEDATE',
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.RECEIVEDATE !== "N/A" ? format(new Date(rowData.RECEIVEDATE), 'MM/dd/yyyy') : rowData.RECEIVEDATE}
+                    {rowData.RECEIVEDATE !== "-" ? format(new Date(rowData.RECEIVEDATE), 'MM/dd/yyyy') : rowData.RECEIVEDATE}
                 </MainTableCell>
             )
         },
