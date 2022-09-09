@@ -105,6 +105,8 @@ class Affidavits extends React.Component {
                     }
                 }
                 else if (key === "CHILD_TRANSACTION" && transaction[key].length > 0 && !isEmpty(transaction[key][0])) {
+                    mappedData.expandable = true;
+
                     for (const child of transaction[key]) {
                         mappedData.CHILDTRANSACTIONS.push({
                             AFFIDAVITNO: child.AFFIDAVITNO, 
@@ -257,7 +259,7 @@ class Affidavits extends React.Component {
             newState = {
                 advancedInputsError: {
                     active: true, 
-                    message: "At least 1 search input with 3 or more characters is required"
+                    message: errorMessages.advancedSearch
                 },
             }
         }

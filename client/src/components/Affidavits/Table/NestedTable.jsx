@@ -34,7 +34,7 @@ const NestedTable = ({rowData, selectedChildId}) => {
                         <NestedTableRow 
                         key={`child-transaction-${i}`} 
                         dense="dense" 
-                        onClick={() => handleSelectChild(c)} 
+                        // onClick={() => handleSelectChild(c)} 
                         selected={c.id === selectedChildId}
                         >
                             <NestedTableCell dense="dense">{c.AFFIDAVITNO}</NestedTableCell>

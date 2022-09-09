@@ -1,12 +1,12 @@
 import MaterialTable from '@material-table/core';
 import NestedTable from './NestedTable';
-import { TablePagination, useTheme, ThemeProvider, Grid, Typography } from '@mui/material';
+import { TablePagination, useTheme, ThemeProvider, Grid, Typography, TableCell, Box } from '@mui/material';
 import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme } from '@aeros-ui/themes';
 import { useState, useCallback } from 'react';
 import { Stack } from '@mui/system';
-import { TableIcons } from '@aeros-ui/icons';
+import { TableIcons, CaratIcon } from '@aeros-ui/icons';
 import Columns from './columns';
 
 export default function Table({ loading, rows, adjustPadding }) {
@@ -137,6 +137,20 @@ export default function Table({ loading, rows, adjustPadding }) {
         emptyRowsWhenPaging: rows.length ? false : true
     };
 
+    const detailPanel = [
+        rowData => ({
+            disabled: !rowData.expandable,
+            icon: () => rowData.expandable ? <CaratIcon color={"primary"} sx={{pt: 1, pl: 1}} /> : null,
+            render: ({rowData}) => (
+                    <NestedTable 
+                        rowData={rowData}
+                        handleSelectChild={handleSelectChild}
+                        selectedChildId={selectedChildId}
+                    /> 
+                )
+        })
+    ]
+
     return (
         <div
             style={{
@@ -154,15 +168,7 @@ export default function Table({ loading, rows, adjustPadding }) {
                     isLoading={loading}
                     icons={TableIcons}
                     onRowClick={(e, selectedRow, togglePanel) => {handleRowClick(selectedRow); togglePanel()}}
-                    detailPanel={({rowData}) => (
-                        rowData.CHILDTRANSACTIONS.length > 0 ? (
-                            <NestedTable 
-                                rowData={rowData}
-                                handleSelectChild={handleSelectChild}
-                                selectedChildId={selectedChildId}
-                            /> 
-                        ) : null
-                    )}
+                    detailPanel={detailPanel}
                     components={{
                         Pagination: (props) => (
                             <TablePagination
