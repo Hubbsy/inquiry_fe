@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Typography, Paper, Grid, IconButton, Tooltip, Stack } from '@mui/material';
+import { Typography, Paper, Grid, IconButton, Tooltip, Stack, Collapse } from '@mui/material';
 import {
     SearchInput,
     SearchButton,
@@ -52,6 +52,10 @@ function Search({
     advancedInputsError
 }) {
     const advancedSearchRef = useRef(null);
+    const rotate = {
+        transform: advancedSearchActive ? 'rotate(180deg)' : '',
+        transition: 'transform 150ms ease' // smooth transition
+    };
 
     return (
         <Paper
@@ -114,113 +118,126 @@ function Search({
                                 ref={advancedSearchRef}
                                 aria-label={'Toggle Advanced Search'}
                                 onClick={toggleAdvancedSearchPanel}>
-                                {advancedSearchActive ? (
+                                {/* {advancedSearchActive ? (
                                     <KeyboardArrowUpIcon />
                                 ) : (
-                                    <KeyboardArrowDownIcon />
-                                )}
+                                    <KeyboardArrowDownIcon style={rotate}/>
+                                )} */}
+                                <KeyboardArrowDownIcon style={rotate}/>
                             </StyledIconButton>
                         </Tooltip>
                     </Grid>
                 </Grid>
-                {advancedSearchActive && (
-                    <>
-                        <Typography variant='subtitle1' sx={{ paddingBottom: 1, mt: 1 }}>
-                            Advanced Search
-                        </Typography>
-                        <Grid container sx={{ flexGrow: 1 }} spacing={2}>
-                            <Grid item xs={2.5}>
-                                <TextInput
-                                    width={'100%'}
-                                    value={advancedSearch.AFFIDAVITNUMBER}
-                                    label={'Search by Affidavit No'}
-                                    name={'AFFIDAVITNUMBER'}
-                                    onChange={handleAdvancedSearchInputs}
-                                    onKeyPress={handleAdvancedKeyPress}
-                                />
+                <Collapse in={advancedSearchActive} width={"100%"}>
+                        <>
+                            <Typography variant='subtitle1' sx={{ paddingBottom: 1, mt: 1 }}>
+                                Advanced Search
+                            </Typography>
+                            <Grid container sx={{ flexGrow: 1 }} spacing={2}>
+                                <Grid item xs={2.5}>
+                                    <TextInput
+                                        width={'100%'}
+                                        value={advancedSearch.AFFIDAVITNUMBER}
+                                        label={'Search by Affidavit No'}
+                                        name={'AFFIDAVITNUMBER'}
+                                        onChange={handleAdvancedSearchInputs}
+                                        onKeyPress={handleAdvancedKeyPress}
+                                        error={advancedInputsError.active && advancedInputsError.id === 'AFFIDAVITNUMBER'}
+                                        helperText={advancedInputsError.active && advancedInputsError.id === 'AFFIDAVITNUMBER' ? advancedInputsError.message : null}
+                                    />
+                                </Grid>
+                                <Grid item xs={2.5}>
+                                    <TextInput
+                                        width={'100%'}
+                                        value={advancedSearch.POLICYNUMBER}
+                                        label={'Search by Policy No'}
+                                        name={'POLICYNUMBER'}
+                                        onChange={handleAdvancedSearchInputs}
+                                        onKeyPress={handleAdvancedKeyPress}
+                                        error={advancedInputsError.active && advancedInputsError.id === 'POLICYNUMBER'}
+                                        helperText={advancedInputsError.active && advancedInputsError.id === 'POLICYNUMBER' ? advancedInputsError.message : null}
+                                    />
+                                </Grid>
+                                <Grid item xs={2.5}>
+                                    <TextInput 
+                                        width={'100%'} 
+                                        value={advancedSearch.BATCH} 
+                                        label={'Search by Batch'} 
+                                        name={'BATCH'}
+                                        onChange={handleAdvancedSearchInputs}
+                                        onKeyPress={handleAdvancedKeyPress}
+                                        error={advancedInputsError.active && advancedInputsError.id === 'BATCH'}
+                                        helperText={advancedInputsError.active && advancedInputsError.id === 'BATCH' ? advancedInputsError.message : null}
+                                    />
+                                </Grid>
                             </Grid>
-                            <Grid item xs={2.5}>
-                                <TextInput
-                                    width={'100%'}
-                                    value={advancedSearch.POLICYNUMBER}
-                                    label={'Search by Policy No'}
-                                    name={'POLICYNUMBER'}
-                                    onChange={handleAdvancedSearchInputs}
-                                    onKeyPress={handleAdvancedKeyPress}
-                                />
+                            <Grid container sx={{ flexGrow: 1, pt: 3 }} spacing={2}>
+                                <Grid item xs={2.5}>
+                                    <TextInput
+                                        width={'100%'}
+                                        value={advancedSearch.INSUREDNAME}
+                                        label={'Search by Insured Name'}
+                                        name={'INSUREDNAME'}
+                                        onChange={handleAdvancedSearchInputs}
+                                        onKeyPress={handleAdvancedKeyPress}
+                                        error={advancedInputsError.active && advancedInputsError.id === 'INSUREDNAME'}
+                                        helperText={advancedInputsError.active && advancedInputsError.id === 'INSUREDNAME' ? advancedInputsError.message : null}
+                                    />
+                                </Grid>
+                                <Grid item xs={2.5}>
+                                    <TextInput
+                                        width={'100%'}
+                                        value={advancedSearch.CONTACTNAME}
+                                        label={'Search by Batch Contact'}
+                                        name={'CONTACTNAME'}
+                                        onChange={handleAdvancedSearchInputs}
+                                        onKeyPress={handleAdvancedKeyPress}
+                                        error={advancedInputsError.active && advancedInputsError.id === 'CONTACTNAME'}
+                                        helperText={advancedInputsError.active && advancedInputsError.id === 'CONTACTNAME' ? advancedInputsError.message : null}
+                                    />
+                                </Grid>
+                                <Grid item xs={2.5}>
+                                    <TextInput
+                                        width={'100%'}
+                                        value={advancedSearch.BROKERREFERENCE}
+                                        label={'Search by Reference'}
+                                        name={'BROKERREFERENCE'}
+                                        onChange={handleAdvancedSearchInputs}
+                                        onKeyPress={handleAdvancedKeyPress}
+                                        error={advancedInputsError.active && advancedInputsError.id === 'BROKERREFERENCE'}
+                                        helperText={advancedInputsError.active && advancedInputsError.id === 'BROKERREFERENCE' ? advancedInputsError.message : null}
+                                    />
+                                </Grid>
                             </Grid>
-                            <Grid item xs={2.5}>
-                                <TextInput 
-                                    width={'100%'} 
-                                    value={advancedSearch.BATCH} 
-                                    label={'Search by Batch'} 
-                                    name={'BATCH'}
-                                    onChange={handleAdvancedSearchInputs}
-                                    onKeyPress={handleAdvancedKeyPress}
-                                />
+                            <Grid container sx={{ flexGrow: 1, pt: 3 }}>
+                                <Grid item>
+                                    <CurrencyInput
+                                        label={'Premuim From'}
+                                        name={'PREMIUMFROM'}
+                                        onChange={handleAdvancedSearchInputs}
+                                    />
+                                </Grid>
+                                <Grid item>
+                                    <TextItem>TO</TextItem>
+                                </Grid>
+                                <Grid item sx={{ mr: 3 }}>
+                                    <CurrencyInput
+                                        label={'Premium To'}
+                                        name={'PREMIUMTO'}
+                                        onChange={handleAdvancedSearchInputs}
+                                    />
+                                </Grid>
+                                {advancedInputsError.active && !advancedInputsError.id ? (<Grid item xs={2.5}>
+                                    <ErrorSideNote 
+                                        title={"Advanced Search Error"} 
+                                        data={[{message: advancedInputsError.message}]} 
+                                    />
+                                </Grid>) : null}
+                                
                             </Grid>
-                        </Grid>
-                        <Grid container sx={{ flexGrow: 1, pt: 3 }} spacing={2}>
-                            <Grid item xs={2.5}>
-                                <TextInput
-                                    width={'100%'}
-                                    value={advancedSearch.INSUREDNAME}
-                                    label={'Search by Insured Name'}
-                                    name={'INSUREDNAME'}
-                                    onChange={handleAdvancedSearchInputs}
-                                    onKeyPress={handleAdvancedKeyPress}
-                                />
-                            </Grid>
-                            <Grid item xs={2.5}>
-                                <TextInput
-                                    width={'100%'}
-                                    value={advancedSearch.CONTACTNAME}
-                                    label={'Search by Batch Contact'}
-                                    name={'CONTACTNAME'}
-                                    onChange={handleAdvancedSearchInputs}
-                                    onKeyPress={handleAdvancedKeyPress}
-                                />
-                            </Grid>
-                            <Grid item xs={2.5}>
-                                <TextInput
-                                    width={'100%'}
-                                    value={advancedSearch.BROKERREFERENCE}
-                                    label={'Search by Reference'}
-                                    name={'BROKERREFERENCE'}
-                                    onChange={handleAdvancedSearchInputs}
-                                    onKeyPress={handleAdvancedKeyPress}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid container sx={{ flexGrow: 1, pt: 3 }}>
-                            <Grid item>
-                                <CurrencyInput
-                                    label={'Premuim From'}
-                                    name={'PREMIUMFROM'}
-                                    onChange={handleAdvancedSearchInputs}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <TextItem>TO</TextItem>
-                            </Grid>
-                            <Grid item sx={{ mr: 3 }}>
-                                <CurrencyInput
-                                    label={'Premium To'}
-                                    name={'PREMIUMTO'}
-                                    onChange={handleAdvancedSearchInputs}
-                                />
-                            </Grid>
-                            {advancedInputsError.active && (<Grid item xs={2.5}>
-                                <ErrorSideNote 
-                                    title={"Advanced Search Error"} 
-                                    data={[{message: advancedInputsError.message}]} 
-                                />
-                            </Grid>)}
-                            
-                        </Grid>
-                    </>
-                    
-                )}
+                        </>
+                </Collapse>
+                
             </Stack>
         </Paper>
     );

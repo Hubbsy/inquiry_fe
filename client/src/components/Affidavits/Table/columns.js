@@ -40,7 +40,6 @@ const floatToDollarsConverter = new Intl.NumberFormat("en-US", {
 })
 
 export default function Columns(handlePopoverOpen, showLicenseCol) {
-    console.log('!!!show license!!!: ', showLicenseCol)
     const cols = [
         {
             title: 'License No.',

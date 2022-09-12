@@ -32,13 +32,16 @@ class Affidavits extends React.Component {
         },
         advancedInputsError: {
             active: false, 
-            message: null
+            message: null,
+            id: null
         },
         errorStyle: false,
         serverError: false,
         adjustPadding: false,
         advancedSearchActive: false,
-        showLicenseCol: false
+        showLicenseCol: false,
+        windowHeight: window.innerHeight,
+        clientHeight: document.body.clientHeight
     };
 
     componentDidUpdate(prevProps) {
@@ -62,19 +65,36 @@ class Affidavits extends React.Component {
                 });
             }
         }
-        if (window.innerHeight < document.body.clientHeight && !this.state.adjustPadding) {
-            this.handleAdjustPadding(true);
-        }
-        else if (window.innerHeight > document.body.clientHeight && this.state.adjustPadding) {
-            this.handleAdjustPadding(false);
-        }
+        
+        // if (window.innerHeight < document.body.clientHeight && !this.state.adjustPadding) {
+        //     console.log("adjust padding true!!!!")
+        //     this.handleAdjustPadding(true);
+        // }
+        // else if (window.innerHeight > document.body.clientHeight && this.state.adjustPadding) {
+        //     console.log("adjust padding false!!!!")
+        //     this.handleAdjustPadding(false);
+        // }
         
     }
 
-    handleAdjustPadding = (flag) => {
+    setWindowHeight = () => {
         this.setState({
-            adjustPadding: flag
+            windowHeight: window.innerHeight,
+            clientHeight: document.body.clientHeight
         })
+    }
+
+    handleAdjustPadding = (flag) => {
+        if (this.state.windowHeight < this.state.clientHeight) {
+            this.setState({
+                adjustPadding: true
+            })
+        }
+        else if (this.state.windowHeight >= this.state.clientHeight) {
+            this.setState({
+                adjustPadding: false
+            })
+        }
     };
 
     mapAPIResponse = (data) => {
@@ -177,6 +197,7 @@ class Affidavits extends React.Component {
 
     validateAdvancedSearch = () => {
         let advancedSearchValid = true;
+        let inputId = "";
 
         if ((this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO)) {
             advancedSearchValid = this.checkInceptionDateRange();
@@ -198,17 +219,30 @@ class Affidavits extends React.Component {
             }
         }
         else if (advancedSearchValid) {
+            console.log("checking advanced inputs!!!")
             for (let control in this.state.advancedSearch) {
+                console.log(control)
                 if (this.state.advancedSearch[control].length && this.state.advancedSearch[control].length >= 3) {
+                    advancedSearchValid = true;
+                }
+                else if (this.state.advancedSearch[control].length > 0 && this.state.advancedSearch[control].length < 3) {
+                    console.log("inside falsy")
+                    advancedSearchValid = false;
+                    inputId = control;
                     break;
                 }
                 else {
                     advancedSearchValid = false;
-                    this.handleErrorMessages("advancedSearch");
                 }
             }
         }
 
+        console.log("advanced search!!", advancedSearchValid)
+        if (!advancedSearchValid) {
+            this.handleErrorMessages("advancedSearch", null, inputId);
+        }
+
+        
         return advancedSearchValid;
     }
 
@@ -232,10 +266,13 @@ class Affidavits extends React.Component {
         return false;
     }
 
-    handleErrorMessages = (type, pos = null) => {
+    handleErrorMessages = (type, pos = null, inputId = null) => {
         const errorMessages = {
             standardSearch: "Must be at least 3 characters",
-            advancedSearch: "At least 1 search input with 3 or more characters is required",
+            advancedSearch: {
+                group: "At least 1 search input with 3 or more characters is required",
+                single: "3 or more characters is required" 
+            } ,
             datesEndRange: "Start date cannot precede End date",
             datesEndValid: "Must enter a valid end date",
             datesStartValid: "Must enter a valid start date",
@@ -250,10 +287,12 @@ class Affidavits extends React.Component {
             }
         }
         else if (type === "advancedSearch") {
+            let errorMessage = inputId ? errorMessages.advancedSearch.single : errorMessages.advancedSearch.group;
             newState = {
                 advancedInputsError: {
                     active: true, 
-                    message: errorMessages.advancedSearch
+                    message: errorMessage,
+                    id: inputId
                 },
             }
         }
@@ -386,7 +425,7 @@ class Affidavits extends React.Component {
     };
 
     toggleAdvancedSearchPanel = () => {
-        
+        this.handleAdjustPadding();
         if (!this.state.advancedSearchActive) {
             this.setState({
                 advancedSearchActive: true, 
@@ -442,7 +481,6 @@ class Affidavits extends React.Component {
                     handleClearInput={this.handleClearInput}
                     handleHelperText={this.handleHelperText}
                     adjustPadding={this.state.adjustPadding}
-                    handleAdjustPadding={this.handleAdjustPadding}
                     advancedSearchActive={this.state.advancedSearchActive}
                     toggleAdvancedSearchPanel={this.toggleAdvancedSearchPanel}
                     handleFromDateInput={this.handleFromDateInput}
