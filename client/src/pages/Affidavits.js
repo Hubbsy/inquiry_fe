@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { getAffidavits } from '../store/actions/affidavits';
 import { Snackbar } from '@aeros-ui/components';
 import isEmpty from '../functions/isEmpty';
-import { format, isBefore, isValid } from 'date-fns';
+import { format, isBefore, isValid, isAfter, isEqual, add } from 'date-fns';
 
 class Affidavits extends React.Component {
     state = {
@@ -274,9 +274,10 @@ class Affidavits extends React.Component {
                 group: "At least one input is required",
                 single: "3 or more characters is required" 
             } ,
-            datesEndRange: "Start date cannot be before End date",
+            datesEndRange: "Date cannot be before effective date",
             datesEndValid: "Must enter a valid end date",
             datesStartValid: "Must enter a valid start date",
+            datesNotEqual: "Dates cannot be the same",
             premiumRange: "Must include both Premium From and To amounts",
             premiumValid: "Premium From amount cannot be greater than To amount"
         }
@@ -322,6 +323,14 @@ class Affidavits extends React.Component {
                     }
                 }
             }
+            else if (pos === "notEqual") {
+                newState = {
+                    datesRangeError: {
+                        endDateError: true,
+                        message: errorMessages.datesNotEqual
+                    }
+                }
+            }
         }
         else if (type === "premiumRange") {
             newState = {
@@ -345,41 +354,127 @@ class Affidavits extends React.Component {
         return this.setState(newState);
     }
 
-    handleFromDateInput = (value) => {
-        this.setState({
-            errorStyle: false,
-            datesRangeError: {
-                active: false, 
-                message: null
-            },
-            standardSearch: {
-                ...this.state.standardSearch,
-                INCEPTIONFROM: value,
-            },
-            advancedInputsError: {
-                active: false,
-                message: ""
-            } 
-        })
-    }
+    // handleFromDateInput = (value) => {
+    //     this.setState({
+    //         errorStyle: false,
+    //         datesRangeError: {
+    //             active: false, 
+    //             message: null
+    //         },
+    //         standardSearch: {
+    //             ...this.state.standardSearch,
+    //             INCEPTIONFROM: value,
+    //         },
+    //         advancedInputsError: {
+    //             active: false,
+    //             message: ""
+    //         } 
+    //     })
+    // }
 
-    handleToDateInput = (value) => {
-        this.setState({
-            errorStyle: false,
-            datesRangeError: {
-                active: false, 
-                message: null
-            },
-            standardSearch: {
-                ...this.state.standardSearch,
-                INCEPTIONTO: value,
-            },
-            advancedInputsError: {
-                active: false,
-                message: ""
-            } 
-        })
-    }
+    // standardSearch: {
+    //     searchValue: '',
+    //     INCEPTIONFROM: null,
+    //     INCEPTIONTO: null,
+    // },
+    setStartDate = (e) => {
+        console.log('EVENT SET EFFECTIVE DATE:', e);
+        let startDateError = null;
+        let endDateError = null;
+        let endDate = null;
+        if (isValid(e)) {
+            const date = e.toLocaleDateString('en-GB').split('/').reverse().join('-');
+            if (date.length === 10) {
+                if (this.state.standardSearch.INCEPTIONTO !== null && isAfter(e, this.state.standardSearch.INCEPTIONTO)) {
+                    startDateError = 'Date cannot be after expiration date';
+                    endDate = this.state.standardSearch.INCEPTIONTO;
+                } else if (this.state.standardSearch.INCEPTIONTO !== null && isEqual(e, this.state.standardSearch.INCEPTIONTO)) {
+                    startDateError = 'Dates cannot be the same';
+                    endDate = this.state.standardSearch.INCEPTIONTO;
+                } else if (this.state.standardSearch.INCEPTIONTO === null) {
+                    endDate = add(e, { years: 1 });
+                } else {
+                    endDate = this.state.standardSearch.INCEPTIONTO;
+                }
+            } else {
+                startDateError = 'Invalid Date';
+                endDate = this.state.expirationDate;
+            }
+
+            this.setState({ 
+                standardSearch: {
+                    ...this.state.standardSearch, 
+                    INCEPTIONFROM: e,
+                    INCEPTIONTO: endDate
+                },
+                // datesRangeError: {
+                //     active: false, 
+                //     message: null
+                // },
+                
+             });
+        }
+    };
+
+    // handleToDateInput = (value) => {
+    //     this.setState({
+    //         errorStyle: false,
+    //         datesRangeError: {
+    //             active: false, 
+    //             message: null
+    //         },
+    //         standardSearch: {
+    //             ...this.state.standardSearch,
+    //             INCEPTIONTO: value,
+    //         },
+    //         advancedInputsError: {
+    //             active: false,
+    //             message: ""
+    //         } 
+    //     })
+    // }
+
+    setEndDate = (e) => {
+        console.log('EVENT SET EXPIRATION DATE:', e);
+        let endDateError = null;
+        let startDateError = null;
+        if (isValid(e)) {
+            const date = e.toLocaleDateString('en-GB').split('/').reverse().join('-');
+            if (date.length === 10) {
+                if (isAfter(this.state.standardSearch.INCEPTIONFROM, e)) {
+                    // endDateError = 'Date cannot be before effective date';
+                    // startDateError = null;
+                    this.handleErrorMessages("dates", "endRange")
+                }
+
+                if (isEqual(this.state.standardSearch.INCEPTIONFROM, e)) {
+                    // endDateError = 'Dates cannot be the same';
+                    // startDateError = null;
+                    this.handleErrorMessages("dates", "notEqual")
+                }
+
+                if (isBefore(this.state.standardSearch.INCEPTIONFROM, e)) {
+                    startDateError = null;
+                }
+            } else {
+                this.handleErrorMessages("dates", "endValid")
+            }
+
+            this.setState({ 
+                standardSearch: {
+                    ...this.state.standardSearch, 
+                    INCEPTIONTO: e,
+                },
+                // datesRangeError: {
+                //     active: false, 
+                //     message: null
+                // },
+             });
+        }
+        else {
+            this.handleErrorMessages("dates", "endValid")
+        }
+    };
 
     handleChange = (e) => {
         this.setState({
@@ -501,8 +596,8 @@ class Affidavits extends React.Component {
                     adjustPadding={this.state.adjustPadding}
                     advancedSearchActive={this.state.advancedSearchActive}
                     toggleAdvancedSearchPanel={this.toggleAdvancedSearchPanel}
-                    handleFromDateInput={this.handleFromDateInput}
-                    handleToDateInput={this.handleToDateInput}
+                    handleFromDateInput={this.setStartDate}
+                    handleToDateInput={this.setEndDate}
                     datesRangeError={this.state.datesRangeError}
                     standardSearch={this.state.standardSearch}
                     advancedSearch={this.state.advancedSearch}
