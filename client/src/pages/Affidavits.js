@@ -141,11 +141,12 @@ class Affidavits extends React.Component {
 
     setCompanyDetails(transaction) {
         return {
-            address: transaction.RISKADDRESS,
+            affidavitNo: transaction.AFFIDAVITNO,
+            riskAddress: transaction.RISKADDRESS,
             city: transaction.RISKCITY,
             state: transaction.RISKSTATE,
             zip: transaction.RISKZIPCODE,
-            company: `${transaction.COMPANY[0].COMPANYNUMBER} ${transaction.COMPANY.COMPANYNAME}`,
+            company: `${transaction.COMPANY[0].COMPANYNUMBER} ${transaction.COMPANY[0].COMPANYNAME}`,
             coverage: transaction.COVERAGE,
             risk: transaction.RISK,
             batchView: transaction.BATCHLINKEDITVIEW,
@@ -222,15 +223,14 @@ class Affidavits extends React.Component {
                 advancedSearchValid = true;
             }
         }
+
         if (advancedSearchValid) {
-            console.log("checking advanced inputs!!!")
             let blankInputs = 0;
             
             for (let control in this.state.advancedSearch) {
                 console.log(blankInputs)
                 console.log(control)
                 if (this.state.advancedSearch[control].length > 0 && this.state.advancedSearch[control].length < 3) {
-                    console.log("inside falsy")
                     this.handleErrorMessages("advancedSearch", null, control);
                     return false;
                 }
@@ -443,17 +443,7 @@ class Affidavits extends React.Component {
         } 
         else {
             this.setState({
-                advancedSearchActive: false, 
-                advancedSearch: {
-                    AFFIDAVITNUMBER: '',
-                    POLICYNUMBER: '',
-                    INSUREDNAME: '',
-                    CONTACTNAME: '',
-                    BROKERREFERENCE: '',
-                    BATCH: '',
-                    PREMIUMFROM: '',
-                    PREMIUMTO: ''
-                }
+                advancedSearchActive: false
             })
         }
     };

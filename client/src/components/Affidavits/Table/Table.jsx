@@ -19,7 +19,7 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
     const [selectedChildId, setSelectedChildId] = useState(null);
 
     const [currentRowData, setCurrentRowData] = useState({
-        licenseNo: 'no current license No.',
+        affidavitNo: 'no current license No.',
         address: 'no current Company Info'
     });
 
@@ -54,14 +54,16 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
 
     const compileFullAddress = (options) => {
         return {
-            line1: `${options.address}`,
+            line1: `${options.riskAddress}`,
             line2: `${options.city}, ${options.state}, ${options.zip}`
         };
     };
 
     const handlePopoverOpen = useCallback((event, rowData) => {
         setSelectedRow(rowData);
+        rowData.companyDetails.address = compileFullAddress(rowData.companyDetails);
         setCurrentRowData(rowData.companyDetails);
+        console.log(rowData.companyDetails)
         const anchorPosition = anchorPositionByAnchorEl(event);
         setAnchorEl(anchorPosition);
     }, []);
@@ -138,7 +140,7 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
     const actions = (
         <Grid item container justifyContent='flex-end'>
             <Button href={currentRowData.batchLink} size='small' variant='outlined' startIcon={currentRowData.batchView === "VIEW" ? <FontDownloadIcon/> : <ModeEditIcon/>} >
-                {currentRowData.batchView} Affidavits
+                {currentRowData.batchView} Affidavit
             </Button>
         </Grid>
     );
@@ -244,7 +246,7 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
                     }}
                     handleClose={handlePopoverClose}
                     width={300}
-                    title={`License No. ${currentRowData.licenseNo}`}
+                    title={`Affidavit No. ${currentRowData.affidavitNo}`}
                     content={content}
                     actions={actions}
                 />
