@@ -219,11 +219,10 @@ class Affidavits extends React.Component {
                 return false;
             }
             else {
-                // this.handleErrorMessages("premiumValid", null, "PREMIUMTO");
-                return true;
+                advancedSearchValid = true;
             }
         }
-        else if (advancedSearchValid) {
+        if (advancedSearchValid) {
             console.log("checking advanced inputs!!!")
             let blankInputs = 0;
             
@@ -236,14 +235,12 @@ class Affidavits extends React.Component {
                     return false;
                 }
                 else if (
-                    this.state.advancedSearch[control].length === 0 && 
-                    control !== "PREMIUMFROM" &&
-                    control !== "PREMIUMTO") {
+                    this.state.advancedSearch[control].length === 0) {
                     blankInputs++;
                 }
             }
 
-            if (blankInputs === 6) {
+            if (blankInputs === 8) {
                 this.handleErrorMessages("advancedSearch");
                 return false;
             }
