@@ -157,16 +157,16 @@ class Affidavits extends React.Component {
     executeSearch = () => {
         const data = {
             COMBOSEARCH: this.state.advancedSearchActive ? "" : this.state.standardSearch.searchValue,
-            AFFIDAVITNUMBER: this.state.advancedSearch.AFFIDAVITNUMBER,
-            POLICYNUMBER: this.state.advancedSearch.POLICYNUMBER,
-            INSUREDNAME: this.state.advancedSearch.INSUREDNAME,
+            AFFIDAVITNUMBER: this.state.advancedSearchActive ? this.state.advancedSearch.AFFIDAVITNUMBER : "",
+            POLICYNUMBER: this.state.advancedSearchActive ? this.state.advancedSearch.POLICYNUMBER : "",
+            INSUREDNAME: this.state.advancedSearchActive ? this.state.advancedSearch.INSUREDNAME : "",
             INCEPTIONFROM: isValid(this.state.standardSearch.INCEPTIONFROM) ? format(new Date(this.state.standardSearch.INCEPTIONFROM), "MM/dd/yyyy") : "",
             INCEPTIONTO: isValid(this.state.standardSearch.INCEPTIONTO) ? format(new Date(this.state.standardSearch.INCEPTIONTO), "MM/dd/yyyy") : "",
-            CONTACTNAME: this.state.advancedSearch.CONTACTNAME,
-            BROKERREFERENCE: this.state.advancedSearch.BROKERREFERENCE,
-            BATCH: this.state.advancedSearch.BATCH,
-            PREMIUMFROM: this.state.advancedSearch.PREMIUMFROM,
-            PREMIUMTO: this.state.advancedSearch.PREMIUMTO
+            CONTACTNAME: this.state.advancedSearchActive ? this.state.advancedSearch.CONTACTNAME : "",
+            BROKERREFERENCE: this.state.advancedSearchActive ? this.state.advancedSearch.BROKERREFERENCE : "",
+            BATCH: this.state.advancedSearchActive ? this.state.advancedSearch.BATCH : "",
+            PREMIUMFROM: this.state.advancedSearchActive ? this.state.advancedSearch.PREMIUMFROM : "",
+            PREMIUMTO: this.state.advancedSearchActive ? this.state.advancedSearch.PREMIUMTO : ""
         };
 
         if (this.checkValidSearchParams()) {

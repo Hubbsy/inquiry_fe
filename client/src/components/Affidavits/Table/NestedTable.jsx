@@ -10,14 +10,14 @@ const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
     width: 18,
     display: 'flex',
     color: 'gray',
-    // '&:hover': {
-    //     height: 32,
-    //     width: 18,
-    //     borderRadius: '50%',
-    //     backgroundColor: theme.palette.grid.main.active,
-    //     padding: 0,
-    //     color: 'gray'
-    // },
+    '&:hover': {
+        height: 32,
+        width: 18,
+        borderRadius: '50%',
+        backgroundColor: theme.palette.grid.main.active,
+        padding: 0,
+        color: 'gray'
+    },
     '&:active': {
         height: 32,
         width: 18,
@@ -38,7 +38,7 @@ const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
 
 
 
-const NestedTable = ({rowData, selectedChildId}) => {
+const NestedTable = ({rowData, selectedChildId, handlePopoverOpen}) => {
 
     let columnHeaders = [
         "Affidavit No",
@@ -87,7 +87,10 @@ const NestedTable = ({rowData, selectedChildId}) => {
                             <NestedTableCell dense="dense" width={"5em"}>{c.BATCHNO ? c.BATCHNO : NO_VALUE}</NestedTableCell>
                             <NestedTableCell dense="dense" width={"5em"}>{c.RECEIVEDATE ? format(new Date(c.RECEIVEDATE), 'MM/dd/yyyy') : NO_VALUE}</NestedTableCell>
                             <NestedTableCell dense="dense" align={"center"} width={"4em"}>{c.PROCESSEDSTATE ? c.PROCESSEDSTATE : NO_VALUE}</NestedTableCell>
-                            <NestedTableCell dense="dense" width={"1em"}><StyledMoreVertIcon disabled={true} /></NestedTableCell>
+                            <NestedTableCell dense="dense" width={"1em"}>
+                                <StyledMoreVertIcon onClick={(e) => handlePopoverOpen(e, rowData)} 
+                                />
+                            </NestedTableCell>
                         </NestedTableRow>
                     ))}
                 </TableBody>

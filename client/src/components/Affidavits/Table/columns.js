@@ -57,7 +57,7 @@ export default function Columns(handlePopoverOpen, showLicenseCol) {
             field: 'AFFIDAVITNO',
             type: 'string',
             render: (rowData) => (
-                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
+                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em', whiteSpace: "nowrap" } }}>
                     {rowData.AFFIDAVITNO}
                 </MainTableCell>
             )

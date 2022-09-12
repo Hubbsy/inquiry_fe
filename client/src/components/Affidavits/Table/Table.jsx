@@ -192,6 +192,7 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
                         rowData={rowData}
                         handleSelectChild={handleSelectChild}
                         selectedChildId={selectedChildId}
+                        handlePopoverOpen={handlePopoverOpen}
                     /> 
                 )
         })
