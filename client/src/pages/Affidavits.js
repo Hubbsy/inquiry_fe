@@ -198,8 +198,6 @@ class Affidavits extends React.Component {
 
     validateAdvancedSearch = () => {
         let advancedSearchValid = true;
-        let premiumRangeValid = true;
-        let inputId = "";
 
         if ((this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO)) {
             advancedSearchValid = this.checkInceptionDateRange();
@@ -273,10 +271,10 @@ class Affidavits extends React.Component {
         const errorMessages = {
             standardSearch: "Must be at least 3 characters",
             advancedSearch: {
-                group: "At least 1 search input with 3 or more characters is required",
+                group: "At least one input is required",
                 single: "3 or more characters is required" 
             } ,
-            datesEndRange: "Start date cannot precede End date",
+            datesEndRange: "Start date cannot be before End date",
             datesEndValid: "Must enter a valid end date",
             datesStartValid: "Must enter a valid start date",
             premiumRange: "Must include both Premium From and To amounts",
@@ -405,7 +403,7 @@ class Affidavits extends React.Component {
         if (e.charCode === 13 && e.target.value.length >= 3) {
             this.executeSearch();
         } else if (e.charCode === 13) {
-            this.handleErrorMessages("advancedSearch")
+            this.handleErrorMessages("advancedSearch", null, e.target.name)
         }
     };
 
@@ -428,6 +426,16 @@ class Affidavits extends React.Component {
             errorStyle: false
         });
     };
+
+    handleCloseGeneralError = () => {
+        this.setState({
+            advancedInputsError: {
+                active: false, 
+                message: null,
+                id: null
+            } 
+        })
+    }
 
     toggleAdvancedSearchPanel = () => {
         this.handleAdjustPadding();
@@ -463,6 +471,21 @@ class Affidavits extends React.Component {
         }
     }
 
+    clearAdvancedSearchInputs = () => {
+        this.setState({
+            advancedSearch: {
+                AFFIDAVITNUMBER: '',
+                POLICYNUMBER: '',
+                INSUREDNAME: '',
+                CONTACTNAME: '',
+                BROKERREFERENCE: '',
+                BATCH: '',
+                PREMIUMFROM: '',
+                PREMIUMTO: ''
+            }
+        })
+    }
+
     render() {
         return (
             <>
@@ -486,6 +509,8 @@ class Affidavits extends React.Component {
                     handleAdvancedSearchInputs={this.handleAdvancedSearchInputs}
                     handleAdvancedKeyPress={this.handleAdvancedKeyPress}
                     advancedInputsError={this.state.advancedInputsError}
+                    handleCloseGeneralError={this.handleCloseGeneralError}
+                    clearAdvancedSearchInputs={this.clearAdvancedSearchInputs}
                 />
                 <Table
                     loading={this.props.loading}

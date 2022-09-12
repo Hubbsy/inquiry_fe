@@ -5,8 +5,9 @@ import {
     SearchButton,
     DateInput,
     TextInput,
-    CurrencyInput,
-    ErrorSideNote
+    CurrencyInput, 
+    Alert,
+    ClearButton
 } from '@aeros-ui/components';
 import styled from '@emotion/styled';
 import { Box } from '@mui/system';
@@ -49,7 +50,9 @@ function Search({
     handleAdvancedSearchInputs,
     advancedSearch,
     handleAdvancedKeyPress,
-    advancedInputsError
+    advancedInputsError,
+    handleCloseGeneralError,
+    clearAdvancedSearchInputs
 }) {
     const advancedSearchRef = useRef(null);
     const rotate = {
@@ -118,11 +121,6 @@ function Search({
                                 ref={advancedSearchRef}
                                 aria-label={'Toggle Advanced Search'}
                                 onClick={toggleAdvancedSearchPanel}>
-                                {/* {advancedSearchActive ? (
-                                    <KeyboardArrowUpIcon />
-                                ) : (
-                                    <KeyboardArrowDownIcon style={rotate}/>
-                                )} */}
                                 <KeyboardArrowDownIcon style={rotate}/>
                             </StyledIconButton>
                         </Tooltip>
@@ -130,9 +128,16 @@ function Search({
                 </Grid>
                 <Collapse in={advancedSearchActive} width={"100%"}>
                         <>
-                            <Typography variant='subtitle1' sx={{ paddingBottom: 1, mt: 1 }}>
-                                Advanced Search
-                            </Typography>
+                        <Grid container spacing={2}>
+                            <Grid item>
+                                <Typography variant='subtitle1' sx={{ paddingBottom: 1, mt: 1 }}>
+                                    Advanced Search
+                                </Typography>
+                            </Grid>
+                            <Grid item >
+                                <ClearButton onClick={clearAdvancedSearchInputs} sx={{height: "2em", width: "2em", m: 1}} />
+                            </Grid>
+                        </Grid>
                             <Grid container sx={{ flexGrow: 1 }} spacing={2}>
                                 <Grid item xs={2.5}>
                                     <TextInput
@@ -209,7 +214,7 @@ function Search({
                                     />
                                 </Grid>
                             </Grid>
-                            <Grid container sx={{ flexGrow: 1, pt: 3 }}>
+                            <Grid container sx={{ flexGrow: 1, pt: 3, position: "relative" }}>
                                 <Grid item>
                                     <CurrencyInput
                                         label={'Premuim From'}
@@ -233,17 +238,19 @@ function Search({
                                         helperText={advancedInputsError.active && advancedInputsError.id === 'PREMIUMTO' ? advancedInputsError.message : null}
                                     />
                                 </Grid>
-                                {advancedInputsError.active && !advancedInputsError.id ? (<Grid item xs={2.5}>
-                                    <ErrorSideNote 
-                                        title={"Advanced Search Error"} 
-                                        data={[{message: advancedInputsError.message}]} 
-                                    />
-                                </Grid>) : null}
-                                
+                                <Grid item sx={{ mr: 3, width: "30%", position: "absolute", right: "0", bottom: "0" }}>
+                                    {advancedInputsError.active && !advancedInputsError.id ? (
+                                    <Alert
+                                        title={"Invalid Search"}
+                                        message={advancedInputsError.message ? advancedInputsError.message : ""}
+                                        severity={"error"}
+                                        // handleClose={handleCloseGeneralError}
+                                        onClick={handleCloseGeneralError}
+                                    />) : null}
+                                </Grid>
                             </Grid>
                         </>
                 </Collapse>
-                
             </Stack>
         </Paper>
     );
