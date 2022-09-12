@@ -197,6 +197,7 @@ class Affidavits extends React.Component {
 
     validateAdvancedSearch = () => {
         let advancedSearchValid = true;
+        let premiumRangeValid = true;
         let inputId = "";
 
         if ((this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO)) {
@@ -205,43 +206,48 @@ class Affidavits extends React.Component {
         else if ((this.state.advancedSearch.PREMIUMFROM || this.state.advancedSearch.PREMIUMTO) && advancedSearchValid) {
             if (this.state.advancedSearch.PREMIUMFROM && 
                 this.state.advancedSearch.PREMIUMTO && 
-                (parseFloat(this.state.advancedSearch.PREMIUMFROM.replace(/,/g, "")) <= parseFloat(this.state.advancedSearch.PREMIUMTO.replace(/,/g, "")))) {
+                (parseFloat(this.state.advancedSearch.PREMIUMFROM.replace(/,/g, "")) >= parseFloat(this.state.advancedSearch.PREMIUMTO.replace(/,/g, "")))) {
+                    this.handleErrorMessages("premiumValid", null, "PREMIUMTO");
+                    return false;
             }
-            else if (
-                !this.state.advancedSearch.PREMIUMFROM || 
-                !this.state.advancedSearch.PREMIUMTO) {
-                    advancedSearchValid = false;
-                    this.handleErrorMessages("premiumRange");
+            else if (!this.state.advancedSearch.PREMIUMFROM) {
+                    this.handleErrorMessages("premiumRange", null, "PREMIUMFROM");
+                    return false;
+            }
+            else if (!this.state.advancedSearch.PREMIUMTO) {
+                this.handleErrorMessages("premiumRange", null, "PREMIUMTO");
+                return false;
             }
             else {
-                advancedSearchValid = false;
-                this.handleErrorMessages("premiumValid");
+                // this.handleErrorMessages("premiumValid", null, "PREMIUMTO");
+                return true;
             }
         }
         else if (advancedSearchValid) {
             console.log("checking advanced inputs!!!")
+            let blankInputs = 0;
+            
             for (let control in this.state.advancedSearch) {
+                console.log(blankInputs)
                 console.log(control)
-                if (this.state.advancedSearch[control].length && this.state.advancedSearch[control].length >= 3) {
-                    advancedSearchValid = true;
-                }
-                else if (this.state.advancedSearch[control].length > 0 && this.state.advancedSearch[control].length < 3) {
+                if (this.state.advancedSearch[control].length > 0 && this.state.advancedSearch[control].length < 3) {
                     console.log("inside falsy")
-                    advancedSearchValid = false;
-                    inputId = control;
-                    break;
+                    this.handleErrorMessages("advancedSearch", null, control);
+                    return false;
                 }
-                else {
-                    advancedSearchValid = false;
+                else if (
+                    this.state.advancedSearch[control].length === 0 && 
+                    control !== "PREMIUMFROM" &&
+                    control !== "PREMIUMTO") {
+                    blankInputs++;
                 }
             }
-        }
 
-        console.log("advanced search!!", advancedSearchValid)
-        if (!advancedSearchValid) {
-            this.handleErrorMessages("advancedSearch", null, inputId);
+            if (blankInputs === 6) {
+                this.handleErrorMessages("advancedSearch");
+                return false;
+            }
         }
-
         
         return advancedSearchValid;
     }
@@ -326,7 +332,8 @@ class Affidavits extends React.Component {
             newState = {
                 advancedInputsError: {
                     active: true, 
-                    message: errorMessages.premiumRange
+                    message: errorMessages.premiumRange,
+                    id: inputId
                 },
             }
         }
@@ -334,7 +341,8 @@ class Affidavits extends React.Component {
             newState = {
                 advancedInputsError: {
                     active: true, 
-                    message: errorMessages.premiumValid
+                    message: errorMessages.premiumValid,
+                    id: inputId
                 },
             }
         }

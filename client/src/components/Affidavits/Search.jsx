@@ -214,7 +214,10 @@ function Search({
                                     <CurrencyInput
                                         label={'Premuim From'}
                                         name={'PREMIUMFROM'}
+                                        decimalPlaces={0}
                                         onChange={handleAdvancedSearchInputs}
+                                        error={advancedInputsError.active && advancedInputsError.id === 'PREMIUMFROM'}
+                                        helperText={advancedInputsError.active && advancedInputsError.id === 'PREMIUMFROM' ? advancedInputsError.message : null}
                                     />
                                 </Grid>
                                 <Grid item>
@@ -224,7 +227,10 @@ function Search({
                                     <CurrencyInput
                                         label={'Premium To'}
                                         name={'PREMIUMTO'}
+                                        decimalPlaces={0}
                                         onChange={handleAdvancedSearchInputs}
+                                        error={advancedInputsError.active && advancedInputsError.id === 'PREMIUMTO'}
+                                        helperText={advancedInputsError.active && advancedInputsError.id === 'PREMIUMTO' ? advancedInputsError.message : null}
                                     />
                                 </Grid>
                                 {advancedInputsError.active && !advancedInputsError.id ? (<Grid item xs={2.5}>
