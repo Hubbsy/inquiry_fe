@@ -16,8 +16,6 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
     const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
-    const [selectedChildId, setSelectedChildId] = useState(null);
-    const [selectedChild, setSelectedChild] = useState(null);
 
     const [currentRowData, setCurrentRowData] = useState({
         affidavitNo: 'no current license No.',
@@ -25,16 +23,10 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
     });
 
     const [anchorEl, setAnchorEl] = useState(null);
-    const [nestedAnchorEl, setNestedAnchorEl] = useState(null);
     const popoverOpen = Boolean(anchorEl);
-    const nestedPopoverOpen = Boolean(nestedAnchorEl);
 
     const handleDensityClick = () => {
         density === 'normal' ? setDensity('dense') : setDensity('normal');
-    };
-
-    const handleSelectChild = rowData => {
-        setSelectedChild(rowData)
     };
 
     const handleRowClick = (row) => {
@@ -66,7 +58,6 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
         setSelectedRow(rowData);
         rowData.companyDetails.address = compileFullAddress(rowData.companyDetails);
         setCurrentRowData(rowData.companyDetails);
-        console.log(rowData.companyDetails)
         const anchorPosition = anchorPositionByAnchorEl(event);
         setAnchorEl(anchorPosition);
     }, []);

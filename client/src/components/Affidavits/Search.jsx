@@ -244,6 +244,7 @@ function Search({
                                         title={"Invalid Search"}
                                         message={advancedInputsError.message ? advancedInputsError.message : ""}
                                         severity={"error"}
+                                        onClick={handleCloseGeneralError}
                                     />) : null}
                                 </Grid>
                             </Grid>

@@ -242,7 +242,7 @@ class Affidavits extends React.Component {
                 }
             }
 
-            if (blankInputs === 8) {
+            if (blankInputs === 8 && (!this.state.standardSearch.INCEPTIONFROM || !this.state.standardSearch.INCEPTIONTO)) {
                 this.handleErrorMessages("advancedSearch");
                 return false;
             }
@@ -278,7 +278,7 @@ class Affidavits extends React.Component {
                 group: "At least one input is required",
                 single: "3 or more characters is required" 
             } ,
-            datesEndRange: "Date cannot be before effective date",
+            datesEndRange: "Date cannot be before start date",
             datesEndValid: "Must enter a valid end date",
             datesStartValid: "Must enter a valid start date",
             datesStartRange: "Date cannot be after end date",
@@ -409,7 +409,12 @@ class Affidavits extends React.Component {
                         endDateError: false,
                         startDateError: false,
                         message: null
-                    }
+                    },
+                    advancedInputsError: {
+                        active: false, 
+                        message: null,
+                        id: null
+                    },
                  });
             } else {
                 return this.handleErrorMessages("dates", "startValid");
@@ -452,7 +457,13 @@ class Affidavits extends React.Component {
                             endDateError: false,
                             startDateError: false,
                             message: null
-                        }
+                        },
+                        advancedInputsError: {
+                            active: false, 
+                            message: null,
+                            id: null
+                        },
+                        
                     });
                 }
             } else {
