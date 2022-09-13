@@ -43,8 +43,7 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
                 rowCopy.tableData.showDetailPanel = false;
             }
         }
-        setSelectedRow(null)
-        setSelectedChild(null)
+        setSelectedRow(null);
     };
 
     const compileFullAddress = (options) => {

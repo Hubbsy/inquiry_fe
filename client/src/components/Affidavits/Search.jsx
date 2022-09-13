@@ -12,7 +12,6 @@ import {
 import styled from '@emotion/styled';
 import { Box } from '@mui/system';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 const TextItem = styled(Box)(({ theme }) => ({
     ...theme.typography.body2,
@@ -220,6 +219,7 @@ function Search({
                                         label={'Premuim From'}
                                         name={'PREMIUMFROM'}
                                         decimalPlaces={0}
+                                        value={advancedSearch.PREMIUMFROM}
                                         onChange={handleAdvancedSearchInputs}
                                         error={advancedInputsError.active && advancedInputsError.id === 'PREMIUMFROM'}
                                         helperText={advancedInputsError.active && advancedInputsError.id === 'PREMIUMFROM' ? advancedInputsError.message : null}
@@ -233,6 +233,7 @@ function Search({
                                         label={'Premium To'}
                                         name={'PREMIUMTO'}
                                         decimalPlaces={0}
+                                        value={advancedSearch.PREMIUMTO}
                                         onChange={handleAdvancedSearchInputs}
                                         error={advancedInputsError.active && advancedInputsError.id === 'PREMIUMTO'}
                                         helperText={advancedInputsError.active && advancedInputsError.id === 'PREMIUMTO' ? advancedInputsError.message : null}

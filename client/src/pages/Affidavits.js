@@ -283,8 +283,8 @@ class Affidavits extends React.Component {
             datesStartValid: "Must enter a valid start date",
             datesStartRange: "Date cannot be after end date",
             datesNotEqual: "Dates cannot be the same",
-            premiumRange: "Must include both Premium From and To amounts",
-            premiumValid: "Premium From amount cannot be greater than To amount"
+            premiumRange: "Must include both Premium amounts",
+            premiumValid: "Premium cannot be greater than start amount"
         }
 
         let newState = null;
