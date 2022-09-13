@@ -17,6 +17,7 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
     const [selectedChildId, setSelectedChildId] = useState(null);
+    const [selectedChild, setSelectedChild] = useState(null);
 
     const [currentRowData, setCurrentRowData] = useState({
         affidavitNo: 'no current license No.',
@@ -24,14 +25,16 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
     });
 
     const [anchorEl, setAnchorEl] = useState(null);
+    const [nestedAnchorEl, setNestedAnchorEl] = useState(null);
     const popoverOpen = Boolean(anchorEl);
+    const nestedPopoverOpen = Boolean(nestedAnchorEl);
 
     const handleDensityClick = () => {
         density === 'normal' ? setDensity('dense') : setDensity('normal');
     };
 
     const handleSelectChild = rowData => {
-        setSelectedChildId(rowData.id)
+        setSelectedChild(rowData)
     };
 
     const handleRowClick = (row) => {
@@ -49,7 +52,7 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
             }
         }
         setSelectedRow(null)
-        setSelectedChildId(null)
+        setSelectedChild(null)
     };
 
     const compileFullAddress = (options) => {
@@ -145,7 +148,7 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
         </Grid>
     );
 
-    const columns = Columns(handlePopoverOpen, showLicenseCol);
+    const columns = Columns(handlePopoverOpen, showLicenseCol, popoverOpen);
 
     const options = {
         pageSize: 10,
@@ -190,9 +193,6 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
             render: ({rowData}) => (
                     <NestedTable 
                         rowData={rowData}
-                        handleSelectChild={handleSelectChild}
-                        selectedChildId={selectedChildId}
-                        handlePopoverOpen={handlePopoverOpen}
                     /> 
                 )
         })

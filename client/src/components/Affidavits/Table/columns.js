@@ -39,7 +39,7 @@ const floatToDollarsConverter = new Intl.NumberFormat("en-US", {
     currency: "USD",
 })
 
-export default function Columns(handlePopoverOpen, showLicenseCol) {
+export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) {
     const cols = [
         {
             title: 'License No.',
@@ -156,7 +156,7 @@ export default function Columns(handlePopoverOpen, showLicenseCol) {
             field: 'detailsPopoverIcon',
             width: '1em',
             render: (rowData) => (
-                <StyledMoreVertIcon onClick={(e) => handlePopoverOpen(e, rowData)} />
+                <StyledMoreVertIcon onClick={(e) => handlePopoverOpen(e, rowData)} aria-describedby={popoverOpen ? 'menu-popover' : undefined} />
             ),
             hiddenByColumnsButton: true,
             filtering: false
