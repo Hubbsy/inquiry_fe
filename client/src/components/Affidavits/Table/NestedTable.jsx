@@ -48,7 +48,7 @@ const NestedTable = ({
 
     const handleNestedPopoverOpen = (event, childRowData) => {
         console.log(childRowData);
-        console.log(rowData)
+        console.log(rowData);
         rowData.companyDetails.address = compileFullAddress(rowData.companyDetails);
         const anchorPosition = anchorPositionByAnchorEl(event);
         setNestedAnchorEl(anchorPosition);
@@ -111,7 +111,7 @@ const NestedTable = ({
                         <NestedTableRow 
                         key={`child-transaction-${i}`} 
                         dense="dense" 
-                        onClick={() => setSelectedChild(c)} 
+                        onClick={() => {console.log(rowData);setSelectedChild(c)}} 
                         selected={selectedChild !== null && c.TRANSACTION_ID
                             === selectedChild.TRANSACTION_ID
                         }
@@ -152,10 +152,10 @@ const NestedTable = ({
                                                 <Grid item container sx={{pb: 1}}>
                                                     <Stack>
                                                         <Typography variant='body2' sx={{ textTransform: 'none' }}>
-                                                            {rowData.companyDetails.address.line1}
+                                                            {rowData.companyDetails.address ? rowData.companyDetails.address.line1 : ""}
                                                         </Typography>
                                                         <Typography variant='body2' sx={{ textTransform: 'none' }}>
-                                                            {rowData.companyDetails.address.line2}
+                                                            {rowData.companyDetails.address ? rowData.companyDetails.address.line2 : ""}
                                                         </Typography>
                                                     </Stack>
                                                 </Grid>
