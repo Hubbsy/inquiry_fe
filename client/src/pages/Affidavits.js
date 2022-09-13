@@ -178,9 +178,13 @@ class Affidavits extends React.Component {
         let validSearch = true;
 
         if (!this.state.advancedSearchActive) {
-            
             if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
-                validSearch = this.checkInceptionDateRange();
+                if (this.state.datesRangeError.startDateError || this.state.datesRangeError.endDateError ) {
+                    validSearch = false;
+                }
+                else {
+                    validSearch = this.checkInceptionDateRange();
+                }
             }
             else if (this.state.standardSearch.searchValue.length < 3) {
                 this.handleErrorMessages("standardSearch");
@@ -277,6 +281,7 @@ class Affidavits extends React.Component {
             datesEndRange: "Date cannot be before effective date",
             datesEndValid: "Must enter a valid end date",
             datesStartValid: "Must enter a valid start date",
+            datesStartRange: "Date cannot be after end date",
             datesNotEqual: "Dates cannot be the same",
             premiumRange: "Must include both Premium From and To amounts",
             premiumValid: "Premium From amount cannot be greater than To amount"
@@ -323,6 +328,14 @@ class Affidavits extends React.Component {
                     }
                 }
             }
+            else if (pos === "startRange") {
+                newState = {
+                    datesRangeError: {
+                        startDateError: true,
+                        message: errorMessages.datesStartRange
+                    }
+                }
+            }
             else if (pos === "notEqual") {
                 newState = {
                     datesRangeError: {
@@ -354,125 +367,97 @@ class Affidavits extends React.Component {
         return this.setState(newState);
     }
 
-    // handleFromDateInput = (value) => {
-    //     this.setState({
-    //         errorStyle: false,
-    //         datesRangeError: {
-    //             active: false, 
-    //             message: null
-    //         },
-    //         standardSearch: {
-    //             ...this.state.standardSearch,
-    //             INCEPTIONFROM: value,
-    //         },
-    //         advancedInputsError: {
-    //             active: false,
-    //             message: ""
-    //         } 
-    //     })
-    // }
-
-    // standardSearch: {
-    //     searchValue: '',
-    //     INCEPTIONFROM: null,
-    //     INCEPTIONTO: null,
-    // },
     setStartDate = (e) => {
-        console.log('EVENT SET EFFECTIVE DATE:', e);
-        let startDateError = null;
-        let endDateError = null;
         let endDate = null;
+        if (e === null) {
+            return this.setState({ 
+                standardSearch: {
+                    ...this.state.standardSearch, 
+                    INCEPTIONFROM: null,
+                    INCEPTIONTO: null
+                },
+                datesRangeError: {
+                    endDateError: false,
+                    startDateError: false,
+                    message: null
+                }
+             });
+        }
+
         if (isValid(e)) {
             const date = e.toLocaleDateString('en-GB').split('/').reverse().join('-');
             if (date.length === 10) {
                 if (this.state.standardSearch.INCEPTIONTO !== null && isAfter(e, this.state.standardSearch.INCEPTIONTO)) {
-                    startDateError = 'Date cannot be after expiration date';
                     endDate = this.state.standardSearch.INCEPTIONTO;
+                    return this.handleErrorMessages("dates", "startRange");
                 } else if (this.state.standardSearch.INCEPTIONTO !== null && isEqual(e, this.state.standardSearch.INCEPTIONTO)) {
-                    startDateError = 'Dates cannot be the same';
                     endDate = this.state.standardSearch.INCEPTIONTO;
+                    return this.handleErrorMessages("dates", "notEqual");
                 } else if (this.state.standardSearch.INCEPTIONTO === null) {
                     endDate = add(e, { years: 1 });
                 } else {
-                    endDate = this.state.standardSearch.INCEPTIONTO;
+                    endDate = this.state.standardSearch.INCEPTIONTO; 
                 }
-            } else {
-                startDateError = 'Invalid Date';
-                endDate = this.state.expirationDate;
-            }
 
-            this.setState({ 
-                standardSearch: {
-                    ...this.state.standardSearch, 
-                    INCEPTIONFROM: e,
-                    INCEPTIONTO: endDate
-                },
-                // datesRangeError: {
-                //     active: false, 
-                //     message: null
-                // },
-                
-             });
+                return this.setState({ 
+                    standardSearch: {
+                        ...this.state.standardSearch, 
+                        INCEPTIONFROM: e,
+                        INCEPTIONTO: endDate
+                    }, 
+                    datesRangeError: {
+                        endDateError: false,
+                        startDateError: false,
+                        message: null
+                    }
+                 });
+            } else {
+                return this.handleErrorMessages("dates", "startValid");
+            }
         }
     };
 
-    // handleToDateInput = (value) => {
-    //     this.setState({
-    //         errorStyle: false,
-    //         datesRangeError: {
-    //             active: false, 
-    //             message: null
-    //         },
-    //         standardSearch: {
-    //             ...this.state.standardSearch,
-    //             INCEPTIONTO: value,
-    //         },
-    //         advancedInputsError: {
-    //             active: false,
-    //             message: ""
-    //         } 
-    //     })
-    // }
-
     setEndDate = (e) => {
-        console.log('EVENT SET EXPIRATION DATE:', e);
-        let endDateError = null;
-        let startDateError = null;
+        if (e === null) {
+            return this.setState({ 
+                standardSearch: {
+                    ...this.state.standardSearch, 
+                    INCEPTIONFROM: null,
+                    INCEPTIONTO: null
+                },
+                datesRangeError: {
+                    endDateError: false,
+                    startDateError: false,
+                    message: null
+                }
+             });
+        }
+
         if (isValid(e)) {
             const date = e.toLocaleDateString('en-GB').split('/').reverse().join('-');
             if (date.length === 10) {
                 if (isAfter(this.state.standardSearch.INCEPTIONFROM, e)) {
-                    // endDateError = 'Date cannot be before effective date';
-                    // startDateError = null;
-                    this.handleErrorMessages("dates", "endRange")
+                    this.handleErrorMessages("dates", "endRange");
                 }
-
-                if (isEqual(this.state.standardSearch.INCEPTIONFROM, e)) {
-                    // endDateError = 'Dates cannot be the same';
-                    // startDateError = null;
-                    this.handleErrorMessages("dates", "notEqual")
+                else if (isEqual(this.state.standardSearch.INCEPTIONFROM, e)) {
+                    this.handleErrorMessages("dates", "notEqual");
                 }
-
-                if (isBefore(this.state.standardSearch.INCEPTIONFROM, e)) {
-                    startDateError = null;
+                else {
+                    this.setState({ 
+                        standardSearch: {
+                            ...this.state.standardSearch, 
+                            INCEPTIONTO: e,
+                        }, 
+                        datesRangeError: {
+                            endDateError: false,
+                            startDateError: false,
+                            message: null
+                        }
+                    });
                 }
             } else {
-                this.handleErrorMessages("dates", "endValid")
+                return this.handleErrorMessages("dates", "endValid")
             }
-
-            this.setState({ 
-                standardSearch: {
-                    ...this.state.standardSearch, 
-                    INCEPTIONTO: e,
-                },
-                // datesRangeError: {
-                //     active: false, 
-                //     message: null
-                // },
-             });
-        }
-        else {
-            this.handleErrorMessages("dates", "endValid")
         }
     };
 
