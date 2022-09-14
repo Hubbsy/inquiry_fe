@@ -56,25 +56,13 @@ class Affidavits extends React.Component {
             if (this.props.data.hasOwnProperty('NODATA')) {
                 this.setState({ rows: [] });
             } else {
-                console.log("DATA RES", this.props.data);
                 const data = this.mapAPIResponse(this.props.data.DATA);
-                console.log(data)
 
                 this.setState({
                     rows: data
                 });
             }
         }
-        
-        // if (window.innerHeight < document.body.clientHeight && !this.state.adjustPadding) {
-        //     console.log("adjust padding true!!!!")
-        //     this.handleAdjustPadding(true);
-        // }
-        // else if (window.innerHeight > document.body.clientHeight && this.state.adjustPadding) {
-        //     console.log("adjust padding false!!!!")
-        //     this.handleAdjustPadding(false);
-        // }
-        
     }
 
     setWindowHeight = () => {
@@ -230,8 +218,6 @@ class Affidavits extends React.Component {
             let blankInputs = 0;
             
             for (let control in this.state.advancedSearch) {
-                console.log(blankInputs)
-                console.log(control)
                 if (this.state.advancedSearch[control].length > 0 && this.state.advancedSearch[control].length < 3) {
                     this.handleErrorMessages("advancedSearch", null, control);
                     return false;

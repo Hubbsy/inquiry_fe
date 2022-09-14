@@ -47,8 +47,6 @@ const NestedTable = ({
     const nestedPopoverOpen = Boolean(nestedAnchorEl);
 
     const handleNestedPopoverOpen = (event, childRowData) => {
-        console.log(childRowData);
-        console.log(rowData);
         rowData.companyDetails.address = compileFullAddress(rowData.companyDetails);
         const anchorPosition = anchorPositionByAnchorEl(event);
         setNestedAnchorEl(anchorPosition);
@@ -111,7 +109,7 @@ const NestedTable = ({
                         <NestedTableRow 
                         key={`child-transaction-${i}`} 
                         dense="dense" 
-                        onClick={() => {console.log(rowData);setSelectedChild(c)}} 
+                        onClick={() => {setSelectedChild(c)}} 
                         selected={selectedChild !== null && c.TRANSACTION_ID
                             === selectedChild.TRANSACTION_ID
                         }

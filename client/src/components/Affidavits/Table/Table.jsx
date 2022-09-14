@@ -18,8 +18,8 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
     const [selectedRow, setSelectedRow] = useState(null);
 
     const [currentRowData, setCurrentRowData] = useState({
-        affidavitNo: 'no current license No.',
-        address: 'no current Company Info'
+        affidavitNo: 'No current Affidavit No.',
+        address: 'No current Company Info.'
     });
 
     const [anchorEl, setAnchorEl] = useState(null);
