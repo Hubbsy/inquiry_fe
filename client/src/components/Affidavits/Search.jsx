@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Typography, Paper, Grid, IconButton, Tooltip, Stack, Collapse } from '@mui/material';
+import { Typography, Paper, Grid, IconButton, Tooltip, Stack, Collapse, Fab } from '@mui/material';
 import {
     SearchInput,
     SearchButton,
@@ -12,22 +12,13 @@ import {
 import styled from '@emotion/styled';
 import { Box } from '@mui/system';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import ExpandLess from '@mui/icons-material/ExpandLess';
 
 const TextItem = styled(Box)(({ theme }) => ({
     ...theme.typography.body2,
     padding: theme.spacing(2),
     color: theme.palette.text.secondary
-}));
-
-const StyledIconButton = styled(IconButton)(() => ({
-    backgroundColor: '#004A8F',
-    color: '#FFFFFF',
-    height: '1.5em',
-    width: '1.5em',
-    '&:hover': {
-        backgroundColor: '#002746',
-        color: '#FFFFFF'
-    }
 }));
 
 function Search({
@@ -115,14 +106,27 @@ function Search({
                         </SearchButton>
                     </Grid>
                     <Grid item sx={{ mt: 1 }}>
-                        <Tooltip title='Toggle Advanced Search' arrow placement='top'>
-                            <StyledIconButton
-                                ref={advancedSearchRef}
-                                aria-label={'Toggle Advanced Search'}
+                    {advancedSearchActive ? (
+                        <Tooltip placement='top' title='Hide Advanced Search'>
+                            <Fab
+                                color='secondary'
+                                aria-label='hide advanced search'
+                                size='small'
                                 onClick={toggleAdvancedSearchPanel}>
-                                <KeyboardArrowDownIcon style={rotate}/>
-                            </StyledIconButton>
+                                <ExpandLess />
+                            </Fab>
                         </Tooltip>
+                        ) : (
+                        <Tooltip placement='top' title='Show Advanced Search'>
+                            <Fab
+                                color='secondary'
+                                aria-label='show advanced search'
+                                size='small'
+                                onClick={toggleAdvancedSearchPanel}>
+                                <ExpandMore />
+                            </Fab>
+                        </Tooltip>
+                        )}
                     </Grid>
                 </Grid>
                 <Collapse in={advancedSearchActive} width={"100%"}>
