@@ -559,6 +559,11 @@ class Affidavits extends React.Component {
                 BATCH: '',
                 PREMIUMFROM: '',
                 PREMIUMTO: ''
+            },
+            standardSearch: {
+                ...this.state.standardSearch,
+                INCEPTIONFROM: null,
+                INCEPTIONTO: null,
             }
         })
     }
