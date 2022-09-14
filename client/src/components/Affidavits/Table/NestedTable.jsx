@@ -16,7 +16,7 @@ const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
         height: 32,
         width: 18,
         borderRadius: '50%',
-        backgroundColor: theme.palette.grid.main.active,
+        backgroundColor: theme.palette.grid.nested.active,
         padding: 0,
         color: 'gray'
     },
@@ -24,7 +24,7 @@ const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
         height: 32,
         width: 18,
         borderRadius: '50%',
-        backgroundColor: theme.palette.grid.main.active,
+        backgroundColor: theme.palette.grid.nested.active,
         padding: 0,
         color: 'gray'
     },
@@ -32,7 +32,7 @@ const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
         height: 32,
         width: 18,
         borderRadius: '50%',
-        backgroundColor: theme.palette.grid.main.active,
+        backgroundColor: theme.palette.grid.nested.active,
         padding: 0,
         color: 'gray'
     }
@@ -199,7 +199,7 @@ const NestedTable = ({
                                         }
                                         actions={
                                         <Grid item container justifyContent="flex-end">
-                                            <Button href={selectedChild.BATCHLINK} variant='outlined' startIcon={selectedChild.BATCHLINKEDITVIEW === "VIEW" ? <FontDownloadIcon/> : <ModeEditIcon/>} size="small">{selectedChild.BATCHLINKEDITVIEW}</Button>
+                                            <Button href={selectedChild.BATCHLINK} variant='outlined' startIcon={selectedChild.BATCHLINKEDITVIEW === "VIEW" ? <FontDownloadIcon/> : <ModeEditIcon/>} size="small">{selectedChild.BATCHLINKEDITVIEW} Affidavit</Button>
                                         </Grid>
                                         }
                                     />
