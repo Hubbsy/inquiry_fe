@@ -268,7 +268,6 @@ class Affidavits extends React.Component {
             datesEndValid: "Must enter a valid end date",
             datesStartValid: "Must enter a valid start date",
             datesStartRange: "Date cannot be after end date",
-            datesNotEqual: "Dates cannot be the same",
             premiumRange: "Must include both Premium amounts",
             premiumValid: "Premium cannot be greater than start amount"
         }
@@ -322,14 +321,6 @@ class Affidavits extends React.Component {
                     }
                 }
             }
-            else if (pos === "notEqual") {
-                newState = {
-                    datesRangeError: {
-                        endDateError: true,
-                        message: errorMessages.datesNotEqual
-                    }
-                }
-            }
         }
         else if (type === "premiumRange") {
             newState = {
@@ -376,11 +367,8 @@ class Affidavits extends React.Component {
                 if (this.state.standardSearch.INCEPTIONTO !== null && isAfter(e, this.state.standardSearch.INCEPTIONTO)) {
                     endDate = this.state.standardSearch.INCEPTIONTO;
                     return this.handleErrorMessages("dates", "startRange");
-                } else if (this.state.standardSearch.INCEPTIONTO !== null && isEqual(e, this.state.standardSearch.INCEPTIONTO)) {
-                    endDate = this.state.standardSearch.INCEPTIONTO;
-                    return this.handleErrorMessages("dates", "notEqual");
                 } else if (this.state.standardSearch.INCEPTIONTO === null) {
-                    endDate = add(e, { years: 1 });
+                    endDate = e;
                 } else {
                     endDate = this.state.standardSearch.INCEPTIONTO; 
                 }
