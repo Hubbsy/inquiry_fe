@@ -114,15 +114,15 @@ const NestedTable = ({
                             === selectedChild.TRANSACTION_ID
                         }
                         >
-                            <NestedTableCell dense="dense" width={"10em"}>{c.AFFIDAVITNO ? c.AFFIDAVITNO : NO_VALUE}</NestedTableCell>
-                            <NestedTableCell dense="dense" width={"10em"}>{c.POLICYNO ? c.POLICYNO : NO_VALUE}</NestedTableCell>
-                            <NestedTableCell dense="dense" width={"15em"} >{c.RISKINSUREDNAME ? c.RISKINSUREDNAME : NO_VALUE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"14em"}>{c.AFFIDAVITNO ? c.AFFIDAVITNO : NO_VALUE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"15em"}>{c.POLICYNO ? c.POLICYNO : NO_VALUE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"26em"} >{c.RISKINSUREDNAME ? c.RISKINSUREDNAME : NO_VALUE}</NestedTableCell>
                             <NestedTableCell dense="dense" width={"5em"}>{c.TRANSACTIONTYPE ? c.TRANSACTIONTYPE : NO_VALUE}</NestedTableCell>
-                            <NestedTableCell dense="dense" width={"5em"}>{c.AMOUNT ? c.AMOUNT : NO_VALUE}</NestedTableCell>
-                            <NestedTableCell dense="dense" width={"5em"}>{c.EFFECTIVEDATE ? format(new Date(c.EFFECTIVEDATE), 'MM/dd/yyyy') : NO_VALUE}</NestedTableCell>
-                            <NestedTableCell dense="dense" width={"5em"}>{c.EXPIRATIONDATE ? format(new Date(c.EXPIRATIONDATE), 'MM/dd/yyyy') : NO_VALUE}</NestedTableCell>
-                            <NestedTableCell dense="dense" width={"5em"}>{c.BATCHNO ? c.BATCHNO : NO_VALUE}</NestedTableCell>
-                            <NestedTableCell dense="dense" width={"5em"}>{c.RECEIVEDATE ? format(new Date(c.RECEIVEDATE), 'MM/dd/yyyy') : NO_VALUE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"12em"}>{c.AMOUNT ? c.AMOUNT : NO_VALUE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"8em"}>{c.EFFECTIVEDATE ? format(new Date(c.EFFECTIVEDATE), 'MM/dd/yyyy') : NO_VALUE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"10em"}>{c.EXPIRATIONDATE ? format(new Date(c.EXPIRATIONDATE), 'MM/dd/yyyy') : NO_VALUE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"10em"}>{c.BATCHNO ? c.BATCHNO : NO_VALUE}</NestedTableCell>
+                            <NestedTableCell dense="dense" width={"8em"}>{c.RECEIVEDATE ? format(new Date(c.RECEIVEDATE), 'MM/dd/yyyy') : NO_VALUE}</NestedTableCell>
                             <NestedTableCell dense="dense" align={"center"} width={"4em"}>{c.PROCESSEDSTATE ? c.PROCESSEDSTATE : NO_VALUE}</NestedTableCell>
                             <NestedTableCell dense="dense" width={"1em"}>
                                 <StyledMoreVertIcon aria-describedby={nestedId} onClick={(e) => handleNestedPopoverOpen(e, c) } 

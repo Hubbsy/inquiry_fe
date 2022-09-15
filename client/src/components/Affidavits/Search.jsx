@@ -64,7 +64,7 @@ function Search({
                 Affidavit Inquiry
             </Typography>
             <Stack>
-                <Grid sx={{ flexGrow: 1 }} container spacing={0.5}>
+                <Grid sx={{ flexGrow: 1, flexWrap: "nowrap" }} container spacing={0.5} >
                     <Grid item xs={5}>
                         <SearchInput
                             sx={{ mr: 1 }}

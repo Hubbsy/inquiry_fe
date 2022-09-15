@@ -1,21 +1,31 @@
-import MaterialTable from '@material-table/core';
+import MaterialTable, { MTableCell } from '@material-table/core';
 import NestedTable from './NestedTable';
 import { TablePagination, useTheme, ThemeProvider, Grid, Typography, TableCell, Box, Button } from '@mui/material';
 import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
-import { tableTheme } from '@aeros-ui/themes';
-import { useState, useCallback } from 'react';
+import { tableTheme, theme } from '@aeros-ui/themes';
+import { useState, useCallback, useEffect } from 'react';
 import { Stack } from '@mui/system';
 import { TableIcons, CaratIcon } from '@aeros-ui/icons';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Columns from './columns';
 
+const getWindowSize = () => {
+    const {innerWidth, innerHeight} = window;
+    console.log(innerWidth)
+    return {
+        innerWidth, 
+        innerHeight
+    };
+}
+
 export default function Table({ loading, rows, adjustPadding, showLicenseCol }) {
-    const theme = useTheme();
+    // const theme = useTheme();
     const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
+    const [windowSize, setWindowSize] = useState(getWindowSize());
 
     const [currentRowData, setCurrentRowData] = useState({
         affidavitNo: 'No current Affidavit No.',
@@ -45,6 +55,18 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
         }
         setSelectedRow(null);
     };
+
+    useEffect(() => {
+        function handleWindowResize() {
+          setWindowSize(getWindowSize());
+        }
+    
+        window.addEventListener('resize', handleWindowResize);
+    
+        return () => {
+          window.removeEventListener('resize', handleWindowResize);
+        };
+      }, []);
 
     const compileFullAddress = (options) => {
         return {
@@ -145,12 +167,15 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
         padding: density,
         showEmptyDataSourceMessage: !loading,
         actionsColumnIndex: -1,
+
         headerStyle: {
             backgroundColor: theme.palette.grid.main.header,
             color: theme.palette.background.paper,
             textTransform: 'capitalize',
-            padding: '1em',
+            // padding: '1em',
+            // overflow: 'hidden'
             whiteSpace: 'nowrap'
+
         },
         rowStyle: (rowData) => ({
             backgroundColor:
@@ -173,7 +198,9 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
         filtering: showFilters,
         searchFieldStyle: { marginRight: '1em', width: "100%" },
         emptyRowsWhenPaging: rows.length ? false : true,
-        detailPanelColumnAlignment: "left"
+        detailPanelColumnAlignment: "left",
+        tableLayout: windowSize.innerWidth < 1225 ? "" : "fixed",
+        cellStyle: theme.typography,
     };
 
     const detailPanel = [
@@ -224,7 +251,18 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
                                 onFilterClick={() => setFiltering(!showFilters)}
                                 onDensityClick={handleDensityClick}
                             />
-                        )
+                        ),
+                        Cell: (props) => {
+                            return (
+                                <MTableCell
+                                    style={{
+                                        whiteSpace: 'nowrap',
+                                        // textOverflow: 'ellipsis',
+                                        // overflow: 'hidden'
+                                    }}
+                                    {...props}></MTableCell>
+                            );
+                        },
                     }}
                 />
                 <DetailCard

@@ -57,6 +57,7 @@ class Affidavits extends React.Component {
                 this.setState({ rows: [] });
             } else {
                 const data = this.mapAPIResponse(this.props.data.DATA);
+                console.log(data)
 
                 this.setState({
                     rows: data
@@ -85,45 +86,35 @@ class Affidavits extends React.Component {
         }
     };
 
+    floatToDollarsConverter = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+    })
+
     mapAPIResponse = (data) => {
-        const tableFields = {
-            "AFFIDAVITNO":true,
-            "POLICYNO":true,
-            "RISKINSUREDNAME":true,
-            "TRANSACTIONTYPE":true,
-            "AMOUNT":true,
-            "EFFECTIVEDATE":true,
-            "EXPIRATIONDATE":true,
-            "BATCHNO":true,
-            "RECEIVEDATE":true,
-            "PROCESSEDSTATE":true,
-            "LICENSENO": true
-        }
 
         return data.map((record) => {
-            let mappedData = {};
             let transaction = record.PARTA_TRANSACTION;
-            mappedData.companyDetails = this.setCompanyDetails(transaction);
             this.setState({
                 showLicenseCol: this.props.data.SHOW_LICENSE_COLUMN
             })
 
-            for (const key in transaction) {
-                if (tableFields.hasOwnProperty(key)) {
-                    if (transaction[key] === null || !transaction[key] || transaction[key].trim().length === 0) {
-                        mappedData[key] = "-";
-                    }
-                    else {
-                        mappedData[key] = transaction[key];
-                    }
-                }
-                else if (key === "CHILD_TRANSACTION" && !isEmpty(transaction[key][0])) {
-                    mappedData.expandable = true;
-                    mappedData.CHILDTRANSACTIONS = transaction.CHILD_TRANSACTION;
-                }
+            return {
+                "AFFIDAVITNO": transaction.AFFIDAVITNO,
+                "POLICYNO":transaction.POLICYNO,
+                "RISKINSUREDNAME":transaction.RISKINSUREDNAME,
+                "TRANSACTIONTYPE":transaction.TRANSACTIONTYPE,
+                "AMOUNT": this.floatToDollarsConverter.format(transaction.AMOUNT),
+                "EFFECTIVEDATE":transaction.EFFECTIVEDATE ? format(new Date(transaction.EFFECTIVEDATE), 'MM/dd/yyyy') : "-",
+                "EXPIRATIONDATE":transaction.EXPIRATIONDATE ? format(new Date(transaction.EXPIRATIONDATE), 'MM/dd/yyyy') : "-",
+                "BATCHNO":transaction.BATCHNO ? transaction.BATCHNO : "-",
+                "RECEIVEDATE":transaction.RECEIVEDATE ? format(new Date(transaction.RECEIVEDATE), 'MM/dd/yyyy') : "-",
+                "PROCESSEDSTATE":transaction.PROCESSEDSTATE.trim() ? transaction.PROCESSEDSTATE.trim() : "-",
+                "LICENSENO": transaction.LICENSENO.substring(transaction.LICENSENO.indexOf("-") + 1),
+                companyDetails: this.setCompanyDetails(transaction),
+                "CHILDTRANSACTIONS":transaction.CHILD_TRANSACTION && !isEmpty(transaction["CHILD_TRANSACTION"][0]) ? transaction.CHILD_TRANSACTION : null,
+                expandable: transaction.CHILD_TRANSACTION && !isEmpty(transaction["CHILD_TRANSACTION"][0]) ? true : false
             }
-
-            return mappedData;
         });
     }
 

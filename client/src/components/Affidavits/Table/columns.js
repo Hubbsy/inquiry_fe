@@ -45,116 +45,79 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
             title: 'License No.',
             field: 'LICENSENO',
             type: 'string',
+            width: "10%",
             hidden: !showLicenseCol,
-            render: (rowData) => (
-                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.LICENSENO.substring(rowData.LICENSENO.indexOf("-") + 1)}
-                </MainTableCell>
-            )
+           
         },
         {
             title: 'Affidavit No.',
             field: 'AFFIDAVITNO',
+            headerStyle: {
+                whiteSpace: "nowrap"
+            },
             type: 'string',
-            render: (rowData) => (
-                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em', whiteSpace: "nowrap" } }}>
-                    {rowData.AFFIDAVITNO}
-                </MainTableCell>
-            )
+            width: "10%",
+            
         },
         {
             title: 'Policy No.',
             field: 'POLICYNO',
             type: 'string',
-            render: (rowData) => (
-                <MainTableCell sx={{ width: "10em", whiteSpace: "nowrap" }}>
-                    {rowData.POLICYNO}
-                </MainTableCell>
-            )
+            width: "14%",
+            
         },
         {
             title: 'Insured Name',
             field: 'RISKINSUREDNAME',
             type: 'string',
-            width: '20em',
-            render: (rowData) => (
-                <MainTableCell sx={{ whiteSpace: 'nowrap' }}>{rowData.RISKINSUREDNAME}</MainTableCell>
-            )
+            width: "19%",
+            
         },
         {
             title: 'Type',
             field: 'TRANSACTIONTYPE',
             type: 'string',
-            render: (rowData) => (
-                <MainTableCell sx={{ width: '5em' }}>
-                    {rowData.TRANSACTIONTYPE}
-                </MainTableCell>
-            )
+            width: "4%",
+           
         },
         {
             title: 'Premium',
             field: 'AMOUNT',
             type: 'string',
+            width: "8%",
             customSort: (a, b) => parseFloat(a.AMOUNT.replace(",", ".")) - parseFloat(b.AMOUNT.replace(",", ".")),
-            render: (rowData) => (
-                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {floatToDollarsConverter.format(rowData.AMOUNT)}
-                </MainTableCell>
-            )
         },
         {
             title: 'Inception',
             field: 'EFFECTIVEDATE',
-            render: (rowData) => (
-                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.EFFECTIVEDATE !== "-" ? format(new Date(rowData.EFFECTIVEDATE), 'MM/dd/yyyy') : rowData.EFFECTIVEDATE}
-                </MainTableCell>
-            )
+            width: "8%",
         },
         {
             title: 'Expiration',
             field: 'EXPIRATIONDATE',
-            render: (rowData) => (
-                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.EXPIRATIONDATE !== "-" ? format(new Date(rowData.EXPIRATIONDATE), 'MM/dd/yyyy') : rowData.EXPIRATIONDATE}
-                </MainTableCell>
-            )
+            width: "8%",
         },
         {
             title: 'Batch',
             field: 'BATCHNO',
             type: 'string',
-            render: (rowData) => (
-                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.BATCHNO}
-                </MainTableCell>
-            )
+            width: "8%",
         },
         {
             title: 'Submitted',
             field: 'RECEIVEDATE',
-            render: (rowData) => (
-                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.RECEIVEDATE !== "-" ? format(new Date(rowData.RECEIVEDATE), 'MM/dd/yyyy') : rowData.RECEIVEDATE}
-                </MainTableCell>
-            )
+            width: "8%",
         },
         {
             title: 'Proc State',
             field: 'PROCESSEDSTATE',
             type: 'string',
-            width: '1em',
-            align: "center",
-            render: (rowData) => (
-                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.PROCESSEDSTATE}
-                </MainTableCell>
-            )
+            width: "5%",
+            align: "center"
         },
         {
             title: '',
             field: 'detailsPopoverIcon',
-            width: '1em',
             render: (rowData) => (
                 <StyledMoreVertIcon onClick={(e) => handlePopoverOpen(e, rowData)} aria-describedby={popoverOpen ? 'menu-popover' : undefined} />
             ),
