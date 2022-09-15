@@ -60,7 +60,6 @@ class Affidavits extends React.Component {
                 this.setState({ rows: [] });
             } else {
                 const data = this.mapAPIResponse(this.props.data.DATA);
-                console.log(data);
 
                 this.setState({
                     rows: data

@@ -13,7 +13,6 @@ import Columns from './columns';
 
 const getWindowSize = () => {
     const {innerWidth, innerHeight} = window;
-    console.log(innerWidth)
     return {
         innerWidth, 
         innerHeight
