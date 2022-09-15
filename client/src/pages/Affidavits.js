@@ -100,10 +100,10 @@ class Affidavits extends React.Component {
             })
 
             return {
-                "AFFIDAVITNO": transaction.AFFIDAVITNO,
-                "POLICYNO":transaction.POLICYNO,
-                "RISKINSUREDNAME":transaction.RISKINSUREDNAME,
-                "TRANSACTIONTYPE":transaction.TRANSACTIONTYPE,
+                "AFFIDAVITNO": transaction.AFFIDAVITNO.trim() ? transaction.AFFIDAVITNO.trim() : "-",
+                "POLICYNO":transaction.POLICYNO.trim() ? transaction.POLICYNO.trim() : "-",
+                "RISKINSUREDNAME":transaction.RISKINSUREDNAME.trim() ? transaction.RISKINSUREDNAME.trim() : "-",
+                "TRANSACTIONTYPE":transaction.TRANSACTIONTYPE.trim() ? transaction.TRANSACTIONTYPE.trim() : "-",
                 "AMOUNT": this.floatToDollarsConverter.format(transaction.AMOUNT),
                 "EFFECTIVEDATE":transaction.EFFECTIVEDATE ? format(new Date(transaction.EFFECTIVEDATE), 'MM/dd/yyyy') : "-",
                 "EXPIRATIONDATE":transaction.EXPIRATIONDATE ? format(new Date(transaction.EXPIRATIONDATE), 'MM/dd/yyyy') : "-",
