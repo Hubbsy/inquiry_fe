@@ -167,8 +167,8 @@ function Search({
                                         name={'BATCH'}
                                         onChange={handleAdvancedSearchInputs}
                                         onKeyPress={handleAdvancedKeyPress}
-                                        error={applicationErrors.active && applicationErrors.inputId === 'BATCH'}
-                                        helperText={applicationErrors.active && applicationErrors.inputId === 'BATCH' ? applicationErrors.message : null}
+                                        error={applicationErrors.active && (applicationErrors.inputId === 'BATCH' || applicationErrors.multipleInputs.includes('BATCH'))}
+                                        helperText={applicationErrors.active && (applicationErrors.inputId === 'BATCH' || applicationErrors.multipleInputs.includes('BATCH')) ? applicationErrors.message : null}
                                     />
                                 </Grid>
                             </Grid>
@@ -181,8 +181,8 @@ function Search({
                                         name={'INSUREDNAME'}
                                         onChange={handleAdvancedSearchInputs}
                                         onKeyPress={handleAdvancedKeyPress}
-                                        error={applicationErrors.active && applicationErrors.inputId === 'INSUREDNAME'}
-                                        helperText={applicationErrors.active && applicationErrors.inputId === 'INSUREDNAME' ? applicationErrors.message : null}
+                                        error={applicationErrors.active && (applicationErrors.inputId === 'INSUREDNAME' || applicationErrors.multipleInputs.includes('INSUREDNAME'))}
+                                        helperText={applicationErrors.active && (applicationErrors.inputId === 'INSUREDNAME' || applicationErrors.multipleInputs.includes('INSUREDNAME')) ? applicationErrors.message : null}
                                     />
                                 </Grid>
                                 <Grid item xs={2.5}>
@@ -193,8 +193,8 @@ function Search({
                                         name={'CONTACTNAME'}
                                         onChange={handleAdvancedSearchInputs}
                                         onKeyPress={handleAdvancedKeyPress}
-                                        error={applicationErrors.active && applicationErrors.inputId === 'CONTACTNAME'}
-                                        helperText={applicationErrors.active && applicationErrors.inputId === 'CONTACTNAME' ? applicationErrors.message : null}
+                                        error={applicationErrors.active && (applicationErrors.inputId === 'CONTACTNAME' || applicationErrors.multipleInputs.includes('CONTACTNAME'))}
+                                        helperText={applicationErrors.active && (applicationErrors.inputId === 'CONTACTNAME' || applicationErrors.multipleInputs.includes('CONTACTNAME')) ? applicationErrors.message : null}
                                     />
                                 </Grid>
                                 <Grid item xs={2.5}>
@@ -205,8 +205,8 @@ function Search({
                                         name={'BROKERREFERENCE'}
                                         onChange={handleAdvancedSearchInputs}
                                         onKeyPress={handleAdvancedKeyPress}
-                                        error={applicationErrors.active && applicationErrors.inputId === 'BROKERREFERENCE'}
-                                        helperText={applicationErrors.active && applicationErrors.inputId === 'BROKERREFERENCE' ? applicationErrors.message : null}
+                                        error={applicationErrors.active && (applicationErrors.inputId === 'BROKERREFERENCE' || applicationErrors.multipleInputs.includes('BROKERREFERENCE'))}
+                                        helperText={applicationErrors.active && (applicationErrors.inputId === 'BROKERREFERENCE' || applicationErrors.multipleInputs.includes('BROKERREFERENCE')) ? applicationErrors.message : null}
                                     />
                                 </Grid>
                             </Grid>
