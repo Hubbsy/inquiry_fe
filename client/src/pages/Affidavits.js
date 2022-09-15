@@ -258,7 +258,6 @@ class Affidavits extends React.Component {
             let errorInputs = [];
 
             for (let control in this.state.advancedSearch) {
-                console.log(control)
                 if (
                     this.state.advancedSearch[control].length > 0 &&
                     this.state.advancedSearch[control].length < 3 &&
@@ -326,7 +325,6 @@ class Affidavits extends React.Component {
     };
 
     handleErrorMessages = (type, el = null, inputId = null) => {
-        console.log("!!!FIRING ERROR!!!", type)
         const errorTypes = {
             "SERVER": "SERVER", 
             "ADVANCED": {
@@ -382,6 +380,10 @@ class Affidavits extends React.Component {
                 currentErrorMessage = errorTypes[type].messages[el.type];
             }
         } 
+        else {
+            type = "SERVER";
+            currentErrorMessage = "Something went wrong";
+        }
 
         this.setState({
             applicationErrors: {
