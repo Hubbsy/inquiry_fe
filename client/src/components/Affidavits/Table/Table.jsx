@@ -1,6 +1,6 @@
 import MaterialTable, { MTableCell } from '@material-table/core';
 import NestedTable from './NestedTable';
-import { TablePagination, useTheme, ThemeProvider, Grid, Typography, TableCell, Box, Button } from '@mui/material';
+import { TablePagination, ThemeProvider, Grid, Typography, Button } from '@mui/material';
 import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme, theme } from '@aeros-ui/themes';
@@ -20,7 +20,6 @@ const getWindowSize = () => {
 }
 
 export default function Table({ loading, rows, adjustPadding, showLicenseCol }) {
-    // const theme = useTheme();
     const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);

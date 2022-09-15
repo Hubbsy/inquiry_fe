@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { getAffidavits } from '../store/actions/affidavits';
 import { Snackbar } from '@aeros-ui/components';
 import isEmpty from '../functions/isEmpty';
-import { format, isBefore, isValid, isAfter, isEqual, add } from 'date-fns';
+import { format, isBefore, isValid, isAfter, isEqual } from 'date-fns';
 
 class Affidavits extends React.Component {
     state = {
@@ -75,7 +75,7 @@ class Affidavits extends React.Component {
         });
     };
 
-    handleAdjustPadding = (flag) => {
+    handleAdjustPadding = () => {
         if (this.state.windowHeight < this.state.clientHeight) {
             this.setState({
                 adjustPadding: true

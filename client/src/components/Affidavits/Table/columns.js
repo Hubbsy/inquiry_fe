@@ -1,7 +1,5 @@
-import { MainTableCell } from '@aeros-ui/tables';
 import styled from '@emotion/styled';
 import { MoreVert } from '@mui/icons-material';
-import { format, isValid } from 'date-fns';
 
 const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
     height: 32,
@@ -33,11 +31,6 @@ const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
         color: 'gray'
     }
 }));
-
-const floatToDollarsConverter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD'
-});
 
 export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) {
     const cols = [
