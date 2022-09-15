@@ -172,7 +172,7 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
             backgroundColor: theme.palette.grid.main.header,
             color: theme.palette.background.paper,
             textTransform: 'capitalize',
-            // padding: '1em',
+            padding: '1em',
             // overflow: 'hidden'
             whiteSpace: 'nowrap'
 
