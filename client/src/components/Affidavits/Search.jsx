@@ -23,7 +23,7 @@ const TextItem = styled(Box)(({ theme }) => ({
 
 function Search({
     loading,
-    errorStyle,
+    applicationErrors,
     searchValue,
     handleChange,
     handleKeyPress,
@@ -44,11 +44,6 @@ function Search({
     handleCloseGeneralError,
     clearAdvancedSearchInputs
 }) {
-    const advancedSearchRef = useRef(null);
-    const rotate = {
-        transform: advancedSearchActive ? 'rotate(180deg)' : '',
-        transition: 'transform 150ms ease' // smooth transition
-    };
 
     return (
         <Paper
@@ -74,8 +69,8 @@ function Search({
                             onClick={handleHelperText}
                             value={searchValue}
                             width={'97%'}
-                            error={errorStyle}
-                            helperText={errorStyle ? 'Must be at least 3 characters' : null}
+                            error={applicationErrors.active && applicationErrors.type === "STANDARD"}
+                            helperText={applicationErrors.active && applicationErrors.type === "STANDARD" ? applicationErrors.message : null}
                             disabled={advancedSearchActive}
                             includeEndAdornment={true}
                             handleClearInput={handleClearInput}
