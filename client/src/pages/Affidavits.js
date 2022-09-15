@@ -25,20 +25,11 @@ class Affidavits extends React.Component {
             PREMIUMFROM: '',
             PREMIUMTO: ''
         },
-        datesRangeError: {
-            startDateError: false,
-            endDateError: false,
-            message: null
-        },
-        advancedInputsError: {
-            active: false,
-            message: null,
-            id: null
-        },
         applicationErrors: {
             active: false, 
             type: null, 
             inputId: null, 
+            multipleInputs: [],
             message: "",
             el: null
         },
@@ -246,39 +237,58 @@ class Affidavits extends React.Component {
                 parseFloat(this.state.advancedSearch.PREMIUMFROM.replace(/,/g, '')) >=
                     parseFloat(this.state.advancedSearch.PREMIUMTO.replace(/,/g, ''))
             ) {
-                this.handleErrorMessages('premiumValid', null, 'PREMIUMTO');
+                this.handleErrorMessages("PREMIUMS", {pos: "start", type: "range"});
                 return false;
-            } else if (!this.state.advancedSearch.PREMIUMFROM) {
-                this.handleErrorMessages('premiumRange', null, 'PREMIUMFROM');
+            } 
+            else if (!this.state.advancedSearch.PREMIUMFROM) {
+                this.handleErrorMessages("PREMIUMS", {pos: "start", type: "valid"});
                 return false;
-            } else if (!this.state.advancedSearch.PREMIUMTO) {
-                this.handleErrorMessages('premiumRange', null, 'PREMIUMTO');
+            } 
+            else if (!this.state.advancedSearch.PREMIUMTO) {
+                this.handleErrorMessages("PREMIUMS", {pos: "end", type: "valid"});
                 return false;
-            } else {
+            } 
+            else {
                 advancedSearchValid = true;
             }
         }
 
         if (advancedSearchValid) {
             let blankInputs = 0;
+            let errorInputs = [];
 
             for (let control in this.state.advancedSearch) {
+                console.log(control)
                 if (
                     this.state.advancedSearch[control].length > 0 &&
-                    this.state.advancedSearch[control].length < 3
+                    this.state.advancedSearch[control].length < 3 &&
+                    control !== "PREMIUMFROM" &&
+                    control !== "PREMIUMTO"
                 ) {
-                    this.handleErrorMessages('advancedSearch', null, control);
-                    return false;
+                    this.handleErrorMessages("ADVANCED", {pos: null, type: "single"}, control);
+                    errorInputs.push(control);
+                    advancedSearchValid = false;
                 } else if (this.state.advancedSearch[control].length === 0) {
                     blankInputs++;
                 }
+            }
+
+            if (errorInputs.length > 0) {
+                this.setState({
+                    applicationErrors: {
+                        ...this.state.applicationErrors,
+                        active: true,
+                        message: "Must be at least 3 characters",
+                        multipleInputs: errorInputs
+                    }
+                })
             }
 
             if (
                 blankInputs === 8 &&
                 (!this.state.standardSearch.INCEPTIONFROM || !this.state.standardSearch.INCEPTIONTO)
             ) {
-                this.handleErrorMessages('advancedSearch');
+                this.handleErrorMessages("ADVANCED", {pos: null, type: "group"});
                 return false;
             }
         }
@@ -316,14 +326,20 @@ class Affidavits extends React.Component {
     };
 
     handleErrorMessages = (type, el = null, inputId = null) => {
-
+        console.log("!!!FIRING ERROR!!!", type)
         const errorTypes = {
+            "SERVER": "SERVER", 
+            "ADVANCED": {
+                name: "ADVANCED",
+                messages: {
+                    single: "Must be at least 3 characters",
+                    group: "At least one input is required"
+                }
+            },
             "STANDARD": {
                 name: "STANDARD",
                 message: "Must be at least 3 characters" 
             }, 
-            "ADVANCED": "ADVANCED", 
-            "SERVER": "SERVER", 
             "DATES": {
                 name: "DATES",
                 messages: {
@@ -336,104 +352,45 @@ class Affidavits extends React.Component {
                         end: "Date cannot be before start date"
                     }
                 } 
+            },
+            "PREMIUMS": {
+                name: "PREMIUMS",
+                messages: {
+                    valid: {
+                        start: "Must enter a valid start amount",
+                        end: "Must enter a valid end amount"
+                    },
+                    range: {
+                        start: "Start amount cannot be greater than end amount",
+                    }
+                } 
             } 
         }
 
-        const errorMessages = {
-            "STANDARD": 'Must be at least 3 characters',
-            advancedSearch: {
-                group: 'At least one input is required',
-                single: '3 or more characters is required'
-            },
-            datesEndRange: 'Date cannot be before start date',
-            datesEndValid: 'Must enter a valid end date',
-            datesStartValid: 'Must enter a valid start date',
-            datesStartRange: 'Date cannot be after end date',
-            premiumRange: 'Must include both Premium amounts',
-            premiumValid: 'Premium cannot be greater than start amount'
-        };
-
-        let currentErrorActive = false;
         let currentErrorMessage = "";
-
         if (errorTypes.hasOwnProperty(type)) {
             if (type === "STANDARD") {
-                currentErrorActive = true;
                 currentErrorMessage = errorTypes[type].message;
             }
             else if (type === "DATES") {
-                currentErrorActive = true;
                 currentErrorMessage = errorTypes[type].messages[el.type][el.pos];
             }
+            else if (type === "PREMIUMS") {
+                currentErrorMessage = errorTypes[type].messages[el.type][el.pos];
+            }
+            else if (type === "ADVANCED") {
+                currentErrorMessage = errorTypes[type].messages[el.type];
+            }
         } 
-        else if (type === 'advancedSearch') {
-            let errorMessage = inputId
-                ? errorMessages.advancedSearch.single
-                : errorMessages.advancedSearch.group;
-            newState = {
-                advancedInputsError: {
-                    active: true,
-                    message: errorMessage,
-                    id: inputId
-                }
-            };
-        } 
-        // else if (type === 'dates') {
-        //     if (pos === 'endRange') {
-        //         newState = {
-        //             datesRangeError: {
-        //                 endDateError: true,
-        //                 message: errorMessages.datesEndRange
-        //             }
-        //         };
-        //     } else if (pos === 'endValid') {
-        //         newState = {
-        //             datesRangeError: {
-        //                 endDateError: true,
-        //                 message: errorMessages.datesEndValid
-        //             }
-        //         };
-        //     } else if (pos === 'startValid') {
-        //         newState = {
-        //             datesRangeError: {
-        //                 startDateError: true,
-        //                 message: errorMessages.datesStartValid
-        //             }
-        //         };
-        //     } else if (pos === 'startRange') {
-        //         newState = {
-        //             datesRangeError: {
-        //                 startDateError: true,
-        //                 message: errorMessages.datesStartRange
-        //             }
-        //         };
-        //     }
-        // } 
-        else if (type === 'premiumRange') {
-            newState = {
-                advancedInputsError: {
-                    active: true,
-                    message: errorMessages.premiumRange,
-                    id: inputId
-                }
-            };
-        } else if (type === 'premiumValid') {
-            newState = {
-                advancedInputsError: {
-                    active: true,
-                    message: errorMessages.premiumValid,
-                    id: inputId
-                }
-            };
-        }
 
         this.setState({
             applicationErrors: {
-                active: currentErrorActive, 
+                active: true, 
                 type,
                 inputId,
                 el,
-                message: currentErrorMessage
+                message: currentErrorMessage,
+                multipleInputs: []
             }
         })
     };
@@ -459,7 +416,6 @@ class Affidavits extends React.Component {
                     isAfter(e, this.state.standardSearch.INCEPTIONTO)
                 ) {
                     endDate = this.state.standardSearch.INCEPTIONTO;
-                    // return this.handleErrorMessages('dates', 'startRange');
                     this.handleErrorMessages('DATES', {type: "range", pos: "start"});
                 } else if (this.state.standardSearch.INCEPTIONTO === null) {
                     endDate = e;
@@ -476,13 +432,13 @@ class Affidavits extends React.Component {
                     applicationErrors: {
                         active: false, 
                         type: null, 
-                        id: null, 
+                        inputId: null, 
+                        multipleInputs: [],
                         message: "",
                         el: null
                     }
                 });
             } else {
-                // return this.handleErrorMessages('dates', 'startValid');
                 this.handleErrorMessages('DATES', {type: "valid", pos: "start"});
             }
         }
@@ -499,8 +455,9 @@ class Affidavits extends React.Component {
                 applicationErrors: {
                     active: false, 
                     type: null, 
-                    id: null, 
+                    inputId: null, 
                     message: "",
+                    multipleInputs: [],
                     el: null
                 }
             });
@@ -510,7 +467,6 @@ class Affidavits extends React.Component {
             const date = e.toLocaleDateString('en-GB').split('/').reverse().join('-');
             if (date.length === 10) {
                 if (isAfter(this.state.standardSearch.INCEPTIONFROM, e)) {
-                    // this.handleErrorMessages('dates', 'endRange');
                     this.handleErrorMessages('DATES', {type: "range", pos: "end"});
                 } else {
                     this.setState({
@@ -521,14 +477,14 @@ class Affidavits extends React.Component {
                         applicationErrors: {
                             active: false, 
                             type: null, 
-                            id: null, 
+                            inputId: null, 
                             message: "",
+                            multipleInputs: [],
                             el: null
                         }
                     });
                 }
             } else {
-                // return this.handleErrorMessages('dates', 'endValid');
                 this.handleErrorMessages('DATES', {type: "valid", pos: "end"});
             }
         }
@@ -543,7 +499,8 @@ class Affidavits extends React.Component {
             applicationErrors: {
                 active: false, 
                 type: null, 
-                id: null, 
+                inputId: null, 
+                multipleInputs: [],
                 message: "",
                 el: null
             }
@@ -562,7 +519,7 @@ class Affidavits extends React.Component {
         if (e.charCode === 13 && e.target.value.length >= 3) {
             this.executeSearch();
         } else if (e.charCode === 13) {
-            this.handleErrorMessages('advancedSearch', null, e.target.name);
+            this.handleErrorMessages("ADVANCED", {pos: null, type: "single"}, e.target.name);
         }
     };
 
@@ -571,7 +528,8 @@ class Affidavits extends React.Component {
             applicationErrors: {
                 active: false, 
                 type: null, 
-                id: null, 
+                inputId: null, 
+                multipleInputs: [],
                 message: "",
                 el: null
             }
@@ -591,18 +549,23 @@ class Affidavits extends React.Component {
             applicationErrors: {
                 active: false, 
                 type: null, 
-                id: null, 
-                message: ""
+                inputId: null, 
+                multipleInputs: [],
+                message: "",
+                el: null
             }
         });
     };
 
     handleCloseGeneralError = () => {
         this.setState({
-            advancedInputsError: {
-                active: false,
-                message: null,
-                id: null
+            applicationErrors: {
+                active: false, 
+                type: null, 
+                inputId: null, 
+                multipleInputs: [],
+                message: "",
+                el: null
             }
         });
     };
@@ -615,7 +578,8 @@ class Affidavits extends React.Component {
                 applicationErrors: {
                     active: false, 
                     type: null, 
-                    id: null, 
+                    inputId: null, 
+                    multipleInputs: [],
                     message: "",
                     el: null
                 },
@@ -638,9 +602,13 @@ class Affidavits extends React.Component {
                     ...this.state.advancedSearch,
                     [e.target.name]: e.target.value
                 },
-                advancedInputsError: {
-                    active: false,
-                    message: ''
+                applicationErrors: {
+                    active: false, 
+                    type: null, 
+                    inputId: null, 
+                    multipleInputs: [],
+                    message: "",
+                    el: null
                 }
             });
         }

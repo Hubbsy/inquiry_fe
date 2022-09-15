@@ -39,7 +39,6 @@ function Search({
     handleAdvancedSearchInputs,
     advancedSearch,
     handleAdvancedKeyPress,
-    advancedInputsError,
     handleCloseGeneralError,
     clearAdvancedSearchInputs
 }) {
@@ -79,8 +78,8 @@ function Search({
                         <DateInput
                             label={'Inception Date'}
                             onChange={handleFromDateInput}
-                            value={applicationErrors.active && applicationErrors.el.pos === "start" ? "" : standardSearch.INCEPTIONFROM}
-                            helperText={applicationErrors.active && applicationErrors.el.pos === "start" ? applicationErrors.message : null}
+                            value={applicationErrors.active && applicationErrors.type === "DATES" && applicationErrors.el.pos === "start" ? "" : standardSearch.INCEPTIONFROM}
+                            helperText={applicationErrors.active && applicationErrors.type === "DATES" && applicationErrors.el.pos === "start" ? applicationErrors.message : null}
                         />
                     </Grid>
                     <Grid item>
@@ -90,8 +89,8 @@ function Search({
                         <DateInput
                             label={'Inception Date'}
                             onChange={handleToDateInput}
-                            value={applicationErrors.active && applicationErrors.el.pos === "end" ? "" : standardSearch.INCEPTIONFROM}
-                            helperText={applicationErrors.active && applicationErrors.el.pos === "end" ? applicationErrors.message : null}
+                            value={applicationErrors.active && applicationErrors.type === "DATES" && applicationErrors.el.pos === "end" ? "" : standardSearch.INCEPTIONFROM}
+                            helperText={applicationErrors.active && applicationErrors.type === "DATES" && applicationErrors.el.pos === "end" ? applicationErrors.message : null}
                         />
                     </Grid>
                     <Grid item sx={{ mt: 1, mr: 3 }}>
@@ -144,8 +143,8 @@ function Search({
                                         name={'AFFIDAVITNUMBER'}
                                         onChange={handleAdvancedSearchInputs}
                                         onKeyPress={handleAdvancedKeyPress}
-                                        error={advancedInputsError.active && advancedInputsError.id === 'AFFIDAVITNUMBER'}
-                                        helperText={advancedInputsError.active && advancedInputsError.id === 'AFFIDAVITNUMBER' ? advancedInputsError.message : null}
+                                        error={applicationErrors.active && (applicationErrors.inputId === 'AFFIDAVITNUMBER' || applicationErrors.multipleInputs.includes('AFFIDAVITNUMBER'))}
+                                        helperText={applicationErrors.active && (applicationErrors.inputId === 'AFFIDAVITNUMBER' || applicationErrors.multipleInputs.includes('AFFIDAVITNUMBER')) ? applicationErrors.message : null}
                                     />
                                 </Grid>
                                 <Grid item xs={2.5}>
@@ -156,8 +155,8 @@ function Search({
                                         name={'POLICYNUMBER'}
                                         onChange={handleAdvancedSearchInputs}
                                         onKeyPress={handleAdvancedKeyPress}
-                                        error={advancedInputsError.active && advancedInputsError.id === 'POLICYNUMBER'}
-                                        helperText={advancedInputsError.active && advancedInputsError.id === 'POLICYNUMBER' ? advancedInputsError.message : null}
+                                        error={applicationErrors.active && (applicationErrors.inputId === 'POLICYNUMBER' || applicationErrors.multipleInputs.includes('POLICYNUMBER'))}
+                                        helperText={applicationErrors.active && (applicationErrors.inputId === 'POLICYNUMBER' || applicationErrors.multipleInputs.includes('POLICYNUMBER')) ? applicationErrors.message : null}
                                     />
                                 </Grid>
                                 <Grid item xs={2.5}>
@@ -168,8 +167,8 @@ function Search({
                                         name={'BATCH'}
                                         onChange={handleAdvancedSearchInputs}
                                         onKeyPress={handleAdvancedKeyPress}
-                                        error={advancedInputsError.active && advancedInputsError.id === 'BATCH'}
-                                        helperText={advancedInputsError.active && advancedInputsError.id === 'BATCH' ? advancedInputsError.message : null}
+                                        error={applicationErrors.active && applicationErrors.inputId === 'BATCH'}
+                                        helperText={applicationErrors.active && applicationErrors.inputId === 'BATCH' ? applicationErrors.message : null}
                                     />
                                 </Grid>
                             </Grid>
@@ -182,8 +181,8 @@ function Search({
                                         name={'INSUREDNAME'}
                                         onChange={handleAdvancedSearchInputs}
                                         onKeyPress={handleAdvancedKeyPress}
-                                        error={advancedInputsError.active && advancedInputsError.id === 'INSUREDNAME'}
-                                        helperText={advancedInputsError.active && advancedInputsError.id === 'INSUREDNAME' ? advancedInputsError.message : null}
+                                        error={applicationErrors.active && applicationErrors.inputId === 'INSUREDNAME'}
+                                        helperText={applicationErrors.active && applicationErrors.inputId === 'INSUREDNAME' ? applicationErrors.message : null}
                                     />
                                 </Grid>
                                 <Grid item xs={2.5}>
@@ -194,8 +193,8 @@ function Search({
                                         name={'CONTACTNAME'}
                                         onChange={handleAdvancedSearchInputs}
                                         onKeyPress={handleAdvancedKeyPress}
-                                        error={advancedInputsError.active && advancedInputsError.id === 'CONTACTNAME'}
-                                        helperText={advancedInputsError.active && advancedInputsError.id === 'CONTACTNAME' ? advancedInputsError.message : null}
+                                        error={applicationErrors.active && applicationErrors.inputId === 'CONTACTNAME'}
+                                        helperText={applicationErrors.active && applicationErrors.inputId === 'CONTACTNAME' ? applicationErrors.message : null}
                                     />
                                 </Grid>
                                 <Grid item xs={2.5}>
@@ -206,8 +205,8 @@ function Search({
                                         name={'BROKERREFERENCE'}
                                         onChange={handleAdvancedSearchInputs}
                                         onKeyPress={handleAdvancedKeyPress}
-                                        error={advancedInputsError.active && advancedInputsError.id === 'BROKERREFERENCE'}
-                                        helperText={advancedInputsError.active && advancedInputsError.id === 'BROKERREFERENCE' ? advancedInputsError.message : null}
+                                        error={applicationErrors.active && applicationErrors.inputId === 'BROKERREFERENCE'}
+                                        helperText={applicationErrors.active && applicationErrors.inputId === 'BROKERREFERENCE' ? applicationErrors.message : null}
                                     />
                                 </Grid>
                             </Grid>
@@ -219,8 +218,8 @@ function Search({
                                         decimalPlaces={0}
                                         value={advancedSearch.PREMIUMFROM}
                                         onChange={handleAdvancedSearchInputs}
-                                        error={advancedInputsError.active && advancedInputsError.id === 'PREMIUMFROM'}
-                                        helperText={advancedInputsError.active && advancedInputsError.id === 'PREMIUMFROM' ? advancedInputsError.message : null}
+                                        error={applicationErrors.active && applicationErrors.type === "PREMIUMS" && applicationErrors.el.pos === "start"}
+                                        helperText={applicationErrors.active && applicationErrors.type === "PREMIUMS" && applicationErrors.el.pos === "start" ? applicationErrors.message : null}
                                     />
                                 </Grid>
                                 <Grid item>
@@ -233,15 +232,15 @@ function Search({
                                         decimalPlaces={0}
                                         value={advancedSearch.PREMIUMTO}
                                         onChange={handleAdvancedSearchInputs}
-                                        error={advancedInputsError.active && advancedInputsError.id === 'PREMIUMTO'}
-                                        helperText={advancedInputsError.active && advancedInputsError.id === 'PREMIUMTO' ? advancedInputsError.message : null}
+                                        error={applicationErrors.active && applicationErrors.type === "PREMIUMS" && applicationErrors.el.pos === "end"}
+                                        helperText={applicationErrors.active && applicationErrors.type === "PREMIUMS" && applicationErrors.el.pos === "end" ? applicationErrors.message : null}
                                     />
                                 </Grid>
                                 <Grid item sx={{ mr: 3, width: "30%", position: "absolute", right: "0", bottom: "0" }}>
-                                    {advancedInputsError.active && !advancedInputsError.id ? (
+                                    {applicationErrors.active && !applicationErrors.inputId && applicationErrors.type === "ADVANCED" ? (
                                     <Alert
                                         title={"Invalid Search"}
-                                        message={advancedInputsError.message ? advancedInputsError.message : ""}
+                                        message={applicationErrors.message ? applicationErrors.message : ""}
                                         severity={"error"}
                                         onClick={handleCloseGeneralError}
                                     />) : null}
