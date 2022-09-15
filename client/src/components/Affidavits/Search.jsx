@@ -34,8 +34,7 @@ function Search({
     advancedSearchActive, 
     toggleAdvancedSearchPanel,
     handleFromDateInput,
-    handleToDateInput,
-    datesRangeError, 
+    handleToDateInput, 
     standardSearch,
     handleAdvancedSearchInputs,
     advancedSearch,
@@ -80,8 +79,8 @@ function Search({
                         <DateInput
                             label={'Inception Date'}
                             onChange={handleFromDateInput}
-                            value={datesRangeError.startDateError ? "" : standardSearch.INCEPTIONFROM}
-                            helperText={datesRangeError.startDateError ? datesRangeError.message : null}
+                            value={applicationErrors.active && applicationErrors.el.pos === "start" ? "" : standardSearch.INCEPTIONFROM}
+                            helperText={applicationErrors.active && applicationErrors.el.pos === "start" ? applicationErrors.message : null}
                         />
                     </Grid>
                     <Grid item>
@@ -91,8 +90,8 @@ function Search({
                         <DateInput
                             label={'Inception Date'}
                             onChange={handleToDateInput}
-                            value={datesRangeError.endDateError ? "" : standardSearch.INCEPTIONTO}
-                            helperText={datesRangeError.endDateError ? datesRangeError.message : null}
+                            value={applicationErrors.active && applicationErrors.el.pos === "end" ? "" : standardSearch.INCEPTIONFROM}
+                            helperText={applicationErrors.active && applicationErrors.el.pos === "end" ? applicationErrors.message : null}
                         />
                     </Grid>
                     <Grid item sx={{ mt: 1, mr: 3 }}>
