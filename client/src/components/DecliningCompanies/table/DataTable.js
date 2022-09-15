@@ -24,8 +24,11 @@ const DataTable = ({ rows, loading }) => {
                 isLoading={loading}
                 options={options(theme, ExportCsv, ExportPdf, showFilters, density, rows)}
                 data={rows}
-                components={components(showFilters, setFiltering, handleDensityClick)}
-            ></MaterialTable>
+                components={components(
+                    showFilters,
+                    setFiltering,
+                    handleDensityClick
+                )}></MaterialTable>
         </ThemeProvider>
     );
 };

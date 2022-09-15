@@ -13,7 +13,7 @@ class Affidavits extends React.Component {
         standardSearch: {
             searchValue: '',
             INCEPTIONFROM: null,
-            INCEPTIONTO: null,
+            INCEPTIONTO: null
         },
         advancedSearch: {
             AFFIDAVITNUMBER: '',
@@ -31,7 +31,7 @@ class Affidavits extends React.Component {
             message: null
         },
         advancedInputsError: {
-            active: false, 
+            active: false,
             message: null,
             id: null
         },
@@ -45,19 +45,22 @@ class Affidavits extends React.Component {
     };
 
     componentDidUpdate(prevProps) {
-        console.log("prev Props:", prevProps);
-        console.log("props:", this.props);
-        console.log("state", this.state);
+        console.log('prev Props:', prevProps);
+        console.log('props:', this.props);
+        console.log('state', this.state);
 
         if (prevProps.error !== this.props.error && this.props.error !== null) {
             this.setState({ serverError: !this.state.serverError });
         }
-        if ((JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) && !isEmpty(this.props.data)){
+        if (
+            JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data) &&
+            !isEmpty(this.props.data)
+        ) {
             if (this.props.data.hasOwnProperty('NODATA')) {
                 this.setState({ rows: [] });
             } else {
                 const data = this.mapAPIResponse(this.props.data.DATA);
-                console.log(data)
+                console.log(data);
 
                 this.setState({
                     rows: data
@@ -70,53 +73,69 @@ class Affidavits extends React.Component {
         this.setState({
             windowHeight: window.innerHeight,
             clientHeight: document.body.clientHeight
-        })
-    }
+        });
+    };
 
     handleAdjustPadding = (flag) => {
         if (this.state.windowHeight < this.state.clientHeight) {
             this.setState({
                 adjustPadding: true
-            })
-        }
-        else if (this.state.windowHeight >= this.state.clientHeight) {
+            });
+        } else if (this.state.windowHeight >= this.state.clientHeight) {
             this.setState({
                 adjustPadding: false
-            })
+            });
         }
     };
 
-    floatToDollarsConverter = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-    })
+    floatToDollarsConverter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    });
 
     mapAPIResponse = (data) => {
-
         return data.map((record) => {
             let transaction = record.PARTA_TRANSACTION;
             this.setState({
                 showLicenseCol: this.props.data.SHOW_LICENSE_COLUMN
-            })
+            });
 
             return {
-                "AFFIDAVITNO": transaction.AFFIDAVITNO.trim() ? transaction.AFFIDAVITNO.trim() : "-",
-                "POLICYNO":transaction.POLICYNO.trim() ? transaction.POLICYNO.trim() : "-",
-                "RISKINSUREDNAME":transaction.RISKINSUREDNAME.trim() ? transaction.RISKINSUREDNAME.trim() : "-",
-                "TRANSACTIONTYPE":transaction.TRANSACTIONTYPE.trim() ? transaction.TRANSACTIONTYPE.trim() : "-",
-                "AMOUNT": this.floatToDollarsConverter.format(transaction.AMOUNT),
-                "EFFECTIVEDATE":transaction.EFFECTIVEDATE ? format(new Date(transaction.EFFECTIVEDATE), 'MM/dd/yyyy') : "-",
-                "EXPIRATIONDATE":transaction.EXPIRATIONDATE ? format(new Date(transaction.EXPIRATIONDATE), 'MM/dd/yyyy') : "-",
-                "BATCHNO":transaction.BATCHNO ? transaction.BATCHNO : "-",
-                "RECEIVEDATE":transaction.RECEIVEDATE ? format(new Date(transaction.RECEIVEDATE), 'MM/dd/yyyy') : "-",
-                "PROCESSEDSTATE":transaction.PROCESSEDSTATE.trim() ? transaction.PROCESSEDSTATE.trim() : "-",
-                "LICENSENO": transaction.LICENSENO.substring(transaction.LICENSENO.indexOf("-") + 1),
+                AFFIDAVITNO: transaction.AFFIDAVITNO.trim() ? transaction.AFFIDAVITNO.trim() : '-',
+                POLICYNO: transaction.POLICYNO.trim() ? transaction.POLICYNO.trim() : '-',
+                RISKINSUREDNAME: transaction.RISKINSUREDNAME.trim()
+                    ? transaction.RISKINSUREDNAME.trim()
+                    : '-',
+                TRANSACTIONTYPE: transaction.TRANSACTIONTYPE.trim()
+                    ? transaction.TRANSACTIONTYPE.trim()
+                    : '-',
+                AMOUNT: this.floatToDollarsConverter.format(transaction.AMOUNT),
+                EFFECTIVEDATE: transaction.EFFECTIVEDATE
+                    ? format(new Date(transaction.EFFECTIVEDATE), 'MM/dd/yyyy')
+                    : '-',
+                EXPIRATIONDATE: transaction.EXPIRATIONDATE
+                    ? format(new Date(transaction.EXPIRATIONDATE), 'MM/dd/yyyy')
+                    : '-',
+                BATCHNO: transaction.BATCHNO ? transaction.BATCHNO : '-',
+                RECEIVEDATE: transaction.RECEIVEDATE
+                    ? format(new Date(transaction.RECEIVEDATE), 'MM/dd/yyyy')
+                    : '-',
+                PROCESSEDSTATE: transaction.PROCESSEDSTATE.trim()
+                    ? transaction.PROCESSEDSTATE.trim()
+                    : '-',
+                LICENSENO: transaction.LICENSENO.substring(transaction.LICENSENO.indexOf('-') + 1),
                 companyDetails: this.setCompanyDetails(transaction),
-                "CHILDTRANSACTIONS":transaction.CHILD_TRANSACTION && !isEmpty(transaction["CHILD_TRANSACTION"][0]) ? transaction.CHILD_TRANSACTION : null,
-                expandable: transaction.CHILD_TRANSACTION && !isEmpty(transaction["CHILD_TRANSACTION"][0]) ? true : false
-            }
+                CHILDTRANSACTIONS:
+                    transaction.CHILD_TRANSACTION && !isEmpty(transaction['CHILD_TRANSACTION'][0])
+                        ? transaction.CHILD_TRANSACTION
+                        : null,
+                expandable:
+                    transaction.CHILD_TRANSACTION && !isEmpty(transaction['CHILD_TRANSACTION'][0])
+                        ? true
+                        : false
+            };
         });
-    }
+    };
 
     setCompanyDetails(transaction) {
         return {
@@ -135,21 +154,45 @@ class Affidavits extends React.Component {
 
     executeSearch = () => {
         const data = {
-            COMBOSEARCH: this.state.advancedSearchActive ? "" : this.state.standardSearch.searchValue,
-            AFFIDAVITNUMBER: this.state.advancedSearchActive ? this.state.advancedSearch.AFFIDAVITNUMBER : "",
-            POLICYNUMBER: this.state.advancedSearchActive ? this.state.advancedSearch.POLICYNUMBER : "",
-            INSUREDNAME: this.state.advancedSearchActive ? this.state.advancedSearch.INSUREDNAME : "",
-            INCEPTIONFROM: isValid(this.state.standardSearch.INCEPTIONFROM) ? format(new Date(this.state.standardSearch.INCEPTIONFROM), "MM/dd/yyyy") : "",
-            INCEPTIONTO: isValid(this.state.standardSearch.INCEPTIONTO) ? format(new Date(this.state.standardSearch.INCEPTIONTO), "MM/dd/yyyy") : "",
-            CONTACTNAME: this.state.advancedSearchActive ? this.state.advancedSearch.CONTACTNAME : "",
-            BROKERREFERENCE: this.state.advancedSearchActive ? this.state.advancedSearch.BROKERREFERENCE : "",
-            BATCH: this.state.advancedSearchActive ? this.state.advancedSearch.BATCH : "",
-            PREMIUMFROM: this.state.advancedSearchActive ? this.state.advancedSearch.PREMIUMFROM : "",
-            PREMIUMTO: this.state.advancedSearchActive ? this.state.advancedSearch.PREMIUMTO : ""
+            COMBOSEARCH: this.state.advancedSearchActive
+                ? ''
+                : this.state.standardSearch.searchValue,
+            AFFIDAVITNUMBER: this.state.advancedSearchActive
+                ? this.state.advancedSearch.AFFIDAVITNUMBER
+                : '',
+            POLICYNUMBER: this.state.advancedSearchActive
+                ? this.state.advancedSearch.POLICYNUMBER
+                : '',
+            INSUREDNAME: this.state.advancedSearchActive
+                ? this.state.advancedSearch.INSUREDNAME
+                : '',
+            INCEPTIONFROM: isValid(this.state.standardSearch.INCEPTIONFROM)
+                ? format(new Date(this.state.standardSearch.INCEPTIONFROM), 'MM/dd/yyyy')
+                : '',
+            INCEPTIONTO: isValid(this.state.standardSearch.INCEPTIONTO)
+                ? format(new Date(this.state.standardSearch.INCEPTIONTO), 'MM/dd/yyyy')
+                : '',
+            CONTACTNAME: this.state.advancedSearchActive
+                ? this.state.advancedSearch.CONTACTNAME
+                : '',
+            BROKERREFERENCE: this.state.advancedSearchActive
+                ? this.state.advancedSearch.BROKERREFERENCE
+                : '',
+            BATCH: this.state.advancedSearchActive ? this.state.advancedSearch.BATCH : '',
+            PREMIUMFROM: this.state.advancedSearchActive
+                ? this.state.advancedSearch.PREMIUMFROM
+                : '',
+            PREMIUMTO: this.state.advancedSearchActive ? this.state.advancedSearch.PREMIUMTO : ''
         };
 
         if (this.checkValidSearchParams()) {
-            this.props.getAffidavits(this.props.endpoint, window.localStorage.getItem("TOKEN") ? window.localStorage.getItem("TOKEN") : this.props.token, data);
+            this.props.getAffidavits(
+                this.props.endpoint,
+                window.localStorage.getItem('TOKEN')
+                    ? window.localStorage.getItem('TOKEN')
+                    : this.props.token,
+                data
+            );
         }
     };
 
@@ -158,189 +201,196 @@ class Affidavits extends React.Component {
 
         if (!this.state.advancedSearchActive) {
             if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
-                if (this.state.datesRangeError.startDateError || this.state.datesRangeError.endDateError ) {
+                if (
+                    this.state.datesRangeError.startDateError ||
+                    this.state.datesRangeError.endDateError
+                ) {
                     validSearch = false;
-                }
-                else {
+                } else {
                     validSearch = this.checkInceptionDateRange();
                 }
-            }
-            else if (this.state.standardSearch.searchValue.length < 3) {
-                this.handleErrorMessages("standardSearch");
+            } else if (this.state.standardSearch.searchValue.length < 3) {
+                this.handleErrorMessages('standardSearch');
                 validSearch = false;
             }
-        }
-        else {
+        } else {
             validSearch = this.validateAdvancedSearch();
         }
 
-        this.setState({validSearch});
+        this.setState({ validSearch });
 
         return validSearch;
-    }
+    };
 
     validateAdvancedSearch = () => {
         let advancedSearchValid = true;
 
-        if ((this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO)) {
+        if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
             advancedSearchValid = this.checkInceptionDateRange();
-        }
-        else if ((this.state.advancedSearch.PREMIUMFROM || this.state.advancedSearch.PREMIUMTO) && advancedSearchValid) {
-            if (this.state.advancedSearch.PREMIUMFROM && 
-                this.state.advancedSearch.PREMIUMTO && 
-                (parseFloat(this.state.advancedSearch.PREMIUMFROM.replace(/,/g, "")) >= parseFloat(this.state.advancedSearch.PREMIUMTO.replace(/,/g, "")))) {
-                    this.handleErrorMessages("premiumValid", null, "PREMIUMTO");
-                    return false;
-            }
-            else if (!this.state.advancedSearch.PREMIUMFROM) {
-                    this.handleErrorMessages("premiumRange", null, "PREMIUMFROM");
-                    return false;
-            }
-            else if (!this.state.advancedSearch.PREMIUMTO) {
-                this.handleErrorMessages("premiumRange", null, "PREMIUMTO");
+        } else if (
+            (this.state.advancedSearch.PREMIUMFROM || this.state.advancedSearch.PREMIUMTO) &&
+            advancedSearchValid
+        ) {
+            if (
+                this.state.advancedSearch.PREMIUMFROM &&
+                this.state.advancedSearch.PREMIUMTO &&
+                parseFloat(this.state.advancedSearch.PREMIUMFROM.replace(/,/g, '')) >=
+                    parseFloat(this.state.advancedSearch.PREMIUMTO.replace(/,/g, ''))
+            ) {
+                this.handleErrorMessages('premiumValid', null, 'PREMIUMTO');
                 return false;
-            }
-            else {
+            } else if (!this.state.advancedSearch.PREMIUMFROM) {
+                this.handleErrorMessages('premiumRange', null, 'PREMIUMFROM');
+                return false;
+            } else if (!this.state.advancedSearch.PREMIUMTO) {
+                this.handleErrorMessages('premiumRange', null, 'PREMIUMTO');
+                return false;
+            } else {
                 advancedSearchValid = true;
             }
         }
 
         if (advancedSearchValid) {
             let blankInputs = 0;
-            
+
             for (let control in this.state.advancedSearch) {
-                if (this.state.advancedSearch[control].length > 0 && this.state.advancedSearch[control].length < 3) {
-                    this.handleErrorMessages("advancedSearch", null, control);
+                if (
+                    this.state.advancedSearch[control].length > 0 &&
+                    this.state.advancedSearch[control].length < 3
+                ) {
+                    this.handleErrorMessages('advancedSearch', null, control);
                     return false;
-                }
-                else if (
-                    this.state.advancedSearch[control].length === 0) {
+                } else if (this.state.advancedSearch[control].length === 0) {
                     blankInputs++;
                 }
             }
 
-            if (blankInputs === 8 && (!this.state.standardSearch.INCEPTIONFROM || !this.state.standardSearch.INCEPTIONTO)) {
-                this.handleErrorMessages("advancedSearch");
+            if (
+                blankInputs === 8 &&
+                (!this.state.standardSearch.INCEPTIONFROM || !this.state.standardSearch.INCEPTIONTO)
+            ) {
+                this.handleErrorMessages('advancedSearch');
                 return false;
             }
         }
-        
+
         return advancedSearchValid;
-    }
+    };
 
     checkInceptionDateRange = () => {
-        if (isValid(this.state.standardSearch.INCEPTIONFROM) && isValid(this.state.standardSearch.INCEPTIONTO)) {
-            if (isBefore(new Date(this.state.standardSearch.INCEPTIONFROM), new Date(this.state.standardSearch.INCEPTIONTO))) {
+        if (
+            isValid(this.state.standardSearch.INCEPTIONFROM) &&
+            isValid(this.state.standardSearch.INCEPTIONTO)
+        ) {
+            if (
+                isBefore(
+                    new Date(this.state.standardSearch.INCEPTIONFROM),
+                    new Date(this.state.standardSearch.INCEPTIONTO)
+                )
+            ) {
                 return true;
-            }
-            else {
-                this.handleErrorMessages("dates", "endRange");
+            } else {
+                this.handleErrorMessages('dates', 'endRange');
                 return false;
             }
         }
         if (!isValid(this.state.standardSearch.INCEPTIONFROM)) {
-            this.handleErrorMessages("dates", "startValid");
-        }
-        else {
-            this.handleErrorMessages("dates", "endValid");
+            this.handleErrorMessages('dates', 'startValid');
+        } else {
+            this.handleErrorMessages('dates', 'endValid');
         }
 
         return false;
-    }
+    };
 
     handleErrorMessages = (type, pos = null, inputId = null) => {
         const errorMessages = {
-            standardSearch: "Must be at least 3 characters",
+            standardSearch: 'Must be at least 3 characters',
             advancedSearch: {
-                group: "At least one input is required",
-                single: "3 or more characters is required" 
-            } ,
-            datesEndRange: "Date cannot be before start date",
-            datesEndValid: "Must enter a valid end date",
-            datesStartValid: "Must enter a valid start date",
-            datesStartRange: "Date cannot be after end date",
-            premiumRange: "Must include both Premium amounts",
-            premiumValid: "Premium cannot be greater than start amount"
-        }
+                group: 'At least one input is required',
+                single: '3 or more characters is required'
+            },
+            datesEndRange: 'Date cannot be before start date',
+            datesEndValid: 'Must enter a valid end date',
+            datesStartValid: 'Must enter a valid start date',
+            datesStartRange: 'Date cannot be after end date',
+            premiumRange: 'Must include both Premium amounts',
+            premiumValid: 'Premium cannot be greater than start amount'
+        };
 
         let newState = null;
-        if (type === "standardSearch") {
+        if (type === 'standardSearch') {
             newState = {
                 errorStyle: true
-            }
-        }
-        else if (type === "advancedSearch") {
-            let errorMessage = inputId ? errorMessages.advancedSearch.single : errorMessages.advancedSearch.group;
+            };
+        } else if (type === 'advancedSearch') {
+            let errorMessage = inputId
+                ? errorMessages.advancedSearch.single
+                : errorMessages.advancedSearch.group;
             newState = {
                 advancedInputsError: {
-                    active: true, 
+                    active: true,
                     message: errorMessage,
                     id: inputId
-                },
-            }
-        }
-        else if (type === "dates") {
-            if (pos === "endRange") {
+                }
+            };
+        } else if (type === 'dates') {
+            if (pos === 'endRange') {
                 newState = {
                     datesRangeError: {
                         endDateError: true,
                         message: errorMessages.datesEndRange
                     }
-                }
-            }
-            else if (pos === "endValid") {
+                };
+            } else if (pos === 'endValid') {
                 newState = {
                     datesRangeError: {
                         endDateError: true,
                         message: errorMessages.datesEndValid
                     }
-                }
-            }
-            else if (pos === "startValid") {
+                };
+            } else if (pos === 'startValid') {
                 newState = {
                     datesRangeError: {
                         startDateError: true,
                         message: errorMessages.datesStartValid
                     }
-                }
-            }
-            else if (pos === "startRange") {
+                };
+            } else if (pos === 'startRange') {
                 newState = {
                     datesRangeError: {
                         startDateError: true,
                         message: errorMessages.datesStartRange
                     }
-                }
+                };
             }
-        }
-        else if (type === "premiumRange") {
+        } else if (type === 'premiumRange') {
             newState = {
                 advancedInputsError: {
-                    active: true, 
+                    active: true,
                     message: errorMessages.premiumRange,
                     id: inputId
-                },
-            }
-        }
-        else if (type === "premiumValid") {
+                }
+            };
+        } else if (type === 'premiumValid') {
             newState = {
                 advancedInputsError: {
-                    active: true, 
+                    active: true,
                     message: errorMessages.premiumValid,
                     id: inputId
-                },
-            }
+                }
+            };
         }
 
         return this.setState(newState);
-    }
+    };
 
     setStartDate = (e) => {
         let endDate = null;
         if (e === null) {
-            return this.setState({ 
+            return this.setState({
                 standardSearch: {
-                    ...this.state.standardSearch, 
+                    ...this.state.standardSearch,
                     INCEPTIONFROM: null,
                     INCEPTIONTO: null
                 },
@@ -349,49 +399,52 @@ class Affidavits extends React.Component {
                     startDateError: false,
                     message: null
                 }
-             });
+            });
         }
 
         if (isValid(e)) {
             const date = e.toLocaleDateString('en-GB').split('/').reverse().join('-');
             if (date.length === 10) {
-                if (this.state.standardSearch.INCEPTIONTO !== null && isAfter(e, this.state.standardSearch.INCEPTIONTO)) {
+                if (
+                    this.state.standardSearch.INCEPTIONTO !== null &&
+                    isAfter(e, this.state.standardSearch.INCEPTIONTO)
+                ) {
                     endDate = this.state.standardSearch.INCEPTIONTO;
-                    return this.handleErrorMessages("dates", "startRange");
+                    return this.handleErrorMessages('dates', 'startRange');
                 } else if (this.state.standardSearch.INCEPTIONTO === null) {
                     endDate = e;
                 } else {
-                    endDate = this.state.standardSearch.INCEPTIONTO; 
+                    endDate = this.state.standardSearch.INCEPTIONTO;
                 }
 
-                return this.setState({ 
+                return this.setState({
                     standardSearch: {
-                        ...this.state.standardSearch, 
+                        ...this.state.standardSearch,
                         INCEPTIONFROM: e,
                         INCEPTIONTO: endDate
-                    }, 
+                    },
                     datesRangeError: {
                         endDateError: false,
                         startDateError: false,
                         message: null
                     },
                     advancedInputsError: {
-                        active: false, 
+                        active: false,
                         message: null,
                         id: null
-                    },
-                 });
+                    }
+                });
             } else {
-                return this.handleErrorMessages("dates", "startValid");
+                return this.handleErrorMessages('dates', 'startValid');
             }
         }
     };
 
     setEndDate = (e) => {
         if (e === null) {
-            return this.setState({ 
+            return this.setState({
                 standardSearch: {
-                    ...this.state.standardSearch, 
+                    ...this.state.standardSearch,
                     INCEPTIONFROM: null,
                     INCEPTIONTO: null
                 },
@@ -400,39 +453,36 @@ class Affidavits extends React.Component {
                     startDateError: false,
                     message: null
                 }
-             });
+            });
         }
 
         if (isValid(e)) {
             const date = e.toLocaleDateString('en-GB').split('/').reverse().join('-');
             if (date.length === 10) {
                 if (isAfter(this.state.standardSearch.INCEPTIONFROM, e)) {
-                    this.handleErrorMessages("dates", "endRange");
-                }
-                else if (isEqual(this.state.standardSearch.INCEPTIONFROM, e)) {
-                    this.handleErrorMessages("dates", "notEqual");
-                }
-                else {
-                    this.setState({ 
+                    this.handleErrorMessages('dates', 'endRange');
+                } else if (isEqual(this.state.standardSearch.INCEPTIONFROM, e)) {
+                    this.handleErrorMessages('dates', 'notEqual');
+                } else {
+                    this.setState({
                         standardSearch: {
-                            ...this.state.standardSearch, 
-                            INCEPTIONTO: e,
-                        }, 
+                            ...this.state.standardSearch,
+                            INCEPTIONTO: e
+                        },
                         datesRangeError: {
                             endDateError: false,
                             startDateError: false,
                             message: null
                         },
                         advancedInputsError: {
-                            active: false, 
+                            active: false,
                             message: null,
                             id: null
-                        },
-                        
+                        }
                     });
                 }
             } else {
-                return this.handleErrorMessages("dates", "endValid")
+                return this.handleErrorMessages('dates', 'endValid');
             }
         }
     };
@@ -440,7 +490,7 @@ class Affidavits extends React.Component {
     handleChange = (e) => {
         this.setState({
             standardSearch: {
-                ...this.state.standardSearch, 
+                ...this.state.standardSearch,
                 searchValue: e.target.value
             },
             errorStyle: false
@@ -451,7 +501,7 @@ class Affidavits extends React.Component {
         if (e.charCode === 13 && e.target.value.length >= 3) {
             this.executeSearch();
         } else if (e.charCode === 13) {
-            this.handleErrorMessages("standardSearch");
+            this.handleErrorMessages('standardSearch');
         }
     };
 
@@ -459,7 +509,7 @@ class Affidavits extends React.Component {
         if (e.charCode === 13 && e.target.value.length >= 3) {
             this.executeSearch();
         } else if (e.charCode === 13) {
-            this.handleErrorMessages("advancedSearch", null, e.target.name)
+            this.handleErrorMessages('advancedSearch', null, e.target.name);
         }
     };
 
@@ -486,29 +536,28 @@ class Affidavits extends React.Component {
     handleCloseGeneralError = () => {
         this.setState({
             advancedInputsError: {
-                active: false, 
+                active: false,
                 message: null,
                 id: null
-            } 
-        })
-    }
+            }
+        });
+    };
 
     toggleAdvancedSearchPanel = () => {
         this.handleAdjustPadding();
         if (!this.state.advancedSearchActive) {
             this.setState({
-                advancedSearchActive: true, 
-                errorStyle: false, 
+                advancedSearchActive: true,
+                errorStyle: false,
                 standardSearch: {
-                    ...this.state.standardSearch, 
-                    searchValue: ""
+                    ...this.state.standardSearch,
+                    searchValue: ''
                 }
-            })
-        } 
-        else {
+            });
+        } else {
             this.setState({
                 advancedSearchActive: false
-            })
+            });
         }
     };
 
@@ -521,11 +570,11 @@ class Affidavits extends React.Component {
                 },
                 advancedInputsError: {
                     active: false,
-                    message: ""
-                } 
-            })
+                    message: ''
+                }
+            });
         }
-    }
+    };
 
     clearAdvancedSearchInputs = () => {
         this.setState({
@@ -542,10 +591,10 @@ class Affidavits extends React.Component {
             standardSearch: {
                 ...this.state.standardSearch,
                 INCEPTIONFROM: null,
-                INCEPTIONTO: null,
+                INCEPTIONTO: null
             }
-        })
-    }
+        });
+    };
 
     render() {
         return (
@@ -598,7 +647,7 @@ const mapStateToProps = (state) => {
         token: state.session.auth.token,
         loading: state.affidavits.loading,
         data: state.affidavits.data,
-        error: state.affidavits.error,
+        error: state.affidavits.error
     };
 };
 

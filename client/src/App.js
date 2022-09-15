@@ -14,8 +14,8 @@ import { getToken, setEndpoint } from './store/actions/session';
 
 class App extends Component {
     state = {
-        token: localStorage.getItem("TOKEN") || false
-    }
+        token: localStorage.getItem('TOKEN') || false
+    };
 
     componentDidMount() {
         // call getToken
@@ -45,10 +45,14 @@ class App extends Component {
         }
     }
 
-    componentDidUpdate(prevProps){
-        if(prevProps.token !== this.props.token && this.props.token !== null && !this.state.token){
-            console.log("COMPONENT DID UPDATE:", this.props.token);
-            window.localStorage.setItem("TOKEN", this.props.token);
+    componentDidUpdate(prevProps) {
+        if (
+            prevProps.token !== this.props.token &&
+            this.props.token !== null &&
+            !this.state.token
+        ) {
+            console.log('COMPONENT DID UPDATE:', this.props.token);
+            window.localStorage.setItem('TOKEN', this.props.token);
         }
     }
 
@@ -69,11 +73,11 @@ class App extends Component {
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         token: state.session.auth.token
-    }
-}
+    };
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {

@@ -34,10 +34,10 @@ const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
     }
 }));
 
-const floatToDollarsConverter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-})
+const floatToDollarsConverter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+});
 
 export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) {
     const cols = [
@@ -45,81 +45,80 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
             title: 'License No.',
             field: 'LICENSENO',
             type: 'string',
-            width: "10%",
-            hidden: !showLicenseCol,
-           
+            width: '10%',
+            hidden: !showLicenseCol
         },
         {
             title: 'Affidavit No.',
             field: 'AFFIDAVITNO',
             headerStyle: {
-                whiteSpace: "nowrap"
+                whiteSpace: 'nowrap'
             },
             type: 'string',
-            width: "10%",
-            
+            width: '10%'
         },
         {
             title: 'Policy No.',
             field: 'POLICYNO',
             type: 'string',
-            width: "14%",
-            
+            width: '14%'
         },
         {
             title: 'Insured Name',
             field: 'RISKINSUREDNAME',
             type: 'string',
-            width: "19%",
-            
+            width: '19%'
         },
         {
             title: 'Type',
             field: 'TRANSACTIONTYPE',
             type: 'string',
-            width: "4%",
-           
+            width: '4%'
         },
         {
             title: 'Premium',
             field: 'AMOUNT',
             type: 'string',
-            width: "8%",
-            customSort: (a, b) => parseFloat(a.AMOUNT.replace(",", ".")) - parseFloat(b.AMOUNT.replace(",", ".")),
+            width: '8%',
+            customSort: (a, b) =>
+                parseFloat(a.AMOUNT.replace(',', '.')) - parseFloat(b.AMOUNT.replace(',', '.'))
         },
         {
             title: 'Inception',
             field: 'EFFECTIVEDATE',
-            width: "8%",
+            width: '8%'
         },
         {
             title: 'Expiration',
             field: 'EXPIRATIONDATE',
-            width: "8%",
+            width: '8%'
         },
         {
             title: 'Batch',
             field: 'BATCHNO',
             type: 'string',
-            width: "8%",
+            width: '8%'
         },
         {
             title: 'Submitted',
             field: 'RECEIVEDATE',
-            width: "8%",
+            width: '8%'
         },
         {
             title: 'Proc State',
             field: 'PROCESSEDSTATE',
             type: 'string',
-            width: "5%",
-            align: "center"
+            width: '5%',
+            align: 'center'
         },
         {
             title: '',
             field: 'detailsPopoverIcon',
             render: (rowData) => (
-                <StyledMoreVertIcon onClick={(e) => handlePopoverOpen(e, rowData)} aria-describedby={popoverOpen ? 'menu-popover' : undefined} />
+                <StyledMoreVertIcon
+                    onClick={(e) => handlePopoverOpen(e, rowData)}
+                    aria-describedby={popoverOpen ? 'menu-popover' : undefined}
+                />
             ),
             hiddenByColumnsButton: true,
             filtering: false
