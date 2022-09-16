@@ -263,8 +263,7 @@ class Affidavits extends React.Component {
                 //         multipleInputs: errorInputs
                 //     }
                 // });
-            }
-            else if (
+            } else if (
                 blankInputs === 8 &&
                 (!this.state.standardSearch.INCEPTIONFROM || !this.state.standardSearch.INCEPTIONTO)
             ) {
