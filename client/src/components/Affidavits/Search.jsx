@@ -139,8 +139,8 @@ function Search({
                                         name={'AFFIDAVITNUMBER'}
                                         onChange={handleAdvancedSearchInputs}
                                         onKeyPress={handleAdvancedKeyPress}
-                                        error={applicationErrors.active && (applicationErrors.inputId === 'AFFIDAVITNUMBER' || applicationErrors.multipleInputs.includes('AFFIDAVITNUMBER'))}
-                                        helperText={applicationErrors.active && (applicationErrors.inputId === 'AFFIDAVITNUMBER' || applicationErrors.multipleInputs.includes('AFFIDAVITNUMBER')) ? applicationErrors.message : null}
+                                        error={applicationErrors.active && applicationErrors.multipleInputs.includes('AFFIDAVITNUMBER')}
+                                        helperText={applicationErrors.active && applicationErrors.multipleInputs.includes('AFFIDAVITNUMBER') ? applicationErrors.message : null}
                                     />
                                 </Grid>
                                 <Grid item xs={2.5}>
@@ -151,8 +151,8 @@ function Search({
                                         name={'POLICYNUMBER'}
                                         onChange={handleAdvancedSearchInputs}
                                         onKeyPress={handleAdvancedKeyPress}
-                                        error={applicationErrors.active && (applicationErrors.inputId === 'POLICYNUMBER' || applicationErrors.multipleInputs.includes('POLICYNUMBER'))}
-                                        helperText={applicationErrors.active && (applicationErrors.inputId === 'POLICYNUMBER' || applicationErrors.multipleInputs.includes('POLICYNUMBER')) ? applicationErrors.message : null}
+                                        error={applicationErrors.active && applicationErrors.multipleInputs.includes('POLICYNUMBER')}
+                                        helperText={applicationErrors.active && applicationErrors.multipleInputs.includes('POLICYNUMBER') ? applicationErrors.message : null}
                                     />
                                 </Grid>
                                 <Grid item xs={2.5}>
@@ -163,8 +163,8 @@ function Search({
                                         name={'BATCH'}
                                         onChange={handleAdvancedSearchInputs}
                                         onKeyPress={handleAdvancedKeyPress}
-                                        error={applicationErrors.active && (applicationErrors.inputId === 'BATCH' || applicationErrors.multipleInputs.includes('BATCH'))}
-                                        helperText={applicationErrors.active && (applicationErrors.inputId === 'BATCH' || applicationErrors.multipleInputs.includes('BATCH')) ? applicationErrors.message : null}
+                                        error={applicationErrors.active && applicationErrors.multipleInputs.includes('BATCH')}
+                                        helperText={applicationErrors.active && applicationErrors.multipleInputs.includes('BATCH') ? applicationErrors.message : null}
                                     />
                                 </Grid>
                             </Grid>
@@ -177,8 +177,8 @@ function Search({
                                         name={'INSUREDNAME'}
                                         onChange={handleAdvancedSearchInputs}
                                         onKeyPress={handleAdvancedKeyPress}
-                                        error={applicationErrors.active && (applicationErrors.inputId === 'INSUREDNAME' || applicationErrors.multipleInputs.includes('INSUREDNAME'))}
-                                        helperText={applicationErrors.active && (applicationErrors.inputId === 'INSUREDNAME' || applicationErrors.multipleInputs.includes('INSUREDNAME')) ? applicationErrors.message : null}
+                                        error={applicationErrors.active && applicationErrors.multipleInputs.includes('INSUREDNAME')}
+                                        helperText={applicationErrors.active && applicationErrors.multipleInputs.includes('INSUREDNAME') ? applicationErrors.message : null}
                                     />
                                 </Grid>
                                 <Grid item xs={2.5}>
@@ -189,8 +189,8 @@ function Search({
                                         name={'CONTACTNAME'}
                                         onChange={handleAdvancedSearchInputs}
                                         onKeyPress={handleAdvancedKeyPress}
-                                        error={applicationErrors.active && (applicationErrors.inputId === 'CONTACTNAME' || applicationErrors.multipleInputs.includes('CONTACTNAME'))}
-                                        helperText={applicationErrors.active && (applicationErrors.inputId === 'CONTACTNAME' || applicationErrors.multipleInputs.includes('CONTACTNAME')) ? applicationErrors.message : null}
+                                        error={applicationErrors.active && applicationErrors.multipleInputs.includes('CONTACTNAME')}
+                                        helperText={applicationErrors.active && applicationErrors.multipleInputs.includes('CONTACTNAME') ? applicationErrors.message : null}
                                     />
                                 </Grid>
                                 <Grid item xs={2.5}>
@@ -201,8 +201,8 @@ function Search({
                                         name={'BROKERREFERENCE'}
                                         onChange={handleAdvancedSearchInputs}
                                         onKeyPress={handleAdvancedKeyPress}
-                                        error={applicationErrors.active && (applicationErrors.inputId === 'BROKERREFERENCE' || applicationErrors.multipleInputs.includes('BROKERREFERENCE'))}
-                                        helperText={applicationErrors.active && (applicationErrors.inputId === 'BROKERREFERENCE' || applicationErrors.multipleInputs.includes('BROKERREFERENCE')) ? applicationErrors.message : null}
+                                        error={applicationErrors.active && applicationErrors.multipleInputs.includes('BROKERREFERENCE')}
+                                        helperText={applicationErrors.active && applicationErrors.multipleInputs.includes('BROKERREFERENCE') ? applicationErrors.message : null}
                                     />
                                 </Grid>
                             </Grid>
@@ -233,7 +233,7 @@ function Search({
                                     />
                                 </Grid>
                                 <Grid item sx={{ mr: 3, width: "30%", position: "absolute", right: "0", bottom: "0" }}>
-                                    {applicationErrors.active && !applicationErrors.inputId && applicationErrors.type === "ADVANCED" ? (
+                                    {applicationErrors.active && applicationErrors.multipleInputs.length < 1 && applicationErrors.type === "ADVANCED" ? (
                                     <Alert
                                         title={"Invalid Search"}
                                         message={applicationErrors.message ? applicationErrors.message : ""}

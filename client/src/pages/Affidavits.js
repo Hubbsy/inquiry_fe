@@ -28,7 +28,6 @@ class Affidavits extends React.Component {
         applicationErrors: {
             active: false,
             type: null,
-            inputId: null,
             multipleInputs: [],
             message: '',
             el: null
@@ -172,7 +171,7 @@ class Affidavits extends React.Component {
             PREMIUMTO: this.state.advancedSearchActive ? this.state.advancedSearch.PREMIUMTO : ''
         };
 
-        if (this.checkValidSearchParams()) {
+        if (this.checkValidSearchParams() && !this.state.applicationErrors.active) {
             this.props.getAffidavits(
                 this.props.endpoint,
                 window.localStorage.getItem('TOKEN')
@@ -186,6 +185,7 @@ class Affidavits extends React.Component {
     checkValidSearchParams = () => {
         let validSearch = true;
 
+        //  Validate STANDARD search
         if (!this.state.advancedSearchActive) {
             if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
                 if (this.state.applicationErrors.active) {
@@ -198,6 +198,7 @@ class Affidavits extends React.Component {
                 validSearch = false;
             }
         } else {
+            //  Validate ADVANCED search
             validSearch = this.validateAdvancedSearch();
         }
 
@@ -245,7 +246,6 @@ class Affidavits extends React.Component {
                     control !== 'PREMIUMFROM' &&
                     control !== 'PREMIUMTO'
                 ) {
-                    this.handleErrorMessages('ADVANCED', { pos: null, type: 'single' }, control);
                     errorInputs.push(control);
                     advancedSearchValid = false;
                 } else if (this.state.advancedSearch[control].length === 0) {
@@ -254,17 +254,17 @@ class Affidavits extends React.Component {
             }
 
             if (errorInputs.length > 0) {
-                this.setState({
-                    applicationErrors: {
-                        ...this.state.applicationErrors,
-                        active: true,
-                        message: 'Must be at least 3 characters',
-                        multipleInputs: errorInputs
-                    }
-                });
+                this.handleErrorMessages('ADVANCED', { pos: null, type: 'single' }, errorInputs);
+                // this.setState({
+                //     applicationErrors: {
+                //         ...this.state.applicationErrors,
+                //         active: true,
+                //         message: 'Must be at least 3 characters',
+                //         multipleInputs: errorInputs
+                //     }
+                // });
             }
-
-            if (
+            else if (
                 blankInputs === 8 &&
                 (!this.state.standardSearch.INCEPTIONFROM || !this.state.standardSearch.INCEPTIONTO)
             ) {
@@ -302,7 +302,7 @@ class Affidavits extends React.Component {
         return false;
     };
 
-    handleErrorMessages = (type, el = null, inputId = null) => {
+    handleErrorMessages = (type, el = null, multipleInputs = []) => {
         const errorTypes = {
             SERVER: 'SERVER',
             ADVANCED: {
@@ -361,12 +361,11 @@ class Affidavits extends React.Component {
 
         this.setState({
             applicationErrors: {
-                active: true,
-                type,
-                inputId,
                 el,
-                message: currentErrorMessage,
-                multipleInputs: []
+                type,
+                active: true,
+                multipleInputs,
+                message: currentErrorMessage
             }
         });
     };
@@ -383,7 +382,6 @@ class Affidavits extends React.Component {
                 applicationErrors: {
                     active: false,
                     type: null,
-                    inputId: null,
                     message: '',
                     multipleInputs: [],
                     el: null
@@ -415,7 +413,6 @@ class Affidavits extends React.Component {
                     applicationErrors: {
                         active: false,
                         type: null,
-                        inputId: null,
                         multipleInputs: [],
                         message: '',
                         el: null
@@ -437,7 +434,6 @@ class Affidavits extends React.Component {
                 applicationErrors: {
                     active: false,
                     type: null,
-                    inputId: null,
                     message: '',
                     multipleInputs: [],
                     el: null
@@ -459,7 +455,6 @@ class Affidavits extends React.Component {
                         applicationErrors: {
                             active: false,
                             type: null,
-                            inputId: null,
                             message: '',
                             multipleInputs: [],
                             el: null
@@ -481,7 +476,6 @@ class Affidavits extends React.Component {
             applicationErrors: {
                 active: false,
                 type: null,
-                inputId: null,
                 multipleInputs: [],
                 message: '',
                 el: null
@@ -498,11 +492,12 @@ class Affidavits extends React.Component {
     };
 
     handleAdvancedKeyPress = (e) => {
-        if (e.charCode === 13 && e.target.value.length >= 3) {
+        if (e.charCode === 13) {
             this.executeSearch();
-        } else if (e.charCode === 13) {
-            this.handleErrorMessages('ADVANCED', { pos: null, type: 'single' }, e.target.name);
         }
+        //  else if (e.charCode === 13) {
+        //     this.handleErrorMessages('ADVANCED', { pos: null, type: 'single' }, e.target.name);
+        // }
     };
 
     handleClose = () => {
@@ -510,7 +505,6 @@ class Affidavits extends React.Component {
             applicationErrors: {
                 active: false,
                 type: null,
-                inputId: null,
                 multipleInputs: [],
                 message: '',
                 el: null
@@ -531,7 +525,6 @@ class Affidavits extends React.Component {
             applicationErrors: {
                 active: false,
                 type: null,
-                inputId: null,
                 multipleInputs: [],
                 message: '',
                 el: null
@@ -544,7 +537,6 @@ class Affidavits extends React.Component {
             applicationErrors: {
                 active: false,
                 type: null,
-                inputId: null,
                 multipleInputs: [],
                 message: '',
                 el: null
@@ -559,7 +551,6 @@ class Affidavits extends React.Component {
                 applicationErrors: {
                     active: false,
                     type: null,
-                    inputId: null,
                     multipleInputs: [],
                     message: '',
                     el: null
@@ -586,7 +577,6 @@ class Affidavits extends React.Component {
                 applicationErrors: {
                     active: false,
                     type: null,
-                    inputId: null,
                     multipleInputs: [],
                     message: '',
                     el: null
