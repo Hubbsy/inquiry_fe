@@ -26,11 +26,11 @@ class Affidavits extends React.Component {
             PREMIUMTO: ''
         },
         applicationErrors: {
-            active: false, 
-            type: null, 
-            inputId: null, 
+            active: false,
+            type: null,
+            inputId: null,
             multipleInputs: [],
-            message: "",
+            message: '',
             el: null
         },
         adjustPadding: false,
@@ -49,10 +49,10 @@ class Affidavits extends React.Component {
             this.setState({
                 applicationErrors: {
                     ...this.state.applicationErrors,
-                    active: true, 
-                    type: "SERVER",
+                    active: true,
+                    type: 'SERVER'
                 }
-            })
+            });
         }
         if (
             JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data) &&
@@ -202,9 +202,7 @@ class Affidavits extends React.Component {
 
         if (!this.state.advancedSearchActive) {
             if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
-                if (
-                    this.state.applicationErrors.active
-                ) {
+                if (this.state.applicationErrors.active) {
                     validSearch = false;
                 } else {
                     validSearch = this.checkInceptionDateRange();
@@ -237,18 +235,15 @@ class Affidavits extends React.Component {
                 parseFloat(this.state.advancedSearch.PREMIUMFROM.replace(/,/g, '')) >=
                     parseFloat(this.state.advancedSearch.PREMIUMTO.replace(/,/g, ''))
             ) {
-                this.handleErrorMessages("PREMIUMS", {pos: "start", type: "range"});
+                this.handleErrorMessages('PREMIUMS', { pos: 'start', type: 'range' });
                 return false;
-            } 
-            else if (!this.state.advancedSearch.PREMIUMFROM) {
-                this.handleErrorMessages("PREMIUMS", {pos: "start", type: "valid"});
+            } else if (!this.state.advancedSearch.PREMIUMFROM) {
+                this.handleErrorMessages('PREMIUMS', { pos: 'start', type: 'valid' });
                 return false;
-            } 
-            else if (!this.state.advancedSearch.PREMIUMTO) {
-                this.handleErrorMessages("PREMIUMS", {pos: "end", type: "valid"});
+            } else if (!this.state.advancedSearch.PREMIUMTO) {
+                this.handleErrorMessages('PREMIUMS', { pos: 'end', type: 'valid' });
                 return false;
-            } 
-            else {
+            } else {
                 advancedSearchValid = true;
             }
         }
@@ -261,10 +256,10 @@ class Affidavits extends React.Component {
                 if (
                     this.state.advancedSearch[control].length > 0 &&
                     this.state.advancedSearch[control].length < 3 &&
-                    control !== "PREMIUMFROM" &&
-                    control !== "PREMIUMTO"
+                    control !== 'PREMIUMFROM' &&
+                    control !== 'PREMIUMTO'
                 ) {
-                    this.handleErrorMessages("ADVANCED", {pos: null, type: "single"}, control);
+                    this.handleErrorMessages('ADVANCED', { pos: null, type: 'single' }, control);
                     errorInputs.push(control);
                     advancedSearchValid = false;
                 } else if (this.state.advancedSearch[control].length === 0) {
@@ -277,17 +272,17 @@ class Affidavits extends React.Component {
                     applicationErrors: {
                         ...this.state.applicationErrors,
                         active: true,
-                        message: "Must be at least 3 characters",
+                        message: 'Must be at least 3 characters',
                         multipleInputs: errorInputs
                     }
-                })
+                });
             }
 
             if (
                 blankInputs === 8 &&
                 (!this.state.standardSearch.INCEPTIONFROM || !this.state.standardSearch.INCEPTIONTO)
             ) {
-                this.handleErrorMessages("ADVANCED", {pos: null, type: "group"});
+                this.handleErrorMessages('ADVANCED', { pos: null, type: 'group' });
                 return false;
             }
         }
@@ -297,104 +292,97 @@ class Affidavits extends React.Component {
 
     checkInceptionDateRange = () => {
         if (!isValid(this.state.standardSearch.INCEPTIONFROM)) {
-            this.handleErrorMessages('DATES', {type: "valid", pos: "start"});
-        } 
-        else if (!isValid(this.state.standardSearch.INCEPTIONTO)) {
-            this.handleErrorMessages('DATES', {type: "valid", pos: "end"});
-        }
-        else {
+            this.handleErrorMessages('DATES', { type: 'valid', pos: 'start' });
+        } else if (!isValid(this.state.standardSearch.INCEPTIONTO)) {
+            this.handleErrorMessages('DATES', { type: 'valid', pos: 'end' });
+        } else {
             if (
                 isBefore(
                     new Date(this.state.standardSearch.INCEPTIONFROM),
                     new Date(this.state.standardSearch.INCEPTIONTO)
-                ) || 
+                ) ||
                 isEqual(
                     new Date(this.state.standardSearch.INCEPTIONFROM),
                     new Date(this.state.standardSearch.INCEPTIONTO)
                 )
             ) {
                 return true;
-            } 
-            else {
-                this.handleErrorMessages('DATES', {type: "range", pos: "end"});
+            } else {
+                this.handleErrorMessages('DATES', { type: 'range', pos: 'end' });
                 return false;
             }
         }
-        
+
         return false;
     };
 
     handleErrorMessages = (type, el = null, inputId = null) => {
         const errorTypes = {
-            "SERVER": "SERVER", 
-            "ADVANCED": {
-                name: "ADVANCED",
+            SERVER: 'SERVER',
+            ADVANCED: {
+                name: 'ADVANCED',
                 messages: {
-                    single: "Must be at least 3 characters",
-                    group: "At least one input is required"
+                    single: 'Must be at least 3 characters',
+                    group: 'At least one input is required'
                 }
             },
-            "STANDARD": {
-                name: "STANDARD",
-                message: "Must be at least 3 characters" 
-            }, 
-            "DATES": {
-                name: "DATES",
-                messages: {
-                    valid: {
-                        start: "Must enter a valid start date",
-                        end: "Must enter a valid end date"
-                    },
-                    range: {
-                        start: "Date cannot be after end date",
-                        end: "Date cannot be before start date"
-                    }
-                } 
+            STANDARD: {
+                name: 'STANDARD',
+                message: 'Must be at least 3 characters'
             },
-            "PREMIUMS": {
-                name: "PREMIUMS",
+            DATES: {
+                name: 'DATES',
                 messages: {
                     valid: {
-                        start: "Must enter a valid start amount",
-                        end: "Must enter a valid end amount"
+                        start: 'Must enter a valid start date',
+                        end: 'Must enter a valid end date'
                     },
                     range: {
-                        start: "Start amount cannot be greater than end amount",
+                        start: 'Date cannot be after end date',
+                        end: 'Date cannot be before start date'
                     }
-                } 
-            } 
-        }
+                }
+            },
+            PREMIUMS: {
+                name: 'PREMIUMS',
+                messages: {
+                    valid: {
+                        start: 'Must enter a valid start amount',
+                        end: 'Must enter a valid end amount'
+                    },
+                    range: {
+                        start: 'Start amount cannot be greater than end amount'
+                    }
+                }
+            }
+        };
 
-        let currentErrorMessage = "";
+        let currentErrorMessage = '';
         if (errorTypes.hasOwnProperty(type)) {
-            if (type === "STANDARD") {
+            if (type === 'STANDARD') {
                 currentErrorMessage = errorTypes[type].message;
-            }
-            else if (type === "DATES") {
+            } else if (type === 'DATES') {
                 currentErrorMessage = errorTypes[type].messages[el.type][el.pos];
-            }
-            else if (type === "PREMIUMS") {
+            } else if (type === 'PREMIUMS') {
                 currentErrorMessage = errorTypes[type].messages[el.type][el.pos];
-            }
-            else if (type === "ADVANCED") {
+            } else if (type === 'ADVANCED') {
                 currentErrorMessage = errorTypes[type].messages[el.type];
             }
-        } 
-        else {
-            type = "ADVANCED";
-            currentErrorMessage = "Something went wrong";
+        } else {
+            type = 'ADVANCED';
+            currentErrorMessage = 'Something went wrong';
         }
 
         this.setState({
             applicationErrors: {
-                active: true, 
+                active: true,
                 type,
                 inputId,
                 el,
                 message: currentErrorMessage,
                 multipleInputs: []
             }
-        })
+        });
     };
 
     setStartDate = (e) => {
@@ -405,8 +393,7 @@ class Affidavits extends React.Component {
                     ...this.state.standardSearch,
                     INCEPTIONFROM: null,
                     INCEPTIONTO: null
-                },
-                
+                }
             });
         }
 
@@ -418,7 +405,7 @@ class Affidavits extends React.Component {
                     isAfter(e, this.state.standardSearch.INCEPTIONTO)
                 ) {
                     endDate = this.state.standardSearch.INCEPTIONTO;
-                    this.handleErrorMessages('DATES', {type: "range", pos: "start"});
+                    this.handleErrorMessages('DATES', { type: 'range', pos: 'start' });
                 } else if (this.state.standardSearch.INCEPTIONTO === null) {
                     endDate = e;
                 } else {
@@ -432,16 +419,16 @@ class Affidavits extends React.Component {
                         INCEPTIONTO: endDate
                     },
                     applicationErrors: {
-                        active: false, 
-                        type: null, 
-                        inputId: null, 
+                        active: false,
+                        type: null,
+                        inputId: null,
                         multipleInputs: [],
-                        message: "",
+                        message: '',
                         el: null
                     }
                 });
             } else {
-                this.handleErrorMessages('DATES', {type: "valid", pos: "start"});
+                this.handleErrorMessages('DATES', { type: 'valid', pos: 'start' });
             }
         }
     };
@@ -455,10 +442,10 @@ class Affidavits extends React.Component {
                     INCEPTIONTO: null
                 },
                 applicationErrors: {
-                    active: false, 
-                    type: null, 
-                    inputId: null, 
-                    message: "",
+                    active: false,
+                    type: null,
+                    inputId: null,
+                    message: '',
                     multipleInputs: [],
                     el: null
                 }
@@ -469,7 +456,7 @@ class Affidavits extends React.Component {
             const date = e.toLocaleDateString('en-GB').split('/').reverse().join('-');
             if (date.length === 10) {
                 if (isAfter(this.state.standardSearch.INCEPTIONFROM, e)) {
-                    this.handleErrorMessages('DATES', {type: "range", pos: "end"});
+                    this.handleErrorMessages('DATES', { type: 'range', pos: 'end' });
                 } else {
                     this.setState({
                         standardSearch: {
@@ -477,17 +464,17 @@ class Affidavits extends React.Component {
                             INCEPTIONTO: e
                         },
                         applicationErrors: {
-                            active: false, 
-                            type: null, 
-                            inputId: null, 
-                            message: "",
+                            active: false,
+                            type: null,
+                            inputId: null,
+                            message: '',
                             multipleInputs: [],
                             el: null
                         }
                     });
                 }
             } else {
-                this.handleErrorMessages('DATES', {type: "valid", pos: "end"});
+                this.handleErrorMessages('DATES', { type: 'valid', pos: 'end' });
             }
         }
     };
@@ -499,11 +486,11 @@ class Affidavits extends React.Component {
                 searchValue: e.target.value
             },
             applicationErrors: {
-                active: false, 
-                type: null, 
-                inputId: null, 
+                active: false,
+                type: null,
+                inputId: null,
                 multipleInputs: [],
-                message: "",
+                message: '',
                 el: null
             }
         });
@@ -521,18 +508,18 @@ class Affidavits extends React.Component {
         if (e.charCode === 13 && e.target.value.length >= 3) {
             this.executeSearch();
         } else if (e.charCode === 13) {
-            this.handleErrorMessages("ADVANCED", {pos: null, type: "single"}, e.target.name);
+            this.handleErrorMessages('ADVANCED', { pos: null, type: 'single' }, e.target.name);
         }
     };
 
     handleClose = () => {
         this.setState({
             applicationErrors: {
-                active: false, 
-                type: null, 
-                inputId: null, 
+                active: false,
+                type: null,
+                inputId: null,
                 multipleInputs: [],
-                message: "",
+                message: '',
                 el: null
             }
         });
@@ -549,11 +536,11 @@ class Affidavits extends React.Component {
     handleHelperText = () => {
         this.setState({
             applicationErrors: {
-                active: false, 
-                type: null, 
-                inputId: null, 
+                active: false,
+                type: null,
+                inputId: null,
                 multipleInputs: [],
-                message: "",
+                message: '',
                 el: null
             }
         });
@@ -562,11 +549,11 @@ class Affidavits extends React.Component {
     handleCloseGeneralError = () => {
         this.setState({
             applicationErrors: {
-                active: false, 
-                type: null, 
-                inputId: null, 
+                active: false,
+                type: null,
+                inputId: null,
                 multipleInputs: [],
-                message: "",
+                message: '',
                 el: null
             }
         });
@@ -578,11 +565,11 @@ class Affidavits extends React.Component {
             this.setState({
                 advancedSearchActive: true,
                 applicationErrors: {
-                    active: false, 
-                    type: null, 
-                    inputId: null, 
+                    active: false,
+                    type: null,
+                    inputId: null,
                     multipleInputs: [],
-                    message: "",
+                    message: '',
                     el: null
                 },
                 standardSearch: {
@@ -605,11 +592,11 @@ class Affidavits extends React.Component {
                     [e.target.name]: e.target.value
                 },
                 applicationErrors: {
-                    active: false, 
-                    type: null, 
-                    inputId: null, 
+                    active: false,
+                    type: null,
+                    inputId: null,
                     multipleInputs: [],
-                    message: "",
+                    message: '',
                     el: null
                 }
             });
@@ -671,7 +658,10 @@ class Affidavits extends React.Component {
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     handleClose={this.handleClose}
                     message={this.props.error ? this.props.error : ''}
-                    open={this.state.applicationErrors.active && this.state.applicationErrors.type === "SERVER"}
+                    open={
+                        this.state.applicationErrors.active &&
+                        this.state.applicationErrors.type === 'SERVER'
+                    }
                     severity={'error'}
                     title={'Something went wrong'}
                 />
