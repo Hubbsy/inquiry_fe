@@ -12,12 +12,12 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Columns from './columns';
 
 const getWindowSize = () => {
-    const {innerWidth, innerHeight} = window;
+    const { innerWidth, innerHeight } = window;
     return {
-        innerWidth, 
+        innerWidth,
         innerHeight
     };
-}
+};
 
 export default function Table({ loading, rows, adjustPadding, showLicenseCol }) {
     const [density, setDensity] = useState('dense');
@@ -39,15 +39,15 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
 
     const handleRowClick = (row) => {
         closeRow();
-        
-        const rowCopy = {...row};
+
+        const rowCopy = { ...row };
         setSelectedRow(rowCopy);
     };
 
     const closeRow = () => {
-        if(selectedRow !== null){
-            const rowCopy = {...selectedRow};
-            if(rowCopy.tableData.showDetailPanel){
+        if (selectedRow !== null) {
+            const rowCopy = { ...selectedRow };
+            if (rowCopy.tableData.showDetailPanel) {
                 rowCopy.tableData.showDetailPanel = false;
             }
         }
@@ -56,15 +56,15 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
 
     useEffect(() => {
         function handleWindowResize() {
-          setWindowSize(getWindowSize());
+            setWindowSize(getWindowSize());
         }
-    
+
         window.addEventListener('resize', handleWindowResize);
-    
+
         return () => {
-          window.removeEventListener('resize', handleWindowResize);
+            window.removeEventListener('resize', handleWindowResize);
         };
-      }, []);
+    }, []);
 
     const compileFullAddress = (options) => {
         return {
@@ -97,11 +97,11 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
     const content = (
         <Grid container>
             <Grid item container>
-                <Typography sx={{mb: 0}} variant='subtitle2' gutterBottom>
+                <Typography sx={{ mb: 0 }} variant='subtitle2' gutterBottom>
                     Risk Address:
                 </Typography>
             </Grid>
-            <Grid item container sx={{pb: 1}}>
+            <Grid item container sx={{ pb: 1 }}>
                 <Stack>
                     <Typography variant='body2' sx={{ textTransform: 'none' }}>
                         {currentRowData.address.line1}
@@ -112,11 +112,11 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
                 </Stack>
             </Grid>
             <Grid item container>
-                <Typography sx={{mb: 0}} variant='subtitle2' gutterBottom>
+                <Typography sx={{ mb: 0 }} variant='subtitle2' gutterBottom>
                     Company(s):
                 </Typography>
             </Grid>
-            <Grid item container sx={{pb: 1}}>
+            <Grid item container sx={{ pb: 1 }}>
                 <Stack>
                     <Typography variant='body2' sx={{ textTransform: 'none' }}>
                         {currentRowData.company}
@@ -124,11 +124,11 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
                 </Stack>
             </Grid>
             <Grid item container>
-                <Typography sx={{mb: 0}} variant='subtitle2' gutterBottom>
+                <Typography sx={{ mb: 0 }} variant='subtitle2' gutterBottom>
                     Coverage:
                 </Typography>
             </Grid>
-            <Grid item container sx={{pb: 1}}>
+            <Grid item container sx={{ pb: 1 }}>
                 <Stack>
                     <Typography variant='body2' sx={{ textTransform: 'none' }}>
                         {currentRowData.coverage}
@@ -136,7 +136,7 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
                 </Stack>
             </Grid>
             <Grid item container>
-                <Typography sx={{mb: 0}} variant='subtitle2' gutterBottom>
+                <Typography sx={{ mb: 0 }} variant='subtitle2' gutterBottom>
                     Risk:
                 </Typography>
             </Grid>
@@ -152,7 +152,14 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
 
     const actions = (
         <Grid item container justifyContent='flex-end'>
-            <Button href={currentRowData.batchLink} size='small' variant='outlined' startIcon={currentRowData.batchView === "VIEW" ? <FontDownloadIcon/> : <ModeEditIcon/>} >
+            <Button
+                href={currentRowData.batchLink}
+                size='small'
+                variant='outlined'
+                startIcon={
+                    currentRowData.batchView === 'VIEW' ? <FontDownloadIcon /> : <ModeEditIcon />
+                }
+            >
                 {currentRowData.batchView} Affidavit
             </Button>
         </Grid>
@@ -173,7 +180,6 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
             padding: '1em',
             // overflow: 'hidden'
             whiteSpace: 'nowrap'
-
         },
         rowStyle: (rowData) => ({
             backgroundColor:
@@ -194,30 +200,28 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
         ],
         columnsButton: true,
         filtering: showFilters,
-        searchFieldStyle: { marginRight: '1em', width: "100%" },
+        searchFieldStyle: { marginRight: '1em', width: '100%' },
         emptyRowsWhenPaging: rows.length ? false : true,
-        detailPanelColumnAlignment: "left",
-        tableLayout: windowSize.innerWidth < 1225 ? "" : "fixed",
-        cellStyle: theme.typography,
+        detailPanelColumnAlignment: 'left',
+        tableLayout: windowSize.innerWidth < 1225 ? '' : 'fixed',
+        cellStyle: theme.typography
     };
 
     const detailPanel = [
-        rowData => ({
-            tooltip: "Show Child Transactions",
-            icon: () => rowData.expandable ? <CaratIcon color={"primary"} sx={{pt: 1, pl: 1}} /> : null,
-            render: ({rowData}) => (
-                    <NestedTable 
-                        rowData={rowData}
-                    /> 
-                )
+        (rowData) => ({
+            tooltip: 'Show Child Transactions',
+            icon: () =>
+                rowData.expandable ? <CaratIcon color={'primary'} sx={{ pt: 1, pl: 1 }} /> : null,
+            render: ({ rowData }) => <NestedTable rowData={rowData} />
         })
     ];
 
     return (
         <div
             style={{
-                margin: "1em"
-            }}>
+                margin: '1em'
+            }}
+        >
             <ThemeProvider theme={tableTheme}>
                 <MaterialTable
                     title={''}
@@ -226,7 +230,10 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
                     data={rows}
                     isLoading={loading}
                     icons={TableIcons}
-                    onRowClick={(e, selectedRow, togglePanel) => {handleRowClick(selectedRow); togglePanel()}}
+                    onRowClick={(e, selectedRow, togglePanel) => {
+                        handleRowClick(selectedRow);
+                        togglePanel();
+                    }}
                     detailPanel={detailPanel}
                     components={{
                         Pagination: (props) => (
@@ -251,11 +258,12 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
                             return (
                                 <MTableCell
                                     style={{
-                                        whiteSpace: 'nowrap',
+                                        whiteSpace: 'nowrap'
                                     }}
-                                    {...props}></MTableCell>
+                                    {...props}
+                                ></MTableCell>
                             );
-                        },
+                        }
                     }}
                 />
                 <DetailCard

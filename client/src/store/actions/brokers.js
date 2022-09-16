@@ -40,6 +40,7 @@ export const getProducingBrokers = (endpoint, token, data) => {
                 }
             })
             .then((response) => {
+                console.log('RESPONSE GET PRODUCING BROKERS:', response.data);
                 if (response.data.hasOwnProperty('DATA')) {
                     dispatch(getProducingSuccess(response.data.DATA));
                 } else if (response.data.hasOwnProperty('ERRORMESSAGE')) {
@@ -89,6 +90,7 @@ export const getLifeBrokers = (endpoint, token, data) => {
                 }
             })
             .then((response) => {
+                console.log('RESPONSE GET LIFE BROKER:', response.data);
                 if (response.data.hasOwnProperty('DATA')) {
                     dispatch(getLifeSuccess(response.data.DATA));
                 } else if (response.data.hasOwnProperty('ERRORMESSAGE')) {

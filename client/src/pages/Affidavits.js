@@ -38,10 +38,6 @@ class Affidavits extends React.Component {
     };
 
     componentDidUpdate(prevProps) {
-        console.log('prev Props:', prevProps);
-        console.log('props:', this.props);
-        console.log('state', this.state);
-
         if (prevProps.error !== this.props.error && this.props.error !== null) {
             this.setState({
                 applicationErrors: {
@@ -51,6 +47,7 @@ class Affidavits extends React.Component {
                 }
             });
         }
+
         if (
             JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data) &&
             !isEmpty(this.props.data)

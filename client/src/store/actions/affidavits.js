@@ -37,6 +37,7 @@ export const getAffidavits = (endpoint, token, data) => {
                 }
             })
             .then((response) => {
+                console.log('RESPONSE GET AFFIDAVITS:', response.data);
                 if (response.data.hasOwnProperty('DATA')) {
                     dispatch(getAffidavitsSuccess(response.data));
                 } else if (response.data.ERRORMESSAGE.toLowerCase().includes('security')) {
