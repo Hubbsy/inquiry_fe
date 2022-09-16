@@ -381,7 +381,7 @@ class Affidavits extends React.Component {
             }
         } 
         else {
-            type = "SERVER";
+            type = "ADVANCED";
             currentErrorMessage = "Something went wrong";
         }
 
