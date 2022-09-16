@@ -379,6 +379,14 @@ class Affidavits extends React.Component {
                     ...this.state.standardSearch,
                     INCEPTIONFROM: null,
                     INCEPTIONTO: null
+                },
+                applicationErrors: {
+                    active: false,
+                    type: null,
+                    inputId: null,
+                    message: '',
+                    multipleInputs: [],
+                    el: null
                 }
             });
         }
@@ -424,7 +432,6 @@ class Affidavits extends React.Component {
             return this.setState({
                 standardSearch: {
                     ...this.state.standardSearch,
-                    INCEPTIONFROM: null,
                     INCEPTIONTO: null
                 },
                 applicationErrors: {
