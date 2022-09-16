@@ -266,10 +266,10 @@ class Affidavits extends React.Component {
         } else if (!this.state.advancedSearch.PREMIUMTO) {
             this.handleErrorMessages('PREMIUMS', { pos: 'end', type: 'valid' });
             return false;
-        } 
+        }
 
         return true;
-    }
+    };
 
     checkInceptionDateRange = () => {
         if (!isValid(this.state.standardSearch.INCEPTIONFROM)) {
