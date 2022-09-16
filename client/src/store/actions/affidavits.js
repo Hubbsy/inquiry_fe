@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { setSessionTimeout } from './session';
 export const TYPES = {
     GET_AFFIDAVITS_BEGIN: 'GET_AFFIDAVITS_BEGIN',
     GET_AFFIDAVITS_SUCCESS: 'GET_AFFIDAVITS_SUCCESS',
@@ -40,11 +41,15 @@ export const getAffidavits = (endpoint, token, data) => {
                 console.log('RESPONSE GET AFFIDAVITS:', response.data);
                 if (response.data.hasOwnProperty('DATA')) {
                     dispatch(getAffidavitsSuccess(response.data));
-                } else if (response.data.ERRORMESSAGE.toLowerCase().includes('security')) {
-                    window.localStorage.removeItem('TOKEN');
-                    dispatch(getAffidavitsFailure(response.data.ERRORMESSAGE));
                 } else if (response.data.hasOwnProperty('ERRORMESSAGE')) {
                     dispatch(getAffidavitsFailure(response.data.ERRORMESSAGE));
+                    if (response.data.ERRORMESSAGE.toLowerCase().includes('security')) {
+                        if (process.env.NODE_ENV === 'production') {
+                            dispatch(setSessionTimeout(true));
+                        } else {
+                            window.localStorage.removeItem('TOKEN');
+                        }
+                    }
                 } else {
                     dispatch(
                         getAffidavitsFailure('An Error occurred while the request was processing')
@@ -52,7 +57,7 @@ export const getAffidavits = (endpoint, token, data) => {
                 }
             })
             .catch((err) => {
-                console.error(err);
+                console.error('ERROR GET AFFIDAVITS:', err);
                 dispatch(
                     getAffidavitsFailure('An Error occurred while the request was processing')
                 );

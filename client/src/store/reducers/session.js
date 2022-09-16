@@ -2,14 +2,14 @@ import storeState from '../state';
 import { TYPES } from '../actions/session';
 import { combineReducers } from 'redux';
 
-const ip = (state = storeState.session.ip, action) => {
-    switch (action.type) {
-        case TYPES.SET_IP_ADDRESS:
-            return action.value;
-        default:
-            return state;
-    }
-};
+// const ip = (state = storeState.session.ip, action) => {
+//     switch (action.type) {
+//         case TYPES.SET_IP_ADDRESS:
+//             return action.value;
+//         default:
+//             return state;
+//     }
+// };
 
 const endpoint = (state = storeState.session.endpoint, action) => {
     switch (action.type) {
@@ -56,7 +56,7 @@ const auth = (state = storeState.session.auth, action) => {
     }
 };
 
-const session = combineReducers({ auth, ip, endpoint, sessionTimeout });
+const session = combineReducers({ auth, endpoint, sessionTimeout });
 export default session;
 
 // const session = (state = storeState.session, action) => {

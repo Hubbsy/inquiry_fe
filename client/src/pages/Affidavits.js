@@ -171,9 +171,10 @@ class Affidavits extends React.Component {
         if (this.checkValidSearchParams() && !this.state.applicationErrors.active) {
             this.props.getAffidavits(
                 this.props.endpoint,
-                window.localStorage.getItem('TOKEN')
-                    ? window.localStorage.getItem('TOKEN')
-                    : this.props.token,
+                this.props.token,
+                // window.localStorage.getItem('TOKEN')
+                //     ? window.localStorage.getItem('TOKEN')
+                //     : this.props.token,
                 data
             );
         }
