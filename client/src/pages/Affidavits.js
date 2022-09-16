@@ -188,11 +188,7 @@ class Affidavits extends React.Component {
         //  Validate STANDARD search
         if (!this.state.advancedSearchActive) {
             if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
-                if (this.state.applicationErrors.active) {
-                    validSearch = false;
-                } else {
-                    validSearch = this.checkInceptionDateRange();
-                }
+                validSearch = this.validateDateRange();
             } else if (this.state.standardSearch.searchValue.length < 3) {
                 this.handleErrorMessages('STANDARD');
                 validSearch = false;
@@ -211,7 +207,7 @@ class Affidavits extends React.Component {
         let advancedSearchValid = true;
 
         if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
-            advancedSearchValid = this.checkInceptionDateRange();
+            advancedSearchValid = this.validateDateRange();
         } else if (
             (this.state.advancedSearch.PREMIUMFROM || this.state.advancedSearch.PREMIUMTO) &&
             advancedSearchValid
@@ -231,20 +227,20 @@ class Affidavits extends React.Component {
                     control !== 'PREMIUMTO'
                 ) {
                     errorInputs.push(control);
-                    advancedSearchValid = false;
                 } else if (this.state.advancedSearch[control].length === 0) {
                     blankInputs++;
                 }
             }
 
             if (errorInputs.length > 0) {
+                advancedSearchValid = false;
                 this.handleErrorMessages('ADVANCED', { pos: null, type: 'single' }, errorInputs);
             } else if (
                 blankInputs === 8 &&
                 (!this.state.standardSearch.INCEPTIONFROM || !this.state.standardSearch.INCEPTIONTO)
             ) {
+                advancedSearchValid = false;
                 this.handleErrorMessages('ADVANCED', { pos: null, type: 'group' });
-                return false;
             }
         }
 
@@ -271,7 +267,7 @@ class Affidavits extends React.Component {
         return true;
     };
 
-    checkInceptionDateRange = () => {
+    validateDateRange = () => {
         if (!isValid(this.state.standardSearch.INCEPTIONFROM)) {
             this.handleErrorMessages('DATES', { type: 'valid', pos: 'start' });
         } else if (!isValid(this.state.standardSearch.INCEPTIONTO)) {
