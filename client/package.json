@@ -1,10 +1,9 @@
 {
-
     "name": "client",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "@aeros-ui/components": "^0.1.41",
+        "@aeros-ui/components": "^0.1.44",
         "@aeros-ui/icons": "^0.1.6",
         "@aeros-ui/tables": "^0.1.24",
         "@aeros-ui/themes": "^0.1.18",
@@ -32,7 +31,7 @@
         "web-vitals": "^2.1.0"
     },
     "scripts": {
-        "start": "FAST_REFRESH=true react-scripts start",
+        "start": "GENERATE_SOURCEMAP=false FAST_REFRESH=true react-scripts start",
         "build": "react-scripts build && rm -rf ../server/build && mv build ../server/build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",

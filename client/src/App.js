@@ -13,6 +13,10 @@ import endpointConfig from './store/endpointConfig';
 import { getToken, setEndpoint } from './store/actions/session';
 
 class App extends Component {
+    state = {
+        token: localStorage.getItem('TOKEN') || false
+    };
+
     componentDidMount() {
         // call getToken
         const env = 'NYACOL';
@@ -31,7 +35,25 @@ class App extends Component {
             }
         };
 
-        this.props.getToken(endpoint, data);
+        if (!this.state.token) {
+            console.log('NEW TOKEN GENERATED');
+            // console.log('TOKEN:', this.state.token);
+            this.props.getToken(endpoint, data);
+        } else {
+            // console.log('TOKEN:', this.state.token);
+            console.log('NEW TOKEN IS NOT GENERATED');
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (
+            prevProps.token !== this.props.token &&
+            this.props.token !== null &&
+            !this.state.token
+        ) {
+            // console.log('COMPONENT DID UPDATE:', this.props.token);
+            window.localStorage.setItem('TOKEN', this.props.token);
+        }
     }
 
     render() {
@@ -51,6 +73,12 @@ class App extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        token: state.session.auth.token
+    };
+};
+
 const mapDispatchToProps = (dispatch) => {
     return {
         getToken: (endpoint, data) => dispatch(getToken(endpoint, data)),
@@ -58,4 +86,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

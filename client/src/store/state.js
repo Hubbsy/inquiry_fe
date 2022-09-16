@@ -11,7 +11,8 @@ const storeState = {
     },
     decliningCompanies: {
         companies: { data: [], loading: false, error: null },
-        decliningData: { data: [], loading: false, error: null }},
+        decliningData: { data: [], loading: false, error: null }
+    },
     brokers: {
         producing: {
             loading: false,
@@ -23,6 +24,11 @@ const storeState = {
             data: [],
             error: null
         }
+    },
+    affidavits: {
+        loading: false,
+        data: [],
+        error: null
     }
 };
 
