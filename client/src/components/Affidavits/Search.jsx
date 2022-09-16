@@ -30,7 +30,6 @@ function Search({
     executeSearch,
     handleClearInput,
     handleHelperText,
-    adjustPadding,
     advancedSearchActive, 
     toggleAdvancedSearchPanel,
     handleFromDateInput,
@@ -47,10 +46,7 @@ function Search({
         <Paper
             sx={{
                 padding: '1em',
-                mt: '1em',
-                mr: `${adjustPadding ? '0.10em' : '1em'}`,
-                ml: '1em',
-                mb: '1em'
+                margin: "1em",
             }}
             variant={'outlined'}>
             <Typography variant='h6' sx={{ paddingBottom: 1 }}>
@@ -89,7 +85,7 @@ function Search({
                         <DateInput
                             label={'Inception Date'}
                             onChange={handleToDateInput}
-                            value={applicationErrors.active && applicationErrors.type === "DATES" && applicationErrors.el.pos === "end" ? "" : standardSearch.INCEPTIONFROM}
+                            value={applicationErrors.active && applicationErrors.type === "DATES" && applicationErrors.el.pos === "end" ? "" : standardSearch.INCEPTIONTO}
                             helperText={applicationErrors.active && applicationErrors.type === "DATES" && applicationErrors.el.pos === "end" ? applicationErrors.message : null}
                         />
                     </Grid>

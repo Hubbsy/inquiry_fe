@@ -35,9 +35,7 @@ class Affidavits extends React.Component {
         },
         adjustPadding: false,
         advancedSearchActive: false,
-        showLicenseCol: false,
-        windowHeight: window.innerHeight,
-        clientHeight: document.body.clientHeight
+        showLicenseCol: false
     };
 
     componentDidUpdate(prevProps) {
@@ -75,18 +73,6 @@ class Affidavits extends React.Component {
             windowHeight: window.innerHeight,
             clientHeight: document.body.clientHeight
         });
-    };
-
-    handleAdjustPadding = () => {
-        if (this.state.windowHeight < this.state.clientHeight) {
-            this.setState({
-                adjustPadding: true
-            });
-        } else if (this.state.windowHeight >= this.state.clientHeight) {
-            this.setState({
-                adjustPadding: false
-            });
-        }
     };
 
     floatToDollarsConverter = new Intl.NumberFormat('en-US', {
@@ -560,7 +546,6 @@ class Affidavits extends React.Component {
     };
 
     toggleAdvancedSearchPanel = () => {
-        this.handleAdjustPadding();
         if (!this.state.advancedSearchActive) {
             this.setState({
                 advancedSearchActive: true,
@@ -635,7 +620,6 @@ class Affidavits extends React.Component {
                     executeSearch={this.executeSearch}
                     handleClearInput={this.handleClearInput}
                     handleHelperText={this.handleHelperText}
-                    adjustPadding={this.state.adjustPadding}
                     advancedSearchActive={this.state.advancedSearchActive}
                     toggleAdvancedSearchPanel={this.toggleAdvancedSearchPanel}
                     handleFromDateInput={this.setStartDate}
@@ -644,7 +628,6 @@ class Affidavits extends React.Component {
                     advancedSearch={this.state.advancedSearch}
                     handleAdvancedSearchInputs={this.handleAdvancedSearchInputs}
                     handleAdvancedKeyPress={this.handleAdvancedKeyPress}
-                    advancedInputsError={this.state.advancedInputsError}
                     handleCloseGeneralError={this.handleCloseGeneralError}
                     clearAdvancedSearchInputs={this.clearAdvancedSearchInputs}
                 />

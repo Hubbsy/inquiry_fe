@@ -216,10 +216,7 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
     return (
         <div
             style={{
-                marginTop: '1em',
-                marginRight: `${adjustPadding ? '0.10em' : '1em'}`,
-                marginLeft: '1em',
-                marginBottom: '1em'
+                margin: "1em"
             }}>
             <ThemeProvider theme={tableTheme}>
                 <MaterialTable
@@ -255,8 +252,6 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
                                 <MTableCell
                                     style={{
                                         whiteSpace: 'nowrap',
-                                        // textOverflow: 'ellipsis',
-                                        // overflow: 'hidden'
                                     }}
                                     {...props}></MTableCell>
                             );
