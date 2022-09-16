@@ -486,9 +486,6 @@ class Affidavits extends React.Component {
         if (e.charCode === 13) {
             this.executeSearch();
         }
-        //  else if (e.charCode === 13) {
-        //     this.handleErrorMessages('ADVANCED', { pos: null, type: 'single' }, e.target.name);
-        // }
     };
 
     handleClose = () => {
