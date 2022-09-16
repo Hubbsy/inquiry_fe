@@ -216,23 +216,7 @@ class Affidavits extends React.Component {
             (this.state.advancedSearch.PREMIUMFROM || this.state.advancedSearch.PREMIUMTO) &&
             advancedSearchValid
         ) {
-            if (
-                this.state.advancedSearch.PREMIUMFROM &&
-                this.state.advancedSearch.PREMIUMTO &&
-                parseFloat(this.state.advancedSearch.PREMIUMFROM.replace(/,/g, '')) >=
-                    parseFloat(this.state.advancedSearch.PREMIUMTO.replace(/,/g, ''))
-            ) {
-                this.handleErrorMessages('PREMIUMS', { pos: 'start', type: 'range' });
-                return false;
-            } else if (!this.state.advancedSearch.PREMIUMFROM) {
-                this.handleErrorMessages('PREMIUMS', { pos: 'start', type: 'valid' });
-                return false;
-            } else if (!this.state.advancedSearch.PREMIUMTO) {
-                this.handleErrorMessages('PREMIUMS', { pos: 'end', type: 'valid' });
-                return false;
-            } else {
-                advancedSearchValid = true;
-            }
+            advancedSearchValid = this.validatePremiumRange();
         }
 
         if (advancedSearchValid) {
@@ -255,14 +239,6 @@ class Affidavits extends React.Component {
 
             if (errorInputs.length > 0) {
                 this.handleErrorMessages('ADVANCED', { pos: null, type: 'single' }, errorInputs);
-                // this.setState({
-                //     applicationErrors: {
-                //         ...this.state.applicationErrors,
-                //         active: true,
-                //         message: 'Must be at least 3 characters',
-                //         multipleInputs: errorInputs
-                //     }
-                // });
             } else if (
                 blankInputs === 8 &&
                 (!this.state.standardSearch.INCEPTIONFROM || !this.state.standardSearch.INCEPTIONTO)
@@ -274,6 +250,26 @@ class Affidavits extends React.Component {
 
         return advancedSearchValid;
     };
+
+    validatePremiumRange = () => {
+        if (
+            this.state.advancedSearch.PREMIUMFROM &&
+            this.state.advancedSearch.PREMIUMTO &&
+            parseFloat(this.state.advancedSearch.PREMIUMFROM.replace(/,/g, '')) >=
+                parseFloat(this.state.advancedSearch.PREMIUMTO.replace(/,/g, ''))
+        ) {
+            this.handleErrorMessages('PREMIUMS', { pos: 'start', type: 'range' });
+            return false;
+        } else if (!this.state.advancedSearch.PREMIUMFROM) {
+            this.handleErrorMessages('PREMIUMS', { pos: 'start', type: 'valid' });
+            return false;
+        } else if (!this.state.advancedSearch.PREMIUMTO) {
+            this.handleErrorMessages('PREMIUMS', { pos: 'end', type: 'valid' });
+            return false;
+        } 
+
+        return true;
+    }
 
     checkInceptionDateRange = () => {
         if (!isValid(this.state.standardSearch.INCEPTIONFROM)) {
