@@ -1,4 +1,4 @@
-import { MainTableCell } from '@aeros-ui/tables';
+import { MainTableCell, TableFilterInput } from '@aeros-ui/tables';
 import styled from '@emotion/styled';
 import { MoreVert } from '@mui/icons-material';
 import { format, isValid } from 'date-fns';
@@ -41,7 +41,15 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
             field: 'PARTA_TRANSACTION.LICENSENO',
             type: 'string',
             width: '10%',
-            hidden: !showLicenseCol
+            hidden: !showLicenseCol,
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            }
+    
         },
         {
             title: 'Affidavit No.',
@@ -50,31 +58,69 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
                 whiteSpace: 'nowrap'
             },
             type: 'string',
-            width: '10%'
+            width: '10%',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            }
+    
         },
         {
             title: 'Policy No.',
             field: 'PARTA_TRANSACTION.POLICYNO',
             type: 'string',
-            width: '14%'
+            width: '14%',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            }
+    
         },
         {
             title: 'Insured Name',
             field: 'PARTA_TRANSACTION.RISKINSUREDNAME',
             type: 'string',
-            width: '19%'
+            width: '19%',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            }
+    
         },
         {
             title: 'Type',
             field: 'PARTA_TRANSACTION.TRANSACTIONTYPE',
             type: 'string',
-            width: '4%'
+            width: '4%',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            }
         },
         {
             title: 'Premium',
             field: 'PARTA_TRANSACTION.AMOUNT',
             type: 'currency',
             width: '8%',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            },
             currencySettings: { style: 'currency', currency: 'USD', minimumFractionDigits: 0 },
             customSort: (a, b) =>
                 parseFloat(a.PARTA_TRANSACTION.AMOUNT.replace(',', '.')) -
@@ -85,6 +131,13 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
             field: 'PARTA_TRANSACTION.EFFECTIVEDATE',
             width: '8%',
             type: 'string',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            },
             render: (rowData) => (
                 <MainTableCell>
                     {isValid(new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE))
@@ -104,6 +157,13 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
             field: 'PARTA_TRANSACTION.EXPIRATIONDATE',
             width: '8%',
             type: 'string',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            },
             render: (rowData) => (
                 <MainTableCell>
                     {isValid(new Date(rowData.PARTA_TRANSACTION.EXPIRATIONDATE))
@@ -122,13 +182,27 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
             title: 'Batch',
             field: 'PARTA_TRANSACTION.BATCHNO',
             type: 'string',
-            width: '8%'
+            width: '8%',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            },
         },
         {
             title: 'Submitted',
             field: 'PARTA_TRANSACTION.RECEIVEDATE',
             width: '8%',
             type: 'string',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            },
             render: (rowData) => (
                 <MainTableCell>
                     {isValid(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE))
@@ -148,7 +222,14 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
             field: 'PARTA_TRANSACTION.PROCESSEDSTATE',
             type: 'string',
             width: '5%',
-            align: 'center'
+            align: 'center',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            },
         },
         {
             title: '',

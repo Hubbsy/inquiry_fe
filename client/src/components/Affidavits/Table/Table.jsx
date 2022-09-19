@@ -1,7 +1,7 @@
 import MaterialTable, { MTableCell } from '@material-table/core';
 import NestedTable from './NestedTable';
 import { TablePagination, ThemeProvider, Grid, Typography, Button } from '@mui/material';
-import { TableToolbar, DetailCard } from '@aeros-ui/tables';
+import { TableToolbar, DetailCard, TableFilterInput } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme, theme } from '@aeros-ui/themes';
 import { useState, useCallback, useEffect } from 'react';
