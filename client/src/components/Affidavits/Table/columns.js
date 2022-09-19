@@ -1,5 +1,7 @@
+import { MainTableCell } from '@aeros-ui/tables';
 import styled from '@emotion/styled';
 import { MoreVert } from '@mui/icons-material';
+import { format, isValid } from 'date-fns';
 
 const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
     height: 32,
@@ -36,14 +38,14 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
     const cols = [
         {
             title: 'License No.',
-            field: 'LICENSENO',
+            field: 'PARTA_TRANSACTION.LICENSENO',
             type: 'string',
             width: '10%',
             hidden: !showLicenseCol
         },
         {
             title: 'Affidavit No.',
-            field: 'AFFIDAVITNO',
+            field: 'PARTA_TRANSACTION.AFFIDAVITNO',
             headerStyle: {
                 whiteSpace: 'nowrap'
             },
@@ -52,54 +54,98 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
         },
         {
             title: 'Policy No.',
-            field: 'POLICYNO',
+            field: 'PARTA_TRANSACTION.POLICYNO',
             type: 'string',
             width: '14%'
         },
         {
             title: 'Insured Name',
-            field: 'RISKINSUREDNAME',
+            field: 'PARTA_TRANSACTION.RISKINSUREDNAME',
             type: 'string',
             width: '19%'
         },
         {
             title: 'Type',
-            field: 'TRANSACTIONTYPE',
+            field: 'PARTA_TRANSACTION.TRANSACTIONTYPE',
             type: 'string',
             width: '4%'
         },
         {
             title: 'Premium',
-            field: 'AMOUNT',
-            type: 'string',
+            field: 'PARTA_TRANSACTION.AMOUNT',
+            type: 'currency',
             width: '8%',
+            currencySettings: { style: 'currency', currency: 'USD', minimumFractionDigits: 0 },
             customSort: (a, b) =>
-                parseFloat(a.AMOUNT.replace(',', '.')) - parseFloat(b.AMOUNT.replace(',', '.'))
+                parseFloat(a.PARTA_TRANSACTION.AMOUNT.replace(',', '.')) -
+                parseFloat(b.PARTA_TRANSACTION.AMOUNT.replace(',', '.'))
         },
         {
             title: 'Inception',
-            field: 'EFFECTIVEDATE',
-            width: '8%'
+            field: 'PARTA_TRANSACTION.EFFECTIVEDATE',
+            width: '8%',
+            type: 'string',
+            render: (rowData) => (
+                <MainTableCell>
+                    {isValid(new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE))
+                        ? format(new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE), 'MM/dd/yyyy')
+                        : ''}
+                </MainTableCell>
+            ),
+            customFilterAndSearch: (term, rowData) => {
+                let cellDateValue = isValid(new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE))
+                    ? format(new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE), 'MM/dd/yyyy')
+                    : '';
+                return cellDateValue.search(term) !== -1 ? true : false;
+            }
         },
         {
             title: 'Expiration',
-            field: 'EXPIRATIONDATE',
-            width: '8%'
+            field: 'PARTA_TRANSACTION.EXPIRATIONDATE',
+            width: '8%',
+            type: 'string',
+            render: (rowData) => (
+                <MainTableCell>
+                    {isValid(new Date(rowData.PARTA_TRANSACTION.EXPIRATIONDATE))
+                        ? format(new Date(rowData.PARTA_TRANSACTION.EXPIRATIONDATE), 'MM/dd/yyyy')
+                        : ''}
+                </MainTableCell>
+            ),
+            customFilterAndSearch: (term, rowData) => {
+                let cellDateValue = isValid(new Date(rowData.PARTA_TRANSACTION.EXPIRATIONDATE))
+                    ? format(new Date(rowData.PARTA_TRANSACTION.EXPIRATIONDATE), 'MM/dd/yyyy')
+                    : '';
+                return cellDateValue.search(term) !== -1 ? true : false;
+            }
         },
         {
             title: 'Batch',
-            field: 'BATCHNO',
+            field: 'PARTA_TRANSACTION.BATCHNO',
             type: 'string',
             width: '8%'
         },
         {
             title: 'Submitted',
-            field: 'RECEIVEDATE',
-            width: '8%'
+            field: 'PARTA_TRANSACTION.RECEIVEDATE',
+            width: '8%',
+            type: 'string',
+            render: (rowData) => (
+                <MainTableCell>
+                    {isValid(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE))
+                        ? format(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE), 'MM/dd/yyyy')
+                        : ''}
+                </MainTableCell>
+            ),
+            customFilterAndSearch: (term, rowData) => {
+                let cellDateValue = isValid(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE))
+                    ? format(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE), 'MM/dd/yyyy')
+                    : '';
+                return cellDateValue.search(term) !== -1 ? true : false;
+            }
         },
         {
             title: 'Proc State',
-            field: 'PROCESSEDSTATE',
+            field: 'PARTA_TRANSACTION.PROCESSEDSTATE',
             type: 'string',
             width: '5%',
             align: 'center'

@@ -49,8 +49,17 @@ const NestedTable = ({ rowData }) => {
     const [nestedAnchorEl, setNestedAnchorEl] = useState(null);
     const nestedPopoverOpen = Boolean(nestedAnchorEl);
 
+    const compileFullAddress = (options) => {
+        return {
+            line1: `${options.riskAddress}`,
+            line2: `${options.city}, ${options.state}, ${options.zip}`
+        };
+    };
+
     const handleNestedPopoverOpen = (event, childRowData) => {
-        rowData.companyDetails.address = compileFullAddress(rowData.companyDetails);
+        rowData.PARTA_TRANSACTION.companyDetails.address = compileFullAddress(
+            rowData.PARTA_TRANSACTION.companyDetails
+        );
         const anchorPosition = anchorPositionByAnchorEl(event);
         setNestedAnchorEl(anchorPosition);
         setSelectedChild(childRowData);
@@ -68,13 +77,6 @@ const NestedTable = ({ rowData }) => {
             top: elementDetailedPosition.top + elementDetailedPosition.height
         };
         return anchorPosition;
-    };
-
-    const compileFullAddress = (options) => {
-        return {
-            line1: `${options.riskAddress}`,
-            line2: `${options.city}, ${options.state}, ${options.zip}`
-        };
     };
 
     let columnHeaders = [
@@ -105,7 +107,7 @@ const NestedTable = ({ rowData }) => {
                 />
                 <NestedColumnHeaders columnHeaders={columnHeaders} dense='dense' />
                 <TableBody>
-                    {rowData.CHILDTRANSACTIONS.map((c, i) => (
+                    {rowData.PARTA_TRANSACTION.CHILD_TRANSACTION.map((c, i) => (
                         <NestedTableRow
                             key={`child-transaction-${i}`}
                             dense='dense'
@@ -187,18 +189,20 @@ const NestedTable = ({ rowData }) => {
                                                             variant='body2'
                                                             sx={{ textTransform: 'none' }}
                                                         >
-                                                            {rowData.companyDetails.address
-                                                                ? rowData.companyDetails.address
-                                                                      .line1
+                                                            {rowData.PARTA_TRANSACTION
+                                                                .companyDetails.address
+                                                                ? rowData.PARTA_TRANSACTION
+                                                                      .companyDetails.address.line1
                                                                 : ''}
                                                         </Typography>
                                                         <Typography
                                                             variant='body2'
                                                             sx={{ textTransform: 'none' }}
                                                         >
-                                                            {rowData.companyDetails.address
-                                                                ? rowData.companyDetails.address
-                                                                      .line2
+                                                            {rowData.PARTA_TRANSACTION
+                                                                .companyDetails.address
+                                                                ? rowData.PARTA_TRANSACTION
+                                                                      .companyDetails.address.line2
                                                                 : ''}
                                                         </Typography>
                                                     </Stack>
@@ -218,7 +222,10 @@ const NestedTable = ({ rowData }) => {
                                                             variant='body2'
                                                             sx={{ textTransform: 'none' }}
                                                         >
-                                                            {rowData.companyDetails.company}
+                                                            {
+                                                                rowData.PARTA_TRANSACTION
+                                                                    .companyDetails.company
+                                                            }
                                                         </Typography>
                                                     </Stack>
                                                 </Grid>
@@ -237,7 +244,10 @@ const NestedTable = ({ rowData }) => {
                                                             variant='body2'
                                                             sx={{ textTransform: 'none' }}
                                                         >
-                                                            {rowData.companyDetails.coverage}
+                                                            {
+                                                                rowData.PARTA_TRANSACTION
+                                                                    .companyDetails.coverage
+                                                            }
                                                         </Typography>
                                                     </Stack>
                                                 </Grid>
@@ -256,7 +266,10 @@ const NestedTable = ({ rowData }) => {
                                                             variant='body2'
                                                             sx={{ textTransform: 'none' }}
                                                         >
-                                                            {rowData.companyDetails.risk}
+                                                            {
+                                                                rowData.PARTA_TRANSACTION
+                                                                    .companyDetails.risk
+                                                            }
                                                         </Typography>
                                                     </Stack>
                                                 </Grid>

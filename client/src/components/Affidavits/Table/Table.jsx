@@ -10,6 +10,7 @@ import { TableIcons, CaratIcon } from '@aeros-ui/icons';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Columns from './columns';
+import { ConstructionOutlined } from '@mui/icons-material';
 
 const getWindowSize = () => {
     const { innerWidth, innerHeight } = window;
@@ -75,8 +76,11 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
 
     const handlePopoverOpen = useCallback((event, rowData) => {
         setSelectedRow(rowData);
-        rowData.companyDetails.address = compileFullAddress(rowData.companyDetails);
-        setCurrentRowData(rowData.companyDetails);
+        console.log(rowData.PARTA_TRANSACTION);
+        rowData.PARTA_TRANSACTION.companyDetails.address = compileFullAddress(
+            rowData.PARTA_TRANSACTION.companyDetails
+        );
+        setCurrentRowData(rowData.PARTA_TRANSACTION.companyDetails);
         const anchorPosition = anchorPositionByAnchorEl(event);
         setAnchorEl(anchorPosition);
     }, []);
@@ -211,7 +215,9 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
         (rowData) => ({
             tooltip: 'Show Child Transactions',
             icon: () =>
-                rowData.expandable ? <CaratIcon color={'primary'} sx={{ pt: 1, pl: 1 }} /> : null,
+                rowData.PARTA_TRANSACTION.expandable ? (
+                    <CaratIcon color={'primary'} sx={{ pt: 1, pl: 1 }} />
+                ) : null,
             render: ({ rowData }) => <NestedTable rowData={rowData} />
         })
     ];
