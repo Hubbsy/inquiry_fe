@@ -44,7 +44,7 @@ const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
     }
 }));
 
-const NestedTable = ({ rowData }) => {
+const NestedTable = ({ rowData, dense }) => {
     const [selectedChild, setSelectedChild] = useState(null);
     const [nestedAnchorEl, setNestedAnchorEl] = useState(null);
     const nestedPopoverOpen = Boolean(nestedAnchorEl);
@@ -89,8 +89,7 @@ const NestedTable = ({ rowData }) => {
         'Expiration',
         'Batch',
         'Submitted',
-        'Proc State',
-        ''
+        'Proc State'
     ];
 
     const NO_VALUE = '-';
@@ -101,201 +100,206 @@ const NestedTable = ({ rowData }) => {
             <Table>
                 <NestedTableHeader
                     tableHeader='Related Child Transactions'
-                    colSpan={11}
-                    dense='dense'
-                    sx={{ pl: 5 }}
+                    colSpan={columnHeaders.length + 1}
+                    dense={dense}
                 />
-                <NestedColumnHeaders columnHeaders={columnHeaders} dense='dense' />
+                <NestedColumnHeaders columnHeaders={columnHeaders} dense={dense} />
                 <TableBody>
                     {rowData.PARTA_TRANSACTION.CHILD_TRANSACTION.map((c, i) => (
                         <NestedTableRow
                             key={`child-transaction-${i}`}
-                            dense='dense'
-                            onClick={() => {
-                                setSelectedChild(c);
-                            }}
+                            dense={dense}
                             selected={
                                 selectedChild !== null &&
                                 c.TRANSACTION_ID === selectedChild.TRANSACTION_ID
                             }
                         >
-                            <NestedTableCell dense='dense' width={'14em'}>
+                            <NestedTableCell dense='dense'>
                                 {c.AFFIDAVITNO ? c.AFFIDAVITNO : NO_VALUE}
                             </NestedTableCell>
-                            <NestedTableCell dense='dense' width={'15em'}>
+                            <NestedTableCell dense='dense'>
                                 {c.POLICYNO ? c.POLICYNO : NO_VALUE}
                             </NestedTableCell>
-                            <NestedTableCell dense='dense' width={'26em'}>
+                            <NestedTableCell dense='dense' width='200px'>
                                 {c.RISKINSUREDNAME ? c.RISKINSUREDNAME : NO_VALUE}
                             </NestedTableCell>
-                            <NestedTableCell dense='dense' width={'5em'}>
+                            <NestedTableCell dense='dense'>
                                 {c.TRANSACTIONTYPE ? c.TRANSACTIONTYPE : NO_VALUE}
                             </NestedTableCell>
-                            <NestedTableCell dense='dense' width={'12em'}>
+                            <NestedTableCell dense='dense'>
                                 {c.AMOUNT ? c.AMOUNT : NO_VALUE}
                             </NestedTableCell>
-                            <NestedTableCell dense='dense' width={'8em'}>
+                            <NestedTableCell dense='dense'>
                                 {c.EFFECTIVEDATE
                                     ? format(new Date(c.EFFECTIVEDATE), 'MM/dd/yyyy')
                                     : NO_VALUE}
                             </NestedTableCell>
-                            <NestedTableCell dense='dense' width={'10em'}>
+                            <NestedTableCell dense='dense'>
                                 {c.EXPIRATIONDATE
                                     ? format(new Date(c.EXPIRATIONDATE), 'MM/dd/yyyy')
                                     : NO_VALUE}
                             </NestedTableCell>
-                            <NestedTableCell dense='dense' width={'10em'}>
+                            <NestedTableCell dense='dense'>
                                 {c.BATCHNO ? c.BATCHNO : NO_VALUE}
                             </NestedTableCell>
-                            <NestedTableCell dense='dense' width={'8em'}>
+                            <NestedTableCell dense='dense'>
                                 {c.RECEIVEDATE
                                     ? format(new Date(c.RECEIVEDATE), 'MM/dd/yyyy')
                                     : NO_VALUE}
                             </NestedTableCell>
-                            <NestedTableCell dense='dense' align={'center'} width={'4em'}>
-                                {c.PROCESSEDSTATE ? c.PROCESSEDSTATE : NO_VALUE}
-                            </NestedTableCell>
-                            <NestedTableCell dense='dense' width={'1em'}>
-                                <StyledMoreVertIcon
-                                    aria-describedby={nestedId}
-                                    onClick={(e) => handleNestedPopoverOpen(e, c)}
-                                />
-                                {selectedChild !== null ? (
-                                    <DetailCard
-                                        popoverId={nestedId}
-                                        open={nestedPopoverOpen}
-                                        width={300}
-                                        anchorPosition={nestedAnchorEl}
-                                        transformOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'right'
-                                        }}
-                                        handleClose={() => handleCloseNestedPopover()}
-                                        title={`Affidavit No. ${selectedChild.AFFIDAVITNO}`}
-                                        content={
-                                            <Grid container>
-                                                <Grid item container>
-                                                    <Typography
-                                                        sx={{ mb: 0 }}
-                                                        variant='subtitle2'
-                                                        gutterBottom
-                                                    >
-                                                        Risk Address:
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid item container sx={{ pb: 1 }}>
-                                                    <Stack>
-                                                        <Typography
-                                                            variant='body2'
-                                                            sx={{ textTransform: 'none' }}
-                                                        >
-                                                            {rowData.PARTA_TRANSACTION
-                                                                .companyDetails.address
-                                                                ? rowData.PARTA_TRANSACTION
-                                                                      .companyDetails.address.line1
-                                                                : ''}
-                                                        </Typography>
-                                                        <Typography
-                                                            variant='body2'
-                                                            sx={{ textTransform: 'none' }}
-                                                        >
-                                                            {rowData.PARTA_TRANSACTION
-                                                                .companyDetails.address
-                                                                ? rowData.PARTA_TRANSACTION
-                                                                      .companyDetails.address.line2
-                                                                : ''}
-                                                        </Typography>
-                                                    </Stack>
-                                                </Grid>
-                                                <Grid item container>
-                                                    <Typography
-                                                        sx={{ mb: 0 }}
-                                                        variant='subtitle2'
-                                                        gutterBottom
-                                                    >
-                                                        Company(s):
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid item container sx={{ pb: 1 }}>
-                                                    <Stack>
-                                                        <Typography
-                                                            variant='body2'
-                                                            sx={{ textTransform: 'none' }}
-                                                        >
-                                                            {
-                                                                rowData.PARTA_TRANSACTION
-                                                                    .companyDetails.company
-                                                            }
-                                                        </Typography>
-                                                    </Stack>
-                                                </Grid>
-                                                <Grid item container>
-                                                    <Typography
-                                                        sx={{ mb: 0 }}
-                                                        variant='subtitle2'
-                                                        gutterBottom
-                                                    >
-                                                        Coverage:
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid item container sx={{ pb: 1 }}>
-                                                    <Stack>
-                                                        <Typography
-                                                            variant='body2'
-                                                            sx={{ textTransform: 'none' }}
-                                                        >
-                                                            {
-                                                                rowData.PARTA_TRANSACTION
-                                                                    .companyDetails.coverage
-                                                            }
-                                                        </Typography>
-                                                    </Stack>
-                                                </Grid>
-                                                <Grid item container>
-                                                    <Typography
-                                                        sx={{ mb: 0 }}
-                                                        variant='subtitle2'
-                                                        gutterBottom
-                                                    >
-                                                        Risk:
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid item container>
-                                                    <Stack>
-                                                        <Typography
-                                                            variant='body2'
-                                                            sx={{ textTransform: 'none' }}
-                                                        >
-                                                            {
-                                                                rowData.PARTA_TRANSACTION
-                                                                    .companyDetails.risk
-                                                            }
-                                                        </Typography>
-                                                    </Stack>
-                                                </Grid>
-                                            </Grid>
-                                        }
-                                        actions={
-                                            <Grid item container justifyContent='flex-end'>
-                                                <Button
-                                                    href={selectedChild.BATCHLINK}
-                                                    variant='outlined'
-                                                    startIcon={
-                                                        selectedChild.BATCHLINKEDITVIEW ===
-                                                        'VIEW' ? (
-                                                            <FontDownloadIcon />
-                                                        ) : (
-                                                            <ModeEditIcon />
-                                                        )
-                                                    }
-                                                    size='small'
-                                                >
-                                                    {selectedChild.BATCHLINKEDITVIEW} Affidavit
-                                                </Button>
-                                            </Grid>
-                                        }
+                            <NestedTableCell dense='dense'>
+                                <Grid
+                                    item
+                                    container
+                                    justifyContent='space-between'
+                                    alignItems='center'
+                                >
+                                    <Typography variant='body2'>
+                                        {c.PROCESSEDSTATE ? c.PROCESSEDSTATE : NO_VALUE}
+                                    </Typography>
+                                    <StyledMoreVertIcon
+                                        aria-describedby={nestedId}
+                                        onClick={(e) => handleNestedPopoverOpen(e, c)}
                                     />
-                                ) : null}
+                                    {selectedChild !== null ? (
+                                        <DetailCard
+                                            popoverId={nestedId}
+                                            open={nestedPopoverOpen}
+                                            width={300}
+                                            anchorPosition={nestedAnchorEl}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right'
+                                            }}
+                                            handleClose={() => handleCloseNestedPopover()}
+                                            title={`Affidavit No. ${selectedChild.AFFIDAVITNO}`}
+                                            content={
+                                                <Grid container>
+                                                    <Grid item container>
+                                                        <Typography
+                                                            sx={{ mb: 0 }}
+                                                            variant='subtitle2'
+                                                            gutterBottom
+                                                        >
+                                                            Risk Address:
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item container sx={{ pb: 1 }}>
+                                                        <Stack>
+                                                            <Typography
+                                                                variant='body2'
+                                                                sx={{ textTransform: 'none' }}
+                                                            >
+                                                                {rowData.PARTA_TRANSACTION
+                                                                    .companyDetails.address
+                                                                    ? rowData.PARTA_TRANSACTION
+                                                                          .companyDetails.address
+                                                                          .line1
+                                                                    : ''}
+                                                            </Typography>
+                                                            <Typography
+                                                                variant='body2'
+                                                                sx={{ textTransform: 'none' }}
+                                                            >
+                                                                {rowData.PARTA_TRANSACTION
+                                                                    .companyDetails.address
+                                                                    ? rowData.PARTA_TRANSACTION
+                                                                          .companyDetails.address
+                                                                          .line2
+                                                                    : ''}
+                                                            </Typography>
+                                                        </Stack>
+                                                    </Grid>
+                                                    <Grid item container>
+                                                        <Typography
+                                                            sx={{ mb: 0 }}
+                                                            variant='subtitle2'
+                                                            gutterBottom
+                                                        >
+                                                            Company(s):
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item container sx={{ pb: 1 }}>
+                                                        <Stack>
+                                                            <Typography
+                                                                variant='body2'
+                                                                sx={{ textTransform: 'none' }}
+                                                            >
+                                                                {
+                                                                    rowData.PARTA_TRANSACTION
+                                                                        .companyDetails.company
+                                                                }
+                                                            </Typography>
+                                                        </Stack>
+                                                    </Grid>
+                                                    <Grid item container>
+                                                        <Typography
+                                                            sx={{ mb: 0 }}
+                                                            variant='subtitle2'
+                                                            gutterBottom
+                                                        >
+                                                            Coverage:
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item container sx={{ pb: 1 }}>
+                                                        <Stack>
+                                                            <Typography
+                                                                variant='body2'
+                                                                sx={{ textTransform: 'none' }}
+                                                            >
+                                                                {
+                                                                    rowData.PARTA_TRANSACTION
+                                                                        .companyDetails.coverage
+                                                                }
+                                                            </Typography>
+                                                        </Stack>
+                                                    </Grid>
+                                                    <Grid item container>
+                                                        <Typography
+                                                            sx={{ mb: 0 }}
+                                                            variant='subtitle2'
+                                                            gutterBottom
+                                                        >
+                                                            Risk:
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item container>
+                                                        <Stack>
+                                                            <Typography
+                                                                variant='body2'
+                                                                sx={{ textTransform: 'none' }}
+                                                            >
+                                                                {
+                                                                    rowData.PARTA_TRANSACTION
+                                                                        .companyDetails.risk
+                                                                }
+                                                            </Typography>
+                                                        </Stack>
+                                                    </Grid>
+                                                </Grid>
+                                            }
+                                            actions={
+                                                <Grid item container justifyContent='flex-end'>
+                                                    <Button
+                                                        href={selectedChild.BATCHLINK}
+                                                        variant='outlined'
+                                                        startIcon={
+                                                            selectedChild.BATCHLINKEDITVIEW ===
+                                                            'VIEW' ? (
+                                                                <FontDownloadIcon />
+                                                            ) : (
+                                                                <ModeEditIcon />
+                                                            )
+                                                        }
+                                                        size='small'
+                                                    >
+                                                        {selectedChild.BATCHLINKEDITVIEW} Affidavit
+                                                    </Button>
+                                                </Grid>
+                                            }
+                                        />
+                                    ) : null}
+                                </Grid>
                             </NestedTableCell>
                         </NestedTableRow>
                     ))}

@@ -87,8 +87,7 @@ const Header = ({ organizations, onSearch, loading }) => {
                         name='org'
                         value={org}
                         disabled={loading}
-                        width={'80%'}
-                    >
+                        width={'80%'}>
                         {companies.map((company) => {
                             return (
                                 <MenuItem name='org' key={company.CODE} value={company.CODE}>
