@@ -10,7 +10,7 @@ import { TableIcons, CaratIcon } from '@aeros-ui/icons';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Columns from './columns';
-import { ConstructionOutlined } from '@mui/icons-material';
+import isEmpty from '../../../functions/isEmpty';
 
 const getWindowSize = () => {
     const { innerWidth, innerHeight } = window;
@@ -20,10 +20,11 @@ const getWindowSize = () => {
     };
 };
 
-export default function Table({ loading, rows, adjustPadding, showLicenseCol }) {
+export default function Table({ loading, rows, showLicenseCol, setAffidavits }) {
     const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
+    const [rowCopy, setRowCopy] = useState(null);
     const [windowSize, setWindowSize] = useState(getWindowSize());
 
     const [currentRowData, setCurrentRowData] = useState({
@@ -33,26 +34,10 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
 
     const [anchorEl, setAnchorEl] = useState(null);
     const popoverOpen = Boolean(anchorEl);
+    const id = popoverOpen ? 'menu-popover' : undefined;
 
     const handleDensityClick = () => {
         density === 'normal' ? setDensity('dense') : setDensity('normal');
-    };
-
-    const handleRowClick = (row) => {
-        closeRow();
-
-        const rowCopy = { ...row };
-        setSelectedRow(rowCopy);
-    };
-
-    const closeRow = () => {
-        if (selectedRow !== null) {
-            const rowCopy = { ...selectedRow };
-            if (rowCopy.tableData.showDetailPanel) {
-                rowCopy.tableData.showDetailPanel = false;
-            }
-        }
-        setSelectedRow(null);
     };
 
     useEffect(() => {
@@ -74,20 +59,36 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
         };
     };
 
-    const handlePopoverOpen = useCallback((event, rowData) => {
-        setSelectedRow(rowData);
-        console.log(rowData.PARTA_TRANSACTION);
-        rowData.PARTA_TRANSACTION.companyDetails.address = compileFullAddress(
+    const handlePopoverOpen = (e, rowData) => {
+        console.log("rowDataOpen", rowData)
+        let rowClicked = { ...rowData };
+        setRowCopy(rowData);
+        const dataCopy = [...rows];
+        dataCopy[rowClicked.tableData.id] = rowClicked;
+
+        rowClicked.PARTA_TRANSACTION.companyDetails.address = compileFullAddress(
             rowData.PARTA_TRANSACTION.companyDetails
         );
-        setCurrentRowData(rowData.PARTA_TRANSACTION.companyDetails);
-        const anchorPosition = anchorPositionByAnchorEl(event);
-        setAnchorEl(anchorPosition);
-    }, []);
+        setCurrentRowData(rowClicked.PARTA_TRANSACTION.companyDetails);
 
-    const handlePopoverClose = useCallback(() => {
+        const anchorPosition = anchorPositionByAnchorEl(e);
+        setAnchorEl(anchorPosition);
+        setSelectedRow(rowClicked);
+
+        setAffidavits(dataCopy);
+    };
+
+    const handlePopoverClose = () => {
+        console.log("rowCopyClose", rowCopy);
+        let rowClicked = { ...rowCopy };
+        const dataCopy = [...rows];
+        dataCopy[rowClicked.tableData.id] = rowClicked;
+
         setAnchorEl(null);
-    }, []);
+        setSelectedRow(null);
+
+        setAffidavits(dataCopy);
+    };
 
     const anchorPositionByAnchorEl = (event) => {
         const elementDetailedPosition = event.currentTarget.getBoundingClientRect();
@@ -182,7 +183,6 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
             color: theme.palette.background.paper,
             textTransform: 'capitalize',
             padding: '1em',
-            // overflow: 'hidden'
             whiteSpace: 'nowrap'
         },
         rowStyle: (rowData) => ({
@@ -215,9 +215,10 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
         (rowData) => ({
             tooltip: 'Show Child Transactions',
             icon: () =>
-                rowData.PARTA_TRANSACTION.expandable ? (
-                    <CaratIcon color={'primary'} sx={{ pt: 1, pl: 1 }} />
-                ) : null,
+            !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION) &&
+            !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION[0]) ? (
+                <CaratIcon color={'primary'} sx={{ pt: 1, pl: 1 }} />
+            ) : null,
             render: ({ rowData }) => <NestedTable rowData={rowData} />
         })
     ];
@@ -233,13 +234,12 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
                     title={''}
                     options={options}
                     columns={columns}
-                    data={rows}
+                    data={[...rows]}
                     isLoading={loading}
                     icons={TableIcons}
-                    onRowClick={(e, selectedRow, togglePanel) => {
-                        handleRowClick(selectedRow);
-                        togglePanel();
-                    }}
+                    // onRowClick={(e, selectedRow, togglePanel) => {
+                    //     togglePanel()
+                    // }}
                     detailPanel={detailPanel}
                     components={{
                         Pagination: (props) => (
@@ -273,8 +273,10 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
                     }}
                 />
                 <DetailCard
+                    id={id}
                     popoverId='detailPopover'
                     open={popoverOpen}
+                    anchorReference='anchorPosition'
                     anchorPosition={anchorEl}
                     transformOrigin={{
                         vertical: 'top',

@@ -94,11 +94,6 @@ class Affidavits extends React.Component {
             record.PARTA_TRANSACTION.companyDetails = this.setCompanyDetails(
                 record.PARTA_TRANSACTION
             );
-            record.PARTA_TRANSACTION.expandable =
-                record.PARTA_TRANSACTION.CHILD_TRANSACTION &&
-                !isEmpty(record.PARTA_TRANSACTION['CHILD_TRANSACTION'][0])
-                    ? true
-                    : false;
 
             return record;
         });
@@ -559,6 +554,10 @@ class Affidavits extends React.Component {
         });
     };
 
+    setAffidavits = (rows) => {
+        this.setState({ rows });
+    }
+
     render() {
         return (
             <>
@@ -583,6 +582,7 @@ class Affidavits extends React.Component {
                     clearAdvancedSearchInputs={this.clearAdvancedSearchInputs}
                 />
                 <Table
+                    setAffidavits={this.setAffidavits}
                     loading={this.props.loading}
                     rows={this.state.rows}
                     adjustPadding={this.state.adjustPadding}
