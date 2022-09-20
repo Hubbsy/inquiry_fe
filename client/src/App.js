@@ -29,6 +29,7 @@ class App extends Component {
             parsedData.hasOwnProperty('SRID') &&
             process.env.NODE_ENV === 'production'
         ) {
+            console.log("PARSED DATA:", parsedData)
             const env = parsedData.ENV;
             const srId = parsedData.SRID;
 
