@@ -1,10 +1,10 @@
 import MaterialTable, { MTableCell } from '@material-table/core';
 import NestedTable from './NestedTable';
 import { TablePagination, ThemeProvider, Grid, Typography, Button } from '@mui/material';
-import { TableToolbar, DetailCard, TableFilterInput } from '@aeros-ui/tables';
+import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme, theme } from '@aeros-ui/themes';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Stack } from '@mui/system';
 import { TableIcons, CaratIcon } from '@aeros-ui/icons';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
@@ -27,7 +27,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
     const [rowCopy, setRowCopy] = useState(null);
     const [windowSize, setWindowSize] = useState(getWindowSize());
 
-    const [currentRowData, setCurrentRowData] = useState({
+    const [currentCompanyDetails, setCurrentCompanyDetails] = useState({
         affidavitNo: 'No current Affidavit No.',
         address: 'No current Company Info.'
     });
@@ -60,7 +60,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
     };
 
     const handlePopoverOpen = (e, rowData) => {
-        console.log("rowDataOpen", rowData)
+        console.log("rowPopOpen", rowData)
         let rowClicked = { ...rowData };
         setRowCopy(rowData);
         const dataCopy = [...rows];
@@ -69,7 +69,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         rowClicked.PARTA_TRANSACTION.companyDetails.address = compileFullAddress(
             rowData.PARTA_TRANSACTION.companyDetails
         );
-        setCurrentRowData(rowClicked.PARTA_TRANSACTION.companyDetails);
+        setCurrentCompanyDetails(rowClicked.PARTA_TRANSACTION.companyDetails);
 
         const anchorPosition = anchorPositionByAnchorEl(e);
         setAnchorEl(anchorPosition);
@@ -79,7 +79,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
     };
 
     const handlePopoverClose = () => {
-        console.log("rowCopyClose", rowCopy);
+        console.log("rowPopClose", rowCopy);
         let rowClicked = { ...rowCopy };
         const dataCopy = [...rows];
         dataCopy[rowClicked.tableData.id] = rowClicked;
@@ -109,10 +109,10 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
             <Grid item container sx={{ pb: 1 }}>
                 <Stack>
                     <Typography variant='body2' sx={{ textTransform: 'none' }}>
-                        {currentRowData.address.line1}
+                        {currentCompanyDetails.address.line1}
                     </Typography>
                     <Typography variant='body2' sx={{ textTransform: 'none' }}>
-                        {currentRowData.address.line2}
+                        {currentCompanyDetails.address.line2}
                     </Typography>
                 </Stack>
             </Grid>
@@ -124,7 +124,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
             <Grid item container sx={{ pb: 1 }}>
                 <Stack>
                     <Typography variant='body2' sx={{ textTransform: 'none' }}>
-                        {currentRowData.company}
+                        {currentCompanyDetails.company}
                     </Typography>
                 </Stack>
             </Grid>
@@ -136,7 +136,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
             <Grid item container sx={{ pb: 1 }}>
                 <Stack>
                     <Typography variant='body2' sx={{ textTransform: 'none' }}>
-                        {currentRowData.coverage}
+                        {currentCompanyDetails.coverage}
                     </Typography>
                 </Stack>
             </Grid>
@@ -148,7 +148,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
             <Grid item container>
                 <Stack>
                     <Typography variant='body2' sx={{ textTransform: 'none' }}>
-                        {currentRowData.risk}
+                        {currentCompanyDetails.risk}
                     </Typography>
                 </Stack>
             </Grid>
@@ -158,14 +158,14 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
     const actions = (
         <Grid item container justifyContent='flex-end'>
             <Button
-                href={currentRowData.batchLink}
+                href={currentCompanyDetails.batchLink}
                 size='small'
                 variant='outlined'
                 startIcon={
-                    currentRowData.batchView === 'VIEW' ? <FontDownloadIcon /> : <ModeEditIcon />
+                    currentCompanyDetails.batchView === 'VIEW' ? <FontDownloadIcon /> : <ModeEditIcon />
                 }
             >
-                {currentRowData.batchView} Affidavit
+                {currentCompanyDetails.batchView} Affidavit
             </Button>
         </Grid>
     );
@@ -284,7 +284,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                     }}
                     handleClose={handlePopoverClose}
                     width={300}
-                    title={`Affidavit No. ${currentRowData.affidavitNo}`}
+                    title={`Affidavit No. ${currentCompanyDetails.affidavitNo}`}
                     content={content}
                     actions={actions}
                 />
