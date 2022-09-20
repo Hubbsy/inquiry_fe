@@ -70,7 +70,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
 
         const anchorPosition = anchorPositionByAnchorEl(e);
         setAnchorEl(anchorPosition);
-        
+
         setAffidavits(dataCopy);
         setSelectedRow(rowCopy);
     };
@@ -84,7 +84,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
             }
             dataCopy[rowCopy.tableData.id] = rowCopy;
         }
-        
+
         setAffidavits(dataCopy);
         setAnchorEl(null);
         setSelectedRow(null);
@@ -162,7 +162,11 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                 size='small'
                 variant='outlined'
                 startIcon={
-                    currentCompanyDetails.batchView === 'VIEW' ? <FontDownloadIcon /> : <ModeEditIcon />
+                    currentCompanyDetails.batchView === 'VIEW' ? (
+                        <FontDownloadIcon />
+                    ) : (
+                        <ModeEditIcon />
+                    )
                 }
             >
                 {currentCompanyDetails.batchView} Affidavit
@@ -209,7 +213,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         detailPanelColumnAlignment: 'left',
         tableLayout: windowSize.innerWidth < 1225 ? '' : 'fixed',
         cellStyle: theme.typography,
-        detailPanelType: 'single',
+        detailPanelType: 'single'
     };
 
     return (
@@ -230,11 +234,11 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                         (rowData) => ({
                             tooltip: 'Related Transactions',
                             icon: () =>
-                            !isEmpty(rowData) &&
-                            !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION) &&
-                            !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION[0]) ? (
-                                <CaratIcon color={'primary'} sx={{ pt: 1, pl: 1 }} />
-                            ) : null,
+                                !isEmpty(rowData) &&
+                                !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION) &&
+                                !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION[0]) ? (
+                                    <CaratIcon color={'primary'} sx={{ pt: 1, pl: 1 }} />
+                                ) : null,
                             render: ({ rowData }) => <NestedTable rowData={rowData} />
                         })
                     ]}

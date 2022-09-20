@@ -328,7 +328,7 @@ class Affidavits extends React.Component {
             return this.setState({
                 standardSearch: {
                     ...this.state.standardSearch,
-                    INCEPTIONFROM: null,
+                    INCEPTIONFROM: null
                 },
                 applicationErrors: {
                     active: false,
@@ -555,7 +555,7 @@ class Affidavits extends React.Component {
 
     setAffidavits = (rows) => {
         this.setState({ rows });
-    }
+    };
 
     render() {
         return (

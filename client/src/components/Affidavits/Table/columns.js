@@ -49,7 +49,6 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
                     />
                 );
             }
-    
         },
         {
             title: 'Affidavit No.',
@@ -66,7 +65,6 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
                     />
                 );
             }
-    
         },
         {
             title: 'Policy No.',
@@ -80,7 +78,6 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
                     />
                 );
             }
-    
         },
         {
             title: 'Insured Name',
@@ -94,7 +91,6 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
                     />
                 );
             }
-    
         },
         {
             title: 'Type',
@@ -189,7 +185,7 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
                         onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
                     />
                 );
-            },
+            }
         },
         {
             title: 'Submitted',
@@ -229,7 +225,7 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
                         onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
                     />
                 );
-            },
+            }
         },
         {
             title: '',
