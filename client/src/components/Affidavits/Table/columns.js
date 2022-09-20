@@ -1,5 +1,7 @@
+import { MainTableCell, TableFilterInput } from '@aeros-ui/tables';
 import styled from '@emotion/styled';
 import { MoreVert } from '@mui/icons-material';
+import { format, isValid } from 'date-fns';
 
 const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
     height: 32,
@@ -36,73 +38,194 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
     const cols = [
         {
             title: 'License No.',
-            field: 'LICENSENO',
+            field: 'PARTA_TRANSACTION.LICENSENO',
             type: 'string',
             width: '10%',
-            hidden: !showLicenseCol
+            hidden: !showLicenseCol,
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            }
         },
         {
             title: 'Affidavit No.',
-            field: 'AFFIDAVITNO',
+            field: 'PARTA_TRANSACTION.AFFIDAVITNO',
             headerStyle: {
                 whiteSpace: 'nowrap'
             },
             type: 'string',
-            width: '10%'
+            width: '10%',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            }
         },
         {
             title: 'Policy No.',
-            field: 'POLICYNO',
+            field: 'PARTA_TRANSACTION.POLICYNO',
             type: 'string',
-            width: '14%'
+            width: '14%',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            }
         },
         {
             title: 'Insured Name',
-            field: 'RISKINSUREDNAME',
+            field: 'PARTA_TRANSACTION.RISKINSUREDNAME',
             type: 'string',
-            width: '19%'
+            width: '19%',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            }
         },
         {
             title: 'Type',
-            field: 'TRANSACTIONTYPE',
+            field: 'PARTA_TRANSACTION.TRANSACTIONTYPE',
             type: 'string',
-            width: '4%'
+            width: '4%',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            }
         },
         {
             title: 'Premium',
-            field: 'AMOUNT',
-            type: 'string',
+            field: 'PARTA_TRANSACTION.AMOUNT',
+            type: 'currency',
             width: '8%',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            },
+            currencySettings: { style: 'currency', currency: 'USD', minimumFractionDigits: 0 },
             customSort: (a, b) =>
-                parseFloat(a.AMOUNT.replace(',', '.')) - parseFloat(b.AMOUNT.replace(',', '.'))
+                parseFloat(a.PARTA_TRANSACTION.AMOUNT.replace(',', '.')) -
+                parseFloat(b.PARTA_TRANSACTION.AMOUNT.replace(',', '.'))
         },
         {
             title: 'Inception',
-            field: 'EFFECTIVEDATE',
-            width: '8%'
+            field: 'PARTA_TRANSACTION.EFFECTIVEDATE',
+            width: '8%',
+            type: 'string',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            },
+            render: (rowData) => (
+                <MainTableCell>
+                    {isValid(new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE))
+                        ? format(new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE), 'MM/dd/yyyy')
+                        : ''}
+                </MainTableCell>
+            ),
+            customFilterAndSearch: (term, rowData) => {
+                let cellDateValue = isValid(new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE))
+                    ? format(new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE), 'MM/dd/yyyy')
+                    : '';
+                return cellDateValue.search(term) !== -1 ? true : false;
+            }
         },
         {
             title: 'Expiration',
-            field: 'EXPIRATIONDATE',
-            width: '8%'
+            field: 'PARTA_TRANSACTION.EXPIRATIONDATE',
+            width: '8%',
+            type: 'string',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            },
+            render: (rowData) => (
+                <MainTableCell>
+                    {isValid(new Date(rowData.PARTA_TRANSACTION.EXPIRATIONDATE))
+                        ? format(new Date(rowData.PARTA_TRANSACTION.EXPIRATIONDATE), 'MM/dd/yyyy')
+                        : ''}
+                </MainTableCell>
+            ),
+            customFilterAndSearch: (term, rowData) => {
+                let cellDateValue = isValid(new Date(rowData.PARTA_TRANSACTION.EXPIRATIONDATE))
+                    ? format(new Date(rowData.PARTA_TRANSACTION.EXPIRATIONDATE), 'MM/dd/yyyy')
+                    : '';
+                return cellDateValue.search(term) !== -1 ? true : false;
+            }
         },
         {
             title: 'Batch',
-            field: 'BATCHNO',
+            field: 'PARTA_TRANSACTION.BATCHNO',
             type: 'string',
-            width: '8%'
+            width: '8%',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            }
         },
         {
             title: 'Submitted',
-            field: 'RECEIVEDATE',
-            width: '8%'
+            field: 'PARTA_TRANSACTION.RECEIVEDATE',
+            width: '8%',
+            type: 'string',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            },
+            render: (rowData) => (
+                <MainTableCell>
+                    {isValid(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE))
+                        ? format(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE), 'MM/dd/yyyy')
+                        : ''}
+                </MainTableCell>
+            ),
+            customFilterAndSearch: (term, rowData) => {
+                let cellDateValue = isValid(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE))
+                    ? format(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE), 'MM/dd/yyyy')
+                    : '';
+                return cellDateValue.search(term) !== -1 ? true : false;
+            }
         },
         {
             title: 'Proc State',
-            field: 'PROCESSEDSTATE',
+            field: 'PARTA_TRANSACTION.PROCESSEDSTATE',
             type: 'string',
             width: '5%',
-            align: 'center'
+            align: 'center',
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            }
         },
         {
             title: '',
