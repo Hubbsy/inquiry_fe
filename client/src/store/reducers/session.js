@@ -51,6 +51,11 @@ const auth = (state = storeState.session.auth, action) => {
                 error: action.value,
                 token: null
             };
+        case TYPES.SET_TOKEN:
+            return {
+                ...state,
+                token: action.value
+            };
         default:
             return { ...state };
     }

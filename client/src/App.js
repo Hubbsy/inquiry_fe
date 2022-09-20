@@ -10,7 +10,7 @@ import { theme } from '@aeros-ui/themes';
 import { PageNotFound, SessionTimeout } from '@aeros-ui/components';
 import { connect } from 'react-redux';
 import endpointConfig from './store/endpointConfig';
-import { getToken, verifyAuth, setEndpoint } from './store/actions/session';
+import { getToken, verifyAuth, setEndpoint, setToken } from './store/actions/session';
 import queryString from 'query-string';
 import isEmpty from './functions/isEmpty';
 
@@ -60,6 +60,8 @@ class App extends Component {
                 this.props.getToken(endpoint, data);
             } else {
                 console.log('NEW TOKEN IS NOT GENERATED');
+                console.log('STATE TOKEN', this.state.token);
+                this.props.setToken(this.state.token);
             }
         }
     }
@@ -106,6 +108,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getToken: (endpoint, data) => dispatch(getToken(endpoint, data)),
         setEndpoint: (endpoint) => dispatch(setEndpoint(endpoint)),
+        setToken: (token) => dispatch(setToken(token)),
         verifyAuth: (endpoint, data) => dispatch(verifyAuth(endpoint, data))
     };
 };

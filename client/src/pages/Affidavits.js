@@ -505,8 +505,8 @@ class Affidavits extends React.Component {
                     el: null
                 },
                 standardSearch: {
-                    ...this.state.standardSearch,
-                    searchValue: ''
+                    ...this.state.standardSearch
+                    // searchValue: ''
                 }
             });
         } else {
@@ -548,6 +548,7 @@ class Affidavits extends React.Component {
             },
             standardSearch: {
                 ...this.state.standardSearch,
+                searchValue: '',
                 INCEPTIONFROM: null,
                 INCEPTIONTO: null
             }
