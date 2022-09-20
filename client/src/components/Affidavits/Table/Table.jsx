@@ -4,12 +4,13 @@ import { TablePagination, ThemeProvider, Grid, Typography, Button } from '@mui/m
 import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme, theme } from '@aeros-ui/themes';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Stack } from '@mui/system';
 import { TableIcons, CaratIcon } from '@aeros-ui/icons';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Columns from './columns';
+import isEmpty from '../../../functions/isEmpty';
 
 const getWindowSize = () => {
     const { innerWidth, innerHeight } = window;
@@ -19,39 +20,23 @@ const getWindowSize = () => {
     };
 };
 
-export default function Table({ loading, rows, adjustPadding, showLicenseCol }) {
+export default function Table({ loading, rows, showLicenseCol, setAffidavits }) {
     const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
     const [windowSize, setWindowSize] = useState(getWindowSize());
 
-    const [currentRowData, setCurrentRowData] = useState({
+    const [currentCompanyDetails, setCurrentCompanyDetails] = useState({
         affidavitNo: 'No current Affidavit No.',
         address: 'No current Company Info.'
     });
 
     const [anchorEl, setAnchorEl] = useState(null);
     const popoverOpen = Boolean(anchorEl);
+    const id = popoverOpen ? 'menu-popover' : undefined;
 
     const handleDensityClick = () => {
         density === 'normal' ? setDensity('dense') : setDensity('normal');
-    };
-
-    const handleRowClick = (row) => {
-        closeRow();
-
-        const rowCopy = { ...row };
-        setSelectedRow(rowCopy);
-    };
-
-    const closeRow = () => {
-        if (selectedRow !== null) {
-            const rowCopy = { ...selectedRow };
-            if (rowCopy.tableData.showDetailPanel) {
-                rowCopy.tableData.showDetailPanel = false;
-            }
-        }
-        setSelectedRow(null);
     };
 
     useEffect(() => {
@@ -73,17 +58,37 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
         };
     };
 
-    const handlePopoverOpen = useCallback((event, rowData) => {
-        setSelectedRow(rowData);
-        rowData.companyDetails.address = compileFullAddress(rowData.companyDetails);
-        setCurrentRowData(rowData.companyDetails);
-        const anchorPosition = anchorPositionByAnchorEl(event);
-        setAnchorEl(anchorPosition);
-    }, []);
+    const handlePopoverOpen = (e, rowData) => {
+        const rowCopy = { ...rowData };
+        const dataCopy = [...rows];
+        dataCopy[rowCopy.tableData.id] = rowCopy;
 
-    const handlePopoverClose = useCallback(() => {
+        rowData.PARTA_TRANSACTION.companyDetails.address = compileFullAddress(
+            rowData.PARTA_TRANSACTION.companyDetails
+        );
+        setCurrentCompanyDetails(rowData.PARTA_TRANSACTION.companyDetails);
+
+        const anchorPosition = anchorPositionByAnchorEl(e);
+        setAnchorEl(anchorPosition);
+
+        setAffidavits(dataCopy);
+        setSelectedRow(rowCopy);
+    };
+
+    const handlePopoverClose = () => {
+        const dataCopy = [...rows];
+        if (selectedRow !== null) {
+            const rowCopy = { ...selectedRow };
+            if (rowCopy.tableData.showDetailPanel) {
+                rowCopy.tableData.showDetailPanel = false;
+            }
+            dataCopy[rowCopy.tableData.id] = rowCopy;
+        }
+
+        setAffidavits(dataCopy);
         setAnchorEl(null);
-    }, []);
+        setSelectedRow(null);
+    };
 
     const anchorPositionByAnchorEl = (event) => {
         const elementDetailedPosition = event.currentTarget.getBoundingClientRect();
@@ -104,10 +109,10 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
             <Grid item container sx={{ pb: 1 }}>
                 <Stack>
                     <Typography variant='body2' sx={{ textTransform: 'none' }}>
-                        {currentRowData.address.line1}
+                        {currentCompanyDetails.address.line1}
                     </Typography>
                     <Typography variant='body2' sx={{ textTransform: 'none' }}>
-                        {currentRowData.address.line2}
+                        {currentCompanyDetails.address.line2}
                     </Typography>
                 </Stack>
             </Grid>
@@ -119,7 +124,7 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
             <Grid item container sx={{ pb: 1 }}>
                 <Stack>
                     <Typography variant='body2' sx={{ textTransform: 'none' }}>
-                        {currentRowData.company}
+                        {currentCompanyDetails.company}
                     </Typography>
                 </Stack>
             </Grid>
@@ -131,7 +136,7 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
             <Grid item container sx={{ pb: 1 }}>
                 <Stack>
                     <Typography variant='body2' sx={{ textTransform: 'none' }}>
-                        {currentRowData.coverage}
+                        {currentCompanyDetails.coverage}
                     </Typography>
                 </Stack>
             </Grid>
@@ -143,7 +148,7 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
             <Grid item container>
                 <Stack>
                     <Typography variant='body2' sx={{ textTransform: 'none' }}>
-                        {currentRowData.risk}
+                        {currentCompanyDetails.risk}
                     </Typography>
                 </Stack>
             </Grid>
@@ -153,14 +158,18 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
     const actions = (
         <Grid item container justifyContent='flex-end'>
             <Button
-                href={currentRowData.batchLink}
+                href={currentCompanyDetails.batchLink}
                 size='small'
                 variant='outlined'
                 startIcon={
-                    currentRowData.batchView === 'VIEW' ? <FontDownloadIcon /> : <ModeEditIcon />
+                    currentCompanyDetails.batchView === 'VIEW' ? (
+                        <FontDownloadIcon />
+                    ) : (
+                        <ModeEditIcon />
+                    )
                 }
             >
-                {currentRowData.batchView} Affidavit
+                {currentCompanyDetails.batchView} Affidavit
             </Button>
         </Grid>
     );
@@ -178,7 +187,6 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
             color: theme.palette.background.paper,
             textTransform: 'capitalize',
             padding: '1em',
-            // overflow: 'hidden'
             whiteSpace: 'nowrap'
         },
         rowStyle: (rowData) => ({
@@ -204,17 +212,9 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
         emptyRowsWhenPaging: rows.length ? false : true,
         detailPanelColumnAlignment: 'left',
         tableLayout: windowSize.innerWidth < 1225 ? '' : 'fixed',
-        cellStyle: theme.typography
+        cellStyle: theme.typography,
+        detailPanelType: 'single'
     };
-
-    const detailPanel = [
-        (rowData) => ({
-            tooltip: 'Show Child Transactions',
-            icon: () =>
-                rowData.expandable ? <CaratIcon color={'primary'} sx={{ pt: 1, pl: 1 }} /> : null,
-            render: ({ rowData }) => <NestedTable rowData={rowData} />
-        })
-    ];
 
     return (
         <div
@@ -227,14 +227,23 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
                     title={''}
                     options={options}
                     columns={columns}
-                    data={rows}
+                    data={[...rows]}
                     isLoading={loading}
                     icons={TableIcons}
-                    onRowClick={(e, selectedRow, togglePanel) => {
-                        handleRowClick(selectedRow);
-                        togglePanel();
-                    }}
-                    detailPanel={detailPanel}
+                    detailPanel={[
+                        (rowData) => ({
+                            tooltip: 'Related Transactions',
+                            icon: () =>
+                                !isEmpty(rowData) &&
+                                !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION) &&
+                                !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION[0]) ? (
+                                    <CaratIcon color={'primary'} sx={{ pt: 1, pl: 1 }} />
+                                ) : null,
+                            render: ({ rowData }) => (
+                                <NestedTable rowData={rowData} dense={density} />
+                            )
+                        })
+                    ]}
                     components={{
                         Pagination: (props) => (
                             <TablePagination
@@ -267,8 +276,10 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
                     }}
                 />
                 <DetailCard
+                    id={id}
                     popoverId='detailPopover'
                     open={popoverOpen}
+                    anchorReference='anchorPosition'
                     anchorPosition={anchorEl}
                     transformOrigin={{
                         vertical: 'top',
@@ -276,7 +287,7 @@ export default function Table({ loading, rows, adjustPadding, showLicenseCol }) 
                     }}
                     handleClose={handlePopoverClose}
                     width={300}
-                    title={`Affidavit No. ${currentRowData.affidavitNo}`}
+                    title={`Affidavit No. ${currentCompanyDetails.affidavitNo}`}
                     content={content}
                     actions={actions}
                 />

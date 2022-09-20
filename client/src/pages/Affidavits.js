@@ -3,7 +3,7 @@ import Search from '../components/Affidavits/Search';
 import Table from '../components/Affidavits/Table/Table';
 import { connect } from 'react-redux';
 import { getAffidavits } from '../store/actions/affidavits';
-import { Snackbar } from '@aeros-ui/components';
+import { Snackbar, ErrorBoundary } from '@aeros-ui/components';
 import isEmpty from '../functions/isEmpty';
 import { format, isBefore, isValid, isAfter, isEqual } from 'date-fns';
 
@@ -55,10 +55,13 @@ class Affidavits extends React.Component {
             if (this.props.data.hasOwnProperty('NODATA')) {
                 this.setState({ rows: [] });
             } else {
+                this.setState({
+                    showLicenseCol: this.props.data.SHOW_LICENSE_COLUMN
+                });
                 const data = this.mapAPIResponse(this.props.data.DATA);
 
                 this.setState({
-                    rows: data
+                    rows: this.props.data.DATA
                 });
             }
         }
@@ -68,55 +71,6 @@ class Affidavits extends React.Component {
         this.setState({
             windowHeight: window.innerHeight,
             clientHeight: document.body.clientHeight
-        });
-    };
-
-    floatToDollarsConverter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
-    });
-
-    mapAPIResponse = (data) => {
-        return data.map((record) => {
-            let transaction = record.PARTA_TRANSACTION;
-            this.setState({
-                showLicenseCol: this.props.data.SHOW_LICENSE_COLUMN
-            });
-
-            return {
-                AFFIDAVITNO: transaction.AFFIDAVITNO.trim() ? transaction.AFFIDAVITNO.trim() : '-',
-                POLICYNO: transaction.POLICYNO.trim() ? transaction.POLICYNO.trim() : '-',
-                RISKINSUREDNAME: transaction.RISKINSUREDNAME.trim()
-                    ? transaction.RISKINSUREDNAME.trim()
-                    : '-',
-                TRANSACTIONTYPE: transaction.TRANSACTIONTYPE.trim()
-                    ? transaction.TRANSACTIONTYPE.trim()
-                    : '-',
-                AMOUNT: this.floatToDollarsConverter.format(transaction.AMOUNT),
-                EFFECTIVEDATE: transaction.EFFECTIVEDATE
-                    ? format(new Date(transaction.EFFECTIVEDATE), 'MM/dd/yyyy')
-                    : '-',
-                EXPIRATIONDATE: transaction.EXPIRATIONDATE
-                    ? format(new Date(transaction.EXPIRATIONDATE), 'MM/dd/yyyy')
-                    : '-',
-                BATCHNO: transaction.BATCHNO ? transaction.BATCHNO : '-',
-                RECEIVEDATE: transaction.RECEIVEDATE
-                    ? format(new Date(transaction.RECEIVEDATE), 'MM/dd/yyyy')
-                    : '-',
-                PROCESSEDSTATE: transaction.PROCESSEDSTATE.trim()
-                    ? transaction.PROCESSEDSTATE.trim()
-                    : '-',
-                LICENSENO: transaction.LICENSENO.substring(transaction.LICENSENO.indexOf('-') + 1),
-                companyDetails: this.setCompanyDetails(transaction),
-                CHILDTRANSACTIONS:
-                    transaction.CHILD_TRANSACTION && !isEmpty(transaction['CHILD_TRANSACTION'][0])
-                        ? transaction.CHILD_TRANSACTION
-                        : null,
-                expandable:
-                    transaction.CHILD_TRANSACTION && !isEmpty(transaction['CHILD_TRANSACTION'][0])
-                        ? true
-                        : false
-            };
         });
     };
 
@@ -134,6 +88,16 @@ class Affidavits extends React.Component {
             batchLink: transaction.BATCHLINK
         };
     }
+
+    mapAPIResponse = (data) => {
+        return data.map((record) => {
+            record.PARTA_TRANSACTION.companyDetails = this.setCompanyDetails(
+                record.PARTA_TRANSACTION
+            );
+
+            return record;
+        });
+    };
 
     executeSearch = () => {
         const data = {
@@ -364,8 +328,7 @@ class Affidavits extends React.Component {
             return this.setState({
                 standardSearch: {
                     ...this.state.standardSearch,
-                    INCEPTIONFROM: null,
-                    INCEPTIONTO: null
+                    INCEPTIONFROM: null
                 },
                 applicationErrors: {
                     active: false,
@@ -483,9 +446,6 @@ class Affidavits extends React.Component {
         if (e.charCode === 13) {
             this.executeSearch();
         }
-        //  else if (e.charCode === 13) {
-        //     this.handleErrorMessages('ADVANCED', { pos: null, type: 'single' }, e.target.name);
-        // }
     };
 
     handleClose = () => {
@@ -593,9 +553,13 @@ class Affidavits extends React.Component {
         });
     };
 
+    setAffidavits = (rows) => {
+        this.setState({ rows });
+    };
+
     render() {
         return (
-            <>
+            <ErrorBoundary>
                 <Search
                     loading={this.props.loading}
                     applicationErrors={this.state.applicationErrors}
@@ -617,6 +581,7 @@ class Affidavits extends React.Component {
                     clearAdvancedSearchInputs={this.clearAdvancedSearchInputs}
                 />
                 <Table
+                    setAffidavits={this.setAffidavits}
                     loading={this.props.loading}
                     rows={this.state.rows}
                     adjustPadding={this.state.adjustPadding}
@@ -633,7 +598,7 @@ class Affidavits extends React.Component {
                     severity={'error'}
                     title={'Something went wrong'}
                 />
-            </>
+            </ErrorBoundary>
         );
     }
 }
