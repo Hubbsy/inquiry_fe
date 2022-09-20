@@ -24,7 +24,6 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
     const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
-    const [rowCopy, setRowCopy] = useState(null);
     const [windowSize, setWindowSize] = useState(getWindowSize());
 
     const [currentCompanyDetails, setCurrentCompanyDetails] = useState({
@@ -60,34 +59,35 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
     };
 
     const handlePopoverOpen = (e, rowData) => {
-        console.log("rowPopOpen", rowData)
-        let rowClicked = { ...rowData };
-        setRowCopy(rowData);
+        const rowCopy = { ...rowData };
         const dataCopy = [...rows];
-        dataCopy[rowClicked.tableData.id] = rowClicked;
+        dataCopy[rowCopy.tableData.id] = rowCopy;
 
-        rowClicked.PARTA_TRANSACTION.companyDetails.address = compileFullAddress(
+        rowData.PARTA_TRANSACTION.companyDetails.address = compileFullAddress(
             rowData.PARTA_TRANSACTION.companyDetails
         );
-        setCurrentCompanyDetails(rowClicked.PARTA_TRANSACTION.companyDetails);
+        setCurrentCompanyDetails(rowData.PARTA_TRANSACTION.companyDetails);
 
         const anchorPosition = anchorPositionByAnchorEl(e);
         setAnchorEl(anchorPosition);
-        setSelectedRow(rowClicked);
-
+        
         setAffidavits(dataCopy);
+        setSelectedRow(rowCopy);
     };
 
     const handlePopoverClose = () => {
-        console.log("rowPopClose", rowCopy);
-        let rowClicked = { ...rowCopy };
         const dataCopy = [...rows];
-        dataCopy[rowClicked.tableData.id] = rowClicked;
-
+        if (selectedRow !== null) {
+            const rowCopy = { ...selectedRow };
+            if (rowCopy.tableData.showDetailPanel) {
+                rowCopy.tableData.showDetailPanel = false;
+            }
+            dataCopy[rowCopy.tableData.id] = rowCopy;
+        }
+        
+        setAffidavits(dataCopy);
         setAnchorEl(null);
         setSelectedRow(null);
-
-        setAffidavits(dataCopy);
     };
 
     const anchorPositionByAnchorEl = (event) => {
@@ -208,20 +208,9 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         emptyRowsWhenPaging: rows.length ? false : true,
         detailPanelColumnAlignment: 'left',
         tableLayout: windowSize.innerWidth < 1225 ? '' : 'fixed',
-        cellStyle: theme.typography
+        cellStyle: theme.typography,
+        detailPanelType: 'single',
     };
-
-    const detailPanel = [
-        (rowData) => ({
-            tooltip: 'Show Child Transactions',
-            icon: () =>
-            !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION) &&
-            !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION[0]) ? (
-                <CaratIcon color={'primary'} sx={{ pt: 1, pl: 1 }} />
-            ) : null,
-            render: ({ rowData }) => <NestedTable rowData={rowData} />
-        })
-    ];
 
     return (
         <div
@@ -237,10 +226,18 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                     data={[...rows]}
                     isLoading={loading}
                     icons={TableIcons}
-                    // onRowClick={(e, selectedRow, togglePanel) => {
-                    //     togglePanel()
-                    // }}
-                    detailPanel={detailPanel}
+                    detailPanel={[
+                        (rowData) => ({
+                            tooltip: 'Related Transactions',
+                            icon: () =>
+                            !isEmpty(rowData) &&
+                            !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION) &&
+                            !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION[0]) ? (
+                                <CaratIcon color={'primary'} sx={{ pt: 1, pl: 1 }} />
+                            ) : null,
+                            render: ({ rowData }) => <NestedTable rowData={rowData} />
+                        })
+                    ]}
                     components={{
                         Pagination: (props) => (
                             <TablePagination

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Typography, Paper, Grid, IconButton, Tooltip, Stack, Collapse, Fab } from '@mui/material';
+import { Typography, Paper, Grid, Tooltip, Stack, Collapse, Fab } from '@mui/material';
 import {
     SearchInput,
     SearchButton,
@@ -11,7 +11,6 @@ import {
 } from '@aeros-ui/components';
 import styled from '@emotion/styled';
 import { Box } from '@mui/system';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 
