@@ -56,52 +56,61 @@ const Header = ({ organizations, onSearch, loading }) => {
     };
 
     return (
-        <Paper sx={{ m: 2, p: 3 }}>
-            <Grid container spacing={2} alignItems='center'>
+        <Grid container sx={{ p: '1em' }}>
+            <Grid
+                container
+                alignItems='center'
+                rowGap={1}
+                component={Paper}
+                sx={{ px: '1.5em', py: '1em' }}>
                 <Grid item container>
-                    <Typography variant='h6'>Declining Companies Inquiry</Typography>
+                    <Typography variant='h6' gutterBottom>
+                        Declining Companies Inquiry
+                    </Typography>
                 </Grid>
-                <Grid item xs={4}>
-                    <SearchInput
-                        label={'Search by Company Name, NAIC,...'}
-                        width={'80%'}
-                        onChange={handleOnChange}
-                        error={error}
-                        name='search'
-                        includeEndAdornment={true}
-                        handleClearInput={handleClearInput}
-                        value={search}
-                        onKeyDown={handleKeyDown}
-                        disabled={loading}
-                        helperText={
-                            error
-                                ? 'Search input is required when Organization Type is "ALL"'
-                                : null
-                        }
-                    />
-                </Grid>
-                <Grid item xs={4}>
-                    <SelectInput
-                        label='Organization Type'
-                        onChange={handleOnChange}
-                        name='org'
-                        value={org}
-                        disabled={loading}
-                        width={'80%'}>
-                        {companies.map((company) => {
-                            return (
-                                <MenuItem name='org' key={company.CODE} value={company.CODE}>
-                                    {company.DESCRIPTION}
-                                </MenuItem>
-                            );
-                        })}
-                    </SelectInput>
-                </Grid>
-                <Grid item xs={4}>
-                    <SearchButton onClick={handleSubmit} loading={loading} />
+                <Grid item container alignItems='flex-start' columnGap={1}>
+                    <Grid item xs={5}>
+                        <SearchInput
+                            label={'Search by Company Name, NAIC,...'}
+                            width={'80%'}
+                            onChange={handleOnChange}
+                            error={error}
+                            name='search'
+                            includeEndAdornment={true}
+                            handleClearInput={handleClearInput}
+                            value={search}
+                            onKeyDown={handleKeyDown}
+                            disabled={loading}
+                            helperText={
+                                error
+                                    ? 'Search input is required when Organization Type is "ALL"'
+                                    : null
+                            }
+                        />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <SelectInput
+                            label='Organization Type'
+                            onChange={handleOnChange}
+                            name='org'
+                            value={org}
+                            disabled={loading}
+                            width={'80%'}>
+                            {companies.map((company) => {
+                                return (
+                                    <MenuItem name='org' key={company.CODE} value={company.CODE}>
+                                        {company.DESCRIPTION}
+                                    </MenuItem>
+                                );
+                            })}
+                        </SelectInput>
+                    </Grid>
+                    <Grid item alignSelf='center'>
+                        <SearchButton onClick={handleSubmit} loading={loading} />
+                    </Grid>
                 </Grid>
             </Grid>
-        </Paper>
+        </Grid>
     );
 };
 
