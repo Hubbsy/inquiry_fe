@@ -121,7 +121,7 @@ export default function Table({ loading, rows }) {
             width: '15em',
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {format(new Date(rowData.effectiveDate), 'MM/dd/yyyy')}
+                    {format(new Date(rowData.effectiveDate.replace(/-/g, '/')), 'MM/dd/yyyy')}
                 </MainTableCell>
             ),
             filterComponent: ({ columnDef, onFilterChanged }) => {
@@ -138,7 +138,7 @@ export default function Table({ loading, rows }) {
             width: '10em',
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {format(new Date(rowData.expDate), 'MM/dd/yyyy')}
+                    {format(new Date(rowData.expDate.replace(/-/g, '/')), 'MM/dd/yyyy')}
                 </MainTableCell>
             ),
             filterComponent: ({ columnDef, onFilterChanged }) => {

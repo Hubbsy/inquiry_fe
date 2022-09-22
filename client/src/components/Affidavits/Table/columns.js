@@ -137,13 +137,19 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
             render: (rowData) => (
                 <MainTableCell>
                     {isValid(new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE))
-                        ? format(new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE.replace(/-/g, '/')), 'MM/dd/yyyy')
+                        ? format(
+                              new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE.replace(/-/g, '/')),
+                              'MM/dd/yyyy'
+                          )
                         : ''}
                 </MainTableCell>
             ),
             customFilterAndSearch: (term, rowData) => {
                 let cellDateValue = isValid(new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE))
-                    ? format(new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE.replace(/-/g, '/')), 'MM/dd/yyyy')
+                    ? format(
+                          new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE.replace(/-/g, '/')),
+                          'MM/dd/yyyy'
+                      )
                     : '';
                 return cellDateValue.search(term) !== -1 ? true : false;
             }
@@ -163,13 +169,19 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
             render: (rowData) => (
                 <MainTableCell>
                     {isValid(new Date(rowData.PARTA_TRANSACTION.EXPIRATIONDATE))
-                        ? format(new Date(rowData.PARTA_TRANSACTION.EXPIRATIONDATE.replace(/-/g, '/')), 'MM/dd/yyyy')
+                        ? format(
+                              new Date(rowData.PARTA_TRANSACTION.EXPIRATIONDATE.replace(/-/g, '/')),
+                              'MM/dd/yyyy'
+                          )
                         : ''}
                 </MainTableCell>
             ),
             customFilterAndSearch: (term, rowData) => {
                 let cellDateValue = isValid(new Date(rowData.PARTA_TRANSACTION.EXPIRATIONDATE))
-                    ? format(new Date(rowData.PARTA_TRANSACTION.EXPIRATIONDATE.replace(/-/g, '/')), 'MM/dd/yyyy')
+                    ? format(
+                          new Date(rowData.PARTA_TRANSACTION.EXPIRATIONDATE.replace(/-/g, '/')),
+                          'MM/dd/yyyy'
+                      )
                     : '';
                 return cellDateValue.search(term) !== -1 ? true : false;
             }
@@ -202,13 +214,19 @@ export default function Columns(handlePopoverOpen, showLicenseCol, popoverOpen) 
             render: (rowData) => (
                 <MainTableCell>
                     {isValid(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE))
-                        ? format(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE.replace(/-/g, '/')), 'MM/dd/yyyy')
+                        ? format(
+                              new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE.replace(/-/g, '/')),
+                              'MM/dd/yyyy'
+                          )
                         : ''}
                 </MainTableCell>
             ),
             customFilterAndSearch: (term, rowData) => {
                 let cellDateValue = isValid(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE))
-                    ? format(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE.replace(/-/g, '/')), 'MM/dd/yyyy')
+                    ? format(
+                          new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE.replace(/-/g, '/')),
+                          'MM/dd/yyyy'
+                      )
                     : '';
                 return cellDateValue.search(term) !== -1 ? true : false;
             }
