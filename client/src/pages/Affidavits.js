@@ -3,7 +3,7 @@ import Search from '../components/Affidavits/Search';
 import Table from '../components/Affidavits/Table/Table';
 import { connect } from 'react-redux';
 import { getAffidavits } from '../store/actions/affidavits';
-import { Snackbar } from '@aeros-ui/components';
+import { Snackbar, ErrorBoundary } from '@aeros-ui/components';
 import isEmpty from '../functions/isEmpty';
 import { format, isBefore, isValid, isAfter, isEqual } from 'date-fns';
 
@@ -559,7 +559,7 @@ class Affidavits extends React.Component {
 
     render() {
         return (
-            <>
+            <ErrorBoundary>
                 <Search
                     loading={this.props.loading}
                     applicationErrors={this.state.applicationErrors}
@@ -598,7 +598,7 @@ class Affidavits extends React.Component {
                     severity={'error'}
                     title={'Something went wrong'}
                 />
-            </>
+            </ErrorBoundary>
         );
     }
 }

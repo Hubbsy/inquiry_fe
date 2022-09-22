@@ -239,7 +239,9 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                                 !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION[0]) ? (
                                     <CaratIcon color={'primary'} sx={{ pt: 1, pl: 1 }} />
                                 ) : null,
-                            render: ({ rowData }) => <NestedTable rowData={rowData} />
+                            render: ({ rowData }) => (
+                                <NestedTable rowData={rowData} dense={density} />
+                            )
                         })
                     ]}
                     components={{
