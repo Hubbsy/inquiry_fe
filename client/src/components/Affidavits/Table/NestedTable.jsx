@@ -283,6 +283,8 @@ const NestedTable = ({ rowData, dense }) => {
                                                     <Button
                                                         href={selectedChild.BATCHLINK}
                                                         variant='outlined'
+                                                        rel='noopener noreferrer'
+                                                        target='_top'
                                                         startIcon={
                                                             selectedChild.BATCHLINKEDITVIEW ===
                                                             'VIEW' ? (

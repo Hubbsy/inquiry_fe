@@ -161,6 +161,8 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                 href={currentCompanyDetails.batchLink}
                 size='small'
                 variant='outlined'
+                target='_top'
+                rel='noopener noreferrer'
                 startIcon={
                     currentCompanyDetails.batchView === 'VIEW' ? (
                         <FontDownloadIcon />
