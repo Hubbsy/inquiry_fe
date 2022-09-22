@@ -136,12 +136,12 @@ const NestedTable = ({ rowData }) => {
                             </NestedTableCell>
                             <NestedTableCell dense='dense' width={'8em'}>
                                 {c.EFFECTIVEDATE
-                                    ? format(new Date(c.EFFECTIVEDATE), 'MM/dd/yyyy')
+                                    ? format(new Date(c.EFFECTIVEDATE.replace(/-/g, '/')), 'MM/dd/yyyy')
                                     : NO_VALUE}
                             </NestedTableCell>
                             <NestedTableCell dense='dense' width={'10em'}>
                                 {c.EXPIRATIONDATE
-                                    ? format(new Date(c.EXPIRATIONDATE), 'MM/dd/yyyy')
+                                    ? format(new Date(c.EXPIRATIONDATE.replace(/-/g, '/')), 'MM/dd/yyyy')
                                     : NO_VALUE}
                             </NestedTableCell>
                             <NestedTableCell dense='dense' width={'10em'}>
@@ -149,7 +149,7 @@ const NestedTable = ({ rowData }) => {
                             </NestedTableCell>
                             <NestedTableCell dense='dense' width={'8em'}>
                                 {c.RECEIVEDATE
-                                    ? format(new Date(c.RECEIVEDATE), 'MM/dd/yyyy')
+                                    ? format(new Date(c.RECEIVEDATE.replace(/-/g, '/')), 'MM/dd/yyyy')
                                     : NO_VALUE}
                             </NestedTableCell>
                             <NestedTableCell dense='dense' align={'center'} width={'4em'}>
