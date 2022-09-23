@@ -71,6 +71,7 @@ const Header = ({ organizations, onSearch, loading }) => {
                 <Grid item container alignItems='flex-start' columnGap={1}>
                     <Grid item xs={5}>
                         <SearchInput
+                            autoFocus
                             label={'Search by Company Name, NAIC,...'}
                             width={'80%'}
                             onChange={handleOnChange}
