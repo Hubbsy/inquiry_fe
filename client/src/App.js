@@ -61,7 +61,7 @@ class App extends Component {
                 this.props.getToken(endpoint, data);
             } else {
                 console.log('NEW TOKEN IS NOT GENERATED');
-                console.log('STATE TOKEN', this.state.token);
+                // console.log('STATE TOKEN', this.state.token);
                 this.props.setToken(this.state.token);
             }
         }
