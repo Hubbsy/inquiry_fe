@@ -55,6 +55,7 @@ function Search({
                 <Grid sx={{ flexGrow: 1, flexWrap: 'nowrap' }} container spacing={0.5}>
                     <Grid item xs={5}>
                         <SearchInput
+                            autoFocus
                             sx={{ mr: 1 }}
                             label={'Search by Affidavit No, Policy No, Batch or Insured Name...'}
                             onChange={handleChange}
