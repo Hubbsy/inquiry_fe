@@ -188,7 +188,8 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         filtering: showFilters,
         searchFieldStyle: { marginRight: '1em', width: '100%' },
         emptyRowsWhenPaging: rows.length ? false : true,
-        detailPanelType: 'single'
+        detailPanelType: 'single',
+        // tableLayout:'fixed'
     };
 
     const handleDetailPanelIcon = (rowData)=>{return  !isEmpty(rowData) &&

@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 import { MoreVert } from '@mui/icons-material';
 import { Grid, IconButton } from '@mui/material';
 import { format, isValid } from 'date-fns';
+import { theme } from '@aeros-ui/themes';
+import StateChips from '../../template/StateChips';
 
 export const columns = (handlePopoverOpen, showLicenseCol, id) => [
     {
@@ -10,6 +12,8 @@ export const columns = (handlePopoverOpen, showLicenseCol, id) => [
         field: 'PARTA_TRANSACTION.LICENSENO',
         type: 'string',
         hidden: !showLicenseCol,
+        width: '8em',
+        cellStyle: { minWidth: '8em', maxWidth: '10em' },
         render: (rowData) => <MainTableCell>{rowData.PARTA_TRANSACTION.LICENSENO}</MainTableCell>,
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
@@ -23,6 +27,8 @@ export const columns = (handlePopoverOpen, showLicenseCol, id) => [
         title: 'Affidavit No.',
         field: 'PARTA_TRANSACTION.AFFIDAVITNO',
         type: 'string',
+        width: '8em',
+        cellStyle: { minWidth: '8em', maxWidth: '11em' },
         render: (rowData) => <MainTableCell>{rowData.PARTA_TRANSACTION.AFFIDAVITNO}</MainTableCell>,
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
@@ -36,6 +42,8 @@ export const columns = (handlePopoverOpen, showLicenseCol, id) => [
         title: 'Policy No.',
         field: 'PARTA_TRANSACTION.POLICYNO',
         type: 'string',
+        width: '8em',
+        cellStyle: { minWidth: '8em', maxWidth: '11em' },
         render: (rowData) => <MainTableCell>{rowData.PARTA_TRANSACTION.POLICYNO}</MainTableCell>,
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
@@ -49,11 +57,11 @@ export const columns = (handlePopoverOpen, showLicenseCol, id) => [
         title: 'Insured Name',
         field: 'PARTA_TRANSACTION.RISKINSUREDNAME',
         type: 'string',
+        width: '10em',
+        cellStyle: { minWidth: '10em', maxWidth: '20em' },
         render: (rowData) => (
-            <MainTableCell noWrap>{rowData.PARTA_TRANSACTION.RISKINSUREDNAME}</MainTableCell>
+            <MainTableCell>{rowData.PARTA_TRANSACTION.RISKINSUREDNAME}</MainTableCell>
         ),
-        width: '250px',
-        cellStyle: { maxWidth: '250px' },
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
                 <TableFilterInput
@@ -66,10 +74,11 @@ export const columns = (handlePopoverOpen, showLicenseCol, id) => [
         title: 'Type',
         field: 'PARTA_TRANSACTION.TRANSACTIONTYPE',
         type: 'string',
+        width: '4em',
+        cellStyle: { minWidth: '4em', maxWidth: '4em' },
         render: (rowData) => (
             <MainTableCell>{rowData.PARTA_TRANSACTION.TRANSACTIONTYPE}</MainTableCell>
         ),
-        width: '50px',
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
                 <TableFilterInput
@@ -82,8 +91,9 @@ export const columns = (handlePopoverOpen, showLicenseCol, id) => [
         title: 'Premium',
         field: 'PARTA_TRANSACTION.AMOUNT',
         type: 'currency',
+        width: '6em',
+        cellStyle: { minWidth: '6em' },
         render: (rowData) => <MainTableCell>{rowData.PARTA_TRANSACTION.AMOUNT}</MainTableCell>,
-        width: '125px',
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
                 <TableFilterInput
@@ -100,7 +110,8 @@ export const columns = (handlePopoverOpen, showLicenseCol, id) => [
         title: 'Inception',
         field: 'PARTA_TRANSACTION.EFFECTIVEDATE',
         type: 'string',
-        width: '100px',
+        width: '6em',
+        cellStyle: { minWidth: '6em' },
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
                 <TableFilterInput
@@ -125,8 +136,9 @@ export const columns = (handlePopoverOpen, showLicenseCol, id) => [
     {
         title: 'Expiration',
         field: 'PARTA_TRANSACTION.EXPIRATIONDATE',
-        width: '100px',
         type: 'string',
+        width: '6em',
+        cellStyle: { minWidth: '6em' },
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
                 <TableFilterInput
@@ -152,8 +164,9 @@ export const columns = (handlePopoverOpen, showLicenseCol, id) => [
         title: 'Batch',
         field: 'PARTA_TRANSACTION.BATCHNO',
         type: 'string',
-        render: (rowData) => <MainTableCell>{rowData.PARTA_TRANSACTION.BATCHID}</MainTableCell>,
-        width: '100px',
+        width: '5em',
+        cellStyle: { minWidth: '5em' },
+        render: (rowData) => <MainTableCell>{rowData.PARTA_TRANSACTION.BATCHNO}</MainTableCell>,
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
                 <TableFilterInput
@@ -165,8 +178,10 @@ export const columns = (handlePopoverOpen, showLicenseCol, id) => [
     {
         title: 'Submitted',
         field: 'PARTA_TRANSACTION.RECEIVEDATE',
-        width: '7em',
         type: 'string',
+        width: '6em',
+        cellStyle: { minWidth: '6em' },
+        render: (rowData) => <MainTableCell>{rowData.PARTA_TRANSACTION.RECEIVEDATE}</MainTableCell>,
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
                 <TableFilterInput
@@ -174,13 +189,6 @@ export const columns = (handlePopoverOpen, showLicenseCol, id) => [
                 />
             );
         },
-        render: (rowData) => (
-            <MainTableCell>
-                {isValid(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE))
-                    ? format(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE), 'MM/dd/yyyy')
-                    : ''}
-            </MainTableCell>
-        ),
         customFilterAndSearch: (term, rowData) => {
             let cellDateValue = isValid(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE))
                 ? format(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE), 'MM/dd/yyyy')
@@ -192,6 +200,8 @@ export const columns = (handlePopoverOpen, showLicenseCol, id) => [
         title: 'Proc State',
         field: 'PARTA_TRANSACTION.PROCESSEDSTATE',
         type: 'string',
+        width: '8em',
+        cellStyle: { minWidth: '8em' },
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
                 <TableFilterInput
@@ -202,17 +212,26 @@ export const columns = (handlePopoverOpen, showLicenseCol, id) => [
         render: (rowData) => {
             return (
                 <Grid item container justifyContent='space-between' alignItems='center'>
-                    <MainTableCell>{rowData.PARTA_TRANSACTION.PROCESSEDSTATE}</MainTableCell>
-                    <IconButton
-                        size='small'
-                        onClick={(e) => handlePopoverOpen(e, rowData)}
-                        aria-describedby={id}>
-                        <MoreVert fontSize='small' />
-                    </IconButton>
+                    <Grid item xs={10}>
+                        {rowData.PARTA_TRANSACTION.PROCESSEDSTATE.trim() === '' ? (
+                            <MainTableCell>
+                                {rowData.PARTA_TRANSACTION.PROCESSEDSTATE}
+                            </MainTableCell>
+                        ) : (
+                            <StateChips state={rowData.PARTA_TRANSACTION.PROCESSEDSTATE} />
+                        )}
+                    </Grid>
+                    <Grid item xs={2}>
+                        <IconButton
+                            size='small'
+                            onClick={(e) => handlePopoverOpen(e, rowData)}
+                            aria-describedby={id}>
+                            <MoreVert fontSize='small' />
+                        </IconButton>
+                    </Grid>
                 </Grid>
             );
         },
-        width: '50px',
         hiddenByColumnsButton: true
     }
 ];
