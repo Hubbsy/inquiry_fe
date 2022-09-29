@@ -13,6 +13,7 @@ import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { format, isValid } from 'date-fns';
 import StateChips from '../../template/StateChips';
+import useProcNum from '../../../hooks/utility/useProcNum';
 
 const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
     height: 32,
@@ -46,6 +47,7 @@ const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
 }));
 
 const NestedTable = ({ rowData, dense }) => {
+    const {numberWithCommas} = useProcNum()
     const [selectedChild, setSelectedChild] = useState(null);
     const [nestedAnchorEl, setNestedAnchorEl] = useState(null);
     const nestedPopoverOpen = Boolean(nestedAnchorEl);
@@ -128,7 +130,7 @@ const NestedTable = ({ rowData, dense }) => {
                                 {c.TRANSACTIONTYPE ? c.TRANSACTIONTYPE : NO_VALUE}
                             </NestedTableCell>
                             <NestedTableCell dense='dense'>
-                                {c.AMOUNT ? c.AMOUNT : NO_VALUE}
+                                {c.AMOUNT ? numberWithCommas(c.AMOUNT) : NO_VALUE}
                             </NestedTableCell>
                             <NestedTableCell dense='dense'>
                                 {c.EFFECTIVEDATE

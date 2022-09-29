@@ -165,6 +165,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         pageSizeOptions: [10, 25, 50, 100],
         detailPanelType: 'single',
         // tableLayout:'fixed',
+        doubleHorizontalScroll:false,
         showDetailPanelIcon: true,
         pageSize: 10,
         padding: density,
@@ -172,7 +173,9 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         headerStyle: {
             ...theme.components.headerStyle,
             backgroundColor: theme.palette.grid.main.header,
-            border: 'solid red 1px'
+            // border: 'solid red 1px',
+            // display: 'flex',
+            // justifyContent:'center'
         },
         rowStyle: (rowData) => ({
             backgroundColor:
@@ -217,7 +220,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                             tooltip: handleDetailPanelIcon(rowData) ? 'Related Transactions': false,
                             icon: () => handleDetailPanelIcon(rowData) ? <CaratIcon color={'primary'} sx={{ pt: 1, pl: 1 }}  />:null,
                             disabled:handleDetailPanelIcon(rowData) ? false : true,
-                            render:()=>( <><NestedTable rowData={rowData} dense={density} /> {console.log(rowData)}</>)
+                            render:()=>( <NestedTable rowData={rowData} dense={density} /> )
                         })
                     ]
                 }
@@ -230,7 +233,8 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                                     style={{
                                         whiteSpace: 'nowrap',
                                         textOverflow: 'ellipsis',
-                                        overflow: 'hidden', paddingRight:'0px',paddingLeft:'0px', border:'solid 1px blue'
+                                        overflow: 'hidden', paddingRight:'0px',paddingLeft:'0px', 
+                                        // border:'solid 1px blue'
                                     }}
                                     {...props}></MTableCell>
                             );
