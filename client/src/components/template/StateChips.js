@@ -13,20 +13,18 @@ const StateChips = ({ state }) => {
             background: theme.palette.error.main,
             textColor: 'white',
             variant: 'filled',
-            label: 'Unprocessed'
+            label: 'Not Processed'
         },
         s: {
             background: theme.palette.warning.light,
             textColor: theme.palette.warning.dark,
             variant: 'filled',
-            label: 'Suspended'
+            label: 'Suspense'
         }
     };
 
     const chipTheme = state ? statusColors[state.toLowerCase()] : 'p';
-    {
-        console.log(state.toLowerCase(), chipTheme);
-    }
+
     return (
         <Chip
             size={'small'}

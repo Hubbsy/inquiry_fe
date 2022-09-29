@@ -1,6 +1,6 @@
 import MaterialTable, { MTableCell } from '@material-table/core';
 import NestedTable from './NestedTable';
-import { TablePagination, ThemeProvider, Grid, Typography, Button } from '@mui/material';
+import { TablePagination, ThemeProvider, Grid, Typography, Button, Paper } from '@mui/material';
 import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme, theme } from '@aeros-ui/themes';
@@ -11,8 +11,10 @@ import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import {columns} from './columns';
 import isEmpty from '../../../functions/isEmpty';
+import useProcNum from '../../../hooks/utility/useProcNum';
 
 export default function Table({ loading, rows, showLicenseCol, setAffidavits }) {
+    const {numberWithCommas} = useProcNum()
     const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
@@ -155,17 +157,22 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
 
 
     const options = {
+        columnsButton: true,
+        exportAllData: true,
+        actionsColumnIndex: -1,
+        emptyRowsWhenPaging: rows.length ? false : true,
+        cellStyle: theme.typography,
+        pageSizeOptions: [10, 25, 50, 100],
+        detailPanelType: 'single',
+        // tableLayout:'fixed',
         showDetailPanelIcon: true,
         pageSize: 10,
         padding: density,
         showEmptyDataSourceMessage: !loading,
         headerStyle: {
+            ...theme.components.headerStyle,
             backgroundColor: theme.palette.grid.main.header,
-            color: theme.palette.background.paper,
-            textTransform: 'capitalize',
-            paddingTop: '0.5em',
-            paddingBottom: '0.5em',
-            whiteSpace: 'nowrap'
+            border: 'solid red 1px'
         },
         rowStyle: (rowData) => ({
             backgroundColor:
@@ -173,7 +180,6 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                     ? theme.palette.grid.main.active
                     : theme.palette.grid.main.default
         }),
-        exportAllData: true,
         exportMenu: [
             {
                 label: 'Export as PDF',
@@ -184,12 +190,6 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                 exportFunc: (cols, datas) => ExportCsv(cols, datas, 'Affidavit Data')
             }
         ],
-        columnsButton: true,
-        filtering: showFilters,
-        searchFieldStyle: { marginRight: '1em', width: '100%' },
-        emptyRowsWhenPaging: rows.length ? false : true,
-        detailPanelType: 'single',
-        // tableLayout:'fixed'
     };
 
     const handleDetailPanelIcon = (rowData)=>{return  !isEmpty(rowData) &&
@@ -206,7 +206,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                 <MaterialTable
                     title={''}
                     options={options}
-                    columns={columns(handlePopoverOpen, showLicenseCol,id)}
+                    columns={columns(handlePopoverOpen, showLicenseCol,id,numberWithCommas)}
                     data={rows}
                     isLoading={loading}
                     icons={TableIcons}
@@ -222,6 +222,19 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                     ]
                 }
                     components={{
+                        Container: (props) => {
+                            return <Paper elevation={0} {...props} />;
+                        }, Cell: (props) => {
+                            return (
+                                <MTableCell
+                                    style={{
+                                        whiteSpace: 'nowrap',
+                                        textOverflow: 'ellipsis',
+                                        overflow: 'hidden', paddingRight:'0px',paddingLeft:'0px', border:'solid 1px blue'
+                                    }}
+                                    {...props}></MTableCell>
+                            );
+                        },
                     
                         Toolbar: (props) => (
                             <TableToolbar
@@ -231,18 +244,6 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                                 onDensityClick={handleDensityClick}
                             />
                         ),
-                        Cell: (props) => {
-                            return (
-                                <MTableCell
-                                style={{
-                                    whiteSpace: 'nowrap',
-                                    textOverflow: 'ellipsis',
-                                    overflow: 'hidden'
-                                }}
-                                    {...props}
-                                ></MTableCell>
-                            );
-                        }
                     }}
                 />
                 <DetailCard

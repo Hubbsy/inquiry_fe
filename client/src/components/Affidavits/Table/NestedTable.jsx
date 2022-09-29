@@ -12,6 +12,7 @@ import { MoreVert } from '@mui/icons-material';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { format, isValid } from 'date-fns';
+import StateChips from '../../template/StateChips';
 
 const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
     height: 32,
@@ -154,9 +155,15 @@ const NestedTable = ({ rowData, dense }) => {
                                     justifyContent='space-between'
                                     alignItems='center'
                                 >
-                                    <Typography variant='body2'>
-                                        {c.PROCESSEDSTATE ? c.PROCESSEDSTATE : NO_VALUE}
-                                    </Typography>
+                                    {c.PROCESSEDSTATE.trim() === '' ? (
+                        
+                        <Typography variant='body2'>{c.PROCESSEDSTATE}
+                        </Typography>
+                           
+                        ) : (
+                            <StateChips state={c.PROCESSEDSTATE} />
+                        )}
+                                        
                                     <StyledMoreVertIcon
                                         aria-describedby={nestedId}
                                         onClick={(e) => handleNestedPopoverOpen(e, c)}
