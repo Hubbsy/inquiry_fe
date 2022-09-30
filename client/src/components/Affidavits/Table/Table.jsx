@@ -9,12 +9,12 @@ import { Stack } from '@mui/system';
 import { TableIcons, CaratIcon } from '@aeros-ui/icons';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import {columns} from './columns';
+import { columns } from './columns';
 import isEmpty from '../../../functions/isEmpty';
 import useProcNum from '../../../hooks/utility/useProcNum';
 
 export default function Table({ loading, rows, showLicenseCol, setAffidavits }) {
-    const {numberWithCommas} = useProcNum()
+    const { numberWithCommas } = useProcNum();
     const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
@@ -142,6 +142,8 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                 href={currentCompanyDetails.batchLink}
                 size='small'
                 variant='outlined'
+                target='_top'
+                rel='noopener noreferrer'
                 startIcon={
                     currentCompanyDetails.batchView === 'VIEW' ? (
                         <FontDownloadIcon />
@@ -155,7 +157,6 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         </Grid>
     );
 
-
     const options = {
         columnsButton: true,
         exportAllData: true,
@@ -165,14 +166,14 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         pageSizeOptions: [10, 25, 50, 100],
         detailPanelType: 'single',
         // tableLayout:'fixed',
-        doubleHorizontalScroll:false,
+        doubleHorizontalScroll: false,
         showDetailPanelIcon: true,
         pageSize: 10,
         padding: density,
         showEmptyDataSourceMessage: !loading,
         headerStyle: {
             ...theme.components.headerStyle,
-            backgroundColor: theme.palette.grid.main.header,
+            backgroundColor: theme.palette.grid.main.header
             // border: 'solid red 1px',
             // display: 'flex',
             // justifyContent:'center'
@@ -186,18 +187,22 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         exportMenu: [
             {
                 label: 'Export as PDF',
-                exportFunc: (cols, datas) => ExportPdf(cols, datas, 'Affidavit Data')
+                exportFunc: (cols, datas) => ExportPdf(cols, datas, 'Affidavit Inquiry')
             },
             {
                 label: 'Export as CSV',
-                exportFunc: (cols, datas) => ExportCsv(cols, datas, 'Affidavit Data')
+                exportFunc: (cols, datas) => ExportCsv(cols, datas, 'Affidavit Inquiry')
             }
-        ],
+        ]
     };
 
-    const handleDetailPanelIcon = (rowData)=>{return  !isEmpty(rowData) &&
-        !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION) &&
-        !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION[0])}
+    const handleDetailPanelIcon = (rowData) => {
+        return (
+            !isEmpty(rowData) &&
+            !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION) &&
+            !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION[0])
+        );
+    };
 
     return (
         <div
@@ -209,37 +214,43 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                 <MaterialTable
                     title={''}
                     options={options}
-                    columns={columns(handlePopoverOpen, showLicenseCol,id,numberWithCommas)}
+                    columns={columns(handlePopoverOpen, showLicenseCol, id, numberWithCommas)}
                     data={rows}
                     isLoading={loading}
                     icons={TableIcons}
-                    detailPanel={
-                        [
-                           
+                    detailPanel={[
                         (rowData) => ({
-                            tooltip: handleDetailPanelIcon(rowData) ? 'Related Transactions': false,
-                            icon: () => handleDetailPanelIcon(rowData) ? <CaratIcon color={'primary'} sx={{ pt: 1, pl: 1 }}  />:null,
-                            disabled:handleDetailPanelIcon(rowData) ? false : true,
-                            render:()=>( <NestedTable rowData={rowData} dense={density} /> )
+                            tooltip: handleDetailPanelIcon(rowData)
+                                ? 'Related Transactions'
+                                : false,
+                            icon: () =>
+                                handleDetailPanelIcon(rowData) ? (
+                                    <CaratIcon color={'primary'} sx={{ pt: 1, pl: 1 }} />
+                                ) : null,
+                            disabled: handleDetailPanelIcon(rowData) ? false : true,
+                            render: () => <NestedTable rowData={rowData} dense={density} />
                         })
-                    ]
-                }
+                    ]}
                     components={{
                         Container: (props) => {
                             return <Paper elevation={0} {...props} />;
-                        }, Cell: (props) => {
+                        },
+                        Cell: (props) => {
                             return (
                                 <MTableCell
                                     style={{
                                         whiteSpace: 'nowrap',
                                         textOverflow: 'ellipsis',
-                                        overflow: 'hidden', paddingRight:'0px',paddingLeft:'0px', 
+                                        overflow: 'hidden',
+                                        paddingRight: '0px',
+                                        paddingLeft: '0px'
                                         // border:'solid 1px blue'
                                     }}
-                                    {...props}></MTableCell>
+                                    {...props}
+                                ></MTableCell>
                             );
                         },
-                    
+
                         Toolbar: (props) => (
                             <TableToolbar
                                 {...props}
@@ -247,7 +258,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                                 onFilterClick={() => setFiltering(!showFilters)}
                                 onDensityClick={handleDensityClick}
                             />
-                        ),
+                        )
                     }}
                 />
                 <DetailCard
