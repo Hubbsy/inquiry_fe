@@ -159,7 +159,7 @@ const NestedTable = ({ rowData, dense }) => {
                                 >
                                     {c.PROCESSEDSTATE.trim() === '' ? (
                         
-                        <Typography variant='body2'>{c.PROCESSEDSTATE}
+                        <Typography variant='body2'>&emsp;&emsp;&emsp;
                         </Typography>
                            
                         ) : (
