@@ -167,13 +167,10 @@ const NestedTable = ({ rowData, dense }) => {
                                     alignItems='center'
                                 >
                                     {c.PROCESSEDSTATE.trim() === '' ? (
-                        
-                        <Typography variant='body2'>&emsp;&emsp;&emsp;
-                        </Typography>
-                           
-                        ) : (
-                            <StateChips state={c.PROCESSEDSTATE} />
-                        )}
+                                        <Typography variant='body2'>&emsp;&emsp;&emsp;</Typography>
+                                    ) : (
+                                        <StateChips state={c.PROCESSEDSTATE} />
+                                    )}
                                     <StyledMoreVertIcon
                                         aria-describedby={nestedId}
                                         onClick={(e) => handleNestedPopoverOpen(e, c)}
