@@ -135,9 +135,10 @@ class Affidavits extends React.Component {
         if (this.checkValidSearchParams() && !this.state.applicationErrors.active) {
             this.props.getAffidavits(
                 this.props.endpoint,
-                window.localStorage.getItem('TOKEN')
-                    ? window.localStorage.getItem('TOKEN')
-                    : this.props.token,
+                this.props.token,
+                // window.localStorage.getItem('TOKEN')
+                //     ? window.localStorage.getItem('TOKEN')
+                //     : this.props.token,
                 data
             );
         }
@@ -461,11 +462,9 @@ class Affidavits extends React.Component {
     };
 
     handleClearInput = () => {
-        this.setState({
-            standardSearch: {
-                searchValue: ''
-            }
-        });
+        const standardSearch = { ...this.state.standardSearch };
+        standardSearch.searchValue = '';
+        this.setState({ standardSearch });
     };
 
     handleHelperText = () => {
@@ -504,8 +503,8 @@ class Affidavits extends React.Component {
                     el: null
                 },
                 standardSearch: {
-                    ...this.state.standardSearch,
-                    searchValue: ''
+                    ...this.state.standardSearch
+                    // searchValue: ''
                 }
             });
         } else {
@@ -547,6 +546,7 @@ class Affidavits extends React.Component {
             },
             standardSearch: {
                 ...this.state.standardSearch,
+                searchValue: '',
                 INCEPTIONFROM: null,
                 INCEPTIONTO: null
             }

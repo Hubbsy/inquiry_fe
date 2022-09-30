@@ -1,6 +1,6 @@
 import MaterialTable, { MTableCell } from '@material-table/core';
 import NestedTable from './NestedTable';
-import { TablePagination, ThemeProvider, Grid, Typography, Button } from '@mui/material';
+import { TablePagination, ThemeProvider, Grid, Typography, Button, Paper } from '@mui/material';
 import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme, theme } from '@aeros-ui/themes';
@@ -9,22 +9,15 @@ import { Stack } from '@mui/system';
 import { TableIcons, CaratIcon } from '@aeros-ui/icons';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import Columns from './columns';
+import { columns } from './columns';
 import isEmpty from '../../../functions/isEmpty';
-
-const getWindowSize = () => {
-    const { innerWidth, innerHeight } = window;
-    return {
-        innerWidth,
-        innerHeight
-    };
-};
+import useProcNum from '../../../hooks/utility/useProcNum';
 
 export default function Table({ loading, rows, showLicenseCol, setAffidavits }) {
+    const { numberWithCommas } = useProcNum();
     const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
-    const [windowSize, setWindowSize] = useState(getWindowSize());
 
     const [currentCompanyDetails, setCurrentCompanyDetails] = useState({
         affidavitNo: 'No current Affidavit No.',
@@ -38,18 +31,6 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
     const handleDensityClick = () => {
         density === 'normal' ? setDensity('dense') : setDensity('normal');
     };
-
-    useEffect(() => {
-        function handleWindowResize() {
-            setWindowSize(getWindowSize());
-        }
-
-        window.addEventListener('resize', handleWindowResize);
-
-        return () => {
-            window.removeEventListener('resize', handleWindowResize);
-        };
-    }, []);
 
     const compileFullAddress = (options) => {
         return {
@@ -161,6 +142,8 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                 href={currentCompanyDetails.batchLink}
                 size='small'
                 variant='outlined'
+                target='_top'
+                rel='noopener noreferrer'
                 startIcon={
                     currentCompanyDetails.batchView === 'VIEW' ? (
                         <FontDownloadIcon />
@@ -174,20 +157,26 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         </Grid>
     );
 
-    const columns = Columns(handlePopoverOpen, showLicenseCol, popoverOpen);
-
     const options = {
+        columnsButton: true,
+        exportAllData: true,
+        actionsColumnIndex: -1,
+        emptyRowsWhenPaging: rows.length ? false : true,
+        cellStyle: theme.typography,
+        pageSizeOptions: [10, 25, 50, 100],
+        detailPanelType: 'single',
+        // tableLayout:'fixed',
+        doubleHorizontalScroll: false,
+        showDetailPanelIcon: true,
         pageSize: 10,
         padding: density,
         showEmptyDataSourceMessage: !loading,
-        actionsColumnIndex: -1,
-
         headerStyle: {
-            backgroundColor: theme.palette.grid.main.header,
-            color: theme.palette.background.paper,
-            textTransform: 'capitalize',
-            padding: '1em',
-            whiteSpace: 'nowrap'
+            ...theme.components.headerStyle,
+            backgroundColor: theme.palette.grid.main.header
+            // border: 'solid red 1px',
+            // display: 'flex',
+            // justifyContent:'center'
         },
         rowStyle: (rowData) => ({
             backgroundColor:
@@ -195,25 +184,24 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                     ? theme.palette.grid.main.active
                     : theme.palette.grid.main.default
         }),
-        exportAllData: true,
         exportMenu: [
             {
                 label: 'Export as PDF',
-                exportFunc: (cols, datas) => ExportPdf(cols, datas, 'Affidavit Data')
+                exportFunc: (cols, datas) => ExportPdf(cols, datas, 'Affidavit Inquiry')
             },
             {
                 label: 'Export as CSV',
-                exportFunc: (cols, datas) => ExportCsv(cols, datas, ' Data')
+                exportFunc: (cols, datas) => ExportCsv(cols, datas, 'Affidavit Inquiry')
             }
-        ],
-        columnsButton: true,
-        filtering: showFilters,
-        searchFieldStyle: { marginRight: '1em', width: '100%' },
-        emptyRowsWhenPaging: rows.length ? false : true,
-        detailPanelColumnAlignment: 'left',
-        tableLayout: windowSize.innerWidth < 1225 ? '' : 'fixed',
-        cellStyle: theme.typography,
-        detailPanelType: 'single'
+        ]
+    };
+
+    const handleDetailPanelIcon = (rowData) => {
+        return (
+            !isEmpty(rowData) &&
+            !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION) &&
+            !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION[0])
+        );
     };
 
     return (
@@ -226,35 +214,43 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                 <MaterialTable
                     title={''}
                     options={options}
-                    columns={columns}
-                    data={[...rows]}
+                    columns={columns(handlePopoverOpen, showLicenseCol, id, numberWithCommas)}
+                    data={rows}
                     isLoading={loading}
                     icons={TableIcons}
                     detailPanel={[
                         (rowData) => ({
-                            tooltip: 'Related Transactions',
+                            tooltip: handleDetailPanelIcon(rowData)
+                                ? 'Related Transactions'
+                                : false,
                             icon: () =>
-                                !isEmpty(rowData) &&
-                                !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION) &&
-                                !isEmpty(rowData.PARTA_TRANSACTION.CHILD_TRANSACTION[0]) ? (
+                                handleDetailPanelIcon(rowData) ? (
                                     <CaratIcon color={'primary'} sx={{ pt: 1, pl: 1 }} />
                                 ) : null,
-                            render: ({ rowData }) => (
-                                <NestedTable rowData={rowData} dense={density} />
-                            )
+                            disabled: handleDetailPanelIcon(rowData) ? false : true,
+                            render: () => <NestedTable rowData={rowData} dense={density} />
                         })
                     ]}
                     components={{
-                        Pagination: (props) => (
-                            <TablePagination
-                                count={props.count}
-                                page={props.page}
-                                onPageChange={props.onPageChange}
-                                rowsPerPage={props.rowsPerPage}
-                                rowsPerPageOptions={[10, 25, 50, 100]}
-                                onRowsPerPageChange={props.onRowsPerPageChange}
-                            />
-                        ),
+                        Container: (props) => {
+                            return <Paper elevation={0} {...props} />;
+                        },
+                        Cell: (props) => {
+                            return (
+                                <MTableCell
+                                    style={{
+                                        whiteSpace: 'nowrap',
+                                        textOverflow: 'ellipsis',
+                                        overflow: 'hidden',
+                                        paddingRight: '0px',
+                                        paddingLeft: '0px'
+                                        // border:'solid 1px blue'
+                                    }}
+                                    {...props}
+                                ></MTableCell>
+                            );
+                        },
+
                         Toolbar: (props) => (
                             <TableToolbar
                                 {...props}
@@ -262,17 +258,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                                 onFilterClick={() => setFiltering(!showFilters)}
                                 onDensityClick={handleDensityClick}
                             />
-                        ),
-                        Cell: (props) => {
-                            return (
-                                <MTableCell
-                                    style={{
-                                        whiteSpace: 'nowrap'
-                                    }}
-                                    {...props}
-                                ></MTableCell>
-                            );
-                        }
+                        )
                     }}
                 />
                 <DetailCard

@@ -12,6 +12,8 @@ import { MoreVert } from '@mui/icons-material';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { format, isValid } from 'date-fns';
+import StateChips from '../../template/StateChips';
+import useProcNum from '../../../hooks/utility/useProcNum';
 
 const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
     height: 32,
@@ -45,6 +47,7 @@ const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
 }));
 
 const NestedTable = ({ rowData, dense }) => {
+    const { numberWithCommas } = useProcNum();
     const [selectedChild, setSelectedChild] = useState(null);
     const [nestedAnchorEl, setNestedAnchorEl] = useState(null);
     const nestedPopoverOpen = Boolean(nestedAnchorEl);
@@ -127,16 +130,22 @@ const NestedTable = ({ rowData, dense }) => {
                                 {c.TRANSACTIONTYPE ? c.TRANSACTIONTYPE : NO_VALUE}
                             </NestedTableCell>
                             <NestedTableCell dense='dense'>
-                                {c.AMOUNT ? c.AMOUNT : NO_VALUE}
+                                {c.AMOUNT ? numberWithCommas(c.AMOUNT) : NO_VALUE}
                             </NestedTableCell>
                             <NestedTableCell dense='dense'>
                                 {c.EFFECTIVEDATE
-                                    ? format(new Date(c.EFFECTIVEDATE), 'MM/dd/yyyy')
+                                    ? format(
+                                          new Date(c.EFFECTIVEDATE.replace(/-/g, '/')),
+                                          'MM/dd/yyyy'
+                                      )
                                     : NO_VALUE}
                             </NestedTableCell>
                             <NestedTableCell dense='dense'>
                                 {c.EXPIRATIONDATE
-                                    ? format(new Date(c.EXPIRATIONDATE), 'MM/dd/yyyy')
+                                    ? format(
+                                          new Date(c.EXPIRATIONDATE.replace(/-/g, '/')),
+                                          'MM/dd/yyyy'
+                                      )
                                     : NO_VALUE}
                             </NestedTableCell>
                             <NestedTableCell dense='dense'>
@@ -144,7 +153,10 @@ const NestedTable = ({ rowData, dense }) => {
                             </NestedTableCell>
                             <NestedTableCell dense='dense'>
                                 {c.RECEIVEDATE
-                                    ? format(new Date(c.RECEIVEDATE), 'MM/dd/yyyy')
+                                    ? format(
+                                          new Date(c.RECEIVEDATE.replace(/-/g, '/')),
+                                          'MM/dd/yyyy'
+                                      )
                                     : NO_VALUE}
                             </NestedTableCell>
                             <NestedTableCell dense='dense'>
@@ -154,9 +166,12 @@ const NestedTable = ({ rowData, dense }) => {
                                     justifyContent='space-between'
                                     alignItems='center'
                                 >
-                                    <Typography variant='body2'>
-                                        {c.PROCESSEDSTATE ? c.PROCESSEDSTATE : NO_VALUE}
-                                    </Typography>
+                                    {c.PROCESSEDSTATE.trim() === '' ? (
+                                        <Typography variant='body2'>{c.PROCESSEDSTATE}</Typography>
+                                    ) : (
+                                        <StateChips state={c.PROCESSEDSTATE} />
+                                    )}
+
                                     <StyledMoreVertIcon
                                         aria-describedby={nestedId}
                                         onClick={(e) => handleNestedPopoverOpen(e, c)}
@@ -283,6 +298,8 @@ const NestedTable = ({ rowData, dense }) => {
                                                     <Button
                                                         href={selectedChild.BATCHLINK}
                                                         variant='outlined'
+                                                        rel='noopener noreferrer'
+                                                        target='_top'
                                                         startIcon={
                                                             selectedChild.BATCHLINKEDITVIEW ===
                                                             'VIEW' ? (

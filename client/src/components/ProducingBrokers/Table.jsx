@@ -1,6 +1,6 @@
 import MaterialTable from '@material-table/core';
 import { TablePagination, useTheme, ThemeProvider, Grid, Typography } from '@mui/material';
-import { TableToolbar, MainTableCell, DetailCard } from '@aeros-ui/tables';
+import { TableToolbar, MainTableCell, DetailCard, TableFilterInput } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme } from '@aeros-ui/themes';
 import { useState, useCallback } from 'react';
@@ -11,7 +11,7 @@ import { Stack } from '@mui/system';
 
 export default function Table({ loading, rows }) {
     const theme = useTheme();
-    const [density, setDensity] = useState('normal');
+    const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
 
@@ -90,7 +90,14 @@ export default function Table({ loading, rows }) {
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
                     {rowData.licenseNo}
                 </MainTableCell>
-            )
+            ),
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            }
         },
         {
             title: 'Name',
@@ -99,7 +106,14 @@ export default function Table({ loading, rows }) {
             width: '50em',
             render: (rowData) => (
                 <MainTableCell sx={{ whiteSpace: 'nowrap' }}>{rowData.brokerName}</MainTableCell>
-            )
+            ),
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            }
         },
         {
             title: 'Effective Date',
@@ -107,9 +121,16 @@ export default function Table({ loading, rows }) {
             width: '15em',
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {format(new Date(rowData.effectiveDate), 'MM/dd/yyyy')}
+                    {format(new Date(rowData.effectiveDate.replace(/-/g, '/')), 'MM/dd/yyyy')}
                 </MainTableCell>
-            )
+            ),
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            }
         },
         {
             title: 'Expiration Date',
@@ -117,9 +138,16 @@ export default function Table({ loading, rows }) {
             width: '10em',
             render: (rowData) => (
                 <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {format(new Date(rowData.expDate), 'MM/dd/yyyy')}
+                    {format(new Date(rowData.expDate.replace(/-/g, '/')), 'MM/dd/yyyy')}
                 </MainTableCell>
-            )
+            ),
+            filterComponent: ({ columnDef, onFilterChanged }) => {
+                return (
+                    <TableFilterInput
+                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
+                    />
+                );
+            }
         },
         {
             title: '',
@@ -186,11 +214,11 @@ export default function Table({ loading, rows }) {
         exportMenu: [
             {
                 label: 'Export as PDF',
-                exportFunc: (cols, datas) => ExportPdf(cols, datas, 'Producing Brokers Data')
+                exportFunc: (cols, datas) => ExportPdf(cols, datas, 'Producing Brokers Inquiry')
             },
             {
                 label: 'Export as CSV',
-                exportFunc: (cols, datas) => ExportCsv(cols, datas, 'Producing Brokers Data')
+                exportFunc: (cols, datas) => ExportCsv(cols, datas, 'Producing Brokers Inquiry')
             }
         ],
         columnsButton: true,

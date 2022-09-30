@@ -7,10 +7,12 @@ import LifeBrokers from './pages/LifeBrokers';
 import ProducingBrokers from './pages/ProducingBrokers';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '@aeros-ui/themes';
-import { PageNotFound } from '@aeros-ui/components';
+import { PageNotFound, SessionTimeout } from '@aeros-ui/components';
 import { connect } from 'react-redux';
 import endpointConfig from './store/endpointConfig';
-import { getToken, setEndpoint } from './store/actions/session';
+import { getToken, verifyAuth, setEndpoint, setToken } from './store/actions/session';
+import queryString from 'query-string';
+import isEmpty from './functions/isEmpty';
 
 class App extends Component {
     state = {
@@ -18,30 +20,50 @@ class App extends Component {
     };
 
     componentDidMount() {
-        // call getToken
-        const env = 'NYACOL';
-        const endpoint = endpointConfig(env);
-        this.props.setEndpoint(endpoint);
-        const data = {
-            DEV: 'SARAH',
-            SESSIONTYPE: 'BrokerPortal',
-            SECPAYLOAD: {
-                ENV: env,
-                OWNERSECURITYID: 1,
-                SECURITYID: 59,
-                BROKERID: 103,
-                USERID: 'RSIDEV',
-                IP: '10.233.51.123'
-            }
-        };
+        const parsedURL = queryString.parse(window.location.search);
+        const parsedData = !isEmpty(parsedURL) ? JSON.parse(parsedURL.DATA) : null;
 
-        if (!this.state.token) {
-            console.log('NEW TOKEN GENERATED');
-            // console.log('TOKEN:', this.state.token);
-            this.props.getToken(endpoint, data);
+        if (
+            parsedData !== null &&
+            parsedData.hasOwnProperty('ENV') &&
+            parsedData.hasOwnProperty('SRID') &&
+            process.env.NODE_ENV === 'production'
+        ) {
+            console.log('PARSED DATA:', parsedData);
+            const env = parsedData.ENV;
+            const srId = parsedData.SRID;
+
+            const data = {
+                SVC_ID: srId.replaceAll(' ', '+')
+            };
+            const endpoint = endpointConfig(env);
+            this.props.setEndpoint(endpoint);
+            this.props.verifyAuth(endpoint, data);
         } else {
-            // console.log('TOKEN:', this.state.token);
-            console.log('NEW TOKEN IS NOT GENERATED');
+            const env = 'NYACOL';
+            const endpoint = endpointConfig(env);
+            this.props.setEndpoint(endpoint);
+            const data = {
+                DEV: 'SARAH',
+                SESSIONTYPE: 'BrokerPortal',
+                SECPAYLOAD: {
+                    ENV: env,
+                    OWNERSECURITYID: 1,
+                    SECURITYID: 59,
+                    BROKERID: 103,
+                    USERID: 'RSIDEV',
+                    IP: '10.233.51.123'
+                }
+            };
+
+            if (!this.state.token) {
+                console.log('NEW TOKEN GENERATED');
+                this.props.getToken(endpoint, data);
+            } else {
+                console.log('NEW TOKEN IS NOT GENERATED');
+                // console.log('STATE TOKEN', this.state.token);
+                this.props.setToken(this.state.token);
+            }
         }
     }
 
@@ -49,9 +71,9 @@ class App extends Component {
         if (
             prevProps.token !== this.props.token &&
             this.props.token !== null &&
-            !this.state.token
+            !this.state.token &&
+            process.env.NODE_ENV !== 'production'
         ) {
-            // console.log('COMPONENT DID UPDATE:', this.props.token);
             window.localStorage.setItem('TOKEN', this.props.token);
         }
     }
@@ -68,6 +90,9 @@ class App extends Component {
                         <Route path='*' element={<PageNotFound />} />
                     </Route>
                 </Routes>
+                {this.props.sessionTimeout ? (
+                    <SessionTimeout open={this.props.sessionTimeout} />
+                ) : null}
             </ThemeProvider>
         );
     }
@@ -75,14 +100,17 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        token: state.session.auth.token
+        token: state.session.auth.token,
+        sessionTimeout: state.session.sessionTimeout
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         getToken: (endpoint, data) => dispatch(getToken(endpoint, data)),
-        setEndpoint: (endpoint) => dispatch(setEndpoint(endpoint))
+        setEndpoint: (endpoint) => dispatch(setEndpoint(endpoint)),
+        setToken: (token) => dispatch(setToken(token)),
+        verifyAuth: (endpoint, data) => dispatch(verifyAuth(endpoint, data))
     };
 };
 
