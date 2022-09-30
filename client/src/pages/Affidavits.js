@@ -461,11 +461,9 @@ class Affidavits extends React.Component {
     };
 
     handleClearInput = () => {
-        this.setState({
-            standardSearch: {
-                searchValue: ''
-            }
-        });
+        const standardSearch = { ...this.state.standardSearch };
+        standardSearch.searchValue = '';
+        this.setState({ standardSearch });
     };
 
     handleHelperText = () => {

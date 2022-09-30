@@ -47,7 +47,7 @@ const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
 }));
 
 const NestedTable = ({ rowData, dense }) => {
-    const {numberWithCommas} = useProcNum()
+    const { numberWithCommas } = useProcNum();
     const [selectedChild, setSelectedChild] = useState(null);
     const [nestedAnchorEl, setNestedAnchorEl] = useState(null);
     const nestedPopoverOpen = Boolean(nestedAnchorEl);
@@ -158,14 +158,11 @@ const NestedTable = ({ rowData, dense }) => {
                                     alignItems='center'
                                 >
                                     {c.PROCESSEDSTATE.trim() === '' ? (
-                        
-                        <Typography variant='body2'>{c.PROCESSEDSTATE}
-                        </Typography>
-                           
-                        ) : (
-                            <StateChips state={c.PROCESSEDSTATE} />
-                        )}
-                                        
+                                        <Typography variant='body2'>{c.PROCESSEDSTATE}</Typography>
+                                    ) : (
+                                        <StateChips state={c.PROCESSEDSTATE} />
+                                    )}
+
                                     <StyledMoreVertIcon
                                         aria-describedby={nestedId}
                                         onClick={(e) => handleNestedPopoverOpen(e, c)}
