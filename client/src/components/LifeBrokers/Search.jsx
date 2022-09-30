@@ -20,6 +20,7 @@ function Search({
             <Grid sx={{ flexGrow: 1 }} container spacing={0.5}>
                 <Grid item xs={5}>
                     <SearchInput
+                        autoFocus
                         sx={{ mr: 1 }}
                         label={'Search by License No, Broker name...'}
                         onChange={handleChange}

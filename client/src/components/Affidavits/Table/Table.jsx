@@ -142,6 +142,8 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                 href={currentCompanyDetails.batchLink}
                 size='small'
                 variant='outlined'
+                target='_top'
+                rel='noopener noreferrer'
                 startIcon={
                     currentCompanyDetails.batchView === 'VIEW' ? (
                         <FontDownloadIcon />
@@ -185,11 +187,11 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         exportMenu: [
             {
                 label: 'Export as PDF',
-                exportFunc: (cols, datas) => ExportPdf(cols, datas, 'Affidavit Data')
+                exportFunc: (cols, datas) => ExportPdf(cols, datas, 'Affidavit Inquiry')
             },
             {
                 label: 'Export as CSV',
-                exportFunc: (cols, datas) => ExportCsv(cols, datas, 'Affidavit Data')
+                exportFunc: (cols, datas) => ExportCsv(cols, datas, 'Affidavit Inquiry')
             }
         ]
     };
