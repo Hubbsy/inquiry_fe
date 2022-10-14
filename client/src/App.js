@@ -49,6 +49,10 @@ class App extends Component {
                 SECPAYLOAD: {
                     ENV: env,
                     OWNERSECURITYID: 1,
+                    // SECURITYID: 1713,
+                    // BROKERID: 4011,
+                    // SECURITYID: 1085, //BOR
+                    // BROKERID: 2902, //BOR
                     SECURITYID: 59,
                     BROKERID: 103,
                     USERID: 'RSIDEV',
