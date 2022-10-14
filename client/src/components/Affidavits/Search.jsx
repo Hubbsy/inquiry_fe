@@ -58,7 +58,7 @@ function Search({
                         <SearchInput
                             autoFocus
                             sx={{ mr: 1 }}
-
+                            includeEndAdornment={true}
                             label={'Search by Affidavit No or Policy No...'}
                             onChange={handleChange}
                             onKeyPress={handleKeyPress}
@@ -74,7 +74,7 @@ function Search({
                                     : null
                             }
                             disabled={advancedSearchActive || (applicationErrors.active && applicationErrors.type === "SINGLE_SEARCH")}
-                            handleClearInput={handleClearInput}
+                            handleClearInput={() => handleClearInput()}
 
                         />
                         {applicationErrors.active && applicationErrors.type === "SINGLE_SEARCH" ? <Typography variant="caption" color="info.main">{applicationErrors.active ? applicationErrors.message : ""}</Typography> : null}

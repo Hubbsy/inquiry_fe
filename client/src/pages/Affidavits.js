@@ -542,7 +542,10 @@ class Affidavits extends React.Component {
     };
 
     handleAdvancedSearchInputs = (e) => {
-        this.handleClearInput();
+        if (this.state.standardSearch.searchValue.length > 0) {
+            this.handleClearInput();
+        }
+
         if (this.state.advancedSearch.hasOwnProperty(e.target.name)) {
             this.setState({
                 advancedSearch: {
