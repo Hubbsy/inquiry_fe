@@ -1,17 +1,123 @@
 import MaterialTable, { MTableCell } from '@material-table/core';
 import NestedTable from './NestedTable';
-import { TablePagination, ThemeProvider, Grid, Typography, Button, Paper } from '@mui/material';
+import { TablePagination, ThemeProvider, Grid, Typography, Button, Paper, Card, CardHeader, CardContent, List, ListItem, ListItemText, createTheme } from '@mui/material';
 import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme, theme } from '@aeros-ui/themes';
 import { useState, useEffect } from 'react';
 import { Stack } from '@mui/system';
+import InfoIcon from '@mui/icons-material/Info';
 import { TableIcons, CaratIcon } from '@aeros-ui/icons';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { columns } from './columns';
 import isEmpty from '../../../functions/isEmpty';
 import useProcNum from '../../../hooks/utility/useProcNum';
+import getAnchorPosition from '../../../functions/getAnchorPosition';
+
+const messageTheme = createTheme({
+    palette: {
+        primary: {
+            main: '#0097FB',
+            light: '#B8E3FF',
+            dark: '#004B6E'
+        }
+    },
+    typography: {
+        h6: {
+            fontSize: '15px'
+        }
+    },
+    components: {
+        MuiCardHeader: {
+            styleOverrides: {
+                root: {
+                    padding: '0.5em',
+                    borderTopColor: 'transparent'
+                },
+                avatar: {
+                    marginRight: '0.5em'
+                }
+            }
+        },
+        MuiCardContent: {
+            styleOverrides: {
+                root: {
+                    padding: '0.25em',
+                    backgroundColor: 'rgba(0, 226, 208, 0.08)',
+                    '&:last-child': {
+                        paddingBottom: '0.25em'
+                    }
+                }
+            }
+        },
+        MuiCard: {
+            styleOverrides: {
+                root: {
+                    paddingBottom: '0.25em'
+                }
+            }
+        },
+        MuiList: {
+            styleOverrides: {
+                root: {
+                    paddingTop: 0,
+                    paddingBottom: 0
+                }
+            }
+        },
+        MuiListItem: {
+            styleOverrides: {
+                root: {
+                    paddingTop: 0,
+                    paddingBottom: 0
+                }
+            }
+        },
+        MuiPaper: {
+            styleOverrides: {
+                elevation: 4
+            }
+        }
+    }
+});
+
+const InfoMessage = (props) => {
+    return (
+        <ThemeProvider theme={messageTheme}>
+            <Card sx={{ borderRadius: '0px' }}>
+                <CardHeader
+                    title={props.title}
+                    avatar={<InfoIcon color='info' fontSize='small' />}
+                    titleTypographyProps={{ variant: 'h6', color: 'primary.dark' }}
+                />
+                <CardContent>
+                    <List sx={{ width: '100%' }}>
+                        {Array.isArray(props.data) ? (
+                            props.data.map((d, i) => {
+                                return (
+                                    <ListItem key={`info-${i}`}>
+                                        <ListItemText
+                                            primary={d}
+                                            primaryTypographyProps={{ color: 'primary.dark' }}
+                                        />
+                                    </ListItem>
+                                );
+                            })
+                        ) : (
+                            <ListItem>
+                                <ListItemText
+                                    primary={props.data}
+                                    primaryTypographyProps={{ color: 'primary.dark' }}
+                                />
+                            </ListItem>
+                        )}
+                    </List>
+                </CardContent>
+            </Card>
+        </ThemeProvider>
+    );
+};
 
 export default function Table({ loading, rows, showLicenseCol, setAffidavits }) {
     const { numberWithCommas } = useProcNum();
@@ -27,6 +133,37 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
     const [anchorEl, setAnchorEl] = useState(null);
     const popoverOpen = Boolean(anchorEl);
     const id = popoverOpen ? 'menu-popover' : undefined;
+
+    const [partAEl, setPartAEl] = useState(null);
+    const partAMessageOpen = Boolean(partAEl);
+    const partAMessageId = partAMessageOpen ? 'partA-message-popover' : undefined;
+
+    const handleOpenPartAMessage = (e, rowData) => {
+        const rowCopy = { ...rowData };
+        const dataCopy = [...rows];
+        dataCopy[rowCopy.tableData.id] = rowCopy;
+
+        const anchorPosition = getAnchorPosition(e);
+        setPartAEl(anchorPosition);
+
+        setAffidavits(dataCopy);
+        setSelectedRow(rowCopy);
+    };
+
+    const handleClosePartAMessage = () => {
+        const dataCopy = [...rows];
+        if (selectedRow !== null) {
+            const rowCopy = { ...selectedRow };
+            if (rowCopy.tableData.showDetailPanel) {
+                rowCopy.tableData.showDetailPanel = false;
+            }
+            dataCopy[rowCopy.tableData.id] = rowCopy;
+        }
+
+        setAffidavits(dataCopy);
+        setPartAEl(null);
+        setSelectedRow(null);
+    };
 
     const handleDensityClick = () => {
         density === 'normal' ? setDensity('dense') : setDensity('normal');
@@ -214,7 +351,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                 <MaterialTable
                     title={''}
                     options={options}
-                    columns={columns(handlePopoverOpen, showLicenseCol, id, numberWithCommas)}
+                    columns={columns(handlePopoverOpen, showLicenseCol, id, numberWithCommas,InfoMessage,partAMessageId,partAMessageOpen, partAEl,selectedRow,handleOpenPartAMessage,handleClosePartAMessage)}
                     data={rows}
                     isLoading={loading}
                     icons={TableIcons}

@@ -1,10 +1,11 @@
 import { MainTableCell, TableFilterInput } from '@aeros-ui/tables';
 import styled from '@emotion/styled';
 import { MoreVert } from '@mui/icons-material';
-import { Grid, IconButton, Tooltip } from '@mui/material';
+import { Grid, IconButton, Popover, Tooltip } from '@mui/material';
 import { format, isValid } from 'date-fns';
 import { theme } from '@aeros-ui/themes';
 import StateChips from '../../template/StateChips';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 const ellipsisText = {
     whiteSpace: 'nowrap',
@@ -12,7 +13,19 @@ const ellipsisText = {
     overflow: 'hidden'
 };
 
-export const columns = (handlePopoverOpen, showLicenseCol, id, numberWithCommas) => [
+export const columns = (
+    handlePopoverOpen,
+    showLicenseCol,
+    id,
+    numberWithCommas,
+    InfoMessage,
+    partAMessageId,
+    partAMessageOpen,
+    partAEl,
+    selectedRow,
+    handleOpenPartAMessage,
+    handleClosePartAMessage
+) => [
     {
         title: 'License No.',
         field: 'PARTA_TRANSACTION.LICENSENO',
@@ -35,9 +48,49 @@ export const columns = (handlePopoverOpen, showLicenseCol, id, numberWithCommas)
         // width: '100px',
         // cellStyle: { maxWidth: '10px' },
         render: (rowData) => (
-            <MainTableCell style={{ ...ellipsisText }}>
-                {rowData.PARTA_TRANSACTION.AFFIDAVITNO}
-            </MainTableCell>
+            <Grid
+                item
+                container
+                justifyContent='start'
+                alignItems='center'
+                sx={{ flexWrap: 'nowrap' }}>
+                <MainTableCell style={{ ...ellipsisText }}>
+                    {rowData.PARTA_TRANSACTION.AFFIDAVITNO}
+                </MainTableCell>
+                {rowData.PARTA_TRANSACTION.PARTAMESSAGE.length > 0 ? (
+                    <IconButton
+                        size='small'
+                        aria-describedby={partAMessageId}
+                        onClick={(e) => {
+                            handleOpenPartAMessage(e, rowData);
+                        }}>
+                        <InfoOutlinedIcon fontSize='small' color='info' />
+                    </IconButton>
+                ) : null}
+                <Popover
+                    id={partAMessageId}
+                    open={partAMessageOpen}
+                    anchorReference='anchorPosition'
+                    anchorPosition={partAEl}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left'
+                    }}
+                    elevation={2}
+                    onClose={() => handleClosePartAMessage()}>
+                    {selectedRow && selectedRow.PARTA_TRANSACTION.PARTAMESSAGE.length > 0
+                        ? selectedRow.PARTA_TRANSACTION.PARTAMESSAGE.map((message, i) => {
+                              return (
+                                  <InfoMessage
+                                      key={`PARTA_TRANSACTION.PARTAMESSAGE_${i}`}
+                                      title={message.MESSAGETYPE}
+                                      data={message.MESSAGE}
+                                  />
+                              );
+                          })
+                        : null}
+                </Popover>
+            </Grid>
         ),
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
