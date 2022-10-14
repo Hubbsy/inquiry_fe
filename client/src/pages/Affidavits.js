@@ -6,6 +6,8 @@ import { getAffidavits } from '../store/actions/affidavits';
 import { Snackbar, ErrorBoundary } from '@aeros-ui/components';
 import isEmpty from '../functions/isEmpty';
 import { format, isBefore, isValid, isAfter, isEqual } from 'date-fns';
+import { Fab, Grid, Tooltip } from '@mui/material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 
 class Affidavits extends React.Component {
     state = {
@@ -34,8 +36,45 @@ class Affidavits extends React.Component {
         },
         adjustPadding: false,
         advancedSearchActive: false,
-        showLicenseCol: false
+        showLicenseCol: false,
+        scrollBarActive: false,
+        windowScroll: 0
     };
+
+    componentDidMount() {
+        // detect window height/scrollbar active
+        this.handleDocumentScroll();
+        window.addEventListener('resize', this.handleDocumentScroll);
+    }
+
+    handleDocumentScroll = () => {
+        if (document.body.clientHeight > window.innerHeight) {
+            console.log("!!!!!SCROLL BAR ACTIVE!!!!!")
+            let scrollBarActive = this.state.scrollBarActive;
+            scrollBarActive = true;
+            this.setState({scrollBarActive});
+        }
+        else {
+            let scrollBarActive = this.state.scrollBarActive;
+            scrollBarActive = false;
+            this.setState({scrollBarActive});
+        }
+
+    }
+
+    handleScrollTo = () => {
+        console.log(window)
+        let windowScroll = this.state.windowScroll;
+        if (window.scrollY === 0) {
+            windowScroll = true;
+            window.scrollTo({top: document.body.offsetHeight, left: 0, behavior: 'smooth'});
+        }
+        else {
+            windowScroll = false;
+            window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+        }
+        this.setState({windowScroll})
+    }
 
     componentDidUpdate(prevProps) {
         if (prevProps.error !== this.props.error && this.props.error !== null) {
@@ -65,6 +104,8 @@ class Affidavits extends React.Component {
                 });
             }
         }
+
+        console.log("ACTIVE SCROLL STATE:", this.state.scrollBarActive)
     }
 
     setWindowHeight = () => {
@@ -588,6 +629,11 @@ class Affidavits extends React.Component {
         this.setState({ rows });
     };
 
+    // const rotate = {
+    //     transform: show ? 'rotate(180deg)' : '',
+    //     transition: 'transform 150ms ease' // smooth transition
+    // };
+
     render() {
         return (
             <ErrorBoundary>
@@ -629,6 +675,20 @@ class Affidavits extends React.Component {
                     severity={'error'}
                     title={'Something went wrong'}
                 />
+                {this.state.scrollBarActive ? (
+                    <Grid sx={{position: "fixed", bottom: "22px", left: "30px"}}>
+                        <Tooltip placement='top' title={this.state.windowScroll ? "Scroll to Top" : "Scroll to Bottom"}>
+                            <Fab
+                                color='secondary'
+                                aria-label='Scroll to Bottom'
+                                size='small'
+                                onClick={this.handleScrollTo}
+
+                            >
+                                {this.state.windowScroll ? <ExpandLess /> : <ExpandMore /> }
+                            </Fab>
+                        </Tooltip>
+                    </Grid>) : null}
             </ErrorBoundary>
         );
     }
