@@ -289,8 +289,6 @@ function Search({
                                     }
                                 />
                             </Grid>
-                        </Grid>
-                        <Grid container sx={{ flexGrow: 1, pt: 3 }} spacing={2}>
                             <Grid item xs={2.5}>
                                 <TextInput
                                     width={'100%'}
@@ -333,6 +331,8 @@ function Search({
                                     }
                                 />
                             </Grid>
+                        </Grid>
+                        <Grid container sx={{ flexGrow: 1, pt: 3 }} spacing={2}>
                             <Grid item xs={2.5}>
                                 <TextInput
                                     width={'100%'}
@@ -415,8 +415,7 @@ function Search({
                                     }
                                 />
                             </Grid>
-                        </Grid>
-                        <Grid container sx={{ flexGrow: 1, pt: 3, position: 'relative' }}>
+                            <Grid container item xs={4} sx={{ flexGrow: 1, pt: 3, position: 'relative', flexWrap: 'nowrap'}}>
                             <Grid item>
                                 <CurrencyInput
                                     label={'Premuim From'}
@@ -488,6 +487,8 @@ function Search({
                                 ) : null}
                             </Grid>
                         </Grid>
+                        </Grid>
+
                     </>
                 </Collapse>
             </Stack>
