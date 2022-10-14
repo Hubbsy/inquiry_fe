@@ -293,6 +293,10 @@ class Affidavits extends React.Component {
                         start: 'Start amount cannot be greater than end amount'
                     }
                 }
+            },
+            SINGLE_SEARCH: {
+                name: 'SINGLE_SEARCH',
+                message: 'Advanced Search is still active'
             }
         };
 
@@ -306,6 +310,8 @@ class Affidavits extends React.Component {
                 currentErrorMessage = errorTypes[type].messages[el.type][el.pos];
             } else if (type === 'ADVANCED') {
                 currentErrorMessage = errorTypes[type].messages[el.type];
+            } else if (type === 'SINGLE_SEARCH') {
+                currentErrorMessage = errorTypes[type].message;
             }
         } else {
             type = 'ADVANCED';
@@ -461,13 +467,24 @@ class Affidavits extends React.Component {
         });
     };
 
-    handleClearInput = () => {
-        const standardSearch = { ...this.state.standardSearch };
-        standardSearch.searchValue = '';
-        this.setState({ standardSearch });
+    handleClearInput = (name = null) => {
+        if (name) {
+            const advancedSearch = {...this.state.advancedSearch};
+            advancedSearch[name] = '';
+            this.setState({ advancedSearch });
+        }
+        else {
+            const standardSearch = { ...this.state.standardSearch };
+            standardSearch.searchValue = '';
+            this.setState({ standardSearch });
+        }
     };
 
     handleHelperText = () => {
+        if (this.state.applicationErrors.active && this.state.applicationErrors.type === "SINGLE_SEARCH") {
+            return;
+        };
+
         this.setState({
             applicationErrors: {
                 active: false,
@@ -491,6 +508,15 @@ class Affidavits extends React.Component {
         });
     };
 
+    checkAdvSearchInputsActive = (advSearch) => {
+        for (const input in advSearch) {
+            if (advSearch[input].length > 0) {
+                this.handleErrorMessages('SINGLE_SEARCH');
+                break;
+            }
+        }
+    };
+
     toggleAdvancedSearchPanel = () => {
         if (!this.state.advancedSearchActive) {
             this.setState({
@@ -508,6 +534,7 @@ class Affidavits extends React.Component {
                 }
             });
         } else {
+            this.checkAdvSearchInputsActive(this.state.advancedSearch);
             this.setState({
                 advancedSearchActive: false
             });
@@ -515,6 +542,10 @@ class Affidavits extends React.Component {
     };
 
     handleAdvancedSearchInputs = (e) => {
+        if (this.state.standardSearch.searchValue.length > 0) {
+            this.handleClearInput();
+        }
+
         if (this.state.advancedSearch.hasOwnProperty(e.target.name)) {
             this.setState({
                 advancedSearch: {
