@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Typography, Paper, Grid, Tooltip, Stack, Collapse, Fab } from '@mui/material';
+import { Typography, Paper, Grid, Tooltip, Stack, Collapse, Fab, InputAdornment } from '@mui/material';
 import {
     SearchInput,
     SearchButton,
@@ -13,6 +13,7 @@ import styled from '@emotion/styled';
 import { Box } from '@mui/system';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import ExpandLess from '@mui/icons-material/ExpandLess';
+import { Clear } from '@mui/icons-material';
 
 const TextItem = styled(Box)(({ theme }) => ({
     ...theme.typography.body2,
@@ -72,7 +73,6 @@ function Search({
                                     : null
                             }
                             disabled={advancedSearchActive}
-                            includeEndAdornment={true}
                             handleClearInput={handleClearInput}
                         />
                     </Grid>
@@ -184,6 +184,27 @@ function Search({
                                             ? applicationErrors.message
                                             : null
                                     }
+                                    InputProps={
+                                        advancedSearch.AFFIDAVITNUMBER.length > 0
+                                            ? {
+                                                  endAdornment: (
+                                                      <InputAdornment position='end'>
+                                                          <Tooltip title='clear' placement='top' arrow>
+                                                              <Clear
+                                                                  sx={{ cursor: 'pointer' }}
+                                                                  onClick={() => {
+                                                                    handleClearInput(
+                                                                          'AFFIDAVITNUMBER'
+                                                                      );
+                                                                  }}
+                                                                  fontSize='x-small'
+                                                              />
+                                                          </Tooltip>
+                                                      </InputAdornment>
+                                                  )
+                                              }
+                                            : {}
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={2.5}>
@@ -203,6 +224,27 @@ function Search({
                                         applicationErrors.multipleInputs.includes('POLICYNUMBER')
                                             ? applicationErrors.message
                                             : null
+                                    }
+                                    InputProps={
+                                        advancedSearch.POLICYNUMBER.length > 0
+                                            ? {
+                                                  endAdornment: (
+                                                      <InputAdornment position='end'>
+                                                          <Tooltip title='clear' placement='top' arrow>
+                                                              <Clear
+                                                                  sx={{ cursor: 'pointer' }}
+                                                                  onClick={() => {
+                                                                    handleClearInput(
+                                                                          'POLICYNUMBER'
+                                                                      );
+                                                                  }}
+                                                                  fontSize='x-small'
+                                                              />
+                                                          </Tooltip>
+                                                      </InputAdornment>
+                                                  )
+                                              }
+                                            : {}
                                     }
                                 />
                             </Grid>
@@ -224,6 +266,27 @@ function Search({
                                             ? applicationErrors.message
                                             : null
                                     }
+                                    InputProps={
+                                        advancedSearch.BATCH.length > 0
+                                            ? {
+                                                  endAdornment: (
+                                                      <InputAdornment position='end'>
+                                                          <Tooltip title='clear' placement='top' arrow>
+                                                              <Clear
+                                                                  sx={{ cursor: 'pointer' }}
+                                                                  onClick={() => {
+                                                                    handleClearInput(
+                                                                          'BATCH'
+                                                                      );
+                                                                  }}
+                                                                  fontSize='x-small'
+                                                              />
+                                                          </Tooltip>
+                                                      </InputAdornment>
+                                                  )
+                                              }
+                                            : {}
+                                    }
                                 />
                             </Grid>
                         </Grid>
@@ -236,6 +299,7 @@ function Search({
                                     name={'INSUREDNAME'}
                                     onChange={handleAdvancedSearchInputs}
                                     onKeyPress={handleAdvancedKeyPress}
+                                    includeEndAdornment={true}
                                     error={
                                         applicationErrors.active &&
                                         applicationErrors.multipleInputs.includes('INSUREDNAME')
@@ -245,6 +309,27 @@ function Search({
                                         applicationErrors.multipleInputs.includes('INSUREDNAME')
                                             ? applicationErrors.message
                                             : null
+                                    }
+                                    InputProps={
+                                        advancedSearch.INSUREDNAME.length > 0
+                                            ? {
+                                                  endAdornment: (
+                                                      <InputAdornment position='end'>
+                                                          <Tooltip title='clear' placement='top' arrow>
+                                                              <Clear
+                                                                  sx={{ cursor: 'pointer' }}
+                                                                  onClick={() => {
+                                                                    handleClearInput(
+                                                                          'INSUREDNAME'
+                                                                      );
+                                                                  }}
+                                                                  fontSize='x-small'
+                                                              />
+                                                          </Tooltip>
+                                                      </InputAdornment>
+                                                  )
+                                              }
+                                            : {}
                                     }
                                 />
                             </Grid>
@@ -266,6 +351,27 @@ function Search({
                                             ? applicationErrors.message
                                             : null
                                     }
+                                    InputProps={
+                                        advancedSearch.CONTACTNAME.length > 0
+                                            ? {
+                                                  endAdornment: (
+                                                      <InputAdornment position='end'>
+                                                          <Tooltip title='clear' placement='top' arrow>
+                                                              <Clear
+                                                                  sx={{ cursor: 'pointer' }}
+                                                                  onClick={() => {
+                                                                    handleClearInput(
+                                                                          'CONTACTNAME'
+                                                                      );
+                                                                  }}
+                                                                  fontSize='x-small'
+                                                              />
+                                                          </Tooltip>
+                                                      </InputAdornment>
+                                                  )
+                                              }
+                                            : {}
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={2.5}>
@@ -285,6 +391,27 @@ function Search({
                                         applicationErrors.multipleInputs.includes('BROKERREFERENCE')
                                             ? applicationErrors.message
                                             : null
+                                    }
+                                    InputProps={
+                                        advancedSearch.BROKERREFERENCE.length > 0
+                                            ? {
+                                                  endAdornment: (
+                                                      <InputAdornment position='end'>
+                                                          <Tooltip title='clear' placement='top' arrow>
+                                                              <Clear
+                                                                  sx={{ cursor: 'pointer' }}
+                                                                  onClick={() => {
+                                                                    handleClearInput(
+                                                                          'BROKERREFERENCE'
+                                                                      );
+                                                                  }}
+                                                                  fontSize='x-small'
+                                                              />
+                                                          </Tooltip>
+                                                      </InputAdornment>
+                                                  )
+                                              }
+                                            : {}
                                     }
                                 />
                             </Grid>
