@@ -468,8 +468,6 @@ class Affidavits extends React.Component {
     };
 
     handleClearInput = (name = null) => {
-
-
         if (name) {
             const advancedSearch = {...this.state.advancedSearch};
             advancedSearch[name] = '';
@@ -480,7 +478,6 @@ class Affidavits extends React.Component {
             standardSearch.searchValue = '';
             this.setState({ standardSearch });
         }
-
     };
 
     handleHelperText = () => {
@@ -545,6 +542,7 @@ class Affidavits extends React.Component {
     };
 
     handleAdvancedSearchInputs = (e) => {
+        this.handleClearInput();
         if (this.state.advancedSearch.hasOwnProperty(e.target.name)) {
             this.setState({
                 advancedSearch: {
