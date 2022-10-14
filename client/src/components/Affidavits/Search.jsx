@@ -334,7 +334,7 @@ function Search({
                                 />
                             </Grid>
                         </Grid>
-                        <Grid container sx={{ flexGrow: 1, pt: 1 }} spacing={2}>
+                        <Grid container sx={{ flexGrow: 1, pt: 1 }} spacing={1}>
                             <Grid item xs={2.5}>
                                 <TextInput
                                     width={'100%'}
@@ -417,80 +417,83 @@ function Search({
                                     }
                                 />
                             </Grid>
-                            <Grid container item xs={4} sx={{ flexGrow: 1, pt: 3, position: 'relative', flexWrap: 'nowrap'}}>
-                            <Grid item>
-                                <CurrencyInput
-                                    label={'Premuim From'}
-                                    name={'PREMIUMFROM'}
-                                    decimalPlaces={0}
-                                    value={advancedSearch.PREMIUMFROM}
-                                    onChange={handleAdvancedSearchInputs}
-                                    error={
-                                        applicationErrors.active &&
-                                        applicationErrors.type === 'PREMIUMS' &&
-                                        applicationErrors.el.pos === 'start'
-                                    }
-                                    helperText={
-                                        applicationErrors.active &&
-                                        applicationErrors.type === 'PREMIUMS' &&
-                                        applicationErrors.el.pos === 'start'
-                                            ? applicationErrors.message
-                                            : null
-                                    }
-                                />
-                            </Grid>
-                            <Grid item>
-                                <TextItem>TO</TextItem>
-                            </Grid>
-                            <Grid item sx={{ mr: 3 }}>
-                                <CurrencyInput
-                                    label={'Premium To'}
-                                    name={'PREMIUMTO'}
-                                    decimalPlaces={0}
-                                    value={advancedSearch.PREMIUMTO}
-                                    onChange={handleAdvancedSearchInputs}
-                                    error={
-                                        applicationErrors.active &&
-                                        applicationErrors.type === 'PREMIUMS' &&
-                                        applicationErrors.el.pos === 'end'
-                                    }
-                                    helperText={
-                                        applicationErrors.active &&
-                                        applicationErrors.type === 'PREMIUMS' &&
-                                        applicationErrors.el.pos === 'end'
-                                            ? applicationErrors.message
-                                            : null
-                                    }
-                                />
-                            </Grid>
-                            <Grid
-                                item
-                                sx={{
-                                    mr: 3,
-                                    width: '30%',
-                                    position: 'absolute',
-                                    right: '0',
-                                    bottom: '0'
-                                }}
-                            >
-                                {applicationErrors.active &&
-                                applicationErrors.multipleInputs.length < 1 &&
-                                applicationErrors.type === 'ADVANCED' ? (
-                                    <Alert
-                                        title={'Invalid Search'}
-                                        message={
-                                            applicationErrors.message
-                                                ? applicationErrors.message
-                                                : ''
+                            <Grid container item xs={4} sx={{ flexGrow: 1, position: 'relative', flexWrap: 'nowrap', top: "-3px"}}>
+                                <Grid item >
+                                    <CurrencyInput
+                                        label={'Premuim From'}
+                                        name={'PREMIUMFROM'}
+                                        decimalPlaces={0}
+                                        value={advancedSearch.PREMIUMFROM}
+                                        onChange={handleAdvancedSearchInputs}
+                                        error={
+                                            applicationErrors.active &&
+                                            applicationErrors.type === 'PREMIUMS' &&
+                                            applicationErrors.el.pos === 'start'
                                         }
-                                        severity={'error'}
-                                        onClick={handleCloseGeneralError}
+                                        helperText={
+                                            applicationErrors.active &&
+                                            applicationErrors.type === 'PREMIUMS' &&
+                                            applicationErrors.el.pos === 'start'
+                                                ? applicationErrors.message
+                                                : null
+                                        }
+                                        sx={{" .MuiInputBase-input-MuiInput-input.MuiInputBase-inputAdornedStart": {
+                                            padding: '4px 0 1px',
+                                            backgroundColor: "red"
+                                        }}}
                                     />
-                                ) : null}
+                                </Grid>
+                                <Grid item>
+                                    <TextItem>TO</TextItem>
+                                </Grid>
+                                <Grid item sx={{ mr: 3 }}>
+                                    <CurrencyInput
+                                        label={'Premium To'}
+                                        name={'PREMIUMTO'}
+                                        decimalPlaces={0}
+                                        value={advancedSearch.PREMIUMTO}
+                                        onChange={handleAdvancedSearchInputs}
+                                        error={
+                                            applicationErrors.active &&
+                                            applicationErrors.type === 'PREMIUMS' &&
+                                            applicationErrors.el.pos === 'end'
+                                        }
+                                        helperText={
+                                            applicationErrors.active &&
+                                            applicationErrors.type === 'PREMIUMS' &&
+                                            applicationErrors.el.pos === 'end'
+                                                ? applicationErrors.message
+                                                : null
+                                        }
+                                    />
+                                </Grid>
+                                <Grid
+                                    item
+                                    sx={{
+                                        mr: 3,
+                                        width: '30%',
+                                        position: 'absolute',
+                                        right: '0',
+                                        bottom: '0'
+                                    }}
+                                >
+                                    {applicationErrors.active &&
+                                    applicationErrors.multipleInputs.length < 1 &&
+                                    applicationErrors.type === 'ADVANCED' ? (
+                                        <Alert
+                                            title={'Invalid Search'}
+                                            message={
+                                                applicationErrors.message
+                                                    ? applicationErrors.message
+                                                    : ''
+                                            }
+                                            severity={'error'}
+                                            onClick={handleCloseGeneralError}
+                                        />
+                                    ) : null}
+                                </Grid>
                             </Grid>
                         </Grid>
-                        </Grid>
-
                     </>
                 </Collapse>
             </Stack>
