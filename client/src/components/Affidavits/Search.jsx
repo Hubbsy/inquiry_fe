@@ -58,7 +58,7 @@ function Search({
                         <SearchInput
                             autoFocus
                             sx={{ mr: 1 }}
-                            label={'Search by Affidavit No, Policy No, Batch or Insured Name...'}
+                            label={'Search by Affidavit No or Policy No...'}
                             onChange={handleChange}
                             onKeyPress={handleKeyPress}
                             onClick={handleHelperText}
