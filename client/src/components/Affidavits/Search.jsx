@@ -157,18 +157,18 @@ function Search({
                     <>
                         <Grid container spacing={2}>
                             <Grid item>
-                                <Typography variant='subtitle1' sx={{ paddingBottom: 1, mt: 1 }}>
+                                <Typography variant='subtitle1' >
                                     Advanced Search
                                 </Typography>
                             </Grid>
                             <Grid item>
                                 <ClearButton
                                     onClick={clearAdvancedSearchInputs}
-                                    sx={{ height: '2em', width: '2em', m: 1 }}
+                                    sx={{ height: '2em', width: '2em' }}
                                 />
                             </Grid>
                         </Grid>
-                        <Grid container sx={{ flexGrow: 1 }} spacing={2}>
+                        <Grid container sx={{ flexGrow: 1 }} spacing={1}>
                             <Grid item xs={2.5}>
                                 <TextInput
                                     width={'100%'}
@@ -334,7 +334,7 @@ function Search({
                                 />
                             </Grid>
                         </Grid>
-                        <Grid container sx={{ flexGrow: 1, pt: 3 }} spacing={2}>
+                        <Grid container sx={{ flexGrow: 1, pt: 1 }} spacing={2}>
                             <Grid item xs={2.5}>
                                 <TextInput
                                     width={'100%'}
