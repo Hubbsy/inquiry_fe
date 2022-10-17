@@ -38,32 +38,43 @@ class Affidavits extends React.Component {
         advancedSearchActive: false,
         showLicenseCol: false,
         scrollBarActive: false,
-        windowScroll: 0
+        windowDimensions: {
+            clientHeight: null,
+            windowHeight: null
+        }
     };
 
     componentDidMount() {
-        // detect window height/scrollbar active
-        this.handleDocumentScroll();
-        window.addEventListener('resize', this.handleDocumentScroll);
+        // detect scrollbar active
+        this.handleDocScroll();
+        window.addEventListener('resize', this.handleDocScroll);
     }
 
-    handleDocumentScroll = () => {
+    setDocScroll(activeScroll) {
+        let scrollBarActive = this.state.scrollBarActive;
+        scrollBarActive = activeScroll;
+        this.setState({scrollBarActive});
+    }
+
+    handleDocScroll = () => {
+        let activeScroll = false;
         if (document.body.clientHeight > window.innerHeight) {
-            console.log("!!!!!SCROLL BAR ACTIVE!!!!!")
-            let scrollBarActive = this.state.scrollBarActive;
-            scrollBarActive = true;
-            this.setState({scrollBarActive});
-        }
-        else {
-            let scrollBarActive = this.state.scrollBarActive;
-            scrollBarActive = false;
-            this.setState({scrollBarActive});
+            // console.log("!!!!!SCROLL BAR ACTIVE!!!!!");
+            activeScroll = true;
         }
 
+        this.setWindowDimensions();
+        this.setDocScroll(activeScroll);
     }
+
+    setWindowDimensions = () => {
+        let windowDimensions = this.state.windowDimensions;
+        windowDimensions.clientHeight = document.body.clientHeight;
+        windowDimensions.windowHeight = window.innerHeight;
+        this.setState({windowDimensions});
+    };
 
     handleScrollTo = () => {
-        console.log(window)
         let windowScroll = this.state.windowScroll;
         if (window.scrollY === 0) {
             windowScroll = true;
@@ -76,7 +87,7 @@ class Affidavits extends React.Component {
         this.setState({windowScroll})
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState) {
         if (prevProps.error !== this.props.error && this.props.error !== null) {
             this.setState({
                 applicationErrors: {
@@ -105,15 +116,10 @@ class Affidavits extends React.Component {
             }
         }
 
-        console.log("ACTIVE SCROLL STATE:", this.state.scrollBarActive)
+        if ((prevState.windowDimensions.clientHeight !== this.state.windowDimensions.clientHeight) || (prevState.windowDimensions.clientHeight !== document.body.clientHeight)) {
+            this.handleDocScroll();
+        }
     }
-
-    setWindowHeight = () => {
-        this.setState({
-            windowHeight: window.innerHeight,
-            clientHeight: document.body.clientHeight
-        });
-    };
 
     setCompanyDetails(transaction) {
         return {
@@ -559,7 +565,9 @@ class Affidavits extends React.Component {
     };
 
     toggleAdvancedSearchPanel = () => {
+
         if (!this.state.advancedSearchActive) {
+
             this.setState({
                 advancedSearchActive: true,
                 applicationErrors: {
@@ -574,12 +582,18 @@ class Affidavits extends React.Component {
                     // searchValue: ''
                 }
             });
+
         } else {
             this.checkAdvSearchInputsActive(this.state.advancedSearch);
             this.setState({
                 advancedSearchActive: false
             });
         }
+
+        setTimeout(() => {
+            this.handleDocScroll();
+        }, 500)
+
     };
 
     handleAdvancedSearchInputs = (e) => {
@@ -629,11 +643,6 @@ class Affidavits extends React.Component {
         this.setState({ rows });
     };
 
-    // const rotate = {
-    //     transform: show ? 'rotate(180deg)' : '',
-    //     transition: 'transform 150ms ease' // smooth transition
-    // };
-
     render() {
         return (
             <ErrorBoundary>
@@ -656,6 +665,8 @@ class Affidavits extends React.Component {
                     handleAdvancedKeyPress={this.handleAdvancedKeyPress}
                     handleCloseGeneralError={this.handleCloseGeneralError}
                     clearAdvancedSearchInputs={this.clearAdvancedSearchInputs}
+                    handleDocScroll={this.handleDocScroll}
+                    windowDimensions={this.state.windowDimensions}
                 />
                 <Table
                     setAffidavits={this.setAffidavits}
@@ -683,6 +694,7 @@ class Affidavits extends React.Component {
                                 aria-label='Scroll to Bottom'
                                 size='small'
                                 onClick={this.handleScrollTo}
+                                sx={{backgroundColor: "transparent"}}
 
                             >
                                 {this.state.windowScroll ? <ExpandLess /> : <ExpandMore /> }
