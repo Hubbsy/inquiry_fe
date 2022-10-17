@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { Typography, Paper, Grid, Tooltip, Stack, Collapse, Fab, InputAdornment } from '@mui/material';
 import {
     SearchInput,
@@ -14,7 +14,6 @@ import { Box } from '@mui/system';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import { Clear } from '@mui/icons-material';
-import { useCallback } from 'react';
 
 const TextItem = styled(Box)(({ theme }) => ({
     ...theme.typography.body2,

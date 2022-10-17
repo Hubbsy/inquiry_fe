@@ -38,6 +38,7 @@ class Affidavits extends React.Component {
         advancedSearchActive: false,
         showLicenseCol: false,
         scrollBarActive: false,
+        windowScroll: 0,
         windowDimensions: {
             clientHeight: null,
             windowHeight: null
