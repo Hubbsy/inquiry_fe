@@ -1,5 +1,14 @@
 import React from 'react';
-import { Typography, Paper, Grid, Tooltip, Stack, Collapse, Fab, InputAdornment } from '@mui/material';
+import {
+    Typography,
+    Paper,
+    Grid,
+    Tooltip,
+    Stack,
+    Collapse,
+    Fab,
+    InputAdornment
+} from '@mui/material';
 import {
     SearchInput,
     SearchButton,
@@ -39,9 +48,8 @@ function Search({
     advancedSearch,
     handleAdvancedKeyPress,
     handleCloseGeneralError,
-    clearAdvancedSearchInputs,
+    clearAdvancedSearchInputs
 }) {
-
     return (
         <Paper
             sx={{
@@ -74,11 +82,18 @@ function Search({
                                     ? applicationErrors.message
                                     : null
                             }
-                            disabled={advancedSearchActive || (applicationErrors.active && applicationErrors.type === "SINGLE_SEARCH")}
+                            disabled={
+                                advancedSearchActive ||
+                                (applicationErrors.active &&
+                                    applicationErrors.type === 'SINGLE_SEARCH')
+                            }
                             handleClearInput={() => handleClearInput()}
-
                         />
-                        {applicationErrors.active && applicationErrors.type === "SINGLE_SEARCH" ? <Typography variant="caption" color="info.main">{applicationErrors.active ? applicationErrors.message : ""}</Typography> : null}
+                        {applicationErrors.active && applicationErrors.type === 'SINGLE_SEARCH' ? (
+                            <Typography variant='caption' color='info.main'>
+                                {applicationErrors.active ? applicationErrors.message : ''}
+                            </Typography>
+                        ) : null}
                     </Grid>
                     <Grid item>
                         <DateInput
@@ -158,9 +173,7 @@ function Search({
                     <>
                         <Grid container spacing={2}>
                             <Grid item>
-                                <Typography variant='subtitle1' >
-                                    Advanced Search
-                                </Typography>
+                                <Typography variant='subtitle1'>Advanced Search</Typography>
                             </Grid>
                             <Grid item>
                                 <ClearButton
@@ -193,11 +206,15 @@ function Search({
                                             ? {
                                                   endAdornment: (
                                                       <InputAdornment position='end'>
-                                                          <Tooltip title='clear' placement='top' arrow>
+                                                          <Tooltip
+                                                              title='clear'
+                                                              placement='top'
+                                                              arrow
+                                                          >
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
-                                                                    handleClearInput(
+                                                                      handleClearInput(
                                                                           'AFFIDAVITNUMBER'
                                                                       );
                                                                   }}
@@ -234,11 +251,15 @@ function Search({
                                             ? {
                                                   endAdornment: (
                                                       <InputAdornment position='end'>
-                                                          <Tooltip title='clear' placement='top' arrow>
+                                                          <Tooltip
+                                                              title='clear'
+                                                              placement='top'
+                                                              arrow
+                                                          >
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
-                                                                    handleClearInput(
+                                                                      handleClearInput(
                                                                           'POLICYNUMBER'
                                                                       );
                                                                   }}
@@ -275,13 +296,15 @@ function Search({
                                             ? {
                                                   endAdornment: (
                                                       <InputAdornment position='end'>
-                                                          <Tooltip title='clear' placement='top' arrow>
+                                                          <Tooltip
+                                                              title='clear'
+                                                              placement='top'
+                                                              arrow
+                                                          >
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
-                                                                    handleClearInput(
-                                                                          'BATCH'
-                                                                      );
+                                                                      handleClearInput('BATCH');
                                                                   }}
                                                                   fontSize='x-small'
                                                               />
@@ -316,11 +339,15 @@ function Search({
                                             ? {
                                                   endAdornment: (
                                                       <InputAdornment position='end'>
-                                                          <Tooltip title='clear' placement='top' arrow>
+                                                          <Tooltip
+                                                              title='clear'
+                                                              placement='top'
+                                                              arrow
+                                                          >
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
-                                                                    handleClearInput(
+                                                                      handleClearInput(
                                                                           'INSUREDNAME'
                                                                       );
                                                                   }}
@@ -359,11 +386,15 @@ function Search({
                                             ? {
                                                   endAdornment: (
                                                       <InputAdornment position='end'>
-                                                          <Tooltip title='clear' placement='top' arrow>
+                                                          <Tooltip
+                                                              title='clear'
+                                                              placement='top'
+                                                              arrow
+                                                          >
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
-                                                                    handleClearInput(
+                                                                      handleClearInput(
                                                                           'CONTACTNAME'
                                                                       );
                                                                   }}
@@ -400,11 +431,15 @@ function Search({
                                             ? {
                                                   endAdornment: (
                                                       <InputAdornment position='end'>
-                                                          <Tooltip title='clear' placement='top' arrow>
+                                                          <Tooltip
+                                                              title='clear'
+                                                              placement='top'
+                                                              arrow
+                                                          >
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
-                                                                    handleClearInput(
+                                                                      handleClearInput(
                                                                           'BROKERREFERENCE'
                                                                       );
                                                                   }}
@@ -418,8 +453,18 @@ function Search({
                                     }
                                 />
                             </Grid>
-                            <Grid container item xs={4} sx={{ flexGrow: 1, position: 'relative', flexWrap: 'nowrap', top: "-3px"}}>
-                                <Grid item >
+                            <Grid
+                                container
+                                item
+                                xs={4}
+                                sx={{
+                                    flexGrow: 1,
+                                    position: 'relative',
+                                    flexWrap: 'nowrap',
+                                    top: '-3px'
+                                }}
+                            >
+                                <Grid item>
                                     <CurrencyInput
                                         label={'Premuim From'}
                                         name={'PREMIUMFROM'}
@@ -438,10 +483,13 @@ function Search({
                                                 ? applicationErrors.message
                                                 : null
                                         }
-                                        sx={{" .MuiInputBase-input-MuiInput-input.MuiInputBase-inputAdornedStart": {
-                                            padding: '4px 0 1px',
-                                            backgroundColor: "red"
-                                        }}}
+                                        sx={{
+                                            ' .MuiInputBase-input-MuiInput-input.MuiInputBase-inputAdornedStart':
+                                                {
+                                                    padding: '4px 0 1px',
+                                                    backgroundColor: 'red'
+                                                }
+                                        }}
                                     />
                                 </Grid>
                                 <Grid item>

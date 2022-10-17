@@ -54,7 +54,7 @@ class Affidavits extends React.Component {
     setDocScroll(activeScroll) {
         let scrollBarActive = this.state.scrollBarActive;
         scrollBarActive = activeScroll;
-        this.setState({scrollBarActive});
+        this.setState({ scrollBarActive });
     }
 
     handleDocScroll = () => {
@@ -66,27 +66,26 @@ class Affidavits extends React.Component {
 
         this.setWindowDimensions();
         this.setDocScroll(activeScroll);
-    }
+    };
 
     setWindowDimensions = () => {
         let windowDimensions = this.state.windowDimensions;
         windowDimensions.clientHeight = document.body.clientHeight;
         windowDimensions.windowHeight = window.innerHeight;
-        this.setState({windowDimensions});
+        this.setState({ windowDimensions });
     };
 
     handleScrollTo = () => {
         let windowScroll = this.state.windowScroll;
         if (window.scrollY === 0) {
             windowScroll = true;
-            window.scrollTo({top: document.body.offsetHeight, left: 0, behavior: 'smooth'});
-        }
-        else {
+            window.scrollTo({ top: document.body.offsetHeight, left: 0, behavior: 'smooth' });
+        } else {
             windowScroll = false;
-            window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }
-        this.setState({windowScroll})
-    }
+        this.setState({ windowScroll });
+    };
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.error !== this.props.error && this.props.error !== null) {
@@ -117,7 +116,10 @@ class Affidavits extends React.Component {
             }
         }
 
-        if ((prevState.windowDimensions.clientHeight !== this.state.windowDimensions.clientHeight) || (prevState.windowDimensions.clientHeight !== document.body.clientHeight)) {
+        if (
+            prevState.windowDimensions.clientHeight !== this.state.windowDimensions.clientHeight ||
+            prevState.windowDimensions.clientHeight !== document.body.clientHeight
+        ) {
             this.handleDocScroll();
         }
     }
@@ -517,11 +519,10 @@ class Affidavits extends React.Component {
 
     handleClearInput = (name = null) => {
         if (name) {
-            const advancedSearch = {...this.state.advancedSearch};
+            const advancedSearch = { ...this.state.advancedSearch };
             advancedSearch[name] = '';
             this.setState({ advancedSearch });
-        }
-        else {
+        } else {
             const standardSearch = { ...this.state.standardSearch };
             standardSearch.searchValue = '';
             this.setState({ standardSearch });
@@ -529,9 +530,12 @@ class Affidavits extends React.Component {
     };
 
     handleHelperText = () => {
-        if (this.state.applicationErrors.active && this.state.applicationErrors.type === "SINGLE_SEARCH") {
+        if (
+            this.state.applicationErrors.active &&
+            this.state.applicationErrors.type === 'SINGLE_SEARCH'
+        ) {
             return;
-        };
+        }
 
         this.setState({
             applicationErrors: {
@@ -566,9 +570,7 @@ class Affidavits extends React.Component {
     };
 
     toggleAdvancedSearchPanel = () => {
-
         if (!this.state.advancedSearchActive) {
-
             this.setState({
                 advancedSearchActive: true,
                 applicationErrors: {
@@ -583,7 +585,6 @@ class Affidavits extends React.Component {
                     // searchValue: ''
                 }
             });
-
         } else {
             this.checkAdvSearchInputsActive(this.state.advancedSearch);
             this.setState({
@@ -593,8 +594,7 @@ class Affidavits extends React.Component {
 
         setTimeout(() => {
             this.handleDocScroll();
-        }, 500)
-
+        }, 500);
     };
 
     handleAdvancedSearchInputs = (e) => {
@@ -688,20 +688,21 @@ class Affidavits extends React.Component {
                     title={'Something went wrong'}
                 />
                 {this.state.scrollBarActive ? (
-                    <Grid sx={{position: "fixed", bottom: "22px", left: "30px"}}>
-                        <Tooltip placement='top' title={this.state.windowScroll ? "Scroll to Top" : "Scroll to Bottom"}>
+                    <Grid sx={{ position: 'fixed', bottom: '22px', left: '30px' }}>
+                        <Tooltip
+                            placement='top'
+                            title={this.state.windowScroll ? 'Scroll to Top' : 'Scroll to Bottom'}>
                             <Fab
                                 color='secondary'
                                 aria-label='Scroll to Bottom'
                                 size='small'
                                 onClick={this.handleScrollTo}
-                                sx={{backgroundColor: "transparent"}}
-
-                            >
-                                {this.state.windowScroll ? <ExpandLess /> : <ExpandMore /> }
+                                sx={{ backgroundColor: 'transparent' }}>
+                                {this.state.windowScroll ? <ExpandLess /> : <ExpandMore />}
                             </Fab>
                         </Tooltip>
-                    </Grid>) : null}
+                    </Grid>
+                ) : null}
             </ErrorBoundary>
         );
     }
