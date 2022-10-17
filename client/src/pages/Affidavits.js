@@ -6,6 +6,8 @@ import { getAffidavits } from '../store/actions/affidavits';
 import { Snackbar, ErrorBoundary } from '@aeros-ui/components';
 import isEmpty from '../functions/isEmpty';
 import { format, isBefore, isValid, isAfter, isEqual } from 'date-fns';
+import { Fab, Grid, Tooltip } from '@mui/material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 
 class Affidavits extends React.Component {
     state = {
@@ -34,10 +36,58 @@ class Affidavits extends React.Component {
         },
         adjustPadding: false,
         advancedSearchActive: false,
-        showLicenseCol: false
+        showLicenseCol: false,
+        scrollBarActive: false,
+        windowScroll: 0,
+        windowDimensions: {
+            clientHeight: null,
+            windowHeight: null
+        }
     };
 
-    componentDidUpdate(prevProps) {
+    componentDidMount() {
+        // detect scrollbar active
+        this.handleDocScroll();
+        window.addEventListener('resize', this.handleDocScroll);
+    }
+
+    setDocScroll(activeScroll) {
+        let scrollBarActive = this.state.scrollBarActive;
+        scrollBarActive = activeScroll;
+        this.setState({ scrollBarActive });
+    }
+
+    handleDocScroll = () => {
+        let activeScroll = false;
+        if (document.body.clientHeight > window.innerHeight) {
+            // console.log("!!!!!SCROLL BAR ACTIVE!!!!!");
+            activeScroll = true;
+        }
+
+        this.setWindowDimensions();
+        this.setDocScroll(activeScroll);
+    };
+
+    setWindowDimensions = () => {
+        let windowDimensions = this.state.windowDimensions;
+        windowDimensions.clientHeight = document.body.clientHeight;
+        windowDimensions.windowHeight = window.innerHeight;
+        this.setState({ windowDimensions });
+    };
+
+    handleScrollTo = () => {
+        let windowScroll = this.state.windowScroll;
+        if (window.scrollY === 0) {
+            windowScroll = true;
+            window.scrollTo({ top: document.body.offsetHeight, left: 0, behavior: 'smooth' });
+        } else {
+            windowScroll = false;
+            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        }
+        this.setState({ windowScroll });
+    };
+
+    componentDidUpdate(prevProps, prevState) {
         if (prevProps.error !== this.props.error && this.props.error !== null) {
             this.setState({
                 applicationErrors: {
@@ -65,14 +115,14 @@ class Affidavits extends React.Component {
                 });
             }
         }
-    }
 
-    setWindowHeight = () => {
-        this.setState({
-            windowHeight: window.innerHeight,
-            clientHeight: document.body.clientHeight
-        });
-    };
+        if (
+            prevState.windowDimensions.clientHeight !== this.state.windowDimensions.clientHeight ||
+            prevState.windowDimensions.clientHeight !== document.body.clientHeight
+        ) {
+            this.handleDocScroll();
+        }
+    }
 
     setCompanyDetails(transaction) {
         return {
@@ -469,11 +519,10 @@ class Affidavits extends React.Component {
 
     handleClearInput = (name = null) => {
         if (name) {
-            const advancedSearch = {...this.state.advancedSearch};
+            const advancedSearch = { ...this.state.advancedSearch };
             advancedSearch[name] = '';
             this.setState({ advancedSearch });
-        }
-        else {
+        } else {
             const standardSearch = { ...this.state.standardSearch };
             standardSearch.searchValue = '';
             this.setState({ standardSearch });
@@ -481,9 +530,12 @@ class Affidavits extends React.Component {
     };
 
     handleHelperText = () => {
-        if (this.state.applicationErrors.active && this.state.applicationErrors.type === "SINGLE_SEARCH") {
+        if (
+            this.state.applicationErrors.active &&
+            this.state.applicationErrors.type === 'SINGLE_SEARCH'
+        ) {
             return;
-        };
+        }
 
         this.setState({
             applicationErrors: {
@@ -539,6 +591,10 @@ class Affidavits extends React.Component {
                 advancedSearchActive: false
             });
         }
+
+        setTimeout(() => {
+            this.handleDocScroll();
+        }, 500);
     };
 
     handleAdvancedSearchInputs = (e) => {
@@ -610,6 +666,8 @@ class Affidavits extends React.Component {
                     handleAdvancedKeyPress={this.handleAdvancedKeyPress}
                     handleCloseGeneralError={this.handleCloseGeneralError}
                     clearAdvancedSearchInputs={this.clearAdvancedSearchInputs}
+                    handleDocScroll={this.handleDocScroll}
+                    windowDimensions={this.state.windowDimensions}
                 />
                 <Table
                     setAffidavits={this.setAffidavits}
@@ -629,6 +687,22 @@ class Affidavits extends React.Component {
                     severity={'error'}
                     title={'Something went wrong'}
                 />
+                {this.state.scrollBarActive ? (
+                    <Grid sx={{ position: 'fixed', bottom: '22px', left: '30px' }}>
+                        <Tooltip
+                            placement='top'
+                            title={this.state.windowScroll ? 'Scroll to Top' : 'Scroll to Bottom'}>
+                            <Fab
+                                color='secondary'
+                                aria-label='Scroll to Bottom'
+                                size='small'
+                                onClick={this.handleScrollTo}
+                                sx={{ backgroundColor: 'transparent' }}>
+                                {this.state.windowScroll ? <ExpandLess /> : <ExpandMore />}
+                            </Fab>
+                        </Tooltip>
+                    </Grid>
+                ) : null}
             </ErrorBoundary>
         );
     }

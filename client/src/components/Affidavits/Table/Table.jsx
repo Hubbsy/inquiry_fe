@@ -1,6 +1,20 @@
 import MaterialTable, { MTableCell } from '@material-table/core';
 import NestedTable from './NestedTable';
-import { TablePagination, ThemeProvider, Grid, Typography, Button, Paper, Card, CardHeader, CardContent, List, ListItem, ListItemText, createTheme } from '@mui/material';
+import {
+    TablePagination,
+    ThemeProvider,
+    Grid,
+    Typography,
+    Button,
+    Paper,
+    Card,
+    CardHeader,
+    CardContent,
+    List,
+    ListItem,
+    ListItemText,
+    createTheme
+} from '@mui/material';
 import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme, theme } from '@aeros-ui/themes';
@@ -351,7 +365,19 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                 <MaterialTable
                     title={''}
                     options={options}
-                    columns={columns(handlePopoverOpen, showLicenseCol, id, numberWithCommas,InfoMessage,partAMessageId,partAMessageOpen, partAEl,selectedRow,handleOpenPartAMessage,handleClosePartAMessage)}
+                    columns={columns(
+                        handlePopoverOpen,
+                        showLicenseCol,
+                        id,
+                        numberWithCommas,
+                        InfoMessage,
+                        partAMessageId,
+                        partAMessageOpen,
+                        partAEl,
+                        selectedRow,
+                        handleOpenPartAMessage,
+                        handleClosePartAMessage
+                    )}
                     data={rows}
                     isLoading={loading}
                     icons={TableIcons}

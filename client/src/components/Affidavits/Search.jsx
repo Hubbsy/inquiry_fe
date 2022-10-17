@@ -1,5 +1,14 @@
-import React, { useRef } from 'react';
-import { Typography, Paper, Grid, Tooltip, Stack, Collapse, Fab, InputAdornment } from '@mui/material';
+import React from 'react';
+import {
+    Typography,
+    Paper,
+    Grid,
+    Tooltip,
+    Stack,
+    Collapse,
+    Fab,
+    InputAdornment
+} from '@mui/material';
 import {
     SearchInput,
     SearchButton,
@@ -73,11 +82,18 @@ function Search({
                                     ? applicationErrors.message
                                     : null
                             }
-                            disabled={advancedSearchActive || (applicationErrors.active && applicationErrors.type === "SINGLE_SEARCH")}
+                            disabled={
+                                advancedSearchActive ||
+                                (applicationErrors.active &&
+                                    applicationErrors.type === 'SINGLE_SEARCH')
+                            }
                             handleClearInput={() => handleClearInput()}
-
                         />
-                        {applicationErrors.active && applicationErrors.type === "SINGLE_SEARCH" ? <Typography variant="caption" color="info.main">{applicationErrors.active ? applicationErrors.message : ""}</Typography> : null}
+                        {applicationErrors.active && applicationErrors.type === 'SINGLE_SEARCH' ? (
+                            <Typography variant='caption' color='info.main'>
+                                {applicationErrors.active ? applicationErrors.message : ''}
+                            </Typography>
+                        ) : null}
                     </Grid>
                     <Grid item>
                         <DateInput
@@ -157,18 +173,16 @@ function Search({
                     <>
                         <Grid container spacing={2}>
                             <Grid item>
-                                <Typography variant='subtitle1' sx={{ paddingBottom: 1, mt: 1 }}>
-                                    Advanced Search
-                                </Typography>
+                                <Typography variant='subtitle1'>Advanced Search</Typography>
                             </Grid>
                             <Grid item>
                                 <ClearButton
                                     onClick={clearAdvancedSearchInputs}
-                                    sx={{ height: '2em', width: '2em', m: 1 }}
+                                    sx={{ height: '2em', width: '2em' }}
                                 />
                             </Grid>
                         </Grid>
-                        <Grid container sx={{ flexGrow: 1 }} spacing={2}>
+                        <Grid container sx={{ flexGrow: 1 }} spacing={1}>
                             <Grid item xs={2.5}>
                                 <TextInput
                                     width={'100%'}
@@ -192,11 +206,15 @@ function Search({
                                             ? {
                                                   endAdornment: (
                                                       <InputAdornment position='end'>
-                                                          <Tooltip title='clear' placement='top' arrow>
+                                                          <Tooltip
+                                                              title='clear'
+                                                              placement='top'
+                                                              arrow
+                                                          >
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
-                                                                    handleClearInput(
+                                                                      handleClearInput(
                                                                           'AFFIDAVITNUMBER'
                                                                       );
                                                                   }}
@@ -233,11 +251,15 @@ function Search({
                                             ? {
                                                   endAdornment: (
                                                       <InputAdornment position='end'>
-                                                          <Tooltip title='clear' placement='top' arrow>
+                                                          <Tooltip
+                                                              title='clear'
+                                                              placement='top'
+                                                              arrow
+                                                          >
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
-                                                                    handleClearInput(
+                                                                      handleClearInput(
                                                                           'POLICYNUMBER'
                                                                       );
                                                                   }}
@@ -274,13 +296,15 @@ function Search({
                                             ? {
                                                   endAdornment: (
                                                       <InputAdornment position='end'>
-                                                          <Tooltip title='clear' placement='top' arrow>
+                                                          <Tooltip
+                                                              title='clear'
+                                                              placement='top'
+                                                              arrow
+                                                          >
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
-                                                                    handleClearInput(
-                                                                          'BATCH'
-                                                                      );
+                                                                      handleClearInput('BATCH');
                                                                   }}
                                                                   fontSize='x-small'
                                                               />
@@ -315,11 +339,15 @@ function Search({
                                             ? {
                                                   endAdornment: (
                                                       <InputAdornment position='end'>
-                                                          <Tooltip title='clear' placement='top' arrow>
+                                                          <Tooltip
+                                                              title='clear'
+                                                              placement='top'
+                                                              arrow
+                                                          >
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
-                                                                    handleClearInput(
+                                                                      handleClearInput(
                                                                           'INSUREDNAME'
                                                                       );
                                                                   }}
@@ -334,7 +362,7 @@ function Search({
                                 />
                             </Grid>
                         </Grid>
-                        <Grid container sx={{ flexGrow: 1, pt: 3 }} spacing={2}>
+                        <Grid container sx={{ flexGrow: 1, pt: 1 }} spacing={1}>
                             <Grid item xs={2.5}>
                                 <TextInput
                                     width={'100%'}
@@ -358,11 +386,15 @@ function Search({
                                             ? {
                                                   endAdornment: (
                                                       <InputAdornment position='end'>
-                                                          <Tooltip title='clear' placement='top' arrow>
+                                                          <Tooltip
+                                                              title='clear'
+                                                              placement='top'
+                                                              arrow
+                                                          >
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
-                                                                    handleClearInput(
+                                                                      handleClearInput(
                                                                           'CONTACTNAME'
                                                                       );
                                                                   }}
@@ -399,11 +431,15 @@ function Search({
                                             ? {
                                                   endAdornment: (
                                                       <InputAdornment position='end'>
-                                                          <Tooltip title='clear' placement='top' arrow>
+                                                          <Tooltip
+                                                              title='clear'
+                                                              placement='top'
+                                                              arrow
+                                                          >
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
-                                                                    handleClearInput(
+                                                                      handleClearInput(
                                                                           'BROKERREFERENCE'
                                                                       );
                                                                   }}
@@ -417,80 +453,96 @@ function Search({
                                     }
                                 />
                             </Grid>
-                            <Grid container item xs={4} sx={{ flexGrow: 1, pt: 3, position: 'relative', flexWrap: 'nowrap'}}>
-                            <Grid item>
-                                <CurrencyInput
-                                    label={'Premuim From'}
-                                    name={'PREMIUMFROM'}
-                                    decimalPlaces={0}
-                                    value={advancedSearch.PREMIUMFROM}
-                                    onChange={handleAdvancedSearchInputs}
-                                    error={
-                                        applicationErrors.active &&
-                                        applicationErrors.type === 'PREMIUMS' &&
-                                        applicationErrors.el.pos === 'start'
-                                    }
-                                    helperText={
-                                        applicationErrors.active &&
-                                        applicationErrors.type === 'PREMIUMS' &&
-                                        applicationErrors.el.pos === 'start'
-                                            ? applicationErrors.message
-                                            : null
-                                    }
-                                />
-                            </Grid>
-                            <Grid item>
-                                <TextItem>TO</TextItem>
-                            </Grid>
-                            <Grid item sx={{ mr: 3 }}>
-                                <CurrencyInput
-                                    label={'Premium To'}
-                                    name={'PREMIUMTO'}
-                                    decimalPlaces={0}
-                                    value={advancedSearch.PREMIUMTO}
-                                    onChange={handleAdvancedSearchInputs}
-                                    error={
-                                        applicationErrors.active &&
-                                        applicationErrors.type === 'PREMIUMS' &&
-                                        applicationErrors.el.pos === 'end'
-                                    }
-                                    helperText={
-                                        applicationErrors.active &&
-                                        applicationErrors.type === 'PREMIUMS' &&
-                                        applicationErrors.el.pos === 'end'
-                                            ? applicationErrors.message
-                                            : null
-                                    }
-                                />
-                            </Grid>
                             <Grid
+                                container
                                 item
+                                xs={4}
                                 sx={{
-                                    mr: 3,
-                                    width: '30%',
-                                    position: 'absolute',
-                                    right: '0',
-                                    bottom: '0'
+                                    flexGrow: 1,
+                                    position: 'relative',
+                                    flexWrap: 'nowrap',
+                                    top: '-3px'
                                 }}
                             >
-                                {applicationErrors.active &&
-                                applicationErrors.multipleInputs.length < 1 &&
-                                applicationErrors.type === 'ADVANCED' ? (
-                                    <Alert
-                                        title={'Invalid Search'}
-                                        message={
-                                            applicationErrors.message
-                                                ? applicationErrors.message
-                                                : ''
+                                <Grid item>
+                                    <CurrencyInput
+                                        label={'Premuim From'}
+                                        name={'PREMIUMFROM'}
+                                        decimalPlaces={0}
+                                        value={advancedSearch.PREMIUMFROM}
+                                        onChange={handleAdvancedSearchInputs}
+                                        error={
+                                            applicationErrors.active &&
+                                            applicationErrors.type === 'PREMIUMS' &&
+                                            applicationErrors.el.pos === 'start'
                                         }
-                                        severity={'error'}
-                                        onClick={handleCloseGeneralError}
+                                        helperText={
+                                            applicationErrors.active &&
+                                            applicationErrors.type === 'PREMIUMS' &&
+                                            applicationErrors.el.pos === 'start'
+                                                ? applicationErrors.message
+                                                : null
+                                        }
+                                        sx={{
+                                            ' .MuiInputBase-input-MuiInput-input.MuiInputBase-inputAdornedStart':
+                                                {
+                                                    padding: '4px 0 1px',
+                                                    backgroundColor: 'red'
+                                                }
+                                        }}
                                     />
-                                ) : null}
+                                </Grid>
+                                <Grid item>
+                                    <TextItem>TO</TextItem>
+                                </Grid>
+                                <Grid item sx={{ mr: 3 }}>
+                                    <CurrencyInput
+                                        label={'Premium To'}
+                                        name={'PREMIUMTO'}
+                                        decimalPlaces={0}
+                                        value={advancedSearch.PREMIUMTO}
+                                        onChange={handleAdvancedSearchInputs}
+                                        error={
+                                            applicationErrors.active &&
+                                            applicationErrors.type === 'PREMIUMS' &&
+                                            applicationErrors.el.pos === 'end'
+                                        }
+                                        helperText={
+                                            applicationErrors.active &&
+                                            applicationErrors.type === 'PREMIUMS' &&
+                                            applicationErrors.el.pos === 'end'
+                                                ? applicationErrors.message
+                                                : null
+                                        }
+                                    />
+                                </Grid>
+                                <Grid
+                                    item
+                                    sx={{
+                                        mr: 3,
+                                        width: '30%',
+                                        position: 'absolute',
+                                        right: '0',
+                                        bottom: '0'
+                                    }}
+                                >
+                                    {applicationErrors.active &&
+                                    applicationErrors.multipleInputs.length < 1 &&
+                                    applicationErrors.type === 'ADVANCED' ? (
+                                        <Alert
+                                            title={'Invalid Search'}
+                                            message={
+                                                applicationErrors.message
+                                                    ? applicationErrors.message
+                                                    : ''
+                                            }
+                                            severity={'error'}
+                                            onClick={handleCloseGeneralError}
+                                        />
+                                    ) : null}
+                                </Grid>
                             </Grid>
                         </Grid>
-                        </Grid>
-
                     </>
                 </Collapse>
             </Stack>
