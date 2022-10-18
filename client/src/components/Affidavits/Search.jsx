@@ -466,7 +466,7 @@ function Search({
                             >
                                 <Grid item>
                                     <CurrencyInput
-                                        label={'Premuim From'}
+                                        label={'Premuim'}
                                         name={'PREMIUMFROM'}
                                         decimalPlaces={0}
                                         value={advancedSearch.PREMIUMFROM}
@@ -497,7 +497,7 @@ function Search({
                                 </Grid>
                                 <Grid item sx={{ mr: 3 }}>
                                     <CurrencyInput
-                                        label={'Premium To'}
+                                        label={'Premium'}
                                         name={'PREMIUMTO'}
                                         decimalPlaces={0}
                                         value={advancedSearch.PREMIUMTO}
