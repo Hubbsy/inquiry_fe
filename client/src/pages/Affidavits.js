@@ -593,8 +593,9 @@ class Affidavits extends React.Component {
         }
 
         setTimeout(() => {
-            this.handleDocScroll();
-        }, 500);
+            this.props.handleDocScroll();
+            this.props.updateScroll();
+        }, 1000);
     };
 
     handleAdvancedSearchInputs = (e) => {
@@ -644,6 +645,16 @@ class Affidavits extends React.Component {
         this.setState({ rows });
     };
 
+    handleScrollClick = () => {
+        let windowScroll = this.state.windowScroll;
+        windowScroll = !windowScroll;
+        this.setState({ windowScroll });
+
+        setTimeout(() => {
+            this.props.handleScrollTo();
+        }, 250);
+    };
+
     render() {
         return (
             <ErrorBoundary>
@@ -687,22 +698,26 @@ class Affidavits extends React.Component {
                     severity={'error'}
                     title={'Something went wrong'}
                 />
-                {this.state.scrollBarActive ? (
-                    <Grid sx={{ position: 'fixed', bottom: '22px', left: '30px' }}>
-                        <Tooltip
-                            placement='top'
-                            title={this.state.windowScroll ? 'Scroll to Top' : 'Scroll to Bottom'}>
-                            <Fab
-                                color='secondary'
-                                aria-label='Scroll to Bottom'
-                                size='small'
-                                onClick={this.handleScrollTo}
-                                sx={{ backgroundColor: 'transparent' }}>
-                                {this.state.windowScroll ? <ExpandLess /> : <ExpandMore />}
-                            </Fab>
-                        </Tooltip>
-                    </Grid>
-                ) : null}
+                {this.props.scrollActive
+                    ? (console.log(window.scrollY),
+                      (
+                          <Grid sx={{ position: 'fixed', bottom: '24px', left: '30px' }}>
+                              <Tooltip
+                                  placement='top'
+                                  title={
+                                      this.state.windowScroll ? 'Scroll to Top' : 'Scroll to Bottom'
+                                  }>
+                                  <Fab
+                                      color='secondary'
+                                      aria-label='Scroll to Bottom'
+                                      size='small'
+                                      onClick={this.handleScrollClick}>
+                                      {this.state.windowScroll ? <ExpandLess /> : <ExpandMore />}
+                                  </Fab>
+                              </Tooltip>
+                          </Grid>
+                      ))
+                    : null}
             </ErrorBoundary>
         );
     }

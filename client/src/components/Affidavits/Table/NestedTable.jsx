@@ -149,7 +149,7 @@ const NestedTable = ({ rowData, dense }) => {
                                     : NO_VALUE}
                             </NestedTableCell>
                             <NestedTableCell dense='dense'>
-                                {c.BATCHNO ? c.BATCHNO : NO_VALUE}
+                                {c.BATCHID ? c.BATCHID : NO_VALUE}
                             </NestedTableCell>
                             <NestedTableCell dense='dense'>
                                 {c.RECEIVEDATE
