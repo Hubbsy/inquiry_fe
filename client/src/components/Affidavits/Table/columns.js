@@ -246,7 +246,7 @@ export const columns = (
         // cellStyle: { maxWidth: '11em' },
         render: (rowData) => (
             <MainTableCell style={{ ...ellipsisText }}>
-                {rowData.PARTA_TRANSACTION.BATCHNO}
+                {rowData.PARTA_TRANSACTION.BATCHID}
             </MainTableCell>
         ),
         filterComponent: ({ columnDef, onFilterChanged }) => {
