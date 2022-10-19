@@ -1,4 +1,5 @@
 version: "3.5"
+project_name: "inquiry_fe_prod"
 services:
         app:
                 build:
