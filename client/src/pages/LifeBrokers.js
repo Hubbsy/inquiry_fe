@@ -3,7 +3,7 @@ import Search from '../components/LifeBrokers/Search';
 import Table from '../components/LifeBrokers/Table';
 import { connect } from 'react-redux';
 import { getLifeBrokers } from '../store/actions/brokers';
-import { Snackbar } from '@aeros-ui/components';
+import { ErrorBoundary, Snackbar } from '@aeros-ui/components';
 import isEmpty from '../functions/isEmpty';
 
 class LifeBrokers extends React.Component {
@@ -106,7 +106,7 @@ class LifeBrokers extends React.Component {
 
     render() {
         return (
-            <>
+            <ErrorBoundary>
                 <Search
                     loading={this.props.loading}
                     errorStyle={this.state.errorStyle}
@@ -126,7 +126,7 @@ class LifeBrokers extends React.Component {
                     severity={'error'}
                     title={'Something went wrong'}
                 />
-            </>
+            </ErrorBoundary>
         );
     }
 }
