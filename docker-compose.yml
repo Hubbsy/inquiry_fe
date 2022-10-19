@@ -1,6 +1,6 @@
 version: "3.5"
 services:
-        app:
+        app_dev:
                 build:
                         context: ./
                 image: "inquiry_fe"
