@@ -8,11 +8,14 @@ import ProducingBrokers from './pages/ProducingBrokers';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '@aeros-ui/themes';
 import { PageNotFound, SessionTimeout } from '@aeros-ui/components';
+import withScrollData from './components/HOC/withScrollData';
 import { connect } from 'react-redux';
 import endpointConfig from './store/endpointConfig';
 import { getToken, verifyAuth, setEndpoint, setToken } from './store/actions/session';
 import queryString from 'query-string';
 import isEmpty from './functions/isEmpty';
+
+const AffidavitsWithScrollData = withScrollData(Affidavits);
 
 class App extends Component {
     state = {
@@ -49,12 +52,12 @@ class App extends Component {
                 SECPAYLOAD: {
                     ENV: env,
                     OWNERSECURITYID: 1,
-                    // SECURITYID: 1713,
-                    // BROKERID: 4011,
+                    SECURITYID: 1713,
+                    BROKERID: 4011,
                     // SECURITYID: 1085, //BOR
                     // BROKERID: 2902, //BOR
-                    SECURITYID: 59,
-                    BROKERID: 103,
+                    // SECURITYID: 59,
+                    // BROKERID: 103,
                     USERID: 'RSIDEV',
                     IP: '10.233.51.123'
                 }
@@ -87,7 +90,7 @@ class App extends Component {
             <ThemeProvider theme={theme}>
                 <Routes>
                     <Route path='/inquiry' element={<InquiryOutlet />}>
-                        <Route path='affidavits' element={<Affidavits />} />
+                        <Route path='affidavits' element={<AffidavitsWithScrollData />} />
                         <Route path='declining-companies' element={<DecliningCompanies />} />
                         <Route path='life-brokers' element={<LifeBrokers />} />
                         <Route path='producing-brokers' element={<ProducingBrokers />} />

@@ -152,19 +152,22 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
     const partAMessageOpen = Boolean(partAEl);
     const partAMessageId = partAMessageOpen ? 'partA-message-popover' : undefined;
 
-    const handleOpenPartAMessage = (e, rowData) => {
+    const [brokerNumEl, setBrokerNumMessage] = useState(null);
+    const brokerNumMessageOpen = Boolean(brokerNumEl);
+
+    const handleOpenPartAMessage = (e, rowData, type = null) => {
         const rowCopy = { ...rowData };
         const dataCopy = [...rows];
         dataCopy[rowCopy.tableData.id] = rowCopy;
 
         const anchorPosition = getAnchorPosition(e);
-        setPartAEl(anchorPosition);
 
+        type ? setBrokerNumMessage(anchorPosition) : setPartAEl(anchorPosition);
         setAffidavits(dataCopy);
         setSelectedRow(rowCopy);
     };
 
-    const handleClosePartAMessage = () => {
+    const handleClosePartAMessage = (type = null) => {
         const dataCopy = [...rows];
         if (selectedRow !== null) {
             const rowCopy = { ...selectedRow };
@@ -174,8 +177,8 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
             dataCopy[rowCopy.tableData.id] = rowCopy;
         }
 
+        type ? setBrokerNumMessage(null) : setPartAEl(null);
         setAffidavits(dataCopy);
-        setPartAEl(null);
         setSelectedRow(null);
     };
 
@@ -376,7 +379,9 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                         partAEl,
                         selectedRow,
                         handleOpenPartAMessage,
-                        handleClosePartAMessage
+                        handleClosePartAMessage,
+                        brokerNumEl,
+                        brokerNumMessageOpen
                     )}
                     data={rows}
                     isLoading={loading}

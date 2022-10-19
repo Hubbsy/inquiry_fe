@@ -3,7 +3,7 @@ import Search from '../components/ProducingBrokers/Search';
 import Table from '../components/ProducingBrokers/Table';
 import { connect } from 'react-redux';
 import { getProducingBrokers } from '../store/actions/brokers';
-import { Snackbar } from '@aeros-ui/components';
+import { Snackbar, ErrorBoundary } from '@aeros-ui/components';
 import isEmpty from '../functions/isEmpty';
 
 class ProducingBrokers extends React.Component {
@@ -105,7 +105,7 @@ class ProducingBrokers extends React.Component {
 
     render() {
         return (
-            <>
+            <ErrorBoundary>
                 <Search
                     loading={this.props.loading}
                     errorStyle={this.state.errorStyle}
@@ -125,7 +125,7 @@ class ProducingBrokers extends React.Component {
                     severity={'error'}
                     title={'Something went wrong'}
                 />
-            </>
+            </ErrorBoundary>
         );
     }
 }

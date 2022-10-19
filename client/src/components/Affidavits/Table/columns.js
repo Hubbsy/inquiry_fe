@@ -24,7 +24,9 @@ export const columns = (
     partAEl,
     selectedRow,
     handleOpenPartAMessage,
-    handleClosePartAMessage
+    handleClosePartAMessage,
+    brokerNumEl,
+    brokerNumMessageOpen
 ) => [
     {
         title: 'License No.',
@@ -240,14 +242,56 @@ export const columns = (
     },
     {
         title: 'Batch',
-        field: 'PARTA_TRANSACTION.BATCHNO',
+        field: 'PARTA_TRANSACTION.BATCHID',
         type: 'string',
         width: '100px',
-        // cellStyle: { maxWidth: '11em' },
+        headerStyle: {
+            paddingRight: '50px'
+        },
         render: (rowData) => (
-            <MainTableCell style={{ ...ellipsisText }}>
-                {rowData.PARTA_TRANSACTION.BATCHNO}
-            </MainTableCell>
+            <Grid
+                item
+                container
+                justifyContent='start'
+                alignItems='center'
+                sx={{ flexWrap: 'nowrap' }}>
+                <MainTableCell style={{ ...ellipsisText }}>
+                    {rowData.PARTA_TRANSACTION.BATCHID}
+                </MainTableCell>
+                {rowData.PARTA_TRANSACTION.BATCHNO !== null &&
+                rowData.PARTA_TRANSACTION.BATCHID !==
+                    parseInt(rowData.PARTA_TRANSACTION.BATCHNO) ? (
+                    <IconButton
+                        size='small'
+                        aria-describedby={partAMessageId}
+                        onClick={(e) => {
+                            handleOpenPartAMessage(e, rowData, 'BATCHNO');
+                        }}>
+                        <InfoOutlinedIcon fontSize='small' color='info' />
+                    </IconButton>
+                ) : null}
+                <Popover
+                    id={'BrokerMessagePopover'}
+                    open={brokerNumMessageOpen}
+                    anchorReference='anchorPosition'
+                    anchorPosition={brokerNumEl}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left'
+                    }}
+                    elevation={2}
+                    onClose={() => handleClosePartAMessage('BATCHNO')}>
+                    {selectedRow &&
+                    selectedRow.PARTA_TRANSACTION.BATCHNO !== null &&
+                    selectedRow.PARTA_TRANSACTION.BATCHID !==
+                        parseInt(selectedRow.PARTA_TRANSACTION.BATCHNO) ? (
+                        <InfoMessage
+                            title={'ELANY Batch No.'}
+                            data={selectedRow.PARTA_TRANSACTION.BATCHNO}
+                        />
+                    ) : null}
+                </Popover>
+            </Grid>
         ),
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
