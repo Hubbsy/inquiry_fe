@@ -3,8 +3,8 @@ services:
         app:
                 build:
                         context: ./
-                image: "inquiry_fe"
-                container_name: "inquiry_fe"
+                image: "inquiry_fe_prod"
+                container_name: "inquiry_fe_prod"
                 restart: unless-stopped
                 command: bash -c "node index.js"
                 ports:
