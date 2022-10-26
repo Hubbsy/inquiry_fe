@@ -199,16 +199,18 @@ export const columns = (
                 />
             );
         },
-        render: (rowData) => (
-            <MainTableCell style={{ ...ellipsisText }}>
-                {isValid(new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE))
-                    ? format(
-                          new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE.replace(/-/g, '/')),
-                          'MM/dd/yyyy'
-                      )
-                    : ''}
-            </MainTableCell>
-        ),
+        render: (rowData) => {
+            return (
+                <MainTableCell style={{ ...ellipsisText }}>
+                    {isValid(new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE))
+                        ? format(
+                              new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE.replace(/-/g, '/')),
+                              'MM/dd/yyyy'
+                          )
+                        : ''}
+                </MainTableCell>
+            );
+        },
         customFilterAndSearch: (term, rowData) => {
             let cellDateValue = isValid(new Date(rowData.PARTA_TRANSACTION.EFFECTIVEDATE))
                 ? format(
@@ -321,10 +323,12 @@ export const columns = (
         // cellStyle: { maxWidth: '11em' },
         render: (rowData) => (
             <MainTableCell style={{ ...ellipsisText }}>
-                {format(
-                    new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE.replace(/-/g, '/')),
-                    'MM/dd/yyyy'
-                )}
+                {isValid(new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE))
+                    ? format(
+                          new Date(rowData.PARTA_TRANSACTION.RECEIVEDATE.replace(/-/g, '/')),
+                          'MM/dd/yyyy'
+                      )
+                    : ''}
             </MainTableCell>
         ),
         filterComponent: ({ columnDef, onFilterChanged }) => {
