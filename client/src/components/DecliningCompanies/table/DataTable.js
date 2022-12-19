@@ -31,7 +31,7 @@ const DataTable = ({ rows, loading }) => {
     };
 
     useEffect(() => {
-        if (!isEmpty(rows) && !loading) {
+        if (rows && !loading) {
             setColumnState([...columns([])]);
         }
     }, [rows]);
