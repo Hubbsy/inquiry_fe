@@ -14,6 +14,7 @@ export const options = (theme, ExportCsv, ExportPdf, showFilters, density, rows)
             backgroundColor: theme.palette.grid.main.header,
             padding: '0.7em 2em'
         },
+
         exportMenu: [
             {
                 label: 'Export PDF',
