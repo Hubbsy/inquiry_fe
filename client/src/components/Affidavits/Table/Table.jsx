@@ -304,8 +304,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                     ) : (
                         <ModeEditIcon />
                     )
-                }
-            >
+                }>
                 {currentCompanyDetails.batchView} Affidavit
             </Button>
         </Grid>
@@ -324,6 +323,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         showDetailPanelIcon: true,
         pageSize: 10,
         padding: density,
+        filtering: showFilters,
         showEmptyDataSourceMessage: !loading,
         headerStyle: {
             ...theme.components.headerStyle,
@@ -362,8 +362,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         <div
             style={{
                 margin: '1em'
-            }}
-        >
+            }}>
             <ThemeProvider theme={tableTheme}>
                 <MaterialTable
                     title={''}
@@ -414,8 +413,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                                         paddingLeft: '0px'
                                         // border:'solid 1px blue'
                                     }}
-                                    {...props}
-                                ></MTableCell>
+                                    {...props}></MTableCell>
                             );
                         },
 
