@@ -47,7 +47,7 @@ class App extends Component {
             const endpoint = endpointConfig(env);
             this.props.setEndpoint(endpoint);
             const data = {
-                DEV: 'SARAH',
+                DEV: 'RSI_ADECASTRO',
                 SESSIONTYPE: 'BrokerPortal',
                 SECPAYLOAD: {
                     ENV: env,
@@ -58,7 +58,7 @@ class App extends Component {
                     // BROKERID: 2902, //BOR
                     // SECURITYID: 59,
                     // BROKERID: 103,
-                    USERID: 'RSIDEV',
+                    USERID: 'RSI_ADECASTRO',
                     IP: '10.233.51.123'
                 }
             };

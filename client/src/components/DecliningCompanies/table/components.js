@@ -6,16 +6,13 @@ export const components = (showFilters, handleFilterAction, handleDensityClick) 
         Cell: (props) => {
             return (
                 <MTableCell
-                    style={{
+                    sx={{
                         whiteSpace: 'nowrap',
                         textOverflow: 'ellipsis',
                         overflow: 'hidden'
                     }}
                     {...props}></MTableCell>
             );
-        },
-        Row: (props) => {
-            return <MTableBodyRow id={props.data.id} {...props} />;
         },
         Toolbar: (props) => (
             <TableToolbar

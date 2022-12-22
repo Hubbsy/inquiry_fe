@@ -18,32 +18,12 @@ const DecliningCompanies = ({
     declData,
     declLoading
 }) => {
-    const [rows, setRows] = useState([]);
+    // const [rows, setRows] = useState([]);
     const [showSnackBar, setShowSnackBar] = useState(false);
     const [errorMessage, setErrorMessage] = useState(
         'An error occured while the request was processesing, please try again.'
     );
     const getDeclRan = useRef(false);
-
-    useEffect(() => {
-        if (!token || error) {
-            setErrorMessage(error);
-            setShowSnackBar(true);
-        }
-
-        if (declError) {
-            if (declError === 'DATA') {
-                setShowSnackBar(true);
-            } else {
-                setErrorMessage(declError);
-                setShowSnackBar(true);
-            }
-        }
-        if (compError) {
-            setErrorMessage(compError);
-            setShowSnackBar(true);
-        }
-    }, [error, declError, compError]);
 
     useEffect(() => {
         if (token && getDeclRan.current === false) {
@@ -52,18 +32,25 @@ const DecliningCompanies = ({
             return () => {
                 getDeclRan.current = true;
             };
-        } else if (!token || error) {
+        }
+        if (error) {
+            setErrorMessage(error);
             setShowSnackBar(true);
         }
-    }, [token]);
 
-    useEffect(() => {
-        if (compError) {
-            setShowSnackBar(true);
-        } else if (!compError) {
-            setShowSnackBar(false);
+        if (declError && !declData.length) {
+            if (declError === 'DATA') {
+                setShowSnackBar(true);
+            } else {
+                setShowSnackBar(true);
+                setErrorMessage(declError);
+            }
         }
-    }, [compError]);
+        if (compError) {
+            setErrorMessage(compError);
+            setShowSnackBar(true);
+        }
+    }, [token, error, declError, compError]);
 
     const handleClose = () => {
         setShowSnackBar(false);
@@ -86,36 +73,18 @@ const DecliningCompanies = ({
         }
     };
 
-    useEffect(() => {
-        if (declData.length !== undefined) {
-            setRows(
-                declData.map((company) => ({
-                    id: company.DECLINECOMPID,
-                    naic: company.NAIC,
-                    companyName: company.COMPANYNAME,
-                    domicile: company.DOMICILE,
-                    orgType: handleOrgType(company.ORGTYPE)
-                }))
-            );
-        } else if (declError) {
-            setShowSnackBar(true);
-        }
-    }, [declData.length]);
-
     return (
         <ErrorBoundary>
             <Header organizations={compData} onSearch={handleSearch} loading={declLoading} />
-            <DataTable rows={rows} loading={declLoading} />
+            <DataTable handleOrgType={handleOrgType} compData={compData} />
             <Grid item container xs={2}>
-                {showSnackBar === true ? (
-                    <Snackbar
-                        open={showSnackBar}
-                        handleClose={handleClose}
-                        severity='error'
-                        title='Something went wrong'
-                        message={errorMessage}
-                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}></Snackbar>
-                ) : null}
+                <Snackbar
+                    open={showSnackBar}
+                    handleClose={handleClose}
+                    severity='error'
+                    title='Something went wrong'
+                    message={errorMessage ?? ''}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}></Snackbar>
             </Grid>
         </ErrorBoundary>
     );
