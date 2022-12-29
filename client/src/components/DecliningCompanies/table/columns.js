@@ -1,13 +1,13 @@
 import { MainTableCell, TableFilterInput } from '@aeros-ui/tables';
 
-export const columns = (hiddenList, handleOrgType) => {
+export const columns = (handleOrgType) => {
     return [
         {
             title: 'NAIC',
             field: 'NAIC',
             type: 'string',
             width: '10em',
-            hidden: hiddenList.length ? hiddenList[0] : false,
+            hidden: false,
             render: (rowData) => <MainTableCell>{rowData.NAIC}</MainTableCell>,
             filterComponent: ({ columnDef, onFilterChanged }) => {
                 return (
@@ -22,7 +22,7 @@ export const columns = (hiddenList, handleOrgType) => {
             field: 'COMPANYNAME',
             type: 'string',
             width: '30em',
-            hidden: hiddenList.length ? hiddenList[1] : false,
+            hidden: false,
             render: (rowData) => (
                 <MainTableCell
                     style={{
@@ -47,7 +47,7 @@ export const columns = (hiddenList, handleOrgType) => {
             type: 'string',
             width: '10em',
             defaultFilter: '',
-            hidden: hiddenList.length ? hiddenList[2] : false,
+            hidden: false,
             render: (rowData) => <MainTableCell>{rowData.DOMICILE}</MainTableCell>,
             filterComponent: ({ columnDef, onFilterChanged }) => {
                 return (
@@ -62,7 +62,7 @@ export const columns = (hiddenList, handleOrgType) => {
             field: 'ORGTYPE',
             type: 'string',
             width: '30em',
-            hidden: hiddenList.length ? hiddenList[3] : false,
+            hidden: false,
             render: (rowData) => <MainTableCell>{handleOrgType(rowData.ORGTYPE)}</MainTableCell>,
             filterComponent: ({ columnDef, onFilterChanged }) => {
                 return (

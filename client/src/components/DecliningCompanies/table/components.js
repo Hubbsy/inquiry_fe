@@ -1,5 +1,5 @@
 import { TableToolbar } from '@aeros-ui/tables';
-import { MTableBodyRow, MTableCell } from '@material-table/core';
+import { MTableCell } from '@material-table/core';
 
 export const components = (showFilters, handleFilterAction, handleDensityClick) => {
     return {
