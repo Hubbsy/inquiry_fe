@@ -327,10 +327,9 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         showEmptyDataSourceMessage: !loading,
         headerStyle: {
             ...theme.components.headerStyle,
-            backgroundColor: theme.palette.grid.main.header
-            // border: 'solid red 1px',
-            // display: 'flex',
-            // justifyContent:'center'
+            backgroundColor: theme.palette.grid.main.header,
+            whiteSpace: 'nowrap',
+            padding: 10
         },
         rowStyle: (rowData) => ({
             backgroundColor:
