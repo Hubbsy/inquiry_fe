@@ -6,19 +6,19 @@ import { getDecliningCompanies, getDecliningData } from '../store/actions/declin
 import { useEffect, useRef, useState } from 'react';
 import { Grid } from '@mui/material';
 
-const DecliningCompanies = ({
-    getDecliningCompanies,
-    getDecliningData,
-    endpoint,
-    token,
-    error,
-    compData,
-    compError,
-    declError,
-    declData,
-    declLoading
-}) => {
-    // const [rows, setRows] = useState([]);
+const DecliningCompanies = (props) => {
+    const {
+        getDecliningCompanies,
+        getDecliningData,
+        endpoint,
+        token,
+        error,
+        compData,
+        compError,
+        declError,
+        declData,
+        declLoading
+    } = props;
     const [showSnackBar, setShowSnackBar] = useState(false);
     const [errorMessage, setErrorMessage] = useState(
         'An error occured while the request was processesing, please try again.'
@@ -50,7 +50,7 @@ const DecliningCompanies = ({
             setErrorMessage(compError);
             setShowSnackBar(true);
         }
-    }, [token, error, declError, compError]);
+    }, [token, error, declError, compError, compData]);
 
     const handleClose = () => {
         setShowSnackBar(false);
@@ -65,18 +65,10 @@ const DecliningCompanies = ({
         getDecliningData(endpoint, token, data);
     };
 
-    const handleOrgType = (type) => {
-        for (const comp in compData) {
-            if (type === compData[comp].CODE) {
-                return compData[comp].DESCRIPTION;
-            }
-        }
-    };
-
     return (
         <ErrorBoundary>
             <Header organizations={compData} onSearch={handleSearch} loading={declLoading} />
-            <DataTable handleOrgType={handleOrgType} compData={compData} />
+            <DataTable />
             <Grid item container xs={2}>
                 <Snackbar
                     open={showSnackBar}
@@ -95,7 +87,6 @@ const mapStateToProps = (state) => {
         endpoint: state.session.endpoint,
         token: state.session.auth.token,
         error: state.session.auth.error,
-        compLoading: state.decliningCompanies.companies.loading,
         compData: state.decliningCompanies.companies.data,
         compError: state.decliningCompanies.companies.error,
         declLoading: state.decliningCompanies.decliningData.loading,

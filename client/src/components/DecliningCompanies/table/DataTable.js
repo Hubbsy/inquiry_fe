@@ -9,7 +9,7 @@ import { components } from './components';
 import { connect } from 'react-redux';
 import { useFilter } from '../../../hooks/utility/useFilter';
 
-const DataTable = ({ handleOrgType, declLoading, declData }) => {
+const DataTable = ({ compData, declLoading, declData }) => {
     const [density, setDensity] = useState('dense');
     const { showFilters, handleFilter } = useFilter();
     const [data, setData] = useState([]);
@@ -45,21 +45,34 @@ const DataTable = ({ handleOrgType, declLoading, declData }) => {
         setColumnState(columnsCopy);
     };
 
+    const handleOrgType = (type) => {
+        for (const comp in compData) {
+            if (type === compData[comp].CODE) {
+                return compData[comp].DESCRIPTION;
+            }
+        }
+    };
+
     useEffect(() => {
         if (declData && !declLoading) {
             resetTableState();
             if (JSON.stringify(declData).includes('NODATA')) {
                 setData([]);
             } else {
-                setData(declData);
+                const declDataCopy = [...declData];
+                for (const data of declDataCopy) {
+                    data.ORGTYPE = handleOrgType(data.ORGTYPE);
+                }
+                setData(declDataCopy);
             }
         }
     }, [declData]);
 
-    const [columnState, setColumnState] = useState([...columns(handleOrgType)]);
+    const [columnState, setColumnState] = useState(columns);
 
     return (
         <ThemeProvider theme={tableTheme}>
+            {/* {console.log(compData)} */}
             <MaterialTable
                 title={''}
                 columns={columnState}
@@ -81,7 +94,8 @@ const mapStateToProps = (state) => {
     return {
         declLoading: state.decliningCompanies.decliningData.loading,
         declData: state.decliningCompanies.decliningData.data,
-        declError: state.decliningCompanies.decliningData.error
+        declError: state.decliningCompanies.decliningData.error,
+        compData: state.decliningCompanies.companies.data
     };
 };
 

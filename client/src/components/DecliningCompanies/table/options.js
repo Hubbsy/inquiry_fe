@@ -11,8 +11,9 @@ export const options = (theme, ExportCsv, ExportPdf, showFilters, density, data)
         headerStyle: {
             ...theme.components.headerStyle,
             backgroundColor: theme.palette.grid.main.header,
-            padding: '0.7em 2em'
+            paddingLeft: '1.1em'
         },
+        filterCellStyle: { padding: '0.5em' },
 
         exportMenu: [
             {
