@@ -4,7 +4,7 @@ import { ThemeProvider, Grid, Typography, Button, Paper, Popover } from '@mui/ma
 import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme, theme } from '@aeros-ui/themes';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createRef } from 'react';
 import { Stack } from '@mui/system';
 import { TableIcons, CaratIcon } from '@aeros-ui/icons';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
@@ -17,6 +17,7 @@ import getAnchorPosition from '../../../functions/getAnchorPosition';
 import InfoMessage from './InfoMessage';
 
 export default function Table({ loading, rows, showLicenseCol, setAffidavits }) {
+    const tableRef = createRef();
     const { numberWithCommas } = useProcNum();
     const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
@@ -38,6 +39,8 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
     const [brokerNumEl, setBrokerNumMessage] = useState(null);
     const brokerNumMessageOpen = Boolean(brokerNumEl);
 
+    const [data, setData] = useState([]);
+
     const handleOpenPartAMessage = (e, rowData, type = null) => {
         const rowCopy = { ...rowData };
         const dataCopy = [...rows];
@@ -46,7 +49,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         const anchorPosition = getAnchorPosition(e);
 
         type ? setBrokerNumMessage(anchorPosition) : setPartAEl(anchorPosition);
-        setAffidavits(dataCopy);
+        setData(dataCopy);
         setSelectedRow(rowCopy);
     };
 
@@ -54,14 +57,14 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         const dataCopy = [...rows];
         if (selectedRow !== null) {
             const rowCopy = { ...selectedRow };
-            if (rowCopy.tableData.showDetailPanel) {
-                rowCopy.tableData.showDetailPanel = false;
-            }
+            // if (rowCopy.tableData.showDetailPanel) {
+            //     rowCopy.tableData.showDetailPanel = false;
+            // }
             dataCopy[rowCopy.tableData.id] = rowCopy;
         }
 
         type ? setBrokerNumMessage(null) : setPartAEl(null);
-        setAffidavits(dataCopy);
+        setData(dataCopy);
         setSelectedRow(null);
     };
 
@@ -89,7 +92,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         const anchorPosition = anchorPositionByAnchorEl(e);
         setAnchorEl(anchorPosition);
 
-        setAffidavits(dataCopy);
+        setData(dataCopy);
         setSelectedRow(rowCopy);
     };
 
@@ -103,7 +106,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
             dataCopy[rowCopy.tableData.id] = rowCopy;
         }
 
-        setAffidavits(dataCopy);
+        setData(dataCopy);
         setAnchorEl(null);
         setSelectedRow(null);
     };
@@ -201,7 +204,6 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         cellStyle: theme.typography,
         pageSizeOptions: [10, 25, 50, 100],
         detailPanelType: 'single',
-        // tableLayout:'fixed',
         doubleHorizontalScroll: false,
         showDetailPanelIcon: true,
         pageSize: 10,
@@ -240,6 +242,53 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         );
     };
 
+    useEffect(() => {
+        if (rows && rows.length > 0) {
+            setData(rows);
+            resetTableState();
+        }
+    }, [rows]);
+
+    const [Columns, setColumns] = useState([
+        ...columns(
+            handlePopoverOpen,
+            showLicenseCol,
+            id,
+            numberWithCommas,
+            InfoMessage,
+            partAMessageId,
+            handleOpenPartAMessage
+        )
+    ]);
+
+    const handleFilterAction = () => {
+        tableRef.current.dataManager.searchText = '';
+        setFiltering(!showFilters);
+        const columnsCopy = [...Columns];
+        if (showFilters) {
+            for (const col of columnsCopy) {
+                col.tableData.filterValue = '';
+            }
+            setColumns(columnsCopy);
+        }
+    };
+
+    const resetTableState = () => {
+        showFilters ? setFiltering(false) : null;
+        tableRef && tableRef.current ? (tableRef.current.dataManager.searchText = '') : null;
+        setColumns([
+            ...columns(
+                handlePopoverOpen,
+                showLicenseCol,
+                id,
+                numberWithCommas,
+                InfoMessage,
+                partAMessageId,
+                handleOpenPartAMessage
+            )
+        ]);
+    };
+
     return (
         <div
             style={{
@@ -248,17 +297,10 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
             <ThemeProvider theme={tableTheme}>
                 <MaterialTable
                     title={''}
+                    tableRef={tableRef}
                     options={options}
-                    columns={columns(
-                        handlePopoverOpen,
-                        showLicenseCol,
-                        id,
-                        numberWithCommas,
-                        InfoMessage,
-                        partAMessageId,
-                        handleOpenPartAMessage
-                    )}
-                    data={rows}
+                    columns={Columns}
+                    data={data}
                     isLoading={loading}
                     icons={TableIcons}
                     detailPanel={[
@@ -297,7 +339,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                             <TableToolbar
                                 {...props}
                                 showFilters={showFilters}
-                                onFilterClick={() => setFiltering(!showFilters)}
+                                onFilterClick={handleFilterAction}
                                 onDensityClick={handleDensityClick}
                             />
                         )
