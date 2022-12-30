@@ -54,10 +54,9 @@ function Search({
         <Paper
             sx={{
                 padding: '1em',
-                margin: '1em'
+                margin: '0.5em'
             }}
-            variant={'outlined'}
-        >
+            variant={'outlined'}>
             <Typography variant='h6' sx={{ paddingBottom: 1 }}>
                 Affidavit Inquiry
             </Typography>
@@ -150,8 +149,7 @@ function Search({
                                     color='secondary'
                                     aria-label='hide advanced search'
                                     size='small'
-                                    onClick={toggleAdvancedSearchPanel}
-                                >
+                                    onClick={toggleAdvancedSearchPanel}>
                                     <ExpandLess />
                                 </Fab>
                             </Tooltip>
@@ -161,8 +159,7 @@ function Search({
                                     color='secondary'
                                     aria-label='show advanced search'
                                     size='small'
-                                    onClick={toggleAdvancedSearchPanel}
-                                >
+                                    onClick={toggleAdvancedSearchPanel}>
                                     <ExpandMore />
                                 </Fab>
                             </Tooltip>
@@ -209,8 +206,7 @@ function Search({
                                                           <Tooltip
                                                               title='clear'
                                                               placement='top'
-                                                              arrow
-                                                          >
+                                                              arrow>
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
@@ -254,8 +250,7 @@ function Search({
                                                           <Tooltip
                                                               title='clear'
                                                               placement='top'
-                                                              arrow
-                                                          >
+                                                              arrow>
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
@@ -299,8 +294,7 @@ function Search({
                                                           <Tooltip
                                                               title='clear'
                                                               placement='top'
-                                                              arrow
-                                                          >
+                                                              arrow>
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
@@ -342,8 +336,7 @@ function Search({
                                                           <Tooltip
                                                               title='clear'
                                                               placement='top'
-                                                              arrow
-                                                          >
+                                                              arrow>
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
@@ -389,8 +382,7 @@ function Search({
                                                           <Tooltip
                                                               title='clear'
                                                               placement='top'
-                                                              arrow
-                                                          >
+                                                              arrow>
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
@@ -434,8 +426,7 @@ function Search({
                                                           <Tooltip
                                                               title='clear'
                                                               placement='top'
-                                                              arrow
-                                                          >
+                                                              arrow>
                                                               <Clear
                                                                   sx={{ cursor: 'pointer' }}
                                                                   onClick={() => {
@@ -462,8 +453,7 @@ function Search({
                                     position: 'relative',
                                     flexWrap: 'nowrap',
                                     top: '-3px'
-                                }}
-                            >
+                                }}>
                                 <Grid item>
                                     <CurrencyInput
                                         label={'Premuim'}
@@ -524,8 +514,7 @@ function Search({
                                         position: 'absolute',
                                         right: '0',
                                         bottom: '0'
-                                    }}
-                                >
+                                    }}>
                                     {applicationErrors.active &&
                                     applicationErrors.multipleInputs.length < 1 &&
                                     applicationErrors.type === 'ADVANCED' ? (

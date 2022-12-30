@@ -360,7 +360,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
     return (
         <div
             style={{
-                margin: '1em'
+                margin: '0.5em'
             }}>
             <ThemeProvider theme={tableTheme}>
                 <MaterialTable
