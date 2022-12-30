@@ -157,6 +157,7 @@ const AdvancedSearch = (props) => {
                 </Grid>
                 <Grid item xs={2.5}>
                     <TextInput
+                        inputRef={inputRef2}
                         width={'100%'}
                         value={advancedSearch.POLICYNUMBER}
                         label={'Search by Policy No'}
@@ -183,6 +184,7 @@ const AdvancedSearch = (props) => {
                                                       sx={{ cursor: 'pointer' }}
                                                       onClick={() => {
                                                           handleClearInput('POLICYNUMBER');
+                                                          inputRef2.current.focus();
                                                       }}
                                                       fontSize='x-small'
                                                   />
@@ -196,6 +198,7 @@ const AdvancedSearch = (props) => {
                 </Grid>
                 <Grid item xs={2.5}>
                     <TextInput
+                        inputRef={inputRef3}
                         width={'100%'}
                         value={advancedSearch.BATCH}
                         label={'Search by Batch'}
@@ -222,6 +225,7 @@ const AdvancedSearch = (props) => {
                                                       sx={{ cursor: 'pointer' }}
                                                       onClick={() => {
                                                           handleClearInput('BATCH');
+                                                          inputRef3.current.focus();
                                                       }}
                                                       fontSize='x-small'
                                                   />
@@ -235,6 +239,7 @@ const AdvancedSearch = (props) => {
                 </Grid>
                 <Grid item xs={2.5}>
                     <TextInput
+                        inputRef={inputRef4}
                         width={'100%'}
                         value={advancedSearch.INSUREDNAME}
                         label={'Search by Insured Name'}
@@ -261,6 +266,7 @@ const AdvancedSearch = (props) => {
                                                       sx={{ cursor: 'pointer' }}
                                                       onClick={() => {
                                                           handleClearInput('INSUREDNAME');
+                                                          inputRef4.current.focus();
                                                       }}
                                                       fontSize='x-small'
                                                   />
@@ -276,6 +282,7 @@ const AdvancedSearch = (props) => {
             <Grid container sx={{ flexGrow: 1, pt: 1 }} spacing={1}>
                 <Grid item xs={2.5}>
                     <TextInput
+                        inputRef={inputRef5}
                         width={'100%'}
                         value={advancedSearch.CONTACTNAME}
                         label={'Search by Batch Contact'}
@@ -302,6 +309,7 @@ const AdvancedSearch = (props) => {
                                                       sx={{ cursor: 'pointer' }}
                                                       onClick={() => {
                                                           handleClearInput('CONTACTNAME');
+                                                          inputRef5.current.focus();
                                                       }}
                                                       fontSize='x-small'
                                                   />
@@ -315,6 +323,7 @@ const AdvancedSearch = (props) => {
                 </Grid>
                 <Grid item xs={2.5}>
                     <TextInput
+                        inputRef={inputRef6}
                         width={'100%'}
                         value={advancedSearch.BROKERREFERENCE}
                         label={'Search by Reference'}
@@ -341,6 +350,7 @@ const AdvancedSearch = (props) => {
                                                       sx={{ cursor: 'pointer' }}
                                                       onClick={() => {
                                                           handleClearInput('BROKERREFERENCE');
+                                                          inputRef6.current.focus();
                                                       }}
                                                       fontSize='x-small'
                                                   />
@@ -364,6 +374,7 @@ const AdvancedSearch = (props) => {
                     }}>
                     <Grid item>
                         <CurrencyInput
+                            ref={inputRef7}
                             label={'Premuim'}
                             name={'PREMIUMFROM'}
                             decimalPlaces={0}
@@ -395,6 +406,7 @@ const AdvancedSearch = (props) => {
                     </Grid>
                     <Grid item sx={{ mr: 3 }}>
                         <CurrencyInput
+                            ref={inputRef8}
                             label={'Premium'}
                             name={'PREMIUMTO'}
                             decimalPlaces={0}
