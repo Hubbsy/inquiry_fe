@@ -56,8 +56,6 @@ class App extends Component {
                     // BROKERID: 103,
                     SECURITYID: 1713,
                     BROKERID: 4011,
-                    // SECURITYID: 1713,
-                    // BROKERID: 4011,
                     USERID: process.env.REACT_APP_USER,
                     IP: process.env.REACT_APP_IP
                 }

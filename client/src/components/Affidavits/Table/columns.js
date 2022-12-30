@@ -20,13 +20,7 @@ export const columns = (
     numberWithCommas,
     InfoMessage,
     partAMessageId,
-    partAMessageOpen,
-    partAEl,
-    selectedRow,
-    handleOpenPartAMessage,
-    handleClosePartAMessage,
-    brokerNumEl,
-    brokerNumMessageOpen
+    handleOpenPartAMessage
 ) => [
     {
         title: 'License No.',
@@ -34,6 +28,7 @@ export const columns = (
         type: 'string',
         maxWidth: '100px',
         hidden: !showLicenseCol,
+        hiddenByColumnsButton: !showLicenseCol,
         render: (rowData) => <MainTableCell>{rowData.PARTA_TRANSACTION.LICENSENO}</MainTableCell>,
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
@@ -68,29 +63,6 @@ export const columns = (
                         <InfoOutlinedIcon fontSize='small' color='info' />
                     </IconButton>
                 ) : null}
-                <Popover
-                    id={partAMessageId}
-                    open={partAMessageOpen}
-                    anchorReference='anchorPosition'
-                    anchorPosition={partAEl}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left'
-                    }}
-                    elevation={2}
-                    onClose={() => handleClosePartAMessage()}>
-                    {selectedRow && selectedRow.PARTA_TRANSACTION.PARTAMESSAGE.length > 0
-                        ? selectedRow.PARTA_TRANSACTION.PARTAMESSAGE.map((message, i) => {
-                              return (
-                                  <InfoMessage
-                                      key={`PARTA_TRANSACTION.PARTAMESSAGE_${i}`}
-                                      title={message.MESSAGETYPE}
-                                      data={message.MESSAGE}
-                                  />
-                              );
-                          })
-                        : null}
-                </Popover>
             </Grid>
         ),
         filterComponent: ({ columnDef, onFilterChanged }) => {
@@ -141,9 +113,6 @@ export const columns = (
         field: 'PARTA_TRANSACTION.TRANSACTIONTYPE',
         type: 'string',
         maxWidth: '50px',
-        // headerStyle: {
-        //     paddingRight: '25px'
-        // },
         render: (rowData) => (
             <MainTableCell
                 style={{
@@ -276,27 +245,6 @@ export const columns = (
                         <InfoOutlinedIcon fontSize='small' color='info' />
                     </IconButton>
                 ) : null}
-                <Popover
-                    id={'BrokerMessagePopover'}
-                    open={brokerNumMessageOpen}
-                    anchorReference='anchorPosition'
-                    anchorPosition={brokerNumEl}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left'
-                    }}
-                    elevation={2}
-                    onClose={() => handleClosePartAMessage('BATCHNO')}>
-                    {selectedRow &&
-                    selectedRow.PARTA_TRANSACTION.BATCHNO !== null &&
-                    selectedRow.PARTA_TRANSACTION.BATCHID !==
-                        parseInt(selectedRow.PARTA_TRANSACTION.BATCHNO) ? (
-                        <InfoMessage
-                            title={'ELANY Batch No.'}
-                            data={selectedRow.PARTA_TRANSACTION.BATCHNO}
-                        />
-                    ) : null}
-                </Popover>
             </Grid>
         ),
         filterComponent: ({ columnDef, onFilterChanged }) => {

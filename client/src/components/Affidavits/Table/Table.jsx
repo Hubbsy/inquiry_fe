@@ -1,26 +1,11 @@
 import MaterialTable, { MTableCell } from '@material-table/core';
 import NestedTable from './NestedTable';
-import {
-    TablePagination,
-    ThemeProvider,
-    Grid,
-    Typography,
-    Button,
-    Paper,
-    Card,
-    CardHeader,
-    CardContent,
-    List,
-    ListItem,
-    ListItemText,
-    createTheme
-} from '@mui/material';
+import { ThemeProvider, Grid, Typography, Button, Paper, Popover } from '@mui/material';
 import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme, theme } from '@aeros-ui/themes';
 import { useState, useEffect } from 'react';
 import { Stack } from '@mui/system';
-import InfoIcon from '@mui/icons-material/Info';
 import { TableIcons, CaratIcon } from '@aeros-ui/icons';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
@@ -29,109 +14,7 @@ import isEmpty from '../../../functions/isEmpty';
 import useProcNum from '../../../hooks/utility/useProcNum';
 import getAnchorPosition from '../../../functions/getAnchorPosition';
 
-const messageTheme = createTheme({
-    palette: {
-        primary: {
-            main: '#0097FB',
-            light: '#B8E3FF',
-            dark: '#004B6E'
-        }
-    },
-    typography: {
-        h6: {
-            fontSize: '15px'
-        }
-    },
-    components: {
-        MuiCardHeader: {
-            styleOverrides: {
-                root: {
-                    padding: '0.5em',
-                    borderTopColor: 'transparent'
-                },
-                avatar: {
-                    marginRight: '0.5em'
-                }
-            }
-        },
-        MuiCardContent: {
-            styleOverrides: {
-                root: {
-                    padding: '0.25em',
-                    backgroundColor: 'rgba(0, 226, 208, 0.08)',
-                    '&:last-child': {
-                        paddingBottom: '0.25em'
-                    }
-                }
-            }
-        },
-        MuiCard: {
-            styleOverrides: {
-                root: {
-                    paddingBottom: '0.25em'
-                }
-            }
-        },
-        MuiList: {
-            styleOverrides: {
-                root: {
-                    paddingTop: 0,
-                    paddingBottom: 0
-                }
-            }
-        },
-        MuiListItem: {
-            styleOverrides: {
-                root: {
-                    paddingTop: 0,
-                    paddingBottom: 0
-                }
-            }
-        },
-        MuiPaper: {
-            styleOverrides: {
-                elevation: 4
-            }
-        }
-    }
-});
-
-const InfoMessage = (props) => {
-    return (
-        <ThemeProvider theme={messageTheme}>
-            <Card sx={{ borderRadius: '0px' }}>
-                <CardHeader
-                    title={props.title}
-                    avatar={<InfoIcon color='info' fontSize='small' />}
-                    titleTypographyProps={{ variant: 'h6', color: 'primary.dark' }}
-                />
-                <CardContent>
-                    <List sx={{ width: '100%' }}>
-                        {Array.isArray(props.data) ? (
-                            props.data.map((d, i) => {
-                                return (
-                                    <ListItem key={`info-${i}`}>
-                                        <ListItemText
-                                            primary={d}
-                                            primaryTypographyProps={{ color: 'primary.dark' }}
-                                        />
-                                    </ListItem>
-                                );
-                            })
-                        ) : (
-                            <ListItem>
-                                <ListItemText
-                                    primary={props.data}
-                                    primaryTypographyProps={{ color: 'primary.dark' }}
-                                />
-                            </ListItem>
-                        )}
-                    </List>
-                </CardContent>
-            </Card>
-        </ThemeProvider>
-    );
-};
+import InfoMessage from './InfoMessage';
 
 export default function Table({ loading, rows, showLicenseCol, setAffidavits }) {
     const { numberWithCommas } = useProcNum();
@@ -373,13 +256,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                         numberWithCommas,
                         InfoMessage,
                         partAMessageId,
-                        partAMessageOpen,
-                        partAEl,
-                        selectedRow,
-                        handleOpenPartAMessage,
-                        handleClosePartAMessage,
-                        brokerNumEl,
-                        brokerNumMessageOpen
+                        handleOpenPartAMessage
                     )}
                     data={rows}
                     isLoading={loading}
@@ -442,6 +319,50 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                     content={content}
                     actions={actions}
                 />
+                <Popover
+                    id={partAMessageId}
+                    open={partAMessageOpen}
+                    anchorReference='anchorPosition'
+                    anchorPosition={partAEl}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left'
+                    }}
+                    elevation={2}
+                    onClose={() => handleClosePartAMessage()}>
+                    {selectedRow && selectedRow.PARTA_TRANSACTION.PARTAMESSAGE.length > 0
+                        ? selectedRow.PARTA_TRANSACTION.PARTAMESSAGE.map((message, i) => {
+                              return (
+                                  <InfoMessage
+                                      key={`PARTA_TRANSACTION.PARTAMESSAGE_${i}`}
+                                      title={message.MESSAGETYPE}
+                                      data={message.MESSAGE}
+                                  />
+                              );
+                          })
+                        : null}
+                </Popover>
+                <Popover
+                    id={'BrokerMessagePopover'}
+                    open={brokerNumMessageOpen}
+                    anchorReference='anchorPosition'
+                    anchorPosition={brokerNumEl}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left'
+                    }}
+                    elevation={2}
+                    onClose={() => handleClosePartAMessage('BATCHNO')}>
+                    {selectedRow &&
+                    selectedRow.PARTA_TRANSACTION.BATCHNO !== null &&
+                    selectedRow.PARTA_TRANSACTION.BATCHID !==
+                        parseInt(selectedRow.PARTA_TRANSACTION.BATCHNO) ? (
+                        <InfoMessage
+                            title={'ELANY Batch No.'}
+                            data={selectedRow.PARTA_TRANSACTION.BATCHNO}
+                        />
+                    ) : null}
+                </Popover>
             </ThemeProvider>
         </div>
     );
