@@ -246,6 +246,8 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         if (rows && rows.length > 0) {
             setData(rows);
             resetTableState();
+        } else {
+            setData([]);
         }
     }, [rows]);
 

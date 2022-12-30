@@ -300,6 +300,20 @@ export const columns = (
                 />
             );
         },
+        customFilterAndSearch: (term, rowData) => {
+            const stateList = [
+                { letter: 'P', state: 'processed' },
+                { letter: 'U', state: 'not processed' },
+                { letter: 'S', state: 'suspense' }
+            ];
+            for (const state of stateList) {
+                if (state.letter === rowData.PARTA_TRANSACTION.PROCESSEDSTATE) {
+                    return state
+                        ? state.state.startsWith(term.toLowerCase())
+                        : rowData.PARTA_TRANSACTION.PROCESSEDSTATE.startsWith(term.toLowerCase());
+                }
+            }
+        },
         render: (rowData) => {
             return (
                 <Grid
