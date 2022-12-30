@@ -7,6 +7,8 @@ import { theme } from '@aeros-ui/themes';
 import StateChips from '../../template/StateChips';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
+import { floatToDollarsConverter } from '../../../functions/currencyHelpers';
+
 const ellipsisText = {
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
@@ -138,7 +140,7 @@ export const columns = (
         maxWidth: '75px',
         render: (rowData) => (
             <MainTableCell style={{ ...ellipsisText, paddingRight: '1em' }}>
-                {numberWithCommas(rowData.PARTA_TRANSACTION.AMOUNT)}
+                {floatToDollarsConverter.format(rowData.PARTA_TRANSACTION.AMOUNT)}
             </MainTableCell>
         ),
         filterComponent: ({ columnDef, onFilterChanged }) => {
@@ -148,7 +150,6 @@ export const columns = (
                 />
             );
         },
-        currencySettings: { style: 'currency', currency: 'USD', minimumFractionDigits: 0 },
         customSort: (a, b) =>
             parseFloat(a.PARTA_TRANSACTION.AMOUNT.replace(',', '.')) -
             parseFloat(b.PARTA_TRANSACTION.AMOUNT.replace(',', '.'))
