@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
     Typography,
     Paper,
@@ -50,6 +50,8 @@ function Search({
     handleCloseGeneralError,
     clearAdvancedSearchInputs
 }) {
+    const searchInputRef = useRef();
+
     return (
         <Paper
             sx={{
@@ -64,6 +66,7 @@ function Search({
                 <Grid sx={{ flexGrow: 1, flexWrap: 'nowrap' }} container spacing={0.5}>
                     <Grid item xs={5}>
                         <SearchInput
+                            inputRef={searchInputRef}
                             autoFocus
                             sx={{ mr: 1 }}
                             includeEndAdornment={true}
@@ -86,7 +89,10 @@ function Search({
                                 (applicationErrors.active &&
                                     applicationErrors.type === 'SINGLE_SEARCH')
                             }
-                            handleClearInput={() => handleClearInput()}
+                            handleClearInput={() => {
+                                handleClearInput();
+                                searchInputRef.current.focus();
+                            }}
                         />
                         {applicationErrors.active && applicationErrors.type === 'SINGLE_SEARCH' ? (
                             <Typography variant='caption' color='info.main'>

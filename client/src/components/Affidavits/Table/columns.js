@@ -19,8 +19,6 @@ export const columns = (
     handlePopoverOpen,
     showLicenseCol,
     id,
-    numberWithCommas,
-    InfoMessage,
     partAMessageId,
     handleOpenPartAMessage
 ) => [

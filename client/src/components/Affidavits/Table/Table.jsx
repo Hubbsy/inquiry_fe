@@ -1,6 +1,14 @@
 import MaterialTable, { MTableCell } from '@material-table/core';
 import NestedTable from './NestedTable';
-import { ThemeProvider, Grid, Typography, Button, Paper, Popover } from '@mui/material';
+import {
+    ThemeProvider,
+    Grid,
+    Typography,
+    Button,
+    Paper,
+    Popover,
+    TablePagination
+} from '@mui/material';
 import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme, theme } from '@aeros-ui/themes';
@@ -252,15 +260,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
     }, [rows]);
 
     const [Columns, setColumns] = useState([
-        ...columns(
-            handlePopoverOpen,
-            showLicenseCol,
-            id,
-            numberWithCommas,
-            InfoMessage,
-            partAMessageId,
-            handleOpenPartAMessage
-        )
+        ...columns(handlePopoverOpen, showLicenseCol, id, partAMessageId, handleOpenPartAMessage)
     ]);
 
     const handleFilterAction = () => {
@@ -283,8 +283,6 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                 handlePopoverOpen,
                 showLicenseCol,
                 id,
-                numberWithCommas,
-                InfoMessage,
                 partAMessageId,
                 handleOpenPartAMessage
             )
@@ -344,6 +342,10 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                                 onFilterClick={handleFilterAction}
                                 onDensityClick={handleDensityClick}
                             />
+                        ),
+
+                        Pagination: (props) => (
+                            <TablePagination {...props} page={props.count <= 0 ? 0 : props.page} />
                         )
                     }}
                 />
