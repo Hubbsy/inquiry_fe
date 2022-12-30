@@ -140,8 +140,10 @@ export const columns = (
         title: 'Type',
         field: 'PARTA_TRANSACTION.TRANSACTIONTYPE',
         type: 'string',
-        maxWidth: '10px',
-        align: 'left',
+        maxWidth: '50px',
+        // headerStyle: {
+        //     paddingRight: '25px'
+        // },
         render: (rowData) => (
             <MainTableCell
                 style={{
@@ -164,7 +166,7 @@ export const columns = (
         title: 'Premium',
         field: 'PARTA_TRANSACTION.AMOUNT',
         type: 'currency',
-        maxWidth: '100px',
+        maxWidth: '75px',
         render: (rowData) => (
             <MainTableCell style={{ ...ellipsisText, paddingRight: '1em' }}>
                 {numberWithCommas(rowData.PARTA_TRANSACTION.AMOUNT)}
@@ -252,9 +254,6 @@ export const columns = (
         title: 'Batch',
         field: 'PARTA_TRANSACTION.BATCHID',
         type: 'string',
-        headerStyle: {
-            paddingRight: '50px'
-        },
         render: (rowData) => (
             <Grid
                 item
