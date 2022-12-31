@@ -55,8 +55,7 @@ export const columns = (
                 container
                 justifyContent='start'
                 alignItems='center'
-                sx={{ flexWrap: 'nowrap' }}
-            >
+                sx={{ flexWrap: 'nowrap' }}>
                 <MainTableCell style={{ ...ellipsisText }}>
                     {rowData.PARTA_TRANSACTION.AFFIDAVITNO}
                 </MainTableCell>
@@ -66,8 +65,7 @@ export const columns = (
                         aria-describedby={partAMessageId}
                         onClick={(e) => {
                             handleOpenPartAMessage(e, rowData);
-                        }}
-                    >
+                        }}>
                         <InfoOutlinedIcon fontSize='small' color='info' />
                     </IconButton>
                 ) : null}
@@ -81,8 +79,7 @@ export const columns = (
                         horizontal: 'left'
                     }}
                     elevation={2}
-                    onClose={() => handleClosePartAMessage()}
-                >
+                    onClose={() => handleClosePartAMessage()}>
                     {selectedRow && selectedRow.PARTA_TRANSACTION.PARTAMESSAGE.length > 0
                         ? selectedRow.PARTA_TRANSACTION.PARTAMESSAGE.map((message, i) => {
                               return (
@@ -154,8 +151,7 @@ export const columns = (
                     ...ellipsisText,
                     textAlign: 'center',
                     width: '90%'
-                }}
-            >
+                }}>
                 {rowData.PARTA_TRANSACTION.TRANSACTIONTYPE}
             </MainTableCell>
         ),
@@ -272,8 +268,7 @@ export const columns = (
                 container
                 justifyContent='start'
                 alignItems='center'
-                sx={{ flexWrap: 'nowrap' }}
-            >
+                sx={{ flexWrap: 'nowrap' }}>
                 <MainTableCell style={{ ...ellipsisText }}>
                     {rowData.PARTA_TRANSACTION.BATCHID}
                 </MainTableCell>
@@ -285,8 +280,7 @@ export const columns = (
                         aria-describedby={partAMessageId}
                         onClick={(e) => {
                             handleOpenPartAMessage(e, rowData, 'BATCHNO');
-                        }}
-                    >
+                        }}>
                         <InfoOutlinedIcon fontSize='small' color='info' />
                     </IconButton>
                 ) : null}
@@ -300,8 +294,7 @@ export const columns = (
                         horizontal: 'left'
                     }}
                     elevation={2}
-                    onClose={() => handleClosePartAMessage('BATCHNO')}
-                >
+                    onClose={() => handleClosePartAMessage('BATCHNO')}>
                     {selectedRow &&
                     selectedRow.PARTA_TRANSACTION.BATCHNO !== null &&
                     selectedRow.PARTA_TRANSACTION.BATCHID !==
@@ -391,8 +384,7 @@ export const columns = (
                 <IconButton
                     size='small'
                     onClick={(e) => handlePopoverOpen(e, rowData)}
-                    aria-describedby={id}
-                >
+                    aria-describedby={id}>
                     <MoreVert fontSize='small' />
                 </IconButton>
             );
