@@ -165,7 +165,8 @@ export default function Table({ loading, rows }) {
                                         textOverflow: 'ellipsis',
                                         overflow: 'hidden'
                                     }}
-                                    {...props}></MTableCell>
+                                    {...props}
+                                ></MTableCell>
                             );
                         },
                         Row: (props) => {
