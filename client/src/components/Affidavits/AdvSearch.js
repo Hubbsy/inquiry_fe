@@ -425,7 +425,7 @@ const AdvancedSearch = (props) => {
                             }
                         />
                     </Grid>
-                    <Grid
+                    {/* <Grid
                         item
                         sx={{
                             mr: 3,
@@ -436,7 +436,7 @@ const AdvancedSearch = (props) => {
                         }}>
                         {applicationErrors.active &&
                         applicationErrors.multipleInputs.length < 1 &&
-                        applicationErrors.type === 'ADVANCED' ? (
+                        applicationErrors.type === 'GENERAL' ? (
                             <Alert
                                 title={'Invalid Search'}
                                 message={applicationErrors.message ? applicationErrors.message : ''}
@@ -444,7 +444,7 @@ const AdvancedSearch = (props) => {
                                 onClick={handleCloseGeneralError}
                             />
                         ) : null}
-                    </Grid>
+                    </Grid> */}
                 </Grid>
             </Grid>
         </>

@@ -103,7 +103,7 @@ function Search(props) {
 
         if (e === null) {
             setStartDate(e);
-            return props.resetAppErrors();
+            return resetAppErrors();
         }
 
         if (isValid(e)) {
@@ -126,7 +126,7 @@ function Search(props) {
                     setEndDate(e);
                 }
                 setStartDate(e);
-                props.resetAppErrors();
+                resetAppErrors();
             }
         } else {
             handleErrorMessages('DATES', { type: 'valid', pos: 'start' });
@@ -139,7 +139,7 @@ function Search(props) {
 
         if (e === null) {
             setEndDate(e);
-            return props.resetAppErrors();
+            return resetAppErrors();
         }
 
         if (isValid(e)) {
@@ -174,9 +174,19 @@ function Search(props) {
                 margin: '0.5em'
             }}
             variant={'outlined'}>
-            <Typography variant='h6' sx={{ paddingBottom: 1 }}>
-                Affidavit Inquiry
-            </Typography>
+            <Grid item container alignItems='center'>
+                <Grid item xs={6}>
+                    <Typography variant='h6' gutterBottom>
+                        Affidavit Inquiry
+                    </Typography>
+                </Grid>
+                <Grid item container justifyContent='flex-end' xs={6}>
+                    {props.applicationErrors.active &&
+                    props.applicationErrors.type === 'GENERAL' ? (
+                        <Alert severity='error' message={props.applicationErrors.message} />
+                    ) : null}
+                </Grid>
+            </Grid>
             <Stack>
                 <Grid sx={{ flexGrow: 1, flexWrap: 'nowrap' }} container spacing={0.5}>
                     <Grid item xs={5}>
@@ -188,7 +198,7 @@ function Search(props) {
                             label={'Search by Affidavit No or Policy No...'}
                             onChange={handleChange}
                             onKeyDown={handleKeyDown}
-                            onClick={handleHelperText}
+                            onClick={resetAppErrors}
                             value={comboSearch}
                             name={'COMBOSEARCH'}
                             width={'97%'}
