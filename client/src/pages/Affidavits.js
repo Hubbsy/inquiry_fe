@@ -280,8 +280,6 @@ class Affidavits extends React.Component {
                     advancedSearchActive={this.state.advancedSearchActive}
                     toggleAdvancedSearchPanel={this.toggleAdvancedSearchPanel}
                     checkAdvSearchInputsActive={this.checkAdvSearchInputsActive}
-                    standardSearch={this.state.standardSearch}
-                    advancedSearch={this.state.advancedSearch}
                     handleDocScroll={this.handleDocScroll}
                     windowDimensions={this.state.windowDimensions}
                     handleErrorMessages={this.handleErrorMessages}

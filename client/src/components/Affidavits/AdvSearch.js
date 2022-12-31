@@ -12,7 +12,6 @@ const TextItem = styled(Typography)(({ theme }) => ({
 const AdvancedSearch = (props) => {
     const {
         applicationErrors,
-        handleAdvancedSearchInputs,
         advancedSearch,
         handleClearAdvSearchInput,
         handleSearchInput,

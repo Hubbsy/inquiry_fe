@@ -37,13 +37,9 @@ function Search(props) {
     const {
         loading,
         applicationErrors,
-        handleHelperText,
         advancedSearchActive,
         toggleAdvancedSearchPanel,
         checkAdvSearchInputsActive,
-        standardSearch,
-        handleAdvancedSearchInputs,
-        handleAdvancedKeyPress,
         getAffidavits,
         token,
         endpoint,
@@ -306,7 +302,6 @@ function Search(props) {
                     <AdvancedSearch
                         applicationErrors={applicationErrors}
                         advancedSearch={advancedSearch}
-                        handleAdvancedSearchInputs={handleAdvancedSearchInputs}
                         handleClearAdvSearchInput={handleClearAdvSearchInput}
                         handleSearchInput={handleSearchInput}
                         handleSubmit={handleSubmit}
