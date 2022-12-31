@@ -1,8 +1,7 @@
 import React from 'react';
-import { Typography, Grid, Tooltip, InputAdornment } from '@mui/material';
-import { TextInput, CurrencyInput, Alert, ClearButton } from '@aeros-ui/components';
+import { Typography, Grid } from '@mui/material';
+import { CurrencyInput, ClearButton, ClearableInput, NumberInput } from '@aeros-ui/components';
 import styled from '@emotion/styled';
-import { Clear } from '@mui/icons-material';
 import { useRef } from 'react';
 
 const TextItem = styled(Typography)(({ theme }) => ({
@@ -15,9 +14,13 @@ const AdvancedSearch = (props) => {
         applicationErrors,
         handleAdvancedSearchInputs,
         advancedSearch,
-        handleAdvancedKeyPress,
-        handleClearAdvSearchInput
+        handleClearAdvSearchInput,
+        handleSearchInput,
+        handleSubmit,
+        resetAppErrors,
+        loading
     } = props;
+
     const inputRef1 = useRef();
     const inputRef2 = useRef();
     const inputRef3 = useRef();
@@ -27,76 +30,76 @@ const AdvancedSearch = (props) => {
     const inputRef7 = useRef();
     const inputRef8 = useRef();
 
-    // const handleInputBlur = (e) => {
-    //     if (
-    //         e.target.name === 'PREMIUMFROM' &&
-    //         props.advancedSearch.PREMIUMFROM &&
-    //         !props.advancedSearch.PREMIUMTO
-    //     ) {
-    //         if (props.applicationErrors.active) {
-    //             props.resetAppErrors();
-    //         }
-    //         props.handleSearchInput({
-    //             target: { name: 'PREMIUMTO', value: props.advancedSearch.PREMIUMFROM }
-    //         });
-    //     } else if (
-    //         e.target.name === 'PREMIUMTO' &&
-    //         props.advancedSearch.PREMIUMTO &&
-    //         !props.advancedSearch.PREMIUMFROM
-    //     ) {
-    //         if (props.applicationErrors.active) {
-    //             props.resetAppErrors();
-    //         }
-    //         props.handleSearchInput({
-    //             target: { name: 'PREMIUMFROM', value: props.advancedSearch.PREMIUMTO }
-    //         });
-    //     }
-    // };
+    const handleInputBlur = (e) => {
+        if (
+            e.target.name === 'PREMIUMFROM' &&
+            advancedSearch.PREMIUMFROM &&
+            !advancedSearch.PREMIUMTO
+        ) {
+            if (applicationErrors.active) {
+                resetAppErrors();
+            }
+            handleSearchInput({
+                target: { name: 'PREMIUMTO', value: advancedSearch.PREMIUMFROM }
+            });
+        } else if (
+            e.target.name === 'PREMIUMTO' &&
+            advancedSearch.PREMIUMTO &&
+            !advancedSearch.PREMIUMFROM
+        ) {
+            if (applicationErrors.active) {
+                resetAppErrors();
+            }
+            handleSearchInput({
+                target: { name: 'PREMIUMFROM', value: advancedSearch.PREMIUMTO }
+            });
+        }
+    };
 
-    // const handleInputFocus = (e) => {
-    //     if (
-    //         props.advancedSearch.PREMIUMTO &&
-    //         !props.advancedSearch.PREMIUMFROM &&
-    //         e.target.name === 'PREMIUMFROM'
-    //     ) {
-    //         inputRef7.current.input.select();
-    //     } else if (
-    //         props.advancedSearch.PREMIUMFROM &&
-    //         !props.advancedSearch.PREMIUMTO &&
-    //         e.target.name === 'PREMIUMTO'
-    //     ) {
-    //         inputRef8.current.input.select();
-    //     } else if (e.target.name === 'BATCH') {
-    //         inputRef3.current.input.select();
-    //     }
-    // };
+    const handleInputFocus = (e) => {
+        if (
+            advancedSearch.PREMIUMTO &&
+            !advancedSearch.PREMIUMFROM &&
+            e.target.name === 'PREMIUMFROM'
+        ) {
+            inputRef7.current.input.select();
+        } else if (
+            advancedSearch.PREMIUMFROM &&
+            !advancedSearch.PREMIUMTO &&
+            e.target.name === 'PREMIUMTO'
+        ) {
+            inputRef8.current.input.select();
+        } else if (e.target.name === 'BATCH') {
+            inputRef3.current.input.select();
+        }
+    };
 
-    // const handleKeyDown = (e) => {
-    //     if (props.applicationErrors.active) {
-    //         props.resetAppErrors();
-    //     }
-    //     const key = e.key.toLowerCase();
-    //     if (key === 'enter') {
-    //         props.handleSubmit();
-    //     } else if (key === 'backspace' && !e.target.innerText) {
-    //         if (e.target.name === 'PREMIUMFROM') {
-    //             props.handleSearchInput({
-    //                 target: { name: 'PREMIUMFROM', value: '' }
-    //             });
-    //         } else if (e.target.name === 'PREMIUMTO') {
-    //             props.handleSearchInput({
-    //                 target: { name: 'PREMIUMTO', value: '' }
-    //             });
-    //         }
-    //     }
-    // };
+    const handleKeyDown = (e) => {
+        if (applicationErrors.active) {
+            resetAppErrors();
+        }
+        const key = e.key.toLowerCase();
+        if (key === 'enter' && !loading) {
+            handleSubmit();
+        } else if (key === 'backspace' && !e.target.innerText) {
+            if (e.target.name === 'PREMIUMFROM') {
+                handleSearchInput({
+                    target: { name: 'PREMIUMFROM', value: '' }
+                });
+            } else if (e.target.name === 'PREMIUMTO') {
+                handleSearchInput({
+                    target: { name: 'PREMIUMTO', value: '' }
+                });
+            }
+        }
+    };
 
-    // const handleChange = (e) => {
-    //     if (props.applicationErrors.active) {
-    //         props.resetAppErrors();
-    //     }
-    //     props.handleSearchInput(e);
-    // };
+    const handleChange = (e) => {
+        if (applicationErrors.active) {
+            resetAppErrors();
+        }
+        handleSearchInput(e);
+    };
 
     return (
         <>
@@ -113,14 +116,18 @@ const AdvancedSearch = (props) => {
             </Grid>
             <Grid container sx={{ flexGrow: 1 }} spacing={1}>
                 <Grid item xs={2.5}>
-                    <TextInput
-                        inputRef={inputRef1}
+                    <ClearableInput
                         width={'100%'}
+                        inputRef={inputRef1}
                         value={advancedSearch.AFFIDAVITNUMBER}
                         label={'Search by Affidavit No'}
                         name={'AFFIDAVITNUMBER'}
-                        onChange={handleAdvancedSearchInputs}
-                        onKeyPress={handleAdvancedKeyPress}
+                        onChange={handleChange}
+                        onKeyPress={handleKeyDown}
+                        handleClearInput={(e) => {
+                            handleClearAdvSearchInput(e, 'AFFIDAVITNUMBER');
+                            inputRef1.current.focus();
+                        }}
                         error={
                             applicationErrors.active &&
                             applicationErrors.multipleInputs.includes('AFFIDAVITNUMBER')
@@ -131,37 +138,21 @@ const AdvancedSearch = (props) => {
                                 ? applicationErrors.message
                                 : null
                         }
-                        InputProps={
-                            advancedSearch.AFFIDAVITNUMBER.length > 0
-                                ? {
-                                      endAdornment: (
-                                          <InputAdornment position='end'>
-                                              <Tooltip title='clear' placement='top' arrow>
-                                                  <Clear
-                                                      sx={{ cursor: 'pointer' }}
-                                                      onClick={() => {
-                                                          handleClearInput('AFFIDAVITNUMBER');
-                                                          inputRef1.current.focus();
-                                                      }}
-                                                      fontSize='x-small'
-                                                  />
-                                              </Tooltip>
-                                          </InputAdornment>
-                                      )
-                                  }
-                                : {}
-                        }
                     />
                 </Grid>
                 <Grid item xs={2.5}>
-                    <TextInput
-                        inputRef={inputRef2}
+                    <ClearableInput
                         width={'100%'}
+                        inputRef={inputRef2}
                         value={advancedSearch.POLICYNUMBER}
                         label={'Search by Policy No'}
                         name={'POLICYNUMBER'}
-                        onChange={handleAdvancedSearchInputs}
-                        onKeyPress={handleAdvancedKeyPress}
+                        onChange={handleChange}
+                        onKeyPress={handleKeyDown}
+                        handleClearInput={(e) => {
+                            handleClearAdvSearchInput(e, 'POLICYNUMBER');
+                            inputRef2.current.focus();
+                        }}
                         error={
                             applicationErrors.active &&
                             applicationErrors.multipleInputs.includes('POLICYNUMBER')
@@ -172,37 +163,22 @@ const AdvancedSearch = (props) => {
                                 ? applicationErrors.message
                                 : null
                         }
-                        InputProps={
-                            advancedSearch.POLICYNUMBER.length > 0
-                                ? {
-                                      endAdornment: (
-                                          <InputAdornment position='end'>
-                                              <Tooltip title='clear' placement='top' arrow>
-                                                  <Clear
-                                                      sx={{ cursor: 'pointer' }}
-                                                      onClick={() => {
-                                                          handleClearInput('POLICYNUMBER');
-                                                          inputRef2.current.focus();
-                                                      }}
-                                                      fontSize='x-small'
-                                                  />
-                                              </Tooltip>
-                                          </InputAdornment>
-                                      )
-                                  }
-                                : {}
-                        }
                     />
                 </Grid>
                 <Grid item xs={2.5}>
-                    <TextInput
-                        inputRef={inputRef3}
-                        width={'100%'}
-                        value={advancedSearch.BATCH}
+                    <NumberInput
                         label={'Search by Batch'}
                         name={'BATCH'}
-                        onChange={handleAdvancedSearchInputs}
-                        onKeyPress={handleAdvancedKeyPress}
+                        ref={inputRef3}
+                        decimalPlaces={0}
+                        value={advancedSearch.BATCH}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyDown}
+                        width={'100%'}
+                        handleClearInput={(e) => {
+                            handleClearAdvSearchInput(e, 'BATCH');
+                            inputRef3.current ? inputRef3.current.input.focus() : null;
+                        }}
                         error={
                             applicationErrors.active &&
                             applicationErrors.multipleInputs.includes('BATCH')
@@ -213,37 +189,25 @@ const AdvancedSearch = (props) => {
                                 ? applicationErrors.message
                                 : null
                         }
-                        InputProps={
-                            advancedSearch.BATCH.length > 0
-                                ? {
-                                      endAdornment: (
-                                          <InputAdornment position='end'>
-                                              <Tooltip title='clear' placement='top' arrow>
-                                                  <Clear
-                                                      sx={{ cursor: 'pointer' }}
-                                                      onClick={() => {
-                                                          handleClearInput('BATCH');
-                                                          inputRef3.current.focus();
-                                                      }}
-                                                      fontSize='x-small'
-                                                  />
-                                              </Tooltip>
-                                          </InputAdornment>
-                                      )
-                                  }
-                                : {}
-                        }
+                        inputProps={{
+                            onFocus: handleInputFocus,
+                            sx: { pt: 0.15 }
+                        }}
                     />
                 </Grid>
                 <Grid item xs={2.5}>
-                    <TextInput
-                        inputRef={inputRef4}
+                    <ClearableInput
                         width={'100%'}
+                        inputRef={inputRef4}
                         value={advancedSearch.INSUREDNAME}
                         label={'Search by Insured Name'}
                         name={'INSUREDNAME'}
-                        onChange={handleAdvancedSearchInputs}
-                        onKeyPress={handleAdvancedKeyPress}
+                        onChange={handleChange}
+                        onKeyPress={handleKeyDown}
+                        handleClearInput={(e) => {
+                            handleClearAdvSearchInput(e, 'INSUREDNAME');
+                            inputRef4.current.focus();
+                        }}
                         error={
                             applicationErrors.active &&
                             applicationErrors.multipleInputs.includes('INSUREDNAME')
@@ -253,40 +217,24 @@ const AdvancedSearch = (props) => {
                             applicationErrors.multipleInputs.includes('INSUREDNAME')
                                 ? applicationErrors.message
                                 : null
-                        }
-                        InputProps={
-                            advancedSearch.INSUREDNAME.length > 0
-                                ? {
-                                      endAdornment: (
-                                          <InputAdornment position='end'>
-                                              <Tooltip title='clear' placement='top' arrow>
-                                                  <Clear
-                                                      sx={{ cursor: 'pointer' }}
-                                                      onClick={() => {
-                                                          handleClearInput('INSUREDNAME');
-                                                          inputRef4.current.focus();
-                                                      }}
-                                                      fontSize='x-small'
-                                                  />
-                                              </Tooltip>
-                                          </InputAdornment>
-                                      )
-                                  }
-                                : {}
                         }
                     />
                 </Grid>
             </Grid>
             <Grid container sx={{ flexGrow: 1, pt: 1 }} spacing={1}>
                 <Grid item xs={2.5}>
-                    <TextInput
-                        inputRef={inputRef5}
+                    <ClearableInput
                         width={'100%'}
+                        inputRef={inputRef5}
                         value={advancedSearch.CONTACTNAME}
                         label={'Search by Batch Contact'}
                         name={'CONTACTNAME'}
-                        onChange={handleAdvancedSearchInputs}
-                        onKeyPress={handleAdvancedKeyPress}
+                        onChange={handleChange}
+                        onKeyPress={handleKeyDown}
+                        handleClearInput={(e) => {
+                            handleClearAdvSearchInput(e, 'CONTACTNAME');
+                            inputRef5.current.focus();
+                        }}
                         error={
                             applicationErrors.active &&
                             applicationErrors.multipleInputs.includes('CONTACTNAME')
@@ -296,38 +244,22 @@ const AdvancedSearch = (props) => {
                             applicationErrors.multipleInputs.includes('CONTACTNAME')
                                 ? applicationErrors.message
                                 : null
-                        }
-                        InputProps={
-                            advancedSearch.CONTACTNAME.length > 0
-                                ? {
-                                      endAdornment: (
-                                          <InputAdornment position='end'>
-                                              <Tooltip title='clear' placement='top' arrow>
-                                                  <Clear
-                                                      sx={{ cursor: 'pointer' }}
-                                                      onClick={() => {
-                                                          handleClearInput('CONTACTNAME');
-                                                          inputRef5.current.focus();
-                                                      }}
-                                                      fontSize='x-small'
-                                                  />
-                                              </Tooltip>
-                                          </InputAdornment>
-                                      )
-                                  }
-                                : {}
                         }
                     />
                 </Grid>
                 <Grid item xs={2.5}>
-                    <TextInput
-                        inputRef={inputRef6}
+                    <ClearableInput
                         width={'100%'}
+                        inputRef={inputRef6}
                         value={advancedSearch.BROKERREFERENCE}
                         label={'Search by Reference'}
                         name={'BROKERREFERENCE'}
-                        onChange={handleAdvancedSearchInputs}
-                        onKeyPress={handleAdvancedKeyPress}
+                        onChange={handleChange}
+                        onKeyPress={handleKeyDown}
+                        handleClearInput={(e) => {
+                            handleClearAdvSearchInput(e, 'BROKERREFERENCE');
+                            inputRef6.current.focus();
+                        }}
                         error={
                             applicationErrors.active &&
                             applicationErrors.multipleInputs.includes('BROKERREFERENCE')
@@ -337,26 +269,6 @@ const AdvancedSearch = (props) => {
                             applicationErrors.multipleInputs.includes('BROKERREFERENCE')
                                 ? applicationErrors.message
                                 : null
-                        }
-                        InputProps={
-                            advancedSearch.BROKERREFERENCE.length > 0
-                                ? {
-                                      endAdornment: (
-                                          <InputAdornment position='end'>
-                                              <Tooltip title='clear' placement='top' arrow>
-                                                  <Clear
-                                                      sx={{ cursor: 'pointer' }}
-                                                      onClick={() => {
-                                                          handleClearInput('BROKERREFERENCE');
-                                                          inputRef6.current.focus();
-                                                      }}
-                                                      fontSize='x-small'
-                                                  />
-                                              </Tooltip>
-                                          </InputAdornment>
-                                      )
-                                  }
-                                : {}
                         }
                     />
                 </Grid>
@@ -372,12 +284,13 @@ const AdvancedSearch = (props) => {
                     }}>
                     <Grid item>
                         <CurrencyInput
-                            ref={inputRef7}
                             label={'Premuim'}
                             name={'PREMIUMFROM'}
+                            ref={inputRef7}
                             decimalPlaces={0}
                             value={advancedSearch.PREMIUMFROM}
-                            onChange={handleAdvancedSearchInputs}
+                            onChange={handleChange}
+                            onKeyDown={handleKeyDown}
                             error={
                                 applicationErrors.active &&
                                 applicationErrors.type === 'PREMIUMS' &&
@@ -390,12 +303,9 @@ const AdvancedSearch = (props) => {
                                     ? applicationErrors.message
                                     : null
                             }
-                            sx={{
-                                ' .MuiInputBase-input-MuiInput-input.MuiInputBase-inputAdornedStart':
-                                    {
-                                        padding: '4px 0 1px',
-                                        backgroundColor: 'red'
-                                    }
+                            inputProps={{
+                                onBlur: handleInputBlur,
+                                onFocus: handleInputFocus
                             }}
                         />
                     </Grid>
@@ -404,12 +314,13 @@ const AdvancedSearch = (props) => {
                     </Grid>
                     <Grid item sx={{ mr: 3 }}>
                         <CurrencyInput
-                            ref={inputRef8}
                             label={'Premium'}
                             name={'PREMIUMTO'}
+                            ref={inputRef8}
                             decimalPlaces={0}
                             value={advancedSearch.PREMIUMTO}
-                            onChange={handleAdvancedSearchInputs}
+                            onChange={handleChange}
+                            onKeyDown={handleKeyDown}
                             error={
                                 applicationErrors.active &&
                                 applicationErrors.type === 'PREMIUMS' &&
@@ -422,6 +333,10 @@ const AdvancedSearch = (props) => {
                                     ? applicationErrors.message
                                     : null
                             }
+                            inputProps={{
+                                onBlur: handleInputBlur,
+                                onFocus: handleInputFocus
+                            }}
                         />
                     </Grid>
                 </Grid>

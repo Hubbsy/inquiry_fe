@@ -84,7 +84,7 @@ function Search(props) {
     );
 
     const handleKeyDown = (e) => {
-        if (e.key.toLowerCase() === 'enter') {
+        if (e.key.toLowerCase() === 'enter' && !loading) {
             handleSubmit();
         }
     };
@@ -307,8 +307,11 @@ function Search(props) {
                         applicationErrors={applicationErrors}
                         advancedSearch={advancedSearch}
                         handleAdvancedSearchInputs={handleAdvancedSearchInputs}
-                        handleAdvancedKeyPress={handleAdvancedKeyPress}
                         handleClearAdvSearchInput={handleClearAdvSearchInput}
+                        handleSearchInput={handleSearchInput}
+                        handleSubmit={handleSubmit}
+                        resetAppErrors={resetAppErrors}
+                        loading={loading}
                     />
                 </Collapse>
             </Stack>

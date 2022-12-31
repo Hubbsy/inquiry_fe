@@ -41,7 +41,7 @@ const useFormCtrl = (
         setAdvancedSearch(advSearchBase);
     };
 
-    const handleClearAdvSearchInput = (name) => {
+    const handleClearAdvSearchInput = (e, name) => {
         setAdvancedSearch({
             ...advancedSearch,
             [name]: ''
