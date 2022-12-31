@@ -13,12 +13,11 @@ const TextItem = styled(Typography)(({ theme }) => ({
 const AdvancedSearch = (props) => {
     const {
         applicationErrors,
-        handleClearInput,
         handleAdvancedSearchInputs,
         advancedSearch,
         handleAdvancedKeyPress,
         handleCloseGeneralError,
-        clearAdvancedSearchInputs
+        handleClearAdvSearchInput
     } = props;
     const inputRef1 = useRef();
     const inputRef2 = useRef();
@@ -108,7 +107,7 @@ const AdvancedSearch = (props) => {
                 </Grid>
                 <Grid item>
                     <ClearButton
-                        onClick={clearAdvancedSearchInputs}
+                        onClick={handleClearAdvSearchInput}
                         sx={{ height: '2em', width: '2em' }}
                     />
                 </Grid>

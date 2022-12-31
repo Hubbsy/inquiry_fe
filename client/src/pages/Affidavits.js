@@ -149,50 +149,50 @@ class Affidavits extends React.Component {
         });
     };
 
-    executeSearch = () => {
-        const data = {
-            COMBOSEARCH: this.state.advancedSearchActive
-                ? ''
-                : this.state.standardSearch.searchValue,
-            AFFIDAVITNUMBER: this.state.advancedSearchActive
-                ? this.state.advancedSearch.AFFIDAVITNUMBER
-                : '',
-            POLICYNUMBER: this.state.advancedSearchActive
-                ? this.state.advancedSearch.POLICYNUMBER
-                : '',
-            INSUREDNAME: this.state.advancedSearchActive
-                ? this.state.advancedSearch.INSUREDNAME
-                : '',
-            INCEPTIONFROM: isValid(this.state.standardSearch.INCEPTIONFROM)
-                ? format(new Date(this.state.standardSearch.INCEPTIONFROM), 'MM/dd/yyyy')
-                : '',
-            INCEPTIONTO: isValid(this.state.standardSearch.INCEPTIONTO)
-                ? format(new Date(this.state.standardSearch.INCEPTIONTO), 'MM/dd/yyyy')
-                : '',
-            CONTACTNAME: this.state.advancedSearchActive
-                ? this.state.advancedSearch.CONTACTNAME
-                : '',
-            BROKERREFERENCE: this.state.advancedSearchActive
-                ? this.state.advancedSearch.BROKERREFERENCE
-                : '',
-            BATCH: this.state.advancedSearchActive ? this.state.advancedSearch.BATCH : '',
-            PREMIUMFROM: this.state.advancedSearchActive
-                ? this.state.advancedSearch.PREMIUMFROM
-                : '',
-            PREMIUMTO: this.state.advancedSearchActive ? this.state.advancedSearch.PREMIUMTO : ''
-        };
+    // executeSearch = () => {
+    //     const data = {
+    //         COMBOSEARCH: this.state.advancedSearchActive
+    //             ? ''
+    //             : this.state.standardSearch.searchValue,
+    //         AFFIDAVITNUMBER: this.state.advancedSearchActive
+    //             ? this.state.advancedSearch.AFFIDAVITNUMBER
+    //             : '',
+    //         POLICYNUMBER: this.state.advancedSearchActive
+    //             ? this.state.advancedSearch.POLICYNUMBER
+    //             : '',
+    //         INSUREDNAME: this.state.advancedSearchActive
+    //             ? this.state.advancedSearch.INSUREDNAME
+    //             : '',
+    //         INCEPTIONFROM: isValid(this.state.standardSearch.INCEPTIONFROM)
+    //             ? format(new Date(this.state.standardSearch.INCEPTIONFROM), 'MM/dd/yyyy')
+    //             : '',
+    //         INCEPTIONTO: isValid(this.state.standardSearch.INCEPTIONTO)
+    //             ? format(new Date(this.state.standardSearch.INCEPTIONTO), 'MM/dd/yyyy')
+    //             : '',
+    //         CONTACTNAME: this.state.advancedSearchActive
+    //             ? this.state.advancedSearch.CONTACTNAME
+    //             : '',
+    //         BROKERREFERENCE: this.state.advancedSearchActive
+    //             ? this.state.advancedSearch.BROKERREFERENCE
+    //             : '',
+    //         BATCH: this.state.advancedSearchActive ? this.state.advancedSearch.BATCH : '',
+    //         PREMIUMFROM: this.state.advancedSearchActive
+    //             ? this.state.advancedSearch.PREMIUMFROM
+    //             : '',
+    //         PREMIUMTO: this.state.advancedSearchActive ? this.state.advancedSearch.PREMIUMTO : ''
+    //     };
 
-        if (this.checkValidSearchParams() && !this.state.applicationErrors.active) {
-            this.props.getAffidavits(
-                this.props.endpoint,
-                this.props.token,
-                // window.localStorage.getItem('TOKEN')
-                //     ? window.localStorage.getItem('TOKEN')
-                //     : this.props.token,
-                data
-            );
-        }
-    };
+    //     if (this.checkValidSearchParams() && !this.state.applicationErrors.active) {
+    //         this.props.getAffidavits(
+    //             this.props.endpoint,
+    //             this.props.token,
+    //             // window.localStorage.getItem('TOKEN')
+    //             //     ? window.localStorage.getItem('TOKEN')
+    //             //     : this.props.token,
+    //             data
+    //         );
+    //     }
+    // };
 
     checkValidSearchParams = () => {
         let validSearch = true;
@@ -312,12 +312,16 @@ class Affidavits extends React.Component {
                 name: 'ADVANCED',
                 messages: {
                     single: 'Must be at least 3 characters',
-                    group: 'At least one input is required'
+                    group: 'At least one input or Inception Date range is required for the search'
                 }
             },
-            STANDARD: {
-                name: 'STANDARD',
+            COMBOSEARCH: {
+                name: 'COMBOSEARCH',
                 message: 'Must be at least 3 characters'
+            },
+            GENERAL: {
+                name: 'GENERAL',
+                message: 'At least one input or Inception Date range is required for the search'
             },
             DATES: {
                 name: 'DATES',
@@ -352,7 +356,9 @@ class Affidavits extends React.Component {
 
         let currentErrorMessage = '';
         if (errorTypes.hasOwnProperty(type)) {
-            if (type === 'STANDARD') {
+            if (type === 'COMBOSEARCH') {
+                currentErrorMessage = errorTypes[type].message;
+            } else if (type === 'GENERAL') {
                 currentErrorMessage = errorTypes[type].message;
             } else if (type === 'DATES') {
                 currentErrorMessage = errorTypes[type].messages[el.type][el.pos];
@@ -364,7 +370,7 @@ class Affidavits extends React.Component {
                 currentErrorMessage = errorTypes[type].message;
             }
         } else {
-            type = 'ADVANCED';
+            type = 'GENERAL';
             currentErrorMessage = 'Something went wrong';
         }
 
@@ -379,132 +385,6 @@ class Affidavits extends React.Component {
         });
     };
 
-    setStartDate = (e) => {
-        let endDate = null;
-        if (e === null) {
-            return this.setState({
-                standardSearch: {
-                    ...this.state.standardSearch,
-                    INCEPTIONFROM: null
-                },
-                applicationErrors: {
-                    active: false,
-                    type: null,
-                    message: '',
-                    multipleInputs: [],
-                    el: null
-                }
-            });
-        }
-
-        if (isValid(e)) {
-            const date = e.toLocaleDateString('en-GB').split('/').reverse().join('-');
-            if (date.length === 10) {
-                if (
-                    this.state.standardSearch.INCEPTIONTO !== null &&
-                    isAfter(e, this.state.standardSearch.INCEPTIONTO)
-                ) {
-                    endDate = this.state.standardSearch.INCEPTIONTO;
-                    this.handleErrorMessages('DATES', { type: 'range', pos: 'start' });
-                } else if (this.state.standardSearch.INCEPTIONTO === null) {
-                    endDate = e;
-                } else {
-                    endDate = this.state.standardSearch.INCEPTIONTO;
-                }
-
-                return this.setState({
-                    standardSearch: {
-                        ...this.state.standardSearch,
-                        INCEPTIONFROM: e,
-                        INCEPTIONTO: endDate
-                    },
-                    applicationErrors: {
-                        active: false,
-                        type: null,
-                        multipleInputs: [],
-                        message: '',
-                        el: null
-                    }
-                });
-            } else {
-                this.handleErrorMessages('DATES', { type: 'valid', pos: 'start' });
-            }
-        }
-    };
-
-    setEndDate = (e) => {
-        if (e === null) {
-            return this.setState({
-                standardSearch: {
-                    ...this.state.standardSearch,
-                    INCEPTIONTO: null
-                },
-                applicationErrors: {
-                    active: false,
-                    type: null,
-                    message: '',
-                    multipleInputs: [],
-                    el: null
-                }
-            });
-        }
-
-        if (isValid(e)) {
-            const date = e.toLocaleDateString('en-GB').split('/').reverse().join('-');
-            if (date.length === 10) {
-                if (isAfter(this.state.standardSearch.INCEPTIONFROM, e)) {
-                    this.handleErrorMessages('DATES', { type: 'range', pos: 'end' });
-                } else {
-                    this.setState({
-                        standardSearch: {
-                            ...this.state.standardSearch,
-                            INCEPTIONTO: e
-                        },
-                        applicationErrors: {
-                            active: false,
-                            type: null,
-                            message: '',
-                            multipleInputs: [],
-                            el: null
-                        }
-                    });
-                }
-            } else {
-                this.handleErrorMessages('DATES', { type: 'valid', pos: 'end' });
-            }
-        }
-    };
-
-    handleChange = (e) => {
-        this.setState({
-            standardSearch: {
-                ...this.state.standardSearch,
-                searchValue: e.target.value
-            },
-            applicationErrors: {
-                active: false,
-                type: null,
-                multipleInputs: [],
-                message: '',
-                el: null
-            }
-        });
-    };
-
-    handleKeyPress = (e) => {
-        if (e.charCode === 13 && e.target.value.length >= 3) {
-            this.executeSearch();
-        } else if (e.charCode === 13) {
-            this.handleErrorMessages('STANDARD');
-        }
-    };
-
-    handleAdvancedKeyPress = (e) => {
-        if (e.charCode === 13) {
-            this.executeSearch();
-        }
-    };
-
     handleClose = () => {
         this.setState({
             applicationErrors: {
@@ -515,18 +395,6 @@ class Affidavits extends React.Component {
                 el: null
             }
         });
-    };
-
-    handleClearInput = (name = null) => {
-        if (name) {
-            const advancedSearch = { ...this.state.advancedSearch };
-            advancedSearch[name] = '';
-            this.setState({ advancedSearch });
-        } else {
-            const standardSearch = { ...this.state.standardSearch };
-            standardSearch.searchValue = '';
-            this.setState({ standardSearch });
-        }
     };
 
     handleHelperText = () => {
@@ -549,6 +417,18 @@ class Affidavits extends React.Component {
     };
 
     handleCloseGeneralError = () => {
+        this.setState({
+            applicationErrors: {
+                active: false,
+                type: null,
+                multipleInputs: [],
+                message: '',
+                el: null
+            }
+        });
+    };
+
+    resetAppErrors = () => {
         this.setState({
             applicationErrors: {
                 active: false,
@@ -598,49 +478,6 @@ class Affidavits extends React.Component {
         }, 1000);
     };
 
-    handleAdvancedSearchInputs = (e) => {
-        if (this.state.standardSearch.searchValue.length > 0) {
-            this.handleClearInput();
-        }
-
-        if (this.state.advancedSearch.hasOwnProperty(e.target.name)) {
-            this.setState({
-                advancedSearch: {
-                    ...this.state.advancedSearch,
-                    [e.target.name]: e.target.value
-                },
-                applicationErrors: {
-                    active: false,
-                    type: null,
-                    multipleInputs: [],
-                    message: '',
-                    el: null
-                }
-            });
-        }
-    };
-
-    clearAdvancedSearchInputs = () => {
-        this.setState({
-            advancedSearch: {
-                AFFIDAVITNUMBER: '',
-                POLICYNUMBER: '',
-                INSUREDNAME: '',
-                CONTACTNAME: '',
-                BROKERREFERENCE: '',
-                BATCH: '',
-                PREMIUMFROM: '',
-                PREMIUMTO: ''
-            },
-            standardSearch: {
-                ...this.state.standardSearch,
-                searchValue: '',
-                INCEPTIONFROM: null,
-                INCEPTIONTO: null
-            }
-        });
-    };
-
     setAffidavits = (rows) => {
         this.setState({ rows });
     };
@@ -661,24 +498,19 @@ class Affidavits extends React.Component {
                 <Search
                     loading={this.props.loading}
                     applicationErrors={this.state.applicationErrors}
-                    searchValue={this.state.standardSearch.searchValue}
-                    handleChange={this.handleChange}
-                    handleKeyPress={this.handleKeyPress}
-                    executeSearch={this.executeSearch}
-                    handleClearInput={this.handleClearInput}
                     handleHelperText={this.handleHelperText}
                     advancedSearchActive={this.state.advancedSearchActive}
                     toggleAdvancedSearchPanel={this.toggleAdvancedSearchPanel}
-                    handleFromDateInput={this.setStartDate}
-                    handleToDateInput={this.setEndDate}
                     standardSearch={this.state.standardSearch}
                     advancedSearch={this.state.advancedSearch}
-                    handleAdvancedSearchInputs={this.handleAdvancedSearchInputs}
-                    handleAdvancedKeyPress={this.handleAdvancedKeyPress}
                     handleCloseGeneralError={this.handleCloseGeneralError}
-                    clearAdvancedSearchInputs={this.clearAdvancedSearchInputs}
                     handleDocScroll={this.handleDocScroll}
                     windowDimensions={this.state.windowDimensions}
+                    handleErrorMessages={this.handleErrorMessages}
+                    getAffidavits={this.props.getAffidavits}
+                    token={this.props.token}
+                    endpoint={this.props.endpoint}
+                    resetAppErrors={this.resetAppErrors}
                 />
                 <Table
                     setAffidavits={this.setAffidavits}

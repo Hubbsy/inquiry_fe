@@ -23,7 +23,7 @@ import { Box } from '@mui/system';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import { Clear } from '@mui/icons-material';
-
+import { useFormCtrl } from '../../hooks/Affidavits/useFormCtrl';
 import AdvancedSearch from './AdvSearch';
 
 const TextItem = styled(Box)(({ theme }) => ({
@@ -32,27 +32,141 @@ const TextItem = styled(Box)(({ theme }) => ({
     color: theme.palette.text.secondary
 }));
 
-function Search({
-    loading,
-    applicationErrors,
-    searchValue,
-    handleChange,
-    handleKeyPress,
-    executeSearch,
-    handleClearInput,
-    handleHelperText,
-    advancedSearchActive,
-    toggleAdvancedSearchPanel,
-    handleFromDateInput,
-    handleToDateInput,
-    standardSearch,
-    handleAdvancedSearchInputs,
-    advancedSearch,
-    handleAdvancedKeyPress,
-    handleCloseGeneralError,
-    clearAdvancedSearchInputs
-}) {
+function Search(props) {
+    const {
+        loading,
+        applicationErrors,
+        handleHelperText,
+        advancedSearchActive,
+        toggleAdvancedSearchPanel,
+        standardSearch,
+        handleAdvancedSearchInputs,
+        handleAdvancedKeyPress,
+        handleCloseGeneralError,
+        getAffidavits,
+        token,
+        endpoint,
+        handleErrorMessages,
+        resetAppErrors
+    } = props;
+
     const searchInputRef = useRef();
+    const startDateErrorActive =
+        applicationErrors.active &&
+        applicationErrors.type === 'DATES' &&
+        applicationErrors.el.pos === 'start';
+    const endDateErrorActive =
+        applicationErrors.active &&
+        applicationErrors.type === 'DATES' &&
+        applicationErrors.el.pos === 'end';
+
+    const {
+        comboSearch,
+        startDate,
+        endDate,
+        advancedSearch,
+        handleClearAdvSearch,
+        handleClearAdvSearchInput,
+        setStartDate,
+        setEndDate,
+        handleSearchInput,
+        handleSubmit,
+        handleClearCombo
+    } = useFormCtrl(
+        advancedSearchActive,
+        endpoint,
+        token,
+        getAffidavits,
+        applicationErrors,
+        handleErrorMessages,
+        resetAppErrors
+    );
+
+    const handleKeyDown = (e) => {
+        if (e.key.toLowerCase() === 'enter') {
+            handleSubmit();
+        }
+    };
+
+    const handleChange = (e) => {
+        if (applicationErrors.active) {
+            props.resetAppErrors();
+        }
+
+        handleSearchInput(e);
+    };
+
+    const setStartDateInput = (e) => {
+        let startDateError = null;
+        let errorType = null;
+
+        if (e === null) {
+            setStartDate(e);
+            return props.resetAppErrors();
+        }
+
+        if (isValid(e)) {
+            const date = e.toLocaleDateString('en-GB').split('/').reverse().join('-');
+            if (date.length === 10) {
+                if (endDate !== null && isAfter(e, endDate)) {
+                    errorType = 'DATES';
+                    startDateError = { type: 'range', pos: 'start' };
+                }
+            } else {
+                errorType = 'DATES';
+                startDateError = { type: 'valid', pos: 'start' };
+            }
+
+            if (errorType) {
+                props.handleErrorMessages(errorType, startDateError);
+                setStartDate(e);
+            } else {
+                if (!endDate) {
+                    setEndDate(e);
+                }
+                setStartDate(e);
+                props.resetAppErrors();
+                props.storeSearchValues('startDate', e);
+            }
+        } else {
+            props.handleErrorMessages('DATES', { type: 'valid', pos: 'start' });
+        }
+    };
+
+    const setEndDateInput = (e) => {
+        let endDateError = null;
+        let errorType = null;
+
+        if (e === null) {
+            setEndDate(e);
+            return props.resetAppErrors();
+        }
+
+        if (isValid(e)) {
+            const date = e.toLocaleDateString('en-GB').split('/').reverse().join('-');
+            if (date.length === 10) {
+                if (isAfter(startDate, e)) {
+                    errorType = 'DATES';
+                    endDateError = { type: 'range', pos: 'end' };
+                }
+            } else {
+                errorType = 'DATES';
+                endDateError = { type: 'valid', pos: 'end' };
+            }
+
+            if (errorType) {
+                props.handleErrorMessages(errorType, endDateError);
+                setEndDate(e);
+            } else {
+                if (!startDate) {
+                    setStartDate(e);
+                }
+                setEndDate(e);
+                props.resetAppErrors();
+                props.storeSearchValues('endDate', e);
+            }
+        }
+    };
 
     return (
         <Paper
@@ -74,15 +188,16 @@ function Search({
                             includeEndAdornment={true}
                             label={'Search by Affidavit No or Policy No...'}
                             onChange={handleChange}
-                            onKeyPress={handleKeyPress}
+                            onKeyDown={handleKeyDown}
                             onClick={handleHelperText}
-                            value={searchValue}
+                            value={comboSearch}
+                            name={'COMBOSEARCH'}
                             width={'97%'}
                             error={
-                                applicationErrors.active && applicationErrors.type === 'STANDARD'
+                                applicationErrors.active && applicationErrors.type === 'COMBOSEARCH'
                             }
                             helperText={
-                                applicationErrors.active && applicationErrors.type === 'STANDARD'
+                                applicationErrors.active && applicationErrors.type === 'COMBOSEARCH'
                                     ? applicationErrors.message
                                     : null
                             }
@@ -92,7 +207,7 @@ function Search({
                                     applicationErrors.type === 'SINGLE_SEARCH')
                             }
                             handleClearInput={() => {
-                                handleClearInput();
+                                handleClearCombo();
                                 searchInputRef.current.focus();
                             }}
                         />
@@ -105,7 +220,7 @@ function Search({
                     <Grid item>
                         <DateInput
                             label={'Inception Date'}
-                            onChange={handleFromDateInput}
+                            onChange={setStartDateInput}
                             value={
                                 applicationErrors.active &&
                                 applicationErrors.type === 'DATES' &&
@@ -127,8 +242,8 @@ function Search({
                     </Grid>
                     <Grid item sx={{ mr: 3 }}>
                         <DateInput
-                            label={'Inception Date'}
-                            onChange={handleToDateInput}
+                            label={'Expiration Date'}
+                            onChange={setEndDateInput}
                             value={
                                 applicationErrors.active &&
                                 applicationErrors.type === 'DATES' &&
@@ -146,7 +261,7 @@ function Search({
                         />
                     </Grid>
                     <Grid item sx={{ mt: 1, mr: 3 }}>
-                        <SearchButton sx={{ ml: 1 }} loading={loading} onClick={executeSearch}>
+                        <SearchButton sx={{ ml: 1 }} loading={loading} onClick={handleSubmit}>
                             Search
                         </SearchButton>
                     </Grid>
@@ -181,8 +296,7 @@ function Search({
                         handleAdvancedSearchInputs={handleAdvancedSearchInputs}
                         handleAdvancedKeyPress={handleAdvancedKeyPress}
                         handleCloseGeneralError={handleCloseGeneralError}
-                        clearAdvancedSearchInputs={clearAdvancedSearchInputs}
-                        handleClearInput={handleClearInput}
+                        handleClearAdvSearchInput={handleClearAdvSearchInput}
                     />
                 </Collapse>
             </Stack>
