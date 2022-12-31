@@ -25,6 +25,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import { Clear } from '@mui/icons-material';
 import { useFormCtrl } from '../../hooks/Affidavits/useFormCtrl';
 import AdvancedSearch from './AdvSearch';
+import { isAfter, isValid } from 'date-fns';
 
 const TextItem = styled(Box)(({ theme }) => ({
     ...theme.typography.body2,
@@ -118,7 +119,7 @@ function Search(props) {
             }
 
             if (errorType) {
-                props.handleErrorMessages(errorType, startDateError);
+                handleErrorMessages(errorType, startDateError);
                 setStartDate(e);
             } else {
                 if (!endDate) {
@@ -126,10 +127,9 @@ function Search(props) {
                 }
                 setStartDate(e);
                 props.resetAppErrors();
-                props.storeSearchValues('startDate', e);
             }
         } else {
-            props.handleErrorMessages('DATES', { type: 'valid', pos: 'start' });
+            handleErrorMessages('DATES', { type: 'valid', pos: 'start' });
         }
     };
 
@@ -155,15 +155,14 @@ function Search(props) {
             }
 
             if (errorType) {
-                props.handleErrorMessages(errorType, endDateError);
+                handleErrorMessages(errorType, endDateError);
                 setEndDate(e);
             } else {
                 if (!startDate) {
                     setStartDate(e);
                 }
                 setEndDate(e);
-                props.resetAppErrors();
-                props.storeSearchValues('endDate', e);
+                resetAppErrors();
             }
         }
     };
@@ -221,20 +220,9 @@ function Search(props) {
                         <DateInput
                             label={'Inception Date'}
                             onChange={setStartDateInput}
-                            value={
-                                applicationErrors.active &&
-                                applicationErrors.type === 'DATES' &&
-                                applicationErrors.el.pos === 'start'
-                                    ? ''
-                                    : standardSearch.INCEPTIONFROM
-                            }
-                            helperText={
-                                applicationErrors.active &&
-                                applicationErrors.type === 'DATES' &&
-                                applicationErrors.el.pos === 'start'
-                                    ? applicationErrors.message
-                                    : null
-                            }
+                            value={startDate}
+                            name={'startDate'}
+                            helperText={startDateErrorActive ? applicationErrors.message : null}
                         />
                     </Grid>
                     <Grid item>
@@ -244,20 +232,9 @@ function Search(props) {
                         <DateInput
                             label={'Expiration Date'}
                             onChange={setEndDateInput}
-                            value={
-                                applicationErrors.active &&
-                                applicationErrors.type === 'DATES' &&
-                                applicationErrors.el.pos === 'end'
-                                    ? ''
-                                    : standardSearch.INCEPTIONTO
-                            }
-                            helperText={
-                                applicationErrors.active &&
-                                applicationErrors.type === 'DATES' &&
-                                applicationErrors.el.pos === 'end'
-                                    ? applicationErrors.message
-                                    : null
-                            }
+                            value={endDate}
+                            name={'endDate'}
+                            helperText={endDateErrorActive ? applicationErrors.message : null}
                         />
                     </Grid>
                     <Grid item sx={{ mt: 1, mr: 3 }}>
