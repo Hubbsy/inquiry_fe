@@ -1,7 +1,7 @@
 import { MainTableCell, TableFilterInput } from '@aeros-ui/tables';
 import styled from '@emotion/styled';
 import { MoreVert } from '@mui/icons-material';
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 
 const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
     height: 32,
@@ -84,6 +84,18 @@ const columns = (handlePopoverOpen) => {
                         onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
                     />
                 );
+            },
+            customFilterAndSearch: (term, rowData) => {
+                let formattedEffectiveDate = new Date(rowData.effectiveDate);
+                let effectiveDateString = new Date(
+                    formattedEffectiveDate.valueOf() +
+                        formattedEffectiveDate.getTimezoneOffset() * 60 * 1000
+                );
+
+                let cellDateValue = isValid(effectiveDateString)
+                    ? format(effectiveDateString, 'MM/dd/yyyy')
+                    : '';
+                return cellDateValue.search(term) !== -1 ? true : false;
             }
         },
         {
@@ -101,6 +113,18 @@ const columns = (handlePopoverOpen) => {
                         onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
                     />
                 );
+            },
+            customFilterAndSearch: (term, rowData) => {
+                let formattedEffectiveDate = new Date(rowData.expDate);
+                let effectiveDateString = new Date(
+                    formattedEffectiveDate.valueOf() +
+                        formattedEffectiveDate.getTimezoneOffset() * 60 * 1000
+                );
+
+                let cellDateValue = isValid(effectiveDateString)
+                    ? format(effectiveDateString, 'MM/dd/yyyy')
+                    : '';
+                return cellDateValue.search(term) !== -1 ? true : false;
             }
         },
         {

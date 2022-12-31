@@ -3,12 +3,14 @@ import { TablePagination, useTheme, ThemeProvider, Grid, Typography } from '@mui
 import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme } from '@aeros-ui/themes';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, createRef } from 'react';
 import { Stack } from '@mui/system';
 import columns from './columns';
+import { useEffect } from 'react';
 
 export default function Table({ loading, rows }) {
     const theme = useTheme();
+    const tableRef = createRef();
     const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
@@ -81,6 +83,30 @@ export default function Table({ loading, rows }) {
 
     const [Columns, setColumns] = useState([...columns(handlePopoverOpen)]);
 
+    useEffect(() => {
+        if (rows.length > 0 && !loading) {
+            resetTableState();
+        }
+    }, [rows]);
+
+    const resetTableState = () => {
+        // showFilters ? setFiltering(false) : null;
+        tableRef && tableRef.current ? (tableRef.current.dataManager.searchText = '') : null;
+        setColumns([...columns(handlePopoverOpen)]);
+    };
+
+    const handleFilterAction = () => {
+        tableRef.current.dataManager.searchText = '';
+        setFiltering(!showFilters);
+        const columnsCopy = [...Columns];
+        if (showFilters) {
+            for (const col of columnsCopy) {
+                col.tableData.filterValue = '';
+            }
+            setColumns(columnsCopy);
+        }
+    };
+
     const options = {
         pageSize: 10,
         padding: density,
@@ -122,6 +148,7 @@ export default function Table({ loading, rows }) {
             <ThemeProvider theme={tableTheme}>
                 <MaterialTable
                     title={''}
+                    tableRef={tableRef}
                     options={options}
                     columns={Columns}
                     data={rows}
@@ -147,7 +174,7 @@ export default function Table({ loading, rows }) {
                             <TableToolbar
                                 {...props}
                                 showFilters={showFilters}
-                                // onFilterClick={handleFilterAction}
+                                onFilterClick={handleFilterAction}
                                 onDensityClick={handleDensityClick}
                             />
                         ),
