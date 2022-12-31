@@ -114,8 +114,7 @@ const DecliningCompanies = ({
                         severity='error'
                         title='Something went wrong'
                         message={errorMessage}
-                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                    ></Snackbar>
+                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}></Snackbar>
                 ) : null}
             </Grid>
         </ErrorBoundary>
