@@ -1,4 +1,4 @@
-import MaterialTable from '@material-table/core';
+import MaterialTable, { MTableBodyRow, MTableCell } from '@material-table/core';
 import { TablePagination, useTheme, ThemeProvider, Grid, Typography } from '@mui/material';
 import { TableToolbar, MainTableCell, DetailCard, TableFilterInput } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
@@ -204,6 +204,7 @@ export default function Table({ loading, rows }) {
             padding: '1em',
             whiteSpace: 'nowrap'
         },
+        pageSizeOptions: [5, 10, 25, 50, 100],
         rowStyle: (rowData) => ({
             backgroundColor:
                 selectedRow === rowData.tableData.id
@@ -238,23 +239,31 @@ export default function Table({ loading, rows }) {
                     isLoading={loading}
                     onRowClick={handleRowClick}
                     components={{
-                        Pagination: (props) => (
-                            <TablePagination
-                                count={props.count}
-                                page={props.page}
-                                onPageChange={props.onPageChange}
-                                rowsPerPage={props.rowsPerPage}
-                                rowsPerPageOptions={[10, 25, 50, 100]}
-                                onRowsPerPageChange={props.onRowsPerPageChange}
-                            />
-                        ),
+                        Cell: (props) => {
+                            return (
+                                <MTableCell
+                                    sx={{
+                                        whiteSpace: 'nowrap',
+                                        textOverflow: 'ellipsis',
+                                        overflow: 'hidden'
+                                    }}
+                                    {...props}></MTableCell>
+                            );
+                        },
+                        Row: (props) => {
+                            return <MTableBodyRow id={props.data.id} {...props} />;
+                        },
+
                         Toolbar: (props) => (
                             <TableToolbar
                                 {...props}
                                 showFilters={showFilters}
-                                onFilterClick={() => setFiltering(!showFilters)}
+                                // onFilterClick={handleFilterAction}
                                 onDensityClick={handleDensityClick}
                             />
+                        ),
+                        Pagination: (props) => (
+                            <TablePagination {...props} page={props.count <= 0 ? 0 : props.page} />
                         )
                     }}
                 />
