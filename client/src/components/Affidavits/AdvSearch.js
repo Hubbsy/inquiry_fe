@@ -280,8 +280,7 @@ const AdvancedSearch = (props) => {
                         position: 'relative',
                         flexWrap: 'nowrap',
                         top: '-3px'
-                    }}
-                >
+                    }}>
                     <Grid item>
                         <CurrencyInput
                             label={'Premuim'}
