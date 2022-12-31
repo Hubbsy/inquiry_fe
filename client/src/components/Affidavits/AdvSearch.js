@@ -16,7 +16,6 @@ const AdvancedSearch = (props) => {
         handleAdvancedSearchInputs,
         advancedSearch,
         handleAdvancedKeyPress,
-        handleCloseGeneralError,
         handleClearAdvSearchInput
     } = props;
     const inputRef1 = useRef();
@@ -425,26 +424,6 @@ const AdvancedSearch = (props) => {
                             }
                         />
                     </Grid>
-                    {/* <Grid
-                        item
-                        sx={{
-                            mr: 3,
-                            width: '30%',
-                            position: 'absolute',
-                            right: '0',
-                            bottom: '0'
-                        }}>
-                        {applicationErrors.active &&
-                        applicationErrors.multipleInputs.length < 1 &&
-                        applicationErrors.type === 'GENERAL' ? (
-                            <Alert
-                                title={'Invalid Search'}
-                                message={applicationErrors.message ? applicationErrors.message : ''}
-                                severity={'error'}
-                                onClick={handleCloseGeneralError}
-                            />
-                        ) : null}
-                    </Grid> */}
                 </Grid>
             </Grid>
         </>

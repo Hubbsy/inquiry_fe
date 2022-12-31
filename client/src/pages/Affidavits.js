@@ -5,28 +5,12 @@ import { connect } from 'react-redux';
 import { getAffidavits } from '../store/actions/affidavits';
 import { Snackbar, ErrorBoundary } from '@aeros-ui/components';
 import isEmpty from '../functions/isEmpty';
-import { format, isBefore, isValid, isAfter, isEqual } from 'date-fns';
 import { Fab, Grid, Tooltip } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 
 class Affidavits extends React.Component {
     state = {
         rows: [],
-        standardSearch: {
-            searchValue: '',
-            INCEPTIONFROM: null,
-            INCEPTIONTO: null
-        },
-        advancedSearch: {
-            AFFIDAVITNUMBER: '',
-            POLICYNUMBER: '',
-            INSUREDNAME: '',
-            CONTACTNAME: '',
-            BROKERREFERENCE: '',
-            BATCH: '',
-            PREMIUMFROM: '',
-            PREMIUMTO: ''
-        },
         applicationErrors: {
             active: false,
             type: null,
@@ -60,7 +44,6 @@ class Affidavits extends React.Component {
     handleDocScroll = () => {
         let activeScroll = false;
         if (document.body.clientHeight > window.innerHeight) {
-            // console.log("!!!!!SCROLL BAR ACTIVE!!!!!");
             activeScroll = true;
         }
 
@@ -149,162 +132,6 @@ class Affidavits extends React.Component {
         });
     };
 
-    // executeSearch = () => {
-    //     const data = {
-    //         COMBOSEARCH: this.state.advancedSearchActive
-    //             ? ''
-    //             : this.state.standardSearch.searchValue,
-    //         AFFIDAVITNUMBER: this.state.advancedSearchActive
-    //             ? this.state.advancedSearch.AFFIDAVITNUMBER
-    //             : '',
-    //         POLICYNUMBER: this.state.advancedSearchActive
-    //             ? this.state.advancedSearch.POLICYNUMBER
-    //             : '',
-    //         INSUREDNAME: this.state.advancedSearchActive
-    //             ? this.state.advancedSearch.INSUREDNAME
-    //             : '',
-    //         INCEPTIONFROM: isValid(this.state.standardSearch.INCEPTIONFROM)
-    //             ? format(new Date(this.state.standardSearch.INCEPTIONFROM), 'MM/dd/yyyy')
-    //             : '',
-    //         INCEPTIONTO: isValid(this.state.standardSearch.INCEPTIONTO)
-    //             ? format(new Date(this.state.standardSearch.INCEPTIONTO), 'MM/dd/yyyy')
-    //             : '',
-    //         CONTACTNAME: this.state.advancedSearchActive
-    //             ? this.state.advancedSearch.CONTACTNAME
-    //             : '',
-    //         BROKERREFERENCE: this.state.advancedSearchActive
-    //             ? this.state.advancedSearch.BROKERREFERENCE
-    //             : '',
-    //         BATCH: this.state.advancedSearchActive ? this.state.advancedSearch.BATCH : '',
-    //         PREMIUMFROM: this.state.advancedSearchActive
-    //             ? this.state.advancedSearch.PREMIUMFROM
-    //             : '',
-    //         PREMIUMTO: this.state.advancedSearchActive ? this.state.advancedSearch.PREMIUMTO : ''
-    //     };
-
-    //     if (this.checkValidSearchParams() && !this.state.applicationErrors.active) {
-    //         this.props.getAffidavits(
-    //             this.props.endpoint,
-    //             this.props.token,
-    //             // window.localStorage.getItem('TOKEN')
-    //             //     ? window.localStorage.getItem('TOKEN')
-    //             //     : this.props.token,
-    //             data
-    //         );
-    //     }
-    // };
-
-    checkValidSearchParams = () => {
-        let validSearch = true;
-
-        //  Validate STANDARD search
-        if (!this.state.advancedSearchActive) {
-            if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
-                validSearch = this.validateDateRange();
-            } else if (this.state.standardSearch.searchValue.length < 3) {
-                this.handleErrorMessages('STANDARD');
-                validSearch = false;
-            }
-        } else {
-            //  Validate ADVANCED search
-            validSearch = this.validateAdvancedSearch();
-        }
-
-        this.setState({ validSearch });
-
-        return validSearch;
-    };
-
-    validateAdvancedSearch = () => {
-        let advancedSearchValid = true;
-
-        if (this.state.standardSearch.INCEPTIONFROM || this.state.standardSearch.INCEPTIONTO) {
-            advancedSearchValid = this.validateDateRange();
-        } else if (
-            (this.state.advancedSearch.PREMIUMFROM || this.state.advancedSearch.PREMIUMTO) &&
-            advancedSearchValid
-        ) {
-            advancedSearchValid = this.validatePremiumRange();
-        }
-
-        if (advancedSearchValid) {
-            let blankInputs = 0;
-            let errorInputs = [];
-
-            for (let control in this.state.advancedSearch) {
-                if (
-                    this.state.advancedSearch[control].length > 0 &&
-                    this.state.advancedSearch[control].length < 3 &&
-                    control !== 'PREMIUMFROM' &&
-                    control !== 'PREMIUMTO'
-                ) {
-                    errorInputs.push(control);
-                } else if (this.state.advancedSearch[control].length === 0) {
-                    blankInputs++;
-                }
-            }
-
-            if (errorInputs.length > 0) {
-                advancedSearchValid = false;
-                this.handleErrorMessages('ADVANCED', { pos: null, type: 'single' }, errorInputs);
-            } else if (
-                blankInputs === 8 &&
-                (!this.state.standardSearch.INCEPTIONFROM || !this.state.standardSearch.INCEPTIONTO)
-            ) {
-                advancedSearchValid = false;
-                this.handleErrorMessages('ADVANCED', { pos: null, type: 'group' });
-            }
-        }
-
-        return advancedSearchValid;
-    };
-
-    validatePremiumRange = () => {
-        if (
-            this.state.advancedSearch.PREMIUMFROM &&
-            this.state.advancedSearch.PREMIUMTO &&
-            parseFloat(this.state.advancedSearch.PREMIUMFROM.replace(/,/g, '')) >=
-                parseFloat(this.state.advancedSearch.PREMIUMTO.replace(/,/g, ''))
-        ) {
-            this.handleErrorMessages('PREMIUMS', { pos: 'start', type: 'range' });
-            return false;
-        } else if (!this.state.advancedSearch.PREMIUMFROM) {
-            this.handleErrorMessages('PREMIUMS', { pos: 'start', type: 'valid' });
-            return false;
-        } else if (!this.state.advancedSearch.PREMIUMTO) {
-            this.handleErrorMessages('PREMIUMS', { pos: 'end', type: 'valid' });
-            return false;
-        }
-
-        return true;
-    };
-
-    validateDateRange = () => {
-        if (!isValid(this.state.standardSearch.INCEPTIONFROM)) {
-            this.handleErrorMessages('DATES', { type: 'valid', pos: 'start' });
-        } else if (!isValid(this.state.standardSearch.INCEPTIONTO)) {
-            this.handleErrorMessages('DATES', { type: 'valid', pos: 'end' });
-        } else {
-            if (
-                isBefore(
-                    new Date(this.state.standardSearch.INCEPTIONFROM),
-                    new Date(this.state.standardSearch.INCEPTIONTO)
-                ) ||
-                isEqual(
-                    new Date(this.state.standardSearch.INCEPTIONFROM),
-                    new Date(this.state.standardSearch.INCEPTIONTO)
-                )
-            ) {
-                return true;
-            } else {
-                this.handleErrorMessages('DATES', { type: 'range', pos: 'end' });
-                return false;
-            }
-        }
-
-        return false;
-    };
-
     handleErrorMessages = (type, el = null, multipleInputs = []) => {
         const errorTypes = {
             SERVER: 'SERVER',
@@ -385,49 +212,6 @@ class Affidavits extends React.Component {
         });
     };
 
-    handleClose = () => {
-        this.setState({
-            applicationErrors: {
-                active: false,
-                type: null,
-                multipleInputs: [],
-                message: '',
-                el: null
-            }
-        });
-    };
-
-    handleHelperText = () => {
-        if (
-            this.state.applicationErrors.active &&
-            this.state.applicationErrors.type === 'SINGLE_SEARCH'
-        ) {
-            return;
-        }
-
-        this.setState({
-            applicationErrors: {
-                active: false,
-                type: null,
-                multipleInputs: [],
-                message: '',
-                el: null
-            }
-        });
-    };
-
-    handleCloseGeneralError = () => {
-        this.setState({
-            applicationErrors: {
-                active: false,
-                type: null,
-                multipleInputs: [],
-                message: '',
-                el: null
-            }
-        });
-    };
-
     resetAppErrors = () => {
         this.setState({
             applicationErrors: {
@@ -459,14 +243,9 @@ class Affidavits extends React.Component {
                     multipleInputs: [],
                     message: '',
                     el: null
-                },
-                standardSearch: {
-                    ...this.state.standardSearch
-                    // searchValue: ''
                 }
             });
         } else {
-            this.checkAdvSearchInputsActive(this.state.advancedSearch);
             this.setState({
                 advancedSearchActive: false
             });
@@ -498,12 +277,11 @@ class Affidavits extends React.Component {
                 <Search
                     loading={this.props.loading}
                     applicationErrors={this.state.applicationErrors}
-                    handleHelperText={this.handleHelperText}
                     advancedSearchActive={this.state.advancedSearchActive}
                     toggleAdvancedSearchPanel={this.toggleAdvancedSearchPanel}
+                    checkAdvSearchInputsActive={this.checkAdvSearchInputsActive}
                     standardSearch={this.state.standardSearch}
                     advancedSearch={this.state.advancedSearch}
-                    handleCloseGeneralError={this.handleCloseGeneralError}
                     handleDocScroll={this.handleDocScroll}
                     windowDimensions={this.state.windowDimensions}
                     handleErrorMessages={this.handleErrorMessages}

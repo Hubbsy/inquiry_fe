@@ -40,10 +40,10 @@ function Search(props) {
         handleHelperText,
         advancedSearchActive,
         toggleAdvancedSearchPanel,
+        checkAdvSearchInputsActive,
         standardSearch,
         handleAdvancedSearchInputs,
         handleAdvancedKeyPress,
-        handleCloseGeneralError,
         getAffidavits,
         token,
         endpoint,
@@ -164,7 +164,16 @@ function Search(props) {
                 setEndDate(e);
                 resetAppErrors();
             }
+        } else {
+            handleErrorMessages('DATES', { type: 'valid', pos: 'end' });
         }
+    };
+
+    const handleAdvSearchToggle = () => {
+        if (advancedSearchActive) {
+            checkAdvSearchInputsActive(advancedSearch);
+        }
+        toggleAdvancedSearchPanel();
     };
 
     return (
@@ -174,16 +183,23 @@ function Search(props) {
                 margin: '0.5em'
             }}
             variant={'outlined'}>
-            <Grid item container alignItems='center'>
+            <Grid item container alignItems='center' sx={{ pb: 1 }}>
                 <Grid item xs={6}>
                     <Typography variant='h6' gutterBottom>
                         Affidavit Inquiry
                     </Typography>
                 </Grid>
-                <Grid item container justifyContent='flex-end' xs={6}>
-                    {props.applicationErrors.active &&
-                    props.applicationErrors.type === 'GENERAL' ? (
-                        <Alert severity='error' message={props.applicationErrors.message} />
+                <Grid
+                    item
+                    container
+                    xs={6}
+                    sx={{ position: 'absolute', right: 250, width: 'auto' }}>
+                    {applicationErrors.active && applicationErrors.type === 'GENERAL' ? (
+                        <Alert
+                            severity='error'
+                            message={applicationErrors.message}
+                            handleClose={resetAppErrors}
+                        />
                     ) : null}
                 </Grid>
             </Grid>
@@ -232,7 +248,12 @@ function Search(props) {
                             onChange={setStartDateInput}
                             value={startDate}
                             name={'startDate'}
+                            error={startDateErrorActive}
+                            color={startDateErrorActive ? 'error' : undefined}
                             helperText={startDateErrorActive ? applicationErrors.message : null}
+                            inputProps={{
+                                onKeyDown: handleKeyDown
+                            }}
                         />
                     </Grid>
                     <Grid item>
@@ -244,7 +265,12 @@ function Search(props) {
                             onChange={setEndDateInput}
                             value={endDate}
                             name={'endDate'}
+                            error={endDateErrorActive}
+                            color={endDateErrorActive ? 'error' : undefined}
                             helperText={endDateErrorActive ? applicationErrors.message : null}
+                            inputProps={{
+                                onKeyDown: handleKeyDown
+                            }}
                         />
                     </Grid>
                     <Grid item sx={{ mt: 1, mr: 3 }}>
@@ -259,7 +285,7 @@ function Search(props) {
                                     color='secondary'
                                     aria-label='hide advanced search'
                                     size='small'
-                                    onClick={toggleAdvancedSearchPanel}>
+                                    onClick={handleAdvSearchToggle}>
                                     <ExpandLess />
                                 </Fab>
                             </Tooltip>
@@ -282,7 +308,6 @@ function Search(props) {
                         advancedSearch={advancedSearch}
                         handleAdvancedSearchInputs={handleAdvancedSearchInputs}
                         handleAdvancedKeyPress={handleAdvancedKeyPress}
-                        handleCloseGeneralError={handleCloseGeneralError}
                         handleClearAdvSearchInput={handleClearAdvSearchInput}
                     />
                 </Collapse>
