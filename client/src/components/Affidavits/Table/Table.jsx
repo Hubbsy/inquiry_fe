@@ -198,7 +198,8 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                     ) : (
                         <ModeEditIcon />
                     )
-                }>
+                }
+            >
                 {currentCompanyDetails.batchView} Affidavit
             </Button>
         </Grid>
@@ -293,7 +294,8 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         <div
             style={{
                 margin: '0.5em'
-            }}>
+            }}
+        >
             <ThemeProvider theme={tableTheme}>
                 <MaterialTable
                     title={''}
@@ -331,7 +333,8 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                                         paddingLeft: '0px'
                                         // border:'solid 1px blue'
                                     }}
-                                    {...props}></MTableCell>
+                                    {...props}
+                                ></MTableCell>
                             );
                         },
 
@@ -375,7 +378,8 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                         horizontal: 'left'
                     }}
                     elevation={2}
-                    onClose={() => handleClosePartAMessage()}>
+                    onClose={() => handleClosePartAMessage()}
+                >
                     {selectedRow && selectedRow.PARTA_TRANSACTION.PARTAMESSAGE.length > 0
                         ? selectedRow.PARTA_TRANSACTION.PARTAMESSAGE.map((message, i) => {
                               return (
@@ -398,7 +402,8 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                         horizontal: 'left'
                     }}
                     elevation={2}
-                    onClose={() => handleClosePartAMessage('BATCHNO')}>
+                    onClose={() => handleClosePartAMessage('BATCHNO')}
+                >
                     {selectedRow &&
                     selectedRow.PARTA_TRANSACTION.BATCHNO !== null &&
                     selectedRow.PARTA_TRANSACTION.BATCHID !==

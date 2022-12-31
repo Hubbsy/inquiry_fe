@@ -178,7 +178,8 @@ function Search(props) {
                 padding: '1em',
                 margin: '0.5em'
             }}
-            variant={'outlined'}>
+            variant={'outlined'}
+        >
             <Grid item container alignItems='center' sx={{ pb: 1 }}>
                 <Grid item xs={6}>
                     <Typography variant='h6' gutterBottom>
@@ -189,7 +190,8 @@ function Search(props) {
                     item
                     container
                     xs={6}
-                    sx={{ position: 'absolute', right: 250, width: 'auto' }}>
+                    sx={{ position: 'absolute', right: 250, width: 'auto' }}
+                >
                     {applicationErrors.active && applicationErrors.type === 'GENERAL' ? (
                         <Alert
                             severity='error'
@@ -281,7 +283,8 @@ function Search(props) {
                                     color='secondary'
                                     aria-label='hide advanced search'
                                     size='small'
-                                    onClick={handleAdvSearchToggle}>
+                                    onClick={handleAdvSearchToggle}
+                                >
                                     <ExpandLess />
                                 </Fab>
                             </Tooltip>
@@ -291,7 +294,8 @@ function Search(props) {
                                     color='secondary'
                                     aria-label='show advanced search'
                                     size='small'
-                                    onClick={toggleAdvancedSearchPanel}>
+                                    onClick={toggleAdvancedSearchPanel}
+                                >
                                     <ExpandMore />
                                 </Fab>
                             </Tooltip>
