@@ -1,18 +1,18 @@
 import MaterialTable, { MTableBodyRow, MTableCell } from '@material-table/core';
 import { TablePagination, useTheme, ThemeProvider, Grid, Typography } from '@mui/material';
-import { TableToolbar, MainTableCell, DetailCard, TableFilterInput } from '@aeros-ui/tables';
+import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme } from '@aeros-ui/themes';
 import { useState, useCallback } from 'react';
-import styled from '@emotion/styled';
-import { MoreVert } from '@mui/icons-material';
-import { format } from 'date-fns';
 import { Stack } from '@mui/system';
 
 import columns from './columns';
+import { useEffect } from 'react';
+import { createRef } from 'react';
 
 export default function Table({ loading, rows }) {
     const theme = useTheme();
+    const tableRef = createRef();
     const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
@@ -103,6 +103,12 @@ export default function Table({ loading, rows }) {
         setColumns([...columns(handlePopoverOpen)]);
     };
 
+    useEffect(() => {
+        if (rows && rows.length > 0) {
+            resetTableState();
+        }
+    }, [rows]);
+
     const options = {
         pageSize: 10,
         padding: density,
@@ -148,6 +154,7 @@ export default function Table({ loading, rows }) {
                     columns={Columns}
                     data={rows}
                     isLoading={loading}
+                    tableRef={tableRef}
                     onRowClick={handleRowClick}
                     components={{
                         Cell: (props) => {
