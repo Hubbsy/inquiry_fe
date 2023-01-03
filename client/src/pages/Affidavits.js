@@ -706,12 +706,14 @@ class Affidavits extends React.Component {
                                   placement='top'
                                   title={
                                       this.state.windowScroll ? 'Scroll to Top' : 'Scroll to Bottom'
-                                  }>
+                                  }
+                              >
                                   <Fab
                                       color='secondary'
                                       aria-label='Scroll to Bottom'
                                       size='small'
-                                      onClick={this.handleScrollClick}>
+                                      onClick={this.handleScrollClick}
+                                  >
                                       {this.state.windowScroll ? <ExpandLess /> : <ExpandMore />}
                                   </Fab>
                               </Tooltip>

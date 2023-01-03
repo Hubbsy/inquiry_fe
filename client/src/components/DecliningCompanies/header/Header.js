@@ -62,7 +62,8 @@ const Header = ({ organizations, onSearch, loading }) => {
                 alignItems='center'
                 rowGap={1}
                 component={Paper}
-                sx={{ px: '1.5em', py: '1em' }}>
+                sx={{ px: '1.5em', py: '1em' }}
+            >
                 <Grid item container>
                     <Typography variant='h6' gutterBottom>
                         Declining Companies Inquiry
@@ -96,7 +97,8 @@ const Header = ({ organizations, onSearch, loading }) => {
                             name='org'
                             value={org}
                             disabled={loading}
-                            width={'80%'}>
+                            width={'80%'}
+                        >
                             {companies.map((company) => {
                                 return (
                                     <MenuItem name='org' key={company.CODE} value={company.CODE}>
