@@ -1,27 +1,28 @@
-export const options = (theme, ExportCsv, ExportPdf, showFilters, density, rows) => {
+export const options = (theme, ExportCsv, ExportPdf, showFilters, density, data) => {
     return {
-        Selection: true,
         columnsButton: true,
         exportAllData: true,
         showEmptyDataSourceMessage: true,
         actionsColumnIndex: -1,
-        emptyRowsWhenPaging: rows.length ? false : true,
+        emptyRowsWhenPaging: data.length ? false : true,
         cellStyle: theme.typography,
         pageSize: 10,
         pageSizeOptions: [10, 25, 50, 100],
         headerStyle: {
             ...theme.components.headerStyle,
             backgroundColor: theme.palette.grid.main.header,
-            padding: '0.7em 2em'
+            paddingLeft: '1.1em'
         },
+        filterCellStyle: { padding: '0.5em' },
+
         exportMenu: [
             {
                 label: 'Export PDF',
-                exportFunc: (cols, datas) => ExportPdf(cols, datas, 'Declining Companies Inquiry')
+                exportFunc: (cols, data) => ExportPdf(cols, data, 'Declining Companies Inquiry')
             },
             {
                 label: 'Export CSV',
-                exportFunc: (cols, datas) => ExportCsv(cols, datas, 'Declining Companies Inquiry')
+                exportFunc: (cols, data) => ExportCsv(cols, data, 'Declining Companies Inquiry')
             }
         ],
         filtering: showFilters,

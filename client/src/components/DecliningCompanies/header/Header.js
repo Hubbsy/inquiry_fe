@@ -73,7 +73,7 @@ const Header = ({ organizations, onSearch, loading }) => {
                     <Grid item xs={5}>
                         <SearchInput
                             autoFocus
-                            label={'Search by Company Name, NAIC,...'}
+                            label={'Search by Company Name, NAIC...'}
                             width={'80%'}
                             onChange={handleOnChange}
                             error={error}

@@ -6,44 +6,24 @@ import { getDecliningCompanies, getDecliningData } from '../store/actions/declin
 import { useEffect, useRef, useState } from 'react';
 import { Grid } from '@mui/material';
 
-const DecliningCompanies = ({
-    getDecliningCompanies,
-    getDecliningData,
-    endpoint,
-    token,
-    error,
-    compData,
-    compError,
-    declError,
-    declData,
-    declLoading
-}) => {
-    const [rows, setRows] = useState([]);
+const DecliningCompanies = (props) => {
+    const {
+        getDecliningCompanies,
+        getDecliningData,
+        endpoint,
+        token,
+        error,
+        compData,
+        compError,
+        declError,
+        declData,
+        declLoading
+    } = props;
     const [showSnackBar, setShowSnackBar] = useState(false);
     const [errorMessage, setErrorMessage] = useState(
         'An error occured while the request was processesing, please try again.'
     );
     const getDeclRan = useRef(false);
-
-    useEffect(() => {
-        if (!token || error) {
-            setErrorMessage(error);
-            setShowSnackBar(true);
-        }
-
-        if (declError) {
-            if (declError === 'DATA') {
-                setShowSnackBar(true);
-            } else {
-                setErrorMessage(declError);
-                setShowSnackBar(true);
-            }
-        }
-        if (compError) {
-            setErrorMessage(compError);
-            setShowSnackBar(true);
-        }
-    }, [error, declError, compError]);
 
     useEffect(() => {
         if (token && getDeclRan.current === false) {
@@ -52,18 +32,25 @@ const DecliningCompanies = ({
             return () => {
                 getDeclRan.current = true;
             };
-        } else if (!token || error) {
+        }
+        if (error) {
+            setErrorMessage(error);
             setShowSnackBar(true);
         }
-    }, [token]);
 
-    useEffect(() => {
-        if (compError) {
-            setShowSnackBar(true);
-        } else if (!compError) {
-            setShowSnackBar(false);
+        if (declError && !declData.length) {
+            if (declError === 'DATA') {
+                setShowSnackBar(true);
+            } else {
+                setShowSnackBar(true);
+                setErrorMessage(declError);
+            }
         }
-    }, [compError]);
+        if (compError) {
+            setErrorMessage(compError);
+            setShowSnackBar(true);
+        }
+    }, [token, error, declError, compError, compData]);
 
     const handleClose = () => {
         setShowSnackBar(false);
@@ -78,45 +65,19 @@ const DecliningCompanies = ({
         getDecliningData(endpoint, token, data);
     };
 
-    const handleOrgType = (type) => {
-        for (const comp in compData) {
-            if (type === compData[comp].CODE) {
-                return compData[comp].DESCRIPTION;
-            }
-        }
-    };
-
-    useEffect(() => {
-        if (declData.length !== undefined) {
-            setRows(
-                declData.map((company) => ({
-                    id: company.DECLINECOMPID,
-                    naic: company.NAIC,
-                    companyName: company.COMPANYNAME,
-                    domicile: company.DOMICILE,
-                    orgType: handleOrgType(company.ORGTYPE)
-                }))
-            );
-        } else if (declError) {
-            setShowSnackBar(true);
-        }
-    }, [declData.length]);
-
     return (
         <ErrorBoundary>
             <Header organizations={compData} onSearch={handleSearch} loading={declLoading} />
-            <DataTable rows={rows} loading={declLoading} />
+            <DataTable />
             <Grid item container xs={2}>
-                {showSnackBar === true ? (
-                    <Snackbar
-                        open={showSnackBar}
-                        handleClose={handleClose}
-                        severity='error'
-                        title='Something went wrong'
-                        message={errorMessage}
-                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                    ></Snackbar>
-                ) : null}
+                <Snackbar
+                    open={showSnackBar}
+                    handleClose={handleClose}
+                    severity='error'
+                    title='Something went wrong'
+                    message={errorMessage ?? ''}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                ></Snackbar>
             </Grid>
         </ErrorBoundary>
     );
@@ -127,7 +88,6 @@ const mapStateToProps = (state) => {
         endpoint: state.session.endpoint,
         token: state.session.auth.token,
         error: state.session.auth.error,
-        compLoading: state.decliningCompanies.companies.loading,
         compData: state.decliningCompanies.companies.data,
         compError: state.decliningCompanies.companies.error,
         declLoading: state.decliningCompanies.decliningData.loading,

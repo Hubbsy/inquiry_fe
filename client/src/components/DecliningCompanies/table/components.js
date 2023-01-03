@@ -1,12 +1,12 @@
 import { TableToolbar } from '@aeros-ui/tables';
 import { MTableCell } from '@material-table/core';
 
-export const components = (showFilters, setFiltering, handleDensityClick) => {
+export const components = (showFilters, handleFilterAction, handleDensityClick) => {
     return {
         Cell: (props) => {
             return (
                 <MTableCell
-                    style={{
+                    sx={{
                         whiteSpace: 'nowrap',
                         textOverflow: 'ellipsis',
                         overflow: 'hidden'
@@ -19,7 +19,7 @@ export const components = (showFilters, setFiltering, handleDensityClick) => {
             <TableToolbar
                 {...props}
                 showFilters={showFilters}
-                onFilterClick={() => setFiltering(!showFilters)}
+                onFilterClick={handleFilterAction}
                 onDensityClick={handleDensityClick}
             />
         )

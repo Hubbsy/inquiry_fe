@@ -67,7 +67,7 @@ const getDecliningCompanies = (endpoint, token) => {
                 } else {
                     dispatch(
                         getCompaniesFailure(
-                            'An error occured while the request was processesing, please try again.'
+                            'An error occured trying to retrieve Organization type, please try again.'
                         )
                     );
                 }
@@ -76,7 +76,7 @@ const getDecliningCompanies = (endpoint, token) => {
                 console.log(err);
                 dispatch(
                     getCompaniesFailure(
-                        'An error occured while the request was processesing, please try again.'
+                        'An error occured trying to retrieve Organization types, please try again.'
                     )
                 );
             });
@@ -99,7 +99,7 @@ const getDecliningData = (endpoint, token, data) => {
                 } else {
                     dispatch(
                         getDecliningDataFailure(
-                            'An error occured while the request was processesing, please try again.'
+                            'An error occured trying to retrieve Declining Companies, please try again.'
                         )
                     );
                 }
@@ -108,7 +108,7 @@ const getDecliningData = (endpoint, token, data) => {
                 console.log(err);
                 dispatch(
                     getDecliningDataFailure(
-                        'An error occured while the request was processesing, please try again.'
+                        'An error occured trying to retrieve Declining Companies, please try again.'
                     )
                 );
             });

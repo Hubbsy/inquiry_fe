@@ -1,12 +1,15 @@
-import { TableFilterInput } from '@aeros-ui/tables';
+import { MainTableCell, TableFilterInput } from '@aeros-ui/tables';
+import { Tooltip } from '@mui/material';
 
 export const columns = [
     {
         title: 'NAIC',
-        field: 'naic',
-        emptyValue: '-',
+        field: 'NAIC',
         type: 'string',
-        width: '10em',
+        width: '8em',
+        align: 'right',
+        hidden: false,
+        render: (rowData) => <MainTableCell>{rowData.NAIC}</MainTableCell>,
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
                 <TableFilterInput
@@ -17,10 +20,37 @@ export const columns = [
     },
     {
         title: 'Company Name',
-        field: 'companyName',
-        emptyValue: '-',
+        field: 'COMPANYNAME',
         type: 'string',
-        width: '30em',
+        cellStyle: {
+            maxWidth: '250px',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            overflow: 'hidden'
+        },
+        hidden: false,
+        render: (rowData) => (
+            <MainTableCell
+                style={{
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden'
+                }}
+            >
+                {rowData.COMPANYNAME ? (
+                    <Tooltip
+                        title={rowData.COMPANYNAME}
+                        disableHoverListener={
+                            rowData.COMPANYNAME && rowData.COMPANYNAME.length > 30 ? false : true
+                        }
+                    >
+                        <span>{rowData.COMPANYNAME}</span>
+                    </Tooltip>
+                ) : (
+                    ''
+                )}
+            </MainTableCell>
+        ),
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
                 <TableFilterInput
@@ -31,10 +61,11 @@ export const columns = [
     },
     {
         title: 'Domicile',
-        field: 'domicile',
-        emptyValue: '-',
+        field: 'DOMICILE',
         type: 'string',
         width: '10em',
+        hidden: false,
+        render: (rowData) => <MainTableCell>{rowData.DOMICILE}</MainTableCell>,
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
                 <TableFilterInput
@@ -45,10 +76,37 @@ export const columns = [
     },
     {
         title: 'Organizaton Type',
-        field: 'orgType',
-        emptyValue: '-',
+        field: 'ORGTYPE',
         type: 'string',
-        width: '30em',
+        cellStyle: {
+            maxWidth: '200px',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            overflow: 'hidden'
+        },
+        hidden: false,
+        render: (rowData) => (
+            <MainTableCell
+                style={{
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden'
+                }}
+            >
+                {rowData.ORGTYPE ? (
+                    <Tooltip
+                        title={rowData.ORGTYPE}
+                        disableHoverListener={
+                            rowData.ORGTYPE && rowData.ORGTYPE.length > 30 ? false : true
+                        }
+                    >
+                        <span>{rowData.ORGTYPE}</span>
+                    </Tooltip>
+                ) : (
+                    ''
+                )}
+            </MainTableCell>
+        ),
         filterComponent: ({ columnDef, onFilterChanged }) => {
             return (
                 <TableFilterInput
