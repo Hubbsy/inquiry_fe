@@ -47,19 +47,17 @@ class App extends Component {
             const endpoint = endpointConfig(env);
             this.props.setEndpoint(endpoint);
             const data = {
-                DEV: 'RSI_ADECASTRO',
+                DEV: process.env.REACT_APP_USER,
                 SESSIONTYPE: 'BrokerPortal',
                 SECPAYLOAD: {
                     ENV: env,
                     OWNERSECURITYID: 1,
-                    SECURITYID: 1713,
-                    BROKERID: 4011,
-                    // SECURITYID: 1085, //BOR
-                    // BROKERID: 2902, //BOR
                     // SECURITYID: 59,
                     // BROKERID: 103,
-                    USERID: 'RSI_ADECASTRO',
-                    IP: '10.233.51.123'
+                    SECURITYID: 1713,
+                    BROKERID: 4011,
+                    USERID: process.env.REACT_APP_USER,
+                    IP: process.env.REACT_APP_IP
                 }
             };
 

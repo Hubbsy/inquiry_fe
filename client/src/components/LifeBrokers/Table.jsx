@@ -1,16 +1,16 @@
-import MaterialTable from '@material-table/core';
+import MaterialTable, { MTableBodyRow, MTableCell } from '@material-table/core';
 import { TablePagination, useTheme, ThemeProvider, Grid, Typography } from '@mui/material';
-import { TableToolbar, MainTableCell, DetailCard, TableFilterInput } from '@aeros-ui/tables';
+import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme } from '@aeros-ui/themes';
-import { useState, useCallback } from 'react';
-import styled from '@emotion/styled';
-import { MoreVert } from '@mui/icons-material';
-import { format } from 'date-fns';
+import { useState, useCallback, createRef } from 'react';
 import { Stack } from '@mui/system';
+import columns from './columns';
+import { useEffect } from 'react';
 
 export default function Table({ loading, rows }) {
     const theme = useTheme();
+    const tableRef = createRef();
     const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
@@ -81,116 +81,31 @@ export default function Table({ loading, rows }) {
         </Grid>
     );
 
-    const columns = [
-        {
-            title: 'License No.',
-            field: 'licenseNo',
-            type: 'string',
-            render: (rowData) => (
-                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {rowData.licenseNo}
-                </MainTableCell>
-            ),
-            filterComponent: ({ columnDef, onFilterChanged }) => {
-                return (
-                    <TableFilterInput
-                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
-                    />
-                );
-            }
-        },
-        {
-            title: 'Name',
-            field: 'brokerName',
-            type: 'string',
-            width: '50em',
-            render: (rowData) => (
-                <MainTableCell sx={{ whiteSpace: 'nowrap' }}>{rowData.brokerName}</MainTableCell>
-            ),
-            filterComponent: ({ columnDef, onFilterChanged }) => {
-                return (
-                    <TableFilterInput
-                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
-                    />
-                );
-            }
-        },
-        {
-            title: 'Effective Date',
-            field: 'effectiveDate',
-            width: '15em',
-            render: (rowData) => (
-                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {format(new Date(rowData.effectiveDate.replace(/-/g, '/')), 'MM/dd/yyyy')}
-                </MainTableCell>
-            ),
-            filterComponent: ({ columnDef, onFilterChanged }) => {
-                return (
-                    <TableFilterInput
-                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
-                    />
-                );
-            }
-        },
-        {
-            title: 'Expiration Date',
-            field: 'expDate',
-            width: '10em',
-            render: (rowData) => (
-                <MainTableCell sx={{ width: { xs: '0.5em', sm: '5em' } }}>
-                    {format(new Date(rowData.expDate.replace(/-/g, '/')), 'MM/dd/yyyy')}
-                </MainTableCell>
-            ),
-            filterComponent: ({ columnDef, onFilterChanged }) => {
-                return (
-                    <TableFilterInput
-                        onChange={(e) => onFilterChanged(columnDef.tableData.id, e.target.value)}
-                    />
-                );
-            }
-        },
-        {
-            title: '',
-            field: 'detailsPopoverIcon',
-            width: '1em',
-            render: (rowData) => (
-                <StyledMoreVertIcon onClick={(e) => handlePopoverOpen(e, rowData)} />
-            ),
-            hiddenByColumnsButton: true,
-            filtering: false
-        }
-    ];
+    const [Columns, setColumns] = useState([...columns(handlePopoverOpen)]);
 
-    const StyledMoreVertIcon = styled(MoreVert)(({ theme }) => ({
-        height: 32,
-        width: 18,
-        display: 'flex',
-        color: 'gray',
-        '&:hover': {
-            height: 32,
-            width: 18,
-            borderRadius: '50%',
-            backgroundColor: theme.palette.grid.main.active,
-            padding: 0,
-            color: 'gray'
-        },
-        '&:active': {
-            height: 32,
-            width: 18,
-            borderRadius: '50%',
-            backgroundColor: theme.palette.grid.main.active,
-            padding: 0,
-            color: 'gray'
-        },
-        '&:focus': {
-            height: 32,
-            width: 18,
-            borderRadius: '50%',
-            backgroundColor: theme.palette.grid.main.active,
-            padding: 0,
-            color: 'gray'
+    useEffect(() => {
+        if (rows.length > 0 && !loading) {
+            resetTableState();
         }
-    }));
+    }, [rows]);
+
+    const resetTableState = () => {
+        // showFilters ? setFiltering(false) : null;
+        tableRef && tableRef.current ? (tableRef.current.dataManager.searchText = '') : null;
+        setColumns([...columns(handlePopoverOpen)]);
+    };
+
+    const handleFilterAction = () => {
+        tableRef.current.dataManager.searchText = '';
+        setFiltering(!showFilters);
+        const columnsCopy = [...Columns];
+        if (showFilters) {
+            for (const col of columnsCopy) {
+                col.tableData.filterValue = '';
+            }
+            setColumns(columnsCopy);
+        }
+    };
 
     const options = {
         pageSize: 10,
@@ -204,6 +119,7 @@ export default function Table({ loading, rows }) {
             padding: '1em',
             whiteSpace: 'nowrap'
         },
+        pageSizeOptions: [5, 10, 25, 50, 100],
         rowStyle: (rowData) => ({
             backgroundColor:
                 selectedRow === rowData.tableData.id
@@ -232,29 +148,39 @@ export default function Table({ loading, rows }) {
             <ThemeProvider theme={tableTheme}>
                 <MaterialTable
                     title={''}
+                    tableRef={tableRef}
                     options={options}
-                    columns={columns}
+                    columns={Columns}
                     data={rows}
                     isLoading={loading}
                     onRowClick={handleRowClick}
                     components={{
-                        Pagination: (props) => (
-                            <TablePagination
-                                count={props.count}
-                                page={props.page}
-                                onPageChange={props.onPageChange}
-                                rowsPerPage={props.rowsPerPage}
-                                rowsPerPageOptions={[10, 25, 50, 100]}
-                                onRowsPerPageChange={props.onRowsPerPageChange}
-                            />
-                        ),
+                        Cell: (props) => {
+                            return (
+                                <MTableCell
+                                    sx={{
+                                        whiteSpace: 'nowrap',
+                                        textOverflow: 'ellipsis',
+                                        overflow: 'hidden'
+                                    }}
+                                    {...props}
+                                ></MTableCell>
+                            );
+                        },
+                        Row: (props) => {
+                            return <MTableBodyRow id={props.data.id} {...props} />;
+                        },
+
                         Toolbar: (props) => (
                             <TableToolbar
                                 {...props}
                                 showFilters={showFilters}
-                                onFilterClick={() => setFiltering(!showFilters)}
+                                onFilterClick={handleFilterAction}
                                 onDensityClick={handleDensityClick}
                             />
+                        ),
+                        Pagination: (props) => (
+                            <TablePagination {...props} page={props.count <= 0 ? 0 : props.page} />
                         )
                     }}
                 />
