@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Typography, Paper, Grid } from '@mui/material';
 import { SearchInput, SearchButton } from '@aeros-ui/components';
 
@@ -12,6 +12,8 @@ function Search({
     handleClearInput,
     handleHelperText
 }) {
+    const searchInputRef = useRef();
+
     return (
         <Paper sx={{ padding: '1em', margin: '1em' }} variant={'outlined'}>
             <Typography variant='h6' sx={{ paddingBottom: 1 }}>
@@ -22,6 +24,7 @@ function Search({
                     <SearchInput
                         autoFocus
                         sx={{ mr: 1 }}
+                        inputRef={searchInputRef}
                         label={'Search by License No, Broker name...'}
                         onChange={handleChange}
                         onKeyPress={handleKeyPress}
@@ -31,7 +34,10 @@ function Search({
                         error={errorStyle}
                         helperText={errorStyle ? 'Must be at least 3 characters' : null}
                         includeEndAdornment={true}
-                        handleClearInput={handleClearInput}
+                        handleClearInput={() => {
+                            handleClearInput();
+                            searchInputRef.current.focus();
+                        }}
                     />
                 </Grid>
                 <Grid sx={{ mt: 1 }} item xs={2}>
