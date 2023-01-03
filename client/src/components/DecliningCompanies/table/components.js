@@ -11,7 +11,8 @@ export const components = (showFilters, setFiltering, handleDensityClick) => {
                         textOverflow: 'ellipsis',
                         overflow: 'hidden'
                     }}
-                    {...props}></MTableCell>
+                    {...props}
+                ></MTableCell>
             );
         },
         Toolbar: (props) => (
