@@ -1,26 +1,19 @@
 import MaterialTable, { MTableCell } from '@material-table/core';
 import NestedTable from './NestedTable';
 import {
-    TablePagination,
     ThemeProvider,
     Grid,
     Typography,
     Button,
     Paper,
-    Card,
-    CardHeader,
-    CardContent,
-    List,
-    ListItem,
-    ListItemText,
-    createTheme
+    Popover,
+    TablePagination
 } from '@mui/material';
 import { TableToolbar, DetailCard } from '@aeros-ui/tables';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { tableTheme, theme } from '@aeros-ui/themes';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createRef } from 'react';
 import { Stack } from '@mui/system';
-import InfoIcon from '@mui/icons-material/Info';
 import { TableIcons, CaratIcon } from '@aeros-ui/icons';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
@@ -29,111 +22,10 @@ import isEmpty from '../../../functions/isEmpty';
 import useProcNum from '../../../hooks/utility/useProcNum';
 import getAnchorPosition from '../../../functions/getAnchorPosition';
 
-const messageTheme = createTheme({
-    palette: {
-        primary: {
-            main: '#0097FB',
-            light: '#B8E3FF',
-            dark: '#004B6E'
-        }
-    },
-    typography: {
-        h6: {
-            fontSize: '15px'
-        }
-    },
-    components: {
-        MuiCardHeader: {
-            styleOverrides: {
-                root: {
-                    padding: '0.5em',
-                    borderTopColor: 'transparent'
-                },
-                avatar: {
-                    marginRight: '0.5em'
-                }
-            }
-        },
-        MuiCardContent: {
-            styleOverrides: {
-                root: {
-                    padding: '0.25em',
-                    backgroundColor: 'rgba(0, 226, 208, 0.08)',
-                    '&:last-child': {
-                        paddingBottom: '0.25em'
-                    }
-                }
-            }
-        },
-        MuiCard: {
-            styleOverrides: {
-                root: {
-                    paddingBottom: '0.25em'
-                }
-            }
-        },
-        MuiList: {
-            styleOverrides: {
-                root: {
-                    paddingTop: 0,
-                    paddingBottom: 0
-                }
-            }
-        },
-        MuiListItem: {
-            styleOverrides: {
-                root: {
-                    paddingTop: 0,
-                    paddingBottom: 0
-                }
-            }
-        },
-        MuiPaper: {
-            styleOverrides: {
-                elevation: 4
-            }
-        }
-    }
-});
-
-const InfoMessage = (props) => {
-    return (
-        <ThemeProvider theme={messageTheme}>
-            <Card sx={{ borderRadius: '0px' }}>
-                <CardHeader
-                    title={props.title}
-                    avatar={<InfoIcon color='info' fontSize='small' />}
-                    titleTypographyProps={{ variant: 'h6', color: 'primary.dark' }}
-                />
-                <CardContent>
-                    <List sx={{ width: '100%' }}>
-                        {Array.isArray(props.data) ? (
-                            props.data.map((d, i) => {
-                                return (
-                                    <ListItem key={`info-${i}`}>
-                                        <ListItemText
-                                            primary={d}
-                                            primaryTypographyProps={{ color: 'primary.dark' }}
-                                        />
-                                    </ListItem>
-                                );
-                            })
-                        ) : (
-                            <ListItem>
-                                <ListItemText
-                                    primary={props.data}
-                                    primaryTypographyProps={{ color: 'primary.dark' }}
-                                />
-                            </ListItem>
-                        )}
-                    </List>
-                </CardContent>
-            </Card>
-        </ThemeProvider>
-    );
-};
+import InfoMessage from './InfoMessage';
 
 export default function Table({ loading, rows, showLicenseCol, setAffidavits }) {
+    const tableRef = createRef();
     const { numberWithCommas } = useProcNum();
     const [density, setDensity] = useState('dense');
     const [showFilters, setFiltering] = useState(false);
@@ -155,6 +47,8 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
     const [brokerNumEl, setBrokerNumMessage] = useState(null);
     const brokerNumMessageOpen = Boolean(brokerNumEl);
 
+    const [data, setData] = useState([]);
+
     const handleOpenPartAMessage = (e, rowData, type = null) => {
         const rowCopy = { ...rowData };
         const dataCopy = [...rows];
@@ -163,7 +57,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         const anchorPosition = getAnchorPosition(e);
 
         type ? setBrokerNumMessage(anchorPosition) : setPartAEl(anchorPosition);
-        setAffidavits(dataCopy);
+        setData(dataCopy);
         setSelectedRow(rowCopy);
     };
 
@@ -171,14 +65,14 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         const dataCopy = [...rows];
         if (selectedRow !== null) {
             const rowCopy = { ...selectedRow };
-            if (rowCopy.tableData.showDetailPanel) {
-                rowCopy.tableData.showDetailPanel = false;
-            }
+            // if (rowCopy.tableData.showDetailPanel) {
+            //     rowCopy.tableData.showDetailPanel = false;
+            // }
             dataCopy[rowCopy.tableData.id] = rowCopy;
         }
 
         type ? setBrokerNumMessage(null) : setPartAEl(null);
-        setAffidavits(dataCopy);
+        setData(dataCopy);
         setSelectedRow(null);
     };
 
@@ -206,7 +100,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         const anchorPosition = anchorPositionByAnchorEl(e);
         setAnchorEl(anchorPosition);
 
-        setAffidavits(dataCopy);
+        setData(dataCopy);
         setSelectedRow(rowCopy);
     };
 
@@ -220,7 +114,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
             dataCopy[rowCopy.tableData.id] = rowCopy;
         }
 
-        setAffidavits(dataCopy);
+        setData(dataCopy);
         setAnchorEl(null);
         setSelectedRow(null);
     };
@@ -319,18 +213,17 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         cellStyle: theme.typography,
         pageSizeOptions: [10, 25, 50, 100],
         detailPanelType: 'single',
-        // tableLayout:'fixed',
         doubleHorizontalScroll: false,
         showDetailPanelIcon: true,
         pageSize: 10,
         padding: density,
+        filtering: showFilters,
         showEmptyDataSourceMessage: !loading,
         headerStyle: {
             ...theme.components.headerStyle,
-            backgroundColor: theme.palette.grid.main.header
-            // border: 'solid red 1px',
-            // display: 'flex',
-            // justifyContent:'center'
+            backgroundColor: theme.palette.grid.main.header,
+            whiteSpace: 'nowrap',
+            padding: 10
         },
         rowStyle: (rowData) => ({
             backgroundColor:
@@ -358,32 +251,58 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         );
     };
 
+    useEffect(() => {
+        if (rows && rows.length > 0) {
+            setData(rows);
+            resetTableState();
+        } else {
+            setData([]);
+        }
+    }, [rows]);
+
+    const [Columns, setColumns] = useState([
+        ...columns(handlePopoverOpen, showLicenseCol, id, partAMessageId, handleOpenPartAMessage)
+    ]);
+
+    const handleFilterAction = () => {
+        tableRef.current.dataManager.searchText = '';
+        setFiltering(!showFilters);
+        const columnsCopy = [...Columns];
+        if (showFilters) {
+            for (const col of columnsCopy) {
+                col.tableData.filterValue = '';
+            }
+            setColumns(columnsCopy);
+        }
+    };
+
+    const resetTableState = () => {
+        showFilters ? setFiltering(false) : null;
+        tableRef && tableRef.current ? (tableRef.current.dataManager.searchText = '') : null;
+        setColumns([
+            ...columns(
+                handlePopoverOpen,
+                showLicenseCol,
+                id,
+                partAMessageId,
+                handleOpenPartAMessage
+            )
+        ]);
+    };
+
     return (
         <div
             style={{
-                margin: '1em'
+                margin: '0.5em'
             }}
         >
             <ThemeProvider theme={tableTheme}>
                 <MaterialTable
                     title={''}
+                    tableRef={tableRef}
                     options={options}
-                    columns={columns(
-                        handlePopoverOpen,
-                        showLicenseCol,
-                        id,
-                        numberWithCommas,
-                        InfoMessage,
-                        partAMessageId,
-                        partAMessageOpen,
-                        partAEl,
-                        selectedRow,
-                        handleOpenPartAMessage,
-                        handleClosePartAMessage,
-                        brokerNumEl,
-                        brokerNumMessageOpen
-                    )}
-                    data={rows}
+                    columns={Columns}
+                    data={data}
                     isLoading={loading}
                     icons={TableIcons}
                     detailPanel={[
@@ -423,9 +342,13 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                             <TableToolbar
                                 {...props}
                                 showFilters={showFilters}
-                                onFilterClick={() => setFiltering(!showFilters)}
+                                onFilterClick={handleFilterAction}
                                 onDensityClick={handleDensityClick}
                             />
+                        ),
+
+                        Pagination: (props) => (
+                            <TablePagination {...props} page={props.count <= 0 ? 0 : props.page} />
                         )
                     }}
                 />
@@ -445,6 +368,52 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                     content={content}
                     actions={actions}
                 />
+                <Popover
+                    id={partAMessageId}
+                    open={partAMessageOpen}
+                    anchorReference='anchorPosition'
+                    anchorPosition={partAEl}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left'
+                    }}
+                    elevation={2}
+                    onClose={() => handleClosePartAMessage()}
+                >
+                    {selectedRow && selectedRow.PARTA_TRANSACTION.PARTAMESSAGE.length > 0
+                        ? selectedRow.PARTA_TRANSACTION.PARTAMESSAGE.map((message, i) => {
+                              return (
+                                  <InfoMessage
+                                      key={`PARTA_TRANSACTION.PARTAMESSAGE_${i}`}
+                                      title={message.MESSAGETYPE}
+                                      data={message.MESSAGE}
+                                  />
+                              );
+                          })
+                        : null}
+                </Popover>
+                <Popover
+                    id={'BrokerMessagePopover'}
+                    open={brokerNumMessageOpen}
+                    anchorReference='anchorPosition'
+                    anchorPosition={brokerNumEl}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left'
+                    }}
+                    elevation={2}
+                    onClose={() => handleClosePartAMessage('BATCHNO')}
+                >
+                    {selectedRow &&
+                    selectedRow.PARTA_TRANSACTION.BATCHNO !== null &&
+                    selectedRow.PARTA_TRANSACTION.BATCHID !==
+                        parseInt(selectedRow.PARTA_TRANSACTION.BATCHNO) ? (
+                        <InfoMessage
+                            title={'ELANY Batch No.'}
+                            data={selectedRow.PARTA_TRANSACTION.BATCHNO}
+                        />
+                    ) : null}
+                </Popover>
             </ThemeProvider>
         </div>
     );
