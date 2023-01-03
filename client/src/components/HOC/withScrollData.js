@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 export const withScrollData = (Component) => {
     return function WithScrollDataComponent({ ...props }) {
@@ -9,9 +8,6 @@ export const withScrollData = (Component) => {
         const [scrollY, setScrollY] = React.useState(window.scrollY);
         const [scrollX, setScrollX] = React.useState(window.scrollX);
         const [scrollActive, setScrollActive] = React.useState(false);
-
-        const theme = useTheme();
-        const matchesSM = useMediaQuery(theme.breakpoints.down('md'));
 
         React.useEffect(() => {
             window.addEventListener('resize', handleDocScroll);
