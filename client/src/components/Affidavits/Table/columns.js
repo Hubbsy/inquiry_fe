@@ -49,7 +49,8 @@ export const columns = (
                 container
                 justifyContent='start'
                 alignItems='center'
-                sx={{ flexWrap: 'nowrap' }}>
+                sx={{ flexWrap: 'nowrap' }}
+            >
                 <MainTableCell style={{ ...ellipsisText }}>
                     {rowData.PARTA_TRANSACTION.AFFIDAVITNO}
                 </MainTableCell>
@@ -59,7 +60,8 @@ export const columns = (
                         aria-describedby={partAMessageId}
                         onClick={(e) => {
                             handleOpenPartAMessage(e, rowData);
-                        }}>
+                        }}
+                    >
                         <InfoOutlinedIcon fontSize='small' color='info' />
                     </IconButton>
                 ) : null}
@@ -119,7 +121,8 @@ export const columns = (
                     ...ellipsisText,
                     textAlign: 'center',
                     width: '90%'
-                }}>
+                }}
+            >
                 {rowData.PARTA_TRANSACTION.TRANSACTIONTYPE}
             </MainTableCell>
         ),
@@ -228,7 +231,8 @@ export const columns = (
                 container
                 justifyContent='start'
                 alignItems='center'
-                sx={{ flexWrap: 'nowrap' }}>
+                sx={{ flexWrap: 'nowrap' }}
+            >
                 <MainTableCell style={{ ...ellipsisText }}>
                     {rowData.PARTA_TRANSACTION.BATCHID}
                 </MainTableCell>
@@ -240,7 +244,8 @@ export const columns = (
                         aria-describedby={partAMessageId}
                         onClick={(e) => {
                             handleOpenPartAMessage(e, rowData, 'BATCHNO');
-                        }}>
+                        }}
+                    >
                         <InfoOutlinedIcon fontSize='small' color='info' />
                     </IconButton>
                 ) : null}
@@ -319,7 +324,8 @@ export const columns = (
                     container
                     justifyContent='space-between'
                     alignItems='center'
-                    sx={{ flexWrap: 'nowrap' }}>
+                    sx={{ flexWrap: 'nowrap' }}
+                >
                     {rowData.PARTA_TRANSACTION.PROCESSEDSTATE.trim() === '' ? (
                         <MainTableCell>{rowData.PARTA_TRANSACTION.PROCESSEDSTATE}</MainTableCell>
                     ) : (
@@ -328,7 +334,8 @@ export const columns = (
                     <IconButton
                         size='small'
                         onClick={(e) => handlePopoverOpen(e, rowData)}
-                        aria-describedby={id}>
+                        aria-describedby={id}
+                    >
                         <MoreVert fontSize='small' />
                     </IconButton>
                 </Grid>
