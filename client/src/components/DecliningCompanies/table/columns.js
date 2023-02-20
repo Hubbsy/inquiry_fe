@@ -35,15 +35,13 @@ export const columns = [
                     whiteSpace: 'nowrap',
                     textOverflow: 'ellipsis',
                     overflow: 'hidden'
-                }}
-            >
+                }}>
                 {rowData.COMPANYNAME ? (
                     <Tooltip
                         title={rowData.COMPANYNAME}
                         disableHoverListener={
                             rowData.COMPANYNAME && rowData.COMPANYNAME.length > 30 ? false : true
-                        }
-                    >
+                        }>
                         <span>{rowData.COMPANYNAME}</span>
                     </Tooltip>
                 ) : (
@@ -91,15 +89,13 @@ export const columns = [
                     whiteSpace: 'nowrap',
                     textOverflow: 'ellipsis',
                     overflow: 'hidden'
-                }}
-            >
+                }}>
                 {rowData.ORGTYPE ? (
                     <Tooltip
                         title={rowData.ORGTYPE}
                         disableHoverListener={
                             rowData.ORGTYPE && rowData.ORGTYPE.length > 30 ? false : true
-                        }
-                    >
+                        }>
                         <span>{rowData.ORGTYPE}</span>
                     </Tooltip>
                 ) : (

@@ -7,6 +7,7 @@ import {
     Stack,
     Collapse,
     Fab,
+    IconButton,
     InputAdornment
 } from '@mui/material';
 import {
@@ -22,6 +23,7 @@ import styled from '@emotion/styled';
 import { Box } from '@mui/system';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import ExpandLess from '@mui/icons-material/ExpandLess';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Clear } from '@mui/icons-material';
 import { useFormCtrl } from '../../hooks/Affidavits/useFormCtrl';
 import AdvancedSearch from './AdvSearch';
@@ -44,7 +46,8 @@ function Search(props) {
         token,
         endpoint,
         handleErrorMessages,
-        resetAppErrors
+        resetAppErrors,
+        userGuideURL
     } = props;
 
     const searchInputRef = useRef();
@@ -181,7 +184,7 @@ function Search(props) {
             variant={'outlined'}
         >
             <Grid item container alignItems='center' sx={{ pb: 1 }}>
-                <Grid item xs={6}>
+                <Grid item xs={5}>
                     <Typography variant='h6' gutterBottom>
                         Affidavit Inquiry
                     </Typography>
@@ -199,6 +202,28 @@ function Search(props) {
                             handleClose={resetAppErrors}
                         />
                     ) : null}
+                </Grid>
+                <Grid
+                    item
+                    container
+                    xs={applicationErrors.active && applicationErrors.type === 'GENERAL' ? 1 : 7}
+                    justifyContent='flex-end'
+                >
+                    <IconButton
+                        color='primary'
+                        component='a'
+                        target='_blank'
+                        rel='noopenner noreferrer'
+                        href={
+                            userGuideURL !== null
+                                ? `https://${userGuideURL}/inquiry/affidavit`
+                                : `${window.location.origin}/inquiry/error`
+                        }
+                        tabIndex={-1}
+                        size='small'
+                    >
+                        <HelpOutlineIcon />
+                    </IconButton>
                 </Grid>
             </Grid>
             <Stack>

@@ -2,18 +2,18 @@ import storeState from '../state';
 import { TYPES } from '../actions/session';
 import { combineReducers } from 'redux';
 
-// const ip = (state = storeState.session.ip, action) => {
-//     switch (action.type) {
-//         case TYPES.SET_IP_ADDRESS:
-//             return action.value;
-//         default:
-//             return state;
-//     }
-// };
-
 const endpoint = (state = storeState.session.endpoint, action) => {
     switch (action.type) {
         case TYPES.SET_ENDPOINT:
+            return action.value;
+        default:
+            return state;
+    }
+};
+
+const userGuideURL = (state = storeState.session.userGuideURL, action) => {
+    switch (action.type) {
+        case TYPES.SET_USER_GUIDE_URL:
             return action.value;
         default:
             return state;
@@ -61,7 +61,7 @@ const auth = (state = storeState.session.auth, action) => {
     }
 };
 
-const session = combineReducers({ auth, endpoint, sessionTimeout });
+const session = combineReducers({ auth, endpoint, userGuideURL, sessionTimeout });
 export default session;
 
 // const session = (state = storeState.session, action) => {

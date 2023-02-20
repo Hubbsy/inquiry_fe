@@ -116,6 +116,7 @@ class LifeBrokers extends React.Component {
                     showRows={this.showRows}
                     handleClearInput={this.handleClearInput}
                     handleHelperText={this.handleHelperText}
+                    userGuideURL={this.props.userGuideURL}
                 />
                 <Table loading={this.props.loading} rows={this.state.rows} />
                 <Snackbar
@@ -137,7 +138,8 @@ const mapStateToProps = (state) => {
         token: state.session.auth.token,
         loading: state.brokers.life.loading,
         data: state.brokers.life.data,
-        error: state.brokers.life.error
+        error: state.brokers.life.error,
+        userGuideURL: state.session.userGuideURL
     };
 };
 

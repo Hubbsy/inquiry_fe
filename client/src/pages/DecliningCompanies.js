@@ -17,7 +17,8 @@ const DecliningCompanies = (props) => {
         compError,
         declError,
         declData,
-        declLoading
+        declLoading,
+        userGuideURL
     } = props;
     const [showSnackBar, setShowSnackBar] = useState(false);
     const [errorMessage, setErrorMessage] = useState(
@@ -67,7 +68,12 @@ const DecliningCompanies = (props) => {
 
     return (
         <ErrorBoundary>
-            <Header organizations={compData} onSearch={handleSearch} loading={declLoading} />
+            <Header
+                organizations={compData}
+                onSearch={handleSearch}
+                loading={declLoading}
+                userGuideURL={userGuideURL}
+            />
             <DataTable />
             <Grid item container xs={2}>
                 <Snackbar
@@ -76,8 +82,7 @@ const DecliningCompanies = (props) => {
                     severity='error'
                     title='Something went wrong'
                     message={errorMessage ?? ''}
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                ></Snackbar>
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}></Snackbar>
             </Grid>
         </ErrorBoundary>
     );
@@ -92,7 +97,8 @@ const mapStateToProps = (state) => {
         compError: state.decliningCompanies.companies.error,
         declLoading: state.decliningCompanies.decliningData.loading,
         declData: state.decliningCompanies.decliningData.data,
-        declError: state.decliningCompanies.decliningData.error
+        declError: state.decliningCompanies.decliningData.error,
+        userGuideURL: state.session.userGuideURL
     };
 };
 

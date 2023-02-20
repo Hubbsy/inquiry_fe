@@ -287,6 +287,7 @@ class Affidavits extends React.Component {
                     token={this.props.token}
                     endpoint={this.props.endpoint}
                     resetAppErrors={this.resetAppErrors}
+                    userGuideURL={this.props.userGuideURL}
                 />
                 <Table
                     setAffidavits={this.setAffidavits}
@@ -314,14 +315,12 @@ class Affidavits extends React.Component {
                                   placement='top'
                                   title={
                                       this.state.windowScroll ? 'Scroll to Top' : 'Scroll to Bottom'
-                                  }
-                              >
+                                  }>
                                   <Fab
                                       color='secondary'
                                       aria-label='Scroll to Bottom'
                                       size='small'
-                                      onClick={this.handleScrollClick}
-                                  >
+                                      onClick={this.handleScrollClick}>
                                       {this.state.windowScroll ? <ExpandLess /> : <ExpandMore />}
                                   </Fab>
                               </Tooltip>
@@ -339,7 +338,8 @@ const mapStateToProps = (state) => {
         token: state.session.auth.token,
         loading: state.affidavits.loading,
         data: state.affidavits.data,
-        error: state.affidavits.error
+        error: state.affidavits.error,
+        userGuideURL: state.session.userGuideURL
     };
 };
 

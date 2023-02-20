@@ -81,8 +81,11 @@ const DataTable = ({ compData, declLoading, declData }) => {
                 isLoading={declLoading}
                 options={options(theme, ExportCsv, ExportPdf, showFilters, density, data)}
                 data={data}
-                components={components(showFilters, handleFilterAction, handleDensityClick)}
-            ></MaterialTable>
+                components={components(
+                    showFilters,
+                    handleFilterAction,
+                    handleDensityClick
+                )}></MaterialTable>
         </ThemeProvider>
     );
 };

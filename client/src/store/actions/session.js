@@ -2,8 +2,8 @@ import axios from 'axios';
 export const TYPES = {
     SET_TOKEN: 'SET_TOKEN',
     SET_ENDPOINT: 'SET_ENDPOINT',
+    SET_USER_GUIDE_URL: 'SET_USER_GUIDE_URL',
     SET_SESSION_TIMEOUT: 'SET_SESSION_TIMEOUT',
-    // SET_IP_ADDRESS: 'SET_IP_ADDRESS',
     GET_TOKEN_BEGIN: 'GET_TOKEN_BEGIN',
     GET_TOKEN_SUCCESS: 'GET_TOKEN_SUCCESS',
     GET_TOKEN_FAILURE: 'GET_TOKEN_FAILURE'
@@ -16,17 +16,17 @@ export const setToken = (token) => {
     };
 };
 
-// export const setIpAddress = (ip) => {
-//     return {
-//         type: TYPES.SET_IP_ADDRESS,
-//         value: ip
-//     };
-// };
-
 export const setEndpoint = (endpoint) => {
     return {
         type: TYPES.SET_ENDPOINT,
         value: endpoint
+    };
+};
+
+export const setUserGuideURL = (url) => {
+    return {
+        type: TYPES.SET_USER_GUIDE_URL,
+        value: url
     };
 };
 

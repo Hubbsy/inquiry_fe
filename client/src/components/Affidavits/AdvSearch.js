@@ -6,7 +6,8 @@ import { useRef } from 'react';
 
 const TextItem = styled(Typography)(({ theme }) => ({
     ...theme.typography.subtitle2,
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
+    color: theme.palette.text.secondary
 }));
 
 const AdvancedSearch = (props) => {
@@ -280,8 +281,7 @@ const AdvancedSearch = (props) => {
                         position: 'relative',
                         flexWrap: 'nowrap',
                         top: '-3px'
-                    }}
-                >
+                    }}>
                     <Grid item>
                         <CurrencyInput
                             label={'Premuim'}

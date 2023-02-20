@@ -5,8 +5,8 @@ const storeState = {
             token: null,
             error: null
         },
-        ip: null,
         endpoint: null,
+        userGuideURL: null,
         sessionTimeout: false
     },
     decliningCompanies: {

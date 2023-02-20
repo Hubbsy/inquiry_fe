@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { SearchButton, SearchInput, SelectInput } from '@aeros-ui/components';
-import { Grid, MenuItem, Paper, Typography } from '@mui/material';
+import { Grid, MenuItem, Paper, Typography, IconButton } from '@mui/material';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
-const Header = ({ organizations, onSearch, loading }) => {
+const Header = ({ organizations, onSearch, loading, userGuideURL }) => {
     const [error, setError] = useState(false);
     const errorRef = useRef(false);
     const [companies, setCompanies] = useState([]);
@@ -62,12 +63,27 @@ const Header = ({ organizations, onSearch, loading }) => {
                 alignItems='center'
                 rowGap={1}
                 component={Paper}
-                sx={{ px: '1.5em', py: '1em' }}
-            >
-                <Grid item container>
-                    <Typography variant='h6' gutterBottom>
-                        Declining Companies Inquiry
-                    </Typography>
+                sx={{ px: '1.5em', py: '1em' }}>
+                <Grid item container justifyContent='space-between' alignItems='center'>
+                    <Grid item>
+                        <Typography variant='h6'>Declining Companies Inquiry</Typography>
+                    </Grid>
+                    <Grid item>
+                        <IconButton
+                            color='primary'
+                            component='a'
+                            target='_blank'
+                            rel='noopenner noreferrer'
+                            href={
+                                userGuideURL !== null
+                                    ? `https://${userGuideURL}/inquiry/declining-companies`
+                                    : `${window.location.origin}/inquiry/error`
+                            }
+                            tabIndex={-1}
+                            size='small'>
+                            <HelpOutlineIcon />
+                        </IconButton>
+                    </Grid>
                 </Grid>
                 <Grid item container alignItems='flex-start' columnGap={1}>
                     <Grid item xs={5}>
@@ -97,8 +113,7 @@ const Header = ({ organizations, onSearch, loading }) => {
                             name='org'
                             value={org}
                             disabled={loading}
-                            width={'80%'}
-                        >
+                            width={'80%'}>
                             {companies.map((company) => {
                                 return (
                                     <MenuItem name='org' key={company.CODE} value={company.CODE}>

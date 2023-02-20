@@ -115,6 +115,7 @@ class ProducingBrokers extends React.Component {
                     showRows={this.showRows}
                     handleClearInput={this.handleClearInput}
                     handleHelperText={this.handleHelperText}
+                    userGuideURL={this.props.userGuideURL}
                 />
                 <Table loading={this.props.loading} rows={this.state.rows} />
                 <Snackbar
@@ -136,7 +137,8 @@ const mapStateToProps = (state) => {
         loading: state.brokers.producing.loading,
         data: state.brokers.producing.data,
         error: state.brokers.producing.error,
-        token: state.session.auth.token
+        token: state.session.auth.token,
+        userGuideURL: state.session.userGuideURL
     };
 };
 

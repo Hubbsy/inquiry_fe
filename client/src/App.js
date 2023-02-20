@@ -11,7 +11,13 @@ import { PageNotFound, SessionTimeout } from '@aeros-ui/components';
 import withScrollData from './components/HOC/withScrollData';
 import { connect } from 'react-redux';
 import endpointConfig from './store/endpointConfig';
-import { getToken, verifyAuth, setEndpoint, setToken } from './store/actions/session';
+import {
+    getToken,
+    verifyAuth,
+    setEndpoint,
+    setToken,
+    setUserGuideURL
+} from './store/actions/session';
 import queryString from 'query-string';
 import isEmpty from './functions/isEmpty';
 
@@ -25,6 +31,8 @@ class App extends Component {
     componentDidMount() {
         const parsedURL = queryString.parse(window.location.search);
         const parsedData = !isEmpty(parsedURL) ? JSON.parse(parsedURL.DATA) : null;
+        let userGuideURL = null;
+        console.log('PARSED DATA:', parsedData);
 
         if (
             parsedData !== null &&
@@ -35,6 +43,12 @@ class App extends Component {
             console.log('PARSED DATA:', parsedData);
             const env = parsedData.ENV;
             const srId = parsedData.SRID;
+
+            if (parsedData.hasOwnProperty('GUIDEURL')) {
+                userGuideURL = parsedData.GUIDEURL;
+            }
+
+            this.props.setUserGuideURL(userGuideURL);
 
             const data = {
                 SVC_ID: srId.replaceAll(' ', '+')
@@ -60,6 +74,12 @@ class App extends Component {
                     IP: process.env.REACT_APP_IP
                 }
             };
+
+            if (parsedData.hasOwnProperty('GUIDEURL')) {
+                userGuideURL = parsedData.GUIDEURL;
+            }
+
+            this.props.setUserGuideURL(userGuideURL);
 
             if (!this.state.token) {
                 console.log('NEW TOKEN GENERATED');
@@ -115,6 +135,7 @@ const mapDispatchToProps = (dispatch) => {
         getToken: (endpoint, data) => dispatch(getToken(endpoint, data)),
         setEndpoint: (endpoint) => dispatch(setEndpoint(endpoint)),
         setToken: (token) => dispatch(setToken(token)),
+        setUserGuideURL: (url) => dispatch(setUserGuideURL(url)),
         verifyAuth: (endpoint, data) => dispatch(verifyAuth(endpoint, data))
     };
 };
