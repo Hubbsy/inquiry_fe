@@ -1,4 +1,4 @@
-import { Typography, Paper, Grid, IconButton } from '@mui/material';
+import { Typography, Paper, Grid, IconButton, Tooltip } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { SearchInput, SearchButton } from '@aeros-ui/components';
 import { useRef } from 'react';
@@ -29,21 +29,23 @@ function Search({
                     <Typography variant='h6'>Producing Brokers Inquiry</Typography>
                 </Grid>
                 <Grid item>
-                    <IconButton
-                        color='primary'
-                        component='a'
-                        target='_blank'
-                        rel='noopenner noreferrer'
-                        href={
-                            userGuideURL !== null
-                                ? `https://${userGuideURL}/inquiry/producing-brokers`
-                                : `${window.location.origin}/inquiry/error`
-                        }
-                        tabIndex={-1}
-                        size='small'
-                    >
-                        <HelpOutlineIcon />
-                    </IconButton>
+                    <Tooltip placement='bottom' title="View User Guide">
+                        <IconButton
+                            color='primary'
+                            component='a'
+                            target='_blank'
+                            rel='noopenner noreferrer'
+                            href={
+                                userGuideURL !== null
+                                    ? `https://${userGuideURL}/inquiry/producing-brokers`
+                                    : `${window.location.origin}/inquiry/error`
+                            }
+                            tabIndex={-1}
+                            size='small'
+                        >
+                            <HelpOutlineIcon />
+                        </IconButton>
+                    </Tooltip>
                 </Grid>
             </Grid>
             <Grid sx={{ flexGrow: 1 }} container spacing={0.5}>

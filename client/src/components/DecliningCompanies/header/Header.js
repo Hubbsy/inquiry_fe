@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { SearchButton, SearchInput, SelectInput } from '@aeros-ui/components';
-import { Grid, MenuItem, Paper, Typography, IconButton } from '@mui/material';
+import { Grid, MenuItem, Paper, Typography, IconButton, Tooltip } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const Header = ({ organizations, onSearch, loading, userGuideURL }) => {
@@ -69,20 +69,22 @@ const Header = ({ organizations, onSearch, loading, userGuideURL }) => {
                         <Typography variant='h6'>Declining Companies Inquiry</Typography>
                     </Grid>
                     <Grid item>
-                        <IconButton
-                            color='primary'
-                            component='a'
-                            target='_blank'
-                            rel='noopenner noreferrer'
-                            href={
-                                userGuideURL !== null
-                                    ? `https://${userGuideURL}/inquiry/declining-companies`
-                                    : `${window.location.origin}/inquiry/error`
-                            }
-                            tabIndex={-1}
-                            size='small'>
-                            <HelpOutlineIcon />
-                        </IconButton>
+                        <Tooltip placement='bottom' title="View User Guide">
+                            <IconButton
+                                color='primary'
+                                component='a'
+                                target='_blank'
+                                rel='noopenner noreferrer'
+                                href={
+                                    userGuideURL !== null
+                                        ? `https://${userGuideURL}/inquiry/declining-companies`
+                                        : `${window.location.origin}/inquiry/error`
+                                }
+                                tabIndex={-1}
+                                size='small'>
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
                     </Grid>
                 </Grid>
                 <Grid item container alignItems='flex-start' columnGap={1}>

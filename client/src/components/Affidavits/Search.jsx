@@ -209,21 +209,23 @@ function Search(props) {
                     xs={applicationErrors.active && applicationErrors.type === 'GENERAL' ? 1 : 7}
                     justifyContent='flex-end'
                 >
-                    <IconButton
-                        color='primary'
-                        component='a'
-                        target='_blank'
-                        rel='noopenner noreferrer'
-                        href={
-                            userGuideURL !== null
-                                ? `https://${userGuideURL}/inquiry/affidavit`
-                                : `${window.location.origin}/inquiry/error`
-                        }
-                        tabIndex={-1}
-                        size='small'
-                    >
-                        <HelpOutlineIcon />
-                    </IconButton>
+                    <Tooltip placement="bottom" title="View User Guide">
+                        <IconButton
+                            color='primary'
+                            component='a'
+                            target='_blank'
+                            rel='noopenner noreferrer'
+                            href={
+                                userGuideURL !== null
+                                    ? `https://${userGuideURL}/inquiry/affidavit`
+                                    : `${window.location.origin}/inquiry/error`
+                            }
+                            tabIndex={-1}
+                            size='small'
+                        >
+                            <HelpOutlineIcon />
+                        </IconButton>
+                    </Tooltip>
                 </Grid>
             </Grid>
             <Stack>
