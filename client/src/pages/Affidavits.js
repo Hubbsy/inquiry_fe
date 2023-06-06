@@ -224,12 +224,16 @@ class Affidavits extends React.Component {
         });
     };
 
-    checkAdvSearchInputsActive = (advSearch) => {
+    checkAdvSearchInputsActive = (advSearch, startDate, endDate) => {
         for (const input in advSearch) {
             if (advSearch[input].length > 0 && input !== 'INSUREDNAME') {
                 this.handleErrorMessages('SINGLE_SEARCH');
                 break;
             }
+        }
+
+        if (startDate !== null || endDate !== null) {
+            this.handleErrorMessages('SINGLE_SEARCH');
         }
     };
 

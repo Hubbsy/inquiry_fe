@@ -173,7 +173,7 @@ function Search(props) {
 
     const handleAdvSearchToggle = () => {
         if (advancedSearchActive) {
-            checkAdvSearchInputsActive(advancedSearch);
+            checkAdvSearchInputsActive(advancedSearch, startDate, endDate);
         }
         toggleAdvancedSearchPanel();
     };
