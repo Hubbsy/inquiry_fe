@@ -31,10 +31,14 @@ const useFormCtrl = (
 
     // -------BUTTON HANDLERS -------
     // clear button handler
-    const handleClearAdvSearch = (clearDates = true) => {
+    const handleClearAdvSearch = (clearDates = true, clearInsuredName = true) => {
         if (clearDates) {
             setStartDate(null);
             setEndDate(null);
+        }
+
+        if (!clearInsuredName) {
+            advSearchBase.INSUREDNAME = advancedSearch.INSUREDNAME;
         }
 
         resetAppErrors();
@@ -42,6 +46,7 @@ const useFormCtrl = (
     };
 
     const handleClearAdvSearchInput = (e, name) => {
+        resetAppErrors();
         setAdvancedSearch({
             ...advancedSearch,
             [name]: ''
@@ -92,7 +97,7 @@ const useFormCtrl = (
             handleClearCombo();
             validSearch = validateAdvancedSearch();
         } else {
-            handleClearAdvSearch(false);
+            handleClearAdvSearch(false, false);
             validSearch = validateStandardSearch();
         }
 

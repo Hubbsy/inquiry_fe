@@ -36,6 +36,7 @@ const TextItem = styled(Box)(({ theme }) => ({
 }));
 
 function Search(props) {
+    const inputRef4 = useRef();
     const {
         loading,
         applicationErrors,
@@ -61,17 +62,19 @@ function Search(props) {
         applicationErrors.el.pos === 'end';
 
     const {
+        emptyAdvSearch,
         comboSearch,
         startDate,
+        setStartDate,
         endDate,
+        setEndDate,
         advancedSearch,
+        handleSubmit,
         handleClearAdvSearch,
         handleClearAdvSearchInput,
-        setStartDate,
-        setEndDate,
+        handleClearCombo,
         handleSearchInput,
-        handleSubmit,
-        handleClearCombo
+        setEmptyAdvSearch
     } = useFormCtrl(
         advancedSearchActive,
         endpoint,
@@ -181,8 +184,7 @@ function Search(props) {
                 padding: '1em',
                 margin: '0.5em'
             }}
-            variant={'outlined'}
-        >
+            variant={'outlined'}>
             <Grid item container alignItems='center' sx={{ pb: 1 }}>
                 <Grid item xs={5}>
                     <Typography variant='h6' gutterBottom>
@@ -193,8 +195,7 @@ function Search(props) {
                     item
                     container
                     xs={6}
-                    sx={{ position: 'absolute', right: 250, width: 'auto' }}
-                >
+                    sx={{ position: 'absolute', right: 250, width: 'auto' }}>
                     {applicationErrors.active && applicationErrors.type === 'GENERAL' ? (
                         <Alert
                             severity='error'
@@ -207,9 +208,8 @@ function Search(props) {
                     item
                     container
                     xs={applicationErrors.active && applicationErrors.type === 'GENERAL' ? 1 : 7}
-                    justifyContent='flex-end'
-                >
-                    <Tooltip placement="bottom" title="View User Guide">
+                    justifyContent='flex-end'>
+                    <Tooltip placement='bottom' title='View User Guide'>
                         <IconButton
                             color='primary'
                             component='a'
@@ -221,8 +221,7 @@ function Search(props) {
                                     : `${window.location.origin}/inquiry/error`
                             }
                             tabIndex={-1}
-                            size='small'
-                        >
+                            size='small'>
                             <HelpOutlineIcon />
                         </IconButton>
                     </Tooltip>
@@ -230,7 +229,7 @@ function Search(props) {
             </Grid>
             <Stack>
                 <Grid sx={{ flexGrow: 1, flexWrap: 'nowrap' }} container spacing={0.5}>
-                    <Grid item xs={5}>
+                    <Grid item xs={4}>
                         <SearchInput
                             inputRef={searchInputRef}
                             autoFocus
@@ -242,7 +241,7 @@ function Search(props) {
                             onClick={resetAppErrors}
                             value={comboSearch}
                             name={'COMBOSEARCH'}
-                            width={'97%'}
+                            width={'99%'}
                             error={
                                 applicationErrors.active && applicationErrors.type === 'COMBOSEARCH'
                             }
@@ -253,6 +252,7 @@ function Search(props) {
                             }
                             disabled={
                                 advancedSearchActive ||
+                                advancedSearch.INSUREDNAME.length > 0 ||
                                 (applicationErrors.active &&
                                     applicationErrors.type === 'SINGLE_SEARCH')
                             }
@@ -261,57 +261,61 @@ function Search(props) {
                                 searchInputRef.current.focus();
                             }}
                         />
-                        {applicationErrors.active && applicationErrors.type === 'SINGLE_SEARCH' ? (
+                        {applicationErrors.active &&
+                        applicationErrors.type === 'SINGLE_SEARCH' &&
+                        advancedSearch.INSUREDNAME.length < 1 ? (
                             <Typography variant='caption' color='info.main'>
                                 {applicationErrors.active ? applicationErrors.message : ''}
                             </Typography>
                         ) : null}
                     </Grid>
-                    <Grid item>
-                        <DateInput
-                            label={'Inception Date'}
-                            onChange={setStartDateInput}
-                            value={startDate}
-                            name={'startDate'}
-                            error={startDateErrorActive}
-                            color={startDateErrorActive ? 'error' : undefined}
-                            helperText={startDateErrorActive ? applicationErrors.message : null}
-                            inputProps={{
-                                onKeyDown: handleKeyDown
+                    <Grid item xs={6}>
+                        <SearchInput
+                            width={'97%'}
+                            inputRef={inputRef4}
+                            value={advancedSearch.INSUREDNAME}
+                            label={'Search by Insured Name'}
+                            name={'INSUREDNAME'}
+                            includeEndAdornment={true}
+                            onChange={handleChange}
+                            onKeyPress={handleKeyDown}
+                            handleClearInput={(e) => {
+                                handleClearAdvSearchInput(e, 'INSUREDNAME');
+                                inputRef4.current.focus();
                             }}
+                            disabled={comboSearch.length > 0}
+                            error={
+                                applicationErrors.active &&
+                                applicationErrors.multipleInputs.includes('INSUREDNAME')
+                            }
+                            helperText={
+                                applicationErrors.active &&
+                                applicationErrors.multipleInputs.includes('INSUREDNAME')
+                                    ? applicationErrors.message
+                                    : null
+                            }
                         />
+                        {applicationErrors.active &&
+                        applicationErrors.type === 'SINGLE_SEARCH' &&
+                        advancedSearch.INSUREDNAME.length > 0 ? (
+                            <Typography variant='caption' color='info.main'>
+                                {applicationErrors.active ? applicationErrors.message : ''}
+                            </Typography>
+                        ) : null}
                     </Grid>
-                    <Grid item>
-                        <TextItem>TO</TextItem>
-                    </Grid>
-                    <Grid item sx={{ mr: 3 }}>
-                        <DateInput
-                            label={'Expiration Date'}
-                            onChange={setEndDateInput}
-                            value={endDate}
-                            name={'endDate'}
-                            error={endDateErrorActive}
-                            color={endDateErrorActive ? 'error' : undefined}
-                            helperText={endDateErrorActive ? applicationErrors.message : null}
-                            inputProps={{
-                                onKeyDown: handleKeyDown
-                            }}
-                        />
-                    </Grid>
-                    <Grid item sx={{ mt: 1, mr: 3 }}>
-                        <SearchButton sx={{ ml: 1 }} loading={loading} onClick={handleSubmit}>
+                    <Grid item alignSelf='center' px={2}>
+                        <SearchButton loading={loading} onClick={handleSubmit}>
                             Search
                         </SearchButton>
                     </Grid>
-                    <Grid item sx={{ mt: 1 }}>
+                    <Grid item alignSelf='center'>
                         {advancedSearchActive ? (
                             <Tooltip placement='top' title='Hide Advanced Search'>
                                 <Fab
                                     color='secondary'
                                     aria-label='hide advanced search'
                                     size='small'
-                                    onClick={handleAdvSearchToggle}
-                                >
+                                    onClick={handleAdvSearchToggle}>
                                     <ExpandLess />
                                 </Fab>
                             </Tooltip>
@@ -321,23 +325,29 @@ function Search(props) {
                                     color='secondary'
                                     aria-label='show advanced search'
                                     size='small'
-                                    onClick={toggleAdvancedSearchPanel}
-                                >
+                                    onClick={toggleAdvancedSearchPanel}>
                                     <ExpandMore />
                                 </Fab>
                             </Tooltip>
                         )}
                     </Grid>
                 </Grid>
-                <Collapse in={advancedSearchActive} width={'100%'}>
+                <Collapse in={advancedSearchActive} width={'100%'} sx={{ pt: 2 }}>
                     <AdvancedSearch
                         applicationErrors={applicationErrors}
                         advancedSearch={advancedSearch}
+                        handleClearAdvSearch={handleClearAdvSearch}
                         handleClearAdvSearchInput={handleClearAdvSearchInput}
                         handleSearchInput={handleSearchInput}
                         handleSubmit={handleSubmit}
                         resetAppErrors={resetAppErrors}
                         loading={loading}
+                        startDate={startDate}
+                        endDate={endDate}
+                        startDateErrorActive={startDateErrorActive}
+                        endDateErrorActive={endDateErrorActive}
+                        setStartDateInput={setStartDateInput}
+                        setEndDateInput={setEndDateInput}
                     />
                 </Collapse>
             </Stack>

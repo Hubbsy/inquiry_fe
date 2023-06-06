@@ -226,7 +226,7 @@ class Affidavits extends React.Component {
 
     checkAdvSearchInputsActive = (advSearch) => {
         for (const input in advSearch) {
-            if (advSearch[input].length > 0) {
+            if (advSearch[input].length > 0 && input !== 'INSUREDNAME') {
                 this.handleErrorMessages('SINGLE_SEARCH');
                 break;
             }
