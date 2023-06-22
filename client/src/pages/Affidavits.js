@@ -109,16 +109,18 @@ class Affidavits extends React.Component {
 
     setCompanyDetails(transaction) {
         return {
-            affidavitNo: transaction.AFFIDAVITNO,
-            riskAddress: transaction.RISKADDRESS,
-            city: transaction.RISKCITY,
-            state: transaction.RISKSTATE,
-            zip: transaction.RISKZIPCODE,
-            company: `${transaction.COMPANY[0].COMPANYNUMBER} ${transaction.COMPANY[0].COMPANYNAME}`,
-            coverage: transaction.COVERAGE,
-            risk: transaction.RISK,
-            batchView: transaction.BATCHLINKEDITVIEW,
-            batchLink: transaction.BATCHLINK
+            affidavitNo: transaction.AFFIDAVITNO ?? '',
+            riskAddress: transaction.RISKADDRESS ?? '',
+            city: transaction.RISKCITY ?? '',
+            state: transaction.RISKSTATE ?? '',
+            zip: transaction.RISKZIPCODE ?? '',
+            company: `${transaction.COMPANY[0].COMPANYNUMBER ?? ''} ${
+                transaction.COMPANY[0].COMPANYNAME ?? ''
+            }`,
+            coverage: transaction.COVERAGE ?? '',
+            risk: transaction.RISK ?? '',
+            batchView: transaction.BATCHLINKEDITVIEW ?? '',
+            batchLink: transaction.BATCHLINK ?? ''
         };
     }
 
