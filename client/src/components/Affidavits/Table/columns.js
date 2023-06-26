@@ -242,12 +242,7 @@ export const columns = (
                     alignItems='center'
                     sx={{ flexWrap: 'nowrap' }}>
                     <MainTableCell style={{ ...ellipsisText }}>
-                        <a
-                            href={`http://10.240.104.82:4052/parta/batch-listing/${rowData.PARTA_TRANSACTION.BATCHID}`}
-                            // onClick={() => {
-                            //     navToBatch(rowData.PARTA_TRANSACTION.BATCHID);
-                            // }}
-                        >
+                        <a href={`http://10.240.104.82:4053/parta/batch-listing/6102019`}>
                             {rowData.PARTA_TRANSACTION.BATCHID}
                         </a>
                     </MainTableCell>
