@@ -243,7 +243,7 @@ export const columns = (
                     sx={{ flexWrap: 'nowrap' }}>
                     <MainTableCell style={{ ...ellipsisText }}>
                         <a
-                            href={`${window.location.origin}/parta/batch-listing/${rowData.PARTA_TRANSACTION.BATCHID}`}
+                            href={`http://10.240.104.82:4052/parta/batch-listing/${rowData.PARTA_TRANSACTION.BATCHID}`}
                             // onClick={() => {
                             //     navToBatch(rowData.PARTA_TRANSACTION.BATCHID);
                             // }}
