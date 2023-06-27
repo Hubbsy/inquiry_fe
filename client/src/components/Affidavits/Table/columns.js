@@ -242,8 +242,7 @@ export const columns = (
                     alignItems='center'
                     sx={{ flexWrap: 'nowrap' }}>
                     <MainTableCell style={{ ...ellipsisText }}>
-                        <a
-                            href={`${window.location.origin}/parta/batch-listing/${rowData.PARTA_TRANSACTION.BATCHID}`}>
+                        <a href={rowData.PARTA_TRANSACTION.TRANSLISTLINK}>
                             {rowData.PARTA_TRANSACTION.BATCHID}
                         </a>
                     </MainTableCell>
