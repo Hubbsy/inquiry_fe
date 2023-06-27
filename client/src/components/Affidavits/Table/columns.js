@@ -248,8 +248,7 @@ export const columns = (
                         <Link
                             to={''}
                             onClick={() => {
-                                window.parent.location.href =
-                                    rowData.PARTA_TRANSACTION.TRANSLISTLINK;
+                                window.top.location.href = rowData.PARTA_TRANSACTION.TRANSLISTLINK;
                             }}
                             style={{
                                 color: 'rgb(0, 0, 238)'
