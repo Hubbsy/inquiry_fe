@@ -242,9 +242,19 @@ export const columns = (
                     alignItems='center'
                     sx={{ flexWrap: 'nowrap' }}>
                     <MainTableCell style={{ ...ellipsisText }}>
-                        <a href={rowData.PARTA_TRANSACTION.TRANSLISTLINK}>
+                        {/* <a href={rowData.PARTA_TRANSACTION.TRANSLISTLINK}>
                             {rowData.PARTA_TRANSACTION.BATCHID}
-                        </a>
+                        </a> */}
+                        <Link
+                            to={''}
+                            onClick={() => {
+                                window.location.href = rowData.PARTA_TRANSACTION.TRANSLISTLINK;
+                            }}
+                            style={{
+                                color: 'rgb(0, 0, 238)'
+                            }}>
+                            {rowData.PARTA_TRANSACTION.BATCHID}
+                        </Link>
                     </MainTableCell>
                     {rowData.PARTA_TRANSACTION.BATCHNO !== null &&
                     rowData.PARTA_TRANSACTION.BATCHID !==
