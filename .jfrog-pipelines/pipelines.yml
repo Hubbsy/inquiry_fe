@@ -11,8 +11,8 @@ resources:
     type: Image
     configuration:
       registry: art # <-- replace with your artifactory integration
-      sourceRepository: docker_local # <-- required if registry is Artifactory
-      imageName: https://elanyrsi.jfrog.io/artifactory/docker-local/ # < -- replace with your image path and name
+      sourceRepository: docker-quickstart-local # <-- required if registry is Artifactory
+      imageName: elanyrsi.jfrog.io/artifactory/docker-quickstart-local/ # < -- replace with your image path and name
       imageTag: latest
       autoPull: true
 
@@ -46,7 +46,7 @@ pipelines:
           affinityGroup: dbp_group
           dockerFileLocation: .
           dockerFileName: Dockerfile
-          dockerImageName: https://elanyrsi.jfrog.io/artifactory/docker-local/ # replace with your image path and name
+          dockerImageName: elanyrsi.jfrog.io/artifactory/docker-quickstart-local/ # replace with your image path and name
           dockerImageTag: ${run_number}
           inputResources:
             - name: dbp_repo
@@ -63,7 +63,7 @@ pipelines:
         type: DockerPush
         configuration:
           affinityGroup: dbp_group
-          targetRepository: docker-dev
+          targetRepository: default-docker-local
           integrations:
             - name: art # <-- replace with your artifactory integration
           inputSteps:
@@ -82,7 +82,7 @@ pipelines:
       - name: promote_dbp_build
         type: PromoteBuild
         configuration:
-          targetRepository: docker-dev
+          targetRepository: default-docker-local
           integrations:
             - name: art
           inputResources:
