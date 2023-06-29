@@ -100,4 +100,4 @@ pipelines:
           onStart:
             - echo "Preparing for work..."
           onExecute:
-            - sudo docker-compose.yml up -d
+            - sudo docker-compose up -d
