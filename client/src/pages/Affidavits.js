@@ -109,16 +109,18 @@ class Affidavits extends React.Component {
 
     setCompanyDetails(transaction) {
         return {
-            affidavitNo: transaction.AFFIDAVITNO,
-            riskAddress: transaction.RISKADDRESS,
-            city: transaction.RISKCITY,
-            state: transaction.RISKSTATE,
-            zip: transaction.RISKZIPCODE,
-            company: `${transaction.COMPANY[0].COMPANYNUMBER} ${transaction.COMPANY[0].COMPANYNAME}`,
-            coverage: transaction.COVERAGE,
-            risk: transaction.RISK,
-            batchView: transaction.BATCHLINKEDITVIEW,
-            batchLink: transaction.BATCHLINK
+            affidavitNo: transaction.AFFIDAVITNO ?? '',
+            riskAddress: transaction.RISKADDRESS ?? '',
+            city: transaction.RISKCITY ?? '',
+            state: transaction.RISKSTATE ?? '',
+            zip: transaction.RISKZIPCODE ?? '',
+            company: `${transaction.COMPANY[0].COMPANYNUMBER ?? ''} ${
+                transaction.COMPANY[0].COMPANYNAME ?? ''
+            }`,
+            coverage: transaction.COVERAGE ?? '',
+            risk: transaction.RISK ?? '',
+            batchView: transaction.BATCHLINKEDITVIEW ?? '',
+            batchLink: transaction.BATCHLINK ?? ''
         };
     }
 
@@ -224,12 +226,16 @@ class Affidavits extends React.Component {
         });
     };
 
-    checkAdvSearchInputsActive = (advSearch) => {
+    checkAdvSearchInputsActive = (advSearch, startDate, endDate) => {
         for (const input in advSearch) {
-            if (advSearch[input].length > 0) {
+            if (advSearch[input].length > 0 && input !== 'INSUREDNAME') {
                 this.handleErrorMessages('SINGLE_SEARCH');
                 break;
             }
+        }
+
+        if (startDate !== null || endDate !== null) {
+            this.handleErrorMessages('SINGLE_SEARCH');
         }
     };
 

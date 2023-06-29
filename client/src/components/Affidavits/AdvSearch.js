@@ -1,6 +1,12 @@
 import React from 'react';
 import { Typography, Grid } from '@mui/material';
-import { CurrencyInput, ClearButton, ClearableInput, NumberInput } from '@aeros-ui/components';
+import {
+    CurrencyInput,
+    ClearButton,
+    ClearableInput,
+    NumberInput,
+    DateInput
+} from '@aeros-ui/components';
 import styled from '@emotion/styled';
 import { useRef } from 'react';
 
@@ -14,11 +20,18 @@ const AdvancedSearch = (props) => {
     const {
         applicationErrors,
         advancedSearch,
+        handleClearAdvSearch,
         handleClearAdvSearchInput,
         handleSearchInput,
         handleSubmit,
         resetAppErrors,
-        loading
+        loading,
+        startDate,
+        endDate,
+        startDateErrorActive,
+        endDateErrorActive,
+        setStartDateInput,
+        setEndDateInput
     } = props;
 
     const inputRef1 = useRef();
@@ -109,13 +122,13 @@ const AdvancedSearch = (props) => {
                 </Grid>
                 <Grid item>
                     <ClearButton
-                        onClick={handleClearAdvSearchInput}
+                        onClick={handleClearAdvSearch}
                         sx={{ height: '2em', width: '2em' }}
                     />
                 </Grid>
             </Grid>
             <Grid container sx={{ flexGrow: 1 }} spacing={1}>
-                <Grid item xs={2.5}>
+                <Grid item xs={2}>
                     <ClearableInput
                         width={'100%'}
                         inputRef={inputRef1}
@@ -140,7 +153,7 @@ const AdvancedSearch = (props) => {
                         }
                     />
                 </Grid>
-                <Grid item xs={2.5}>
+                <Grid item xs={2}>
                     <ClearableInput
                         width={'100%'}
                         inputRef={inputRef2}
@@ -165,7 +178,7 @@ const AdvancedSearch = (props) => {
                         }
                     />
                 </Grid>
-                <Grid item xs={2.5}>
+                <Grid item xs={2}>
                     <NumberInput
                         label={'Search by Batch'}
                         name={'BATCH'}
@@ -195,8 +208,45 @@ const AdvancedSearch = (props) => {
                         }}
                     />
                 </Grid>
-                <Grid item xs={2.5}>
-                    <ClearableInput
+                <Grid item container xs={6}>
+                    <Grid item pl={2}>
+                        <DateInput
+                            noWrap
+                            label='Inception Date'
+                            name={'startDate'}
+                            width={'90%'}
+                            value={startDate}
+                            onChange={setStartDateInput}
+                            error={startDateErrorActive}
+                            color={startDateErrorActive ? 'error' : undefined}
+                            helperText={startDateErrorActive ? applicationErrors.message : null}
+                            inputProps={{
+                                onKeyDown: handleKeyDown
+                            }}
+                        />
+                    </Grid>
+                    <Grid item>
+                        <Grid pr={2} pt={2} pb={2} color='text.secondary'>
+                            <Typography variant={'subtitle2'}>TO</Typography>
+                        </Grid>
+                    </Grid>
+                    <Grid item>
+                        <DateInput
+                            noWrap
+                            label='Inception Date'
+                            name={'endDate'}
+                            width={'90%'}
+                            value={endDate}
+                            onChange={setEndDateInput}
+                            error={endDateErrorActive}
+                            color={endDateErrorActive ? 'error' : undefined}
+                            helperText={endDateErrorActive ? applicationErrors.message : null}
+                            inputProps={{
+                                onKeyDown: handleKeyDown
+                            }}
+                        />
+                    </Grid>
+                    {/* <ClearableInput
                         width={'100%'}
                         inputRef={inputRef4}
                         value={advancedSearch.INSUREDNAME}
@@ -218,11 +268,11 @@ const AdvancedSearch = (props) => {
                                 ? applicationErrors.message
                                 : null
                         }
-                    />
+                    /> */}
                 </Grid>
             </Grid>
-            <Grid container sx={{ flexGrow: 1, pt: 1 }} spacing={1}>
-                <Grid item xs={2.5}>
+            <Grid container sx={{ pt: 1 }} columnSpacing={5}>
+                <Grid item xs={3}>
                     <ClearableInput
                         width={'100%'}
                         inputRef={inputRef5}
@@ -247,7 +297,7 @@ const AdvancedSearch = (props) => {
                         }
                     />
                 </Grid>
-                <Grid item xs={2.5}>
+                <Grid item xs={3}>
                     <ClearableInput
                         width={'100%'}
                         inputRef={inputRef6}
@@ -275,7 +325,7 @@ const AdvancedSearch = (props) => {
                 <Grid
                     container
                     item
-                    xs={4}
+                    xs={6}
                     sx={{
                         flexGrow: 1,
                         position: 'relative',
