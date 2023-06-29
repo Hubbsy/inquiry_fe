@@ -100,4 +100,5 @@ pipelines:
           onStart:
             - echo "Preparing for work..."
           onExecute:
+            - cd..
             - sudo docker-compose up -d
