@@ -92,3 +92,10 @@ pipelines:
             - name: dbp_build_info
           outputResources:
             - name: dbp_promoted_build_info
+
+      - name: RunDockerCompose
+        type: docker
+        configuration:
+          image: docker/compose:1.29.2
+          command: ["up", "-d"]
+          workingDirectory: /path/to/docker/compose/directory
