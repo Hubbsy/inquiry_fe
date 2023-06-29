@@ -93,7 +93,7 @@ pipelines:
       - name: RunDockerCompose
         type: Bash
         configuration:
-          execution: |
+          execution:
             # Execute Docker Compose commands
             docker-compose -f docker-compose.yml build
             docker-compose -f docker-compose.yml up
