@@ -1,0 +1,18 @@
+version: "3.5"
+services:
+  artifactory-service:
+    image: elanyrsi.jfrog.io/docker-dev/dbp:13
+    container_name: artifactory
+    restart: always
+    networks:
+      - ci_net
+    ports:
+      - 8081:8081
+      - 8082:8082
+    volumes:
+      - artifactory:/var/opt/jfrog/artifactory
+
+volumes:
+  artifactory:
+networks:
+  ci_net:
