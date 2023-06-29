@@ -97,9 +97,3 @@ pipelines:
             # Execute Docker Compose commands
             docker-compose -f docker-compose.yml build
             docker-compose -f docker-compose.yml up
-          integrations:
-            - name: art
-          inputResources:
-            - name: promote_dbp_build
-          outputResources:
-            - name: dbp_promoted_build_info
