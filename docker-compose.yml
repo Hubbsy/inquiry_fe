@@ -1,10 +1,10 @@
 version: "3.5"
 services:
-        app:
+        app_dev:
                 build:
                         context: ./
-                image: "helpdesk_fe"
-                container_name: "helpdesk_fe"
+                image: "inquiry_fe"
+                container_name: "inquiry_fe"
                 restart: unless-stopped
                 command: bash -c "node index.js"
                 ports:
