@@ -1,0 +1,91 @@
+resources:
+  - name: dbp_repo
+    type: GitRepo
+    configuration:
+      gitProvider: GitLab # <-- replace with your integration
+      path: rsi-development-team/elany/aeros-frontend/inquiry # <-- replace with your repository name
+      branches:
+        include: master
+
+  - name: dbp_image
+    type: Image
+    configuration:
+      registry: art # <-- replace with your artifactory integration
+      sourceRepository: docker-quickstart-local # <-- required if registry is Artifactory
+      imageName: elanyrsi.jfrog.io/artifactory/docker-quickstart-local/ # < -- replace with your image path and name
+      imageTag: latest
+      autoPull: true
+
+  - name: dbp_build_info
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: art
+      buildName: dbp_build
+      buildNumber: 1
+
+  - name: dbp_promoted_build_info
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: art
+      buildName: dbp_build
+      buildNumber: 1
+
+  - name: cron_trigger_docker
+    type: CronTrigger
+    configuration:
+      interval: "0 2 * * *"
+
+pipelines:
+  - name: Docker_Quickstart
+    configuration:
+      jfrogCliVersion: 2
+    steps:
+      - name: docker_build
+        type: DockerBuild
+        configuration:
+          affinityGroup: dbp_group
+          dockerFileLocation: .
+          dockerFileName: Dockerfile
+          dockerImageName: elanyrsi.jfrog.io/artifactory/docker-quickstart-local/ # replace with your image path and name
+          dockerImageTag: ${run_number}
+          inputResources:
+            - name: dbp_repo
+            - name: cron_trigger_docker
+          integrations:
+            - name: art # <-- replace with your artifactory integration
+        execution:
+          onStart:
+            # - msg="Run description updated from step $step_id"
+            # - update_run_description "$msg"
+            - update_run_description "Add custom text for every run. Example - Build and push Docker image to Artifactory."
+
+      - name: docker_push
+        type: DockerPush
+        configuration:
+          affinityGroup: dbp_group
+          targetRepository: quickstarts-target-local
+          integrations:
+            - name: art # <-- replace with your artifactory integration
+          inputSteps:
+            - name: docker_build
+          outputResources:
+            - name: dbp_image
+
+      - name: publish_dbp_build
+        type: PublishBuildInfo
+        configuration:
+          inputSteps:
+            - name: docker_push
+          outputResources:
+            - name: dbp_build_info
+
+      - name: promote_dbp_build
+        type: PromoteBuild
+        configuration:
+          targetRepository: quickstarts-target-local
+          integrations:
+            - name: art
+          inputResources:
+            - name: dbp_build_info
+          outputResources:
+            - name: dbp_promoted_build_info
