@@ -91,7 +91,7 @@ pipelines:
             - name: dbp_promoted_build_info
 
       - name: RunDockerCompose
-        type: sh
+        type: Bash
         configuration:
           script: |
             # Execute Docker Compose commands
