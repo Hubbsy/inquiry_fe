@@ -63,7 +63,7 @@ pipelines:
         type: DockerPush
         configuration:
           affinityGroup: dbp_group
-          targetRepository: docker-dev
+          targetRepository: docker-local
           integrations:
             - name: art # <-- replace with your artifactory integration
           inputSteps:
@@ -82,7 +82,7 @@ pipelines:
       - name: promote_dbp_build
         type: PromoteBuild
         configuration:
-          targetRepository: docker-dev
+          targetRepository: docker-local
           integrations:
             - name: art
           inputResources:
