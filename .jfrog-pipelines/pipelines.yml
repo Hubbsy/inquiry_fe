@@ -97,7 +97,6 @@ pipelines:
             # Execute Docker Compose commands
             docker-compose -f docker-compose.yml build
             docker-compose -f docker-compose.yml up
-            targetRepository: docker-dev
           integrations:
             - name: art
           inputResources:
