@@ -89,10 +89,15 @@ pipelines:
             - name: dbp_build_info
           outputResources:
             - name: dbp_promoted_build_info
-
-      - name: RunDockerCompose
-        type: docker
+      - name: docker_compose
+        type: Bash
         configuration:
-          image: docker/compose:1.29.2
-          command: ["up", "-d"]
-          workingDirectory: /path/to/docker/compose/directory
+          inputSteps:
+            - name: docker_push
+          outputResources:
+            - name: dbp_build_info
+        execution:
+          onStart:
+            - echo "Preparing for work..."
+          onExecute:
+            - sudo docker-compose.yml up -d
