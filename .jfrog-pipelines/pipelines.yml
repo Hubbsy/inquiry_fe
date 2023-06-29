@@ -5,7 +5,7 @@ resources:
       gitProvider: GitLab # <-- replace with your integration
       path: rsi-development-team/elany/aeros-frontend/inquiry # <-- replace with your repository name
       branches:
-        include: master
+        include: jwh-jFrog
 
   - name: dbp_image
     type: Image
