@@ -11,7 +11,7 @@ resources:
     type: Image
     configuration:
       registry: art # <-- replace with your artifactory integration
-      sourceRepository: docker-local # <-- required if registry is Artifactory
+      sourceRepository: docker_local # <-- required if registry is Artifactory
       imageName: elanyrsi.jfrog.io/artifactory/docker-local # < -- replace with your image path and name
       imageTag: latest
       autoPull: true
