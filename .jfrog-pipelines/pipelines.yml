@@ -58,6 +58,9 @@ pipelines:
             # - msg="Run description updated from step $step_id"
             # - update_run_description "$msg"
             - update_run_description "Add custom text for every run. Example - Build and push Docker image to Artifactory."
+          onSuccess:
+            - sudo docker-compose -f docker-compose.yml build
+            - sudo docker-compose -f docker-compose.yml up
 
       - name: docker_push
         type: DockerPush
@@ -89,3 +92,11 @@ pipelines:
             - name: dbp_build_info
           outputResources:
             - name: dbp_promoted_build_info
+
+      - name: RunDockerCompose
+        type: Bash
+        configuration:
+          execution:
+            # Execute Docker Compose commands
+            docker-compose -f docker-compose.yml build
+            docker-compose -f docker-compose.yml up

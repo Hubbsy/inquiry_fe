@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   artifactory-service:
-    image: elanyrsi.jfrog.io/docker-dev/dbp:13
+    image: elanyrsi.jfrog.io/docker-dev/dbp:14
     container_name: artifactory
     restart: always
     networks:
