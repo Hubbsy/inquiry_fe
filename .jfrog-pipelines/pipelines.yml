@@ -96,8 +96,7 @@ pipelines:
             - cd ./dependencyState/resources/dbp_repo
             - ls
             - sudo docker-compose -f docker-compose-jfrog.yml build
-            - sudo docker-compose -f docker-compose-jfrog.yml up
-            - exit
+            - sudo docker-compose -f docker-compose-jfrog.yml up -d
 
       - name: promote_dbp_build
         type: PromoteBuild
