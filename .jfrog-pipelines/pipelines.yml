@@ -93,10 +93,11 @@ pipelines:
           onStart:
             - echo "Executing Docker Compose..."
           onExecute:
-            - cd ./dependencyState/resources/dbp_repo
-            - ls
-            - sudo docker-compose -f docker-compose-jfrog.yml build
-            - sudo docker-compose -f docker-compose-jfrog.yml up -d
+            - docker build -t my-node-server .
+            # - cd ./dependencyState/resources/dbp_repo
+            # - ls
+            # - sudo docker-compose -f docker-compose-jfrog.yml build
+            # - sudo docker-compose -f docker-compose-jfrog.yml up -d
 
       - name: promote_dbp_build
         type: PromoteBuild
