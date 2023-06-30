@@ -22,8 +22,8 @@ services:
   app_dev:
     build:
       context: ./
-    image: "inquiry_fe"
-    container_name: "inquiry_fe"
+    image: "elanyrsi.jfrog.io/docker-local/dbp"
+    container_name: "inquiry_fe_jfrog"
     restart: unless-stopped
     command: bash -c "node index.js"
     ports:
