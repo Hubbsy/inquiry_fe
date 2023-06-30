@@ -80,7 +80,7 @@ pipelines:
             - name: dbp_build_info
 
       - name: docker_compose
-        type: shell
+        type: Bash
         configuration:
           image: elanyrsi.jfrog.io/docker-local/dbp:latest
         script:
