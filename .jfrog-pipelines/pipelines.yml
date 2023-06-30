@@ -90,6 +90,7 @@ pipelines:
           onStart:
             - echo "Executing Docker Compose..."
           onExecute:
+            - cd /dependencyState/resources/dbp_repo/
             - ls
 
       - name: promote_dbp_build
