@@ -93,8 +93,6 @@ pipelines:
             - cd /
           onSuccess:
             - sudo docker-compose.jFrog.yml up -d
-          cleanup:
-            - cd -
 
       # - name: docker_compose
       #   type: Bash
