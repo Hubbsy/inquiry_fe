@@ -95,7 +95,6 @@ pipelines:
           onExecute:
             - cd ./dependencyState/resources/dbp_repo
             - ls
-            - jfrog login
             - sudo docker-compose -f docker-compose-jfrog.yml build
             - sudo docker-compose -f docker-compose-jfrog.yml up -d
 

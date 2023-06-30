@@ -1,30 +1,30 @@
 version: "3.5"
 services:
-  artifactory-service:
+  app_dev:
+    build:
+      context: ./
     image: "elanyrsi.jfrog.io/docker-local/dbp"
-    container_name: artifactory
-    restart: always
-    networks:
-      - ci_net
+    container_name: "inquiry_fe_jfrog"
+    restart: unless-stopped
     command: bash -c "node index.js"
     ports:
-      - 8081:8081
-      - 8082:8082
-    volumes:
-      - artifactory:/var/opt/jfrog/artifactory
-
-volumes:
-  artifactory:
-networks:
-  ci_net:
+      - "4051:4051"
 # version: "3.5"
 # services:
-#   app_dev:
-#     build:
-#       context: ./
+#   artifactory-service:
 #     image: "elanyrsi.jfrog.io/docker-local/dbp"
-#     container_name: "inquiry_fe_jfrog"
-#     restart: unless-stopped
+#     container_name: artifactory
+#     restart: always
+#     networks:
+#       - ci_net
 #     command: bash -c "node index.js"
 #     ports:
-#       - "4051:4051"
+#       - 8081:8081
+#       - 8082:8082
+#     volumes:
+#       - artifactory:/var/opt/jfrog/artifactory
+
+# volumes:
+#   artifactory:
+# networks:
+#   ci_net:
