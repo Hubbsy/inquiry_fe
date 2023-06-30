@@ -20,7 +20,7 @@ EXPOSE 4051
 USER node
 
 # Start the server
-CMD ["yarn", "start"]
+CMD ["node", "index.js"]
 
 # FROM node:17-buster-slim
 
