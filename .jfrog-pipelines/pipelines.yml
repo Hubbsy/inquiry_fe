@@ -90,7 +90,24 @@ pipelines:
           onStart:
             - echo "Executing Docker Compose..."
           onExecute:
-            - ls -R
+            - cd /
+          onSuccess:
+            - sudo docker-compose.jFrog.yml up -d
+          cleanup:
+            - cd -
+
+      # - name: docker_compose
+      #   type: Bash
+      #   configuration:
+      #     inputSteps:
+      #       - name: docker_push
+      #     outputResources:
+      #       - name: dbp_build_info
+      #   execution:
+      #     onStart:
+      #       - echo "Executing Docker Compose..."
+      #     onExecute:
+      #       - sudo docker-compose.jFrog.yml up -d
 
       - name: promote_dbp_build
         type: PromoteBuild
