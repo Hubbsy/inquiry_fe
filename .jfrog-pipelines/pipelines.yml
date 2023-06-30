@@ -83,22 +83,17 @@ pipelines:
         type: Bash
         configuration:
           affinityGroup: dbp_group
-          image: elanyrsi.jfrog.io/docker-local/dbp:latest
-        commands:
-          - docker-compose-jfrog up -d
-
-      # - name: docker_compose
-      #   type: Bash
-      #   configuration:
-      #     inputSteps:
-      #       - name: docker_push
-      #     outputResources:
-      #       - name: dbp_build_info
-      #   execution:
-      #     onStart:
-      #       - echo "Executing Docker Compose..."
-      #     onExecute:
-      #       - sudo docker-compose.jFrog.yml up -d
+          inputSteps:
+            - name: docker_push
+          inputResources:
+            - name: dbp_repo
+          outputResources:
+            - name: dbp_build_info
+        execution:
+          onStart:
+            - echo "Executing Docker Compose..."
+          onExecute:
+            - ls -R
 
       - name: promote_dbp_build
         type: PromoteBuild
