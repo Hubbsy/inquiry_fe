@@ -89,16 +89,15 @@ pipelines:
             - name: dbp_build_info
           outputResources:
             - name: dbp_promoted_build_info
-      # - name: docker_compose
-      #   type: Bash
-      #   configuration:
-      #     inputSteps:
-      #       - name: docker_push
-      #     outputResources:
-      #       - name: dbp_build_info
-      #   execution:
-      #     onStart:
-      #       - echo "Preparing for work..."
-      #     onExecute:
-      #       - cd..
-      #       - sudo docker-compose up -d
+      - name: docker_compose
+        type: Bash
+        configuration:
+          inputSteps:
+            - name: docker_push
+          outputResources:
+            - name: dbp_build_info
+        execution:
+          onStart:
+            - echo "Preparing for work..."
+          onExecute:
+            - sudo docker-compose-jfrog up -d
