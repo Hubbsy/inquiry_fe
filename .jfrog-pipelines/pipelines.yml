@@ -79,16 +79,6 @@ pipelines:
           outputResources:
             - name: dbp_build_info
 
-      - name: promote_dbp_build
-        type: PromoteBuild
-        configuration:
-          targetRepository: docker-dev
-          integrations:
-            - name: art
-          inputResources:
-            - name: dbp_build_info
-          outputResources:
-            - name: dbp_promoted_build_info
       - name: docker_compose
         type: Bash
         configuration:
@@ -100,4 +90,15 @@ pipelines:
           onStart:
             - echo "Executing Docker Compose..."
           onExecute:
-            - sudo docker-compose-jfrog.yml up -d
+            - docker -v
+
+      - name: promote_dbp_build
+        type: PromoteBuild
+        configuration:
+          targetRepository: docker-dev
+          integrations:
+            - name: art
+          inputResources:
+            - name: dbp_build_info
+          outputResources:
+            - name: dbp_promoted_build_info
