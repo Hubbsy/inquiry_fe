@@ -98,6 +98,6 @@ pipelines:
             - name: dbp_build_info
         execution:
           onStart:
-            - echo "Preparing for work..."
+            - echo "Executing Docker Compose..."
           onExecute:
-            - sudo docker-compose-jfrog up -d
+            - sudo docker-compose-jfrog.yml up -d
