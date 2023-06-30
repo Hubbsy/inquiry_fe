@@ -58,6 +58,12 @@ pipelines:
             # - msg="Run description updated from step $step_id"
             # - update_run_description "$msg"
             - update_run_description "Add custom text for every run. Example - Build and push Docker image to Artifactory."
+          onExecute:
+            # - docker build -t my-node-server .
+            # - cd ./dependencyState/resources/dbp_repo
+            # - ls
+            # - sudo docker-compose -f docker-compose-jfrog.yml build
+            # - sudo docker-compose -f docker-compose-jfrog.yml up -d
 
       - name: docker_push
         type: DockerPush
@@ -79,25 +85,25 @@ pipelines:
           outputResources:
             - name: dbp_build_info
 
-      - name: docker_compose
-        type: Bash
-        configuration:
-          affinityGroup: dbp_group
-          inputSteps:
-            - name: docker_push
-          inputResources:
-            - name: dbp_repo
-          outputResources:
-            - name: dbp_build_info
-        execution:
-          onStart:
-            - echo "Executing Docker Compose..."
-          onExecute:
-            - docker build -t my-node-server .
-            # - cd ./dependencyState/resources/dbp_repo
-            # - ls
-            # - sudo docker-compose -f docker-compose-jfrog.yml build
-            # - sudo docker-compose -f docker-compose-jfrog.yml up -d
+      # - name: docker_compose
+      #   type: Bash
+      #   configuration:
+      #     affinityGroup: dbp_group
+      #     inputSteps:
+      #       - name: docker_push
+      #     inputResources:
+      #       - name: dbp_repo
+      #     outputResources:
+      #       - name: dbp_build_info
+      #   execution:
+      #     onStart:
+      #       - echo "Executing Docker Compose..."
+      #     onExecute:
+      #       - docker build -t my-node-server .
+      # - cd ./dependencyState/resources/dbp_repo
+      # - ls
+      # - sudo docker-compose -f docker-compose-jfrog.yml build
+      # - sudo docker-compose -f docker-compose-jfrog.yml up -d
 
       - name: promote_dbp_build
         type: PromoteBuild
