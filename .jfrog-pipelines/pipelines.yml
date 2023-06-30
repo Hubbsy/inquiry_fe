@@ -90,7 +90,7 @@ pipelines:
           onStart:
             - echo "Executing Docker Compose..."
           onExecute:
-            - cd /var/opt/jfrog/pipelines/data/Inquiry_Test/runs/33/steps/docker_build/137/dependencyState/resources/dbp_repo
+            - cd ~
             - ls
 
       - name: promote_dbp_build
