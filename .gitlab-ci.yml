@@ -33,7 +33,9 @@ build_image:
     - docker:dind
   before_script:
     - ls "$CI_REGISTRY_USER"
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - ls "$CI_DOCKER_USER"
+    - ls "DOCKER_USER"
+    - docker login -u "$CI_DOCKER_USER" -p "$CI_DOCKER_PASS" $CI_REGISTRY
   script:
     - docker-compose -f docker-compose.yml build
     - docker image ls
