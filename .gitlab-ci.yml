@@ -1,7 +1,7 @@
 variables:
   IMAGE_NAME: hubbsy642/gitlab-test
   IMAGE_TAG: "001"
-  DOCKER_AUTH_CONFIG: { "credsStore": "osxkeychain" }
+  DOCKER_AUTH_CONFIG: '{ "credsStore": "osxkeychain" }'
 
 stages:
   - test
