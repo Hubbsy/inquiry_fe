@@ -1,0 +1,43 @@
+variables:
+  IMAGE_NAME: hubbsy642/jfrog-test
+  IMAGE_TAG: gitlab
+
+stages:
+  - test
+  - build
+  - deploy
+
+run_tests:
+  stage: test
+  image: node:17-buster-slim
+  # before_script:
+  #   - yarn install
+  script:
+    - yarn install
+
+build_image:
+  stage: build
+  image: $IMAGE_NAME:$IMAGE_TAG
+  services:
+    - docker:20.10.16-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  before_script:
+    - docker login -u $REGISTRY_USER -p $REGISTRY_PASS
+  # script:
+  #   - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+  #   - docker push $IMAGE_NAME:$IMAGE_TAG
+  script:
+    - docker-compose -f docker-compose.yml build
+    # - docker-compose -f docker-compose.yml up
+    - docker push $IMAGE_NAME:$IMAGE_TAG
+deploy:
+  stage: deploy
+  before_script:
+    - chmod 400 $SSH_KEY
+  script:
+    - ssh -o StrictHostKeyChecking=no -i $SSH_KEY root@161.35.223.117 "
+      docker login -u $REGISTRY_USER -p $REGISTRY_PASS &&
+      # docker ps -aq | xargs docker stop | xargs docker rm &&
+      # docker run -d -p 5000:5000 $IMAGE_NAME:$IMAGE_TAG"
+      docker-compose -f docker-compose.yml up"
