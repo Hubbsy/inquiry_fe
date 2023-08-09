@@ -30,14 +30,13 @@ build_image:
   script:
     - docker-compose -f docker-compose.yml build
     - docker image ls
-    - docker login -u $REGISTRY_USER -p $REGISTRY_PASS
+    # - docker login -u $REGISTRY_USER -p $REGISTRY_PASS
     # - docker-compose -f docker-compose.yml up
-    - docker push inquiry_fe:latest
-
-deploy:
-  stage: deploy
-  before_script:
-    - chmod 400 $SSH_KEY
-  script:
-    - ssh -o StrictHostKeyChecking=no -i $SSH_KEY root@161.35.223.117
-    - "docker login -u $REGISTRY_USER -p $REGISTRY_PASS && docker-compose -f docker-compose.yml up"
+    - docker push hubbsy642/gitlab-test/inquiry_fe:latest
+# deploy:
+#   stage: deploy
+#   before_script:
+#     - chmod 400 $SSH_KEY
+#   script:
+#     - ssh -o StrictHostKeyChecking=no -i $SSH_KEY root@161.35.223.117
+#     - "docker login -u $REGISTRY_USER -p $REGISTRY_PASS && docker-compose -f docker-compose.yml up"
