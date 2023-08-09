@@ -34,6 +34,7 @@ build_image:
   before_script:
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
   script:
+    - echo $DOCKER_USER $DOCKER_PASS
     - docker-compose -f docker-compose.yml build
     - docker image ls
     - docker-compose push
