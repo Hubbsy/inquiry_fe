@@ -1,6 +1,6 @@
 variables:
-  IMAGE_NAME: hubbsy642/jfrog-test
-  IMAGE_TAG: gitlab
+  IMAGE_NAME: hubbsy642/gitlab-test
+  IMAGE_TAG: "001"
 
 stages:
   - test
