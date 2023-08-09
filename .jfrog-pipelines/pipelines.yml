@@ -88,12 +88,12 @@ pipelines:
           inputResources:
             - name: dbp_repo
           outputResources:
-            - name: dbp_build_info
+            - name: promote_dbp_buildo
         execution:
           onStart:
             - echo "Executing Docker Compose..."
           onExecute:
-            - docker build -t my-node-server .
+            # - docker build -t my-node-server .
             - cd ./dependencyState/resources/dbp_repo
             - ls
             - sudo docker-compose -f docker-compose-jfrog.yml build
