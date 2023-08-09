@@ -17,7 +17,7 @@ run_tests:
 
 build_image:
   stage: build
-  image: $IMAGE_NAME:$IMAGE_TAG
+  image: docker:20.10.16
   services:
     - docker:20.10.16-dind
   variables:
