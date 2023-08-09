@@ -33,9 +33,8 @@ build_image:
     - docker:dind
   before_script:
     - docker logout
-    - docker login -u $DOCKER_USER -p $DOCKER_PASS docker.io
+    - docker login -u $DOCKER_USER -p $DOCKER_PASS docker.io/hubbsy642
   script:
-    - echo $DOCKER_USER $DOCKER_PASS
     - docker-compose -f docker-compose.yml build
     - docker image ls
     - docker-compose push
