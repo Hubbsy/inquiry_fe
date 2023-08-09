@@ -58,12 +58,6 @@ pipelines:
             # - msg="Run description updated from step $step_id"
             # - update_run_description "$msg"
             - update_run_description "Add custom text for every run. Example - Build and push Docker image to Artifactory."
-          # onExecute:
-          # - docker build -t my-node-server .
-          # - cd ./dependencyState/resources/dbp_repo
-          # - ls
-          # - sudo docker-compose -f docker-compose-jfrog.yml build
-          # - sudo docker-compose -f docker-compose-jfrog.yml up -d
 
       - name: docker_push
         type: DockerPush
@@ -90,7 +84,7 @@ pipelines:
         configuration:
           affinityGroup: dbp_group
           inputSteps:
-            - name: docker_push
+            - name: publish_dbp_build
           inputResources:
             - name: dbp_repo
           outputResources:
