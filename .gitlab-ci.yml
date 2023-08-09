@@ -32,6 +32,7 @@ build_image:
   services:
     - docker:dind
   before_script:
+    - docker logout
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
   script:
     - echo $DOCKER_USER $DOCKER_PASS
