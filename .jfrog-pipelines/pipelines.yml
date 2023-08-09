@@ -76,7 +76,7 @@ pipelines:
         configuration:
           affinityGroup: dbp_group
           inputSteps:
-            - name: publish_dbp_build
+            - name: docker_push
           inputResources:
             - name: dbp_repo
           outputResources:
