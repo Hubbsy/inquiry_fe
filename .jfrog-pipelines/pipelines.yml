@@ -89,7 +89,7 @@ pipelines:
             - cd ./dependencyState/resources/dbp_repo
             - ls
             - sudo docker-compose -f docker-compose-jfrog.yml build
-            - sudo docker-compose -d -f docker-compose-jfrog.yml up
+            - sudo docker-compose -f docker-compose-jfrog.yml up
 
       - name: publish_dbp_build
         type: PublishBuildInfo
