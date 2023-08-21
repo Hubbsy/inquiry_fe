@@ -23,7 +23,7 @@ import useProcNum from '../../../hooks/utility/useProcNum';
 import getAnchorPosition from '../../../functions/getAnchorPosition';
 
 import InfoMessage from './InfoMessage';
-
+import { useNavigate } from 'react-router-dom';
 export default function Table({ loading, rows, showLicenseCol, setAffidavits }) {
     const tableRef = createRef();
     const { numberWithCommas } = useProcNum();
@@ -48,6 +48,8 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
     const brokerNumMessageOpen = Boolean(brokerNumEl);
 
     const [data, setData] = useState([]);
+
+    const navigate = useNavigate();
 
     const handleOpenPartAMessage = (e, rowData, type = null) => {
         const rowCopy = { ...rowData };
@@ -198,8 +200,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                     ) : (
                         <ModeEditIcon />
                     )
-                }
-            >
+                }>
                 {currentCompanyDetails.batchView} Affidavit
             </Button>
         </Grid>
@@ -261,7 +262,14 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
     }, [rows]);
 
     const [Columns, setColumns] = useState([
-        ...columns(handlePopoverOpen, showLicenseCol, id, partAMessageId, handleOpenPartAMessage)
+        ...columns(
+            handlePopoverOpen,
+            showLicenseCol,
+            id,
+            partAMessageId,
+            handleOpenPartAMessage,
+            navigate
+        )
     ]);
 
     const handleFilterAction = () => {
@@ -285,7 +293,8 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                 showLicenseCol,
                 id,
                 partAMessageId,
-                handleOpenPartAMessage
+                handleOpenPartAMessage,
+                navigate
             )
         ]);
     };
@@ -294,8 +303,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
         <div
             style={{
                 margin: '0.5em'
-            }}
-        >
+            }}>
             <ThemeProvider theme={tableTheme}>
                 <MaterialTable
                     title={''}
@@ -333,8 +341,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                                         paddingLeft: '0px'
                                         // border:'solid 1px blue'
                                     }}
-                                    {...props}
-                                ></MTableCell>
+                                    {...props}></MTableCell>
                             );
                         },
 
@@ -378,8 +385,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                         horizontal: 'left'
                     }}
                     elevation={2}
-                    onClose={() => handleClosePartAMessage()}
-                >
+                    onClose={() => handleClosePartAMessage()}>
                     {selectedRow && selectedRow.PARTA_TRANSACTION.PARTAMESSAGE.length > 0
                         ? selectedRow.PARTA_TRANSACTION.PARTAMESSAGE.map((message, i) => {
                               return (
@@ -402,8 +408,7 @@ export default function Table({ loading, rows, showLicenseCol, setAffidavits }) 
                         horizontal: 'left'
                     }}
                     elevation={2}
-                    onClose={() => handleClosePartAMessage('BATCHNO')}
-                >
+                    onClose={() => handleClosePartAMessage('BATCHNO')}>
                     {selectedRow &&
                     selectedRow.PARTA_TRANSACTION.BATCHNO !== null &&
                     selectedRow.PARTA_TRANSACTION.BATCHID !==

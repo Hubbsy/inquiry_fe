@@ -75,7 +75,7 @@ class App extends Component {
                 }
             };
 
-            if (parsedData.hasOwnProperty('GUIDEURL')) {
+            if (parsedData !== null && parsedData.hasOwnProperty('GUIDEURL')) {
                 userGuideURL = parsedData.GUIDEURL;
             }
 

@@ -12,60 +12,6 @@ const useSearchValidation = (
 ) => {
     let subDate = null;
 
-    const validateDateRange = () => {
-        let errorType = null;
-        let el = null;
-
-        if (startDate && !isDateValid(startDate)) {
-            errorType = 'DATES';
-            el = { type: 'valid', pos: 'start' };
-        } else if (startDate && isDateValid(startDate) && !endDate) {
-            setEndDate(startDate);
-            subDate = startDate;
-        }
-
-        if (endDate && !isDateValid(endDate)) {
-            errorType = 'DATES';
-            el = { type: 'valid', pos: 'end' };
-        } else if (endDate && isDateValid(endDate) && !startDate) {
-            setStartDate(endDate);
-            subDate = endDate;
-        }
-
-        return {
-            errorType,
-            el,
-            activeErrorInputs: []
-        };
-    };
-
-    const validatePremiumRange = () => {
-        let fromAmount = advancedSearch.PREMIUMFROM
-            ? parseFloat(advancedSearch.PREMIUMFROM.replace(/,/g, ''))
-            : 0;
-        let toAmount = advancedSearch.PREMIUMTO
-            ? parseFloat(advancedSearch.PREMIUMTO.replace(/,/g, ''))
-            : 0;
-        let errorType = null;
-        let el = null;
-
-        if (fromAmount !== 0 && toAmount !== 0 && fromAmount > toAmount) {
-            errorType = 'PREMIUMS';
-            el = { pos: 'start', type: 'range' };
-        } else if (fromAmount === 0 && toAmount > 0) {
-            errorType = 'PREMIUMS';
-            el = { pos: 'start', type: 'valid' };
-        } else if (toAmount === 0 && fromAmount > 0) {
-            errorType = 'PREMIUMS';
-            el = { pos: 'end', type: 'valid' };
-        }
-
-        return {
-            errorType,
-            el
-        };
-    };
-
     const checkMultipleInputsActive = (params) => {
         let count = 0;
         for (const input in params) {
@@ -100,6 +46,60 @@ const useSearchValidation = (
         return {
             blankInputs,
             errorInputs
+        };
+    };
+
+    const validatePremiumRange = () => {
+        let fromAmount = advancedSearch.PREMIUMFROM
+            ? parseFloat(advancedSearch.PREMIUMFROM.replace(/,/g, ''))
+            : 0;
+        let toAmount = advancedSearch.PREMIUMTO
+            ? parseFloat(advancedSearch.PREMIUMTO.replace(/,/g, ''))
+            : 0;
+        let errorType = null;
+        let el = null;
+
+        if (fromAmount !== 0 && toAmount !== 0 && fromAmount > toAmount) {
+            errorType = 'PREMIUMS';
+            el = { pos: 'start', type: 'range' };
+        } else if (fromAmount === 0 && toAmount > 0) {
+            errorType = 'PREMIUMS';
+            el = { pos: 'start', type: 'valid' };
+        } else if (toAmount === 0 && fromAmount > 0) {
+            errorType = 'PREMIUMS';
+            el = { pos: 'end', type: 'valid' };
+        }
+
+        return {
+            errorType,
+            el
+        };
+    };
+
+    const validateDateRange = () => {
+        let errorType = null;
+        let el = null;
+
+        if (startDate && !isDateValid(startDate)) {
+            errorType = 'DATES';
+            el = { type: 'valid', pos: 'start' };
+        } else if (startDate && isDateValid(startDate) && !endDate) {
+            setEndDate(startDate);
+            subDate = startDate;
+        }
+
+        if (endDate && !isDateValid(endDate)) {
+            errorType = 'DATES';
+            el = { type: 'valid', pos: 'end' };
+        } else if (endDate && isDateValid(endDate) && !startDate) {
+            setStartDate(endDate);
+            subDate = endDate;
+        }
+
+        return {
+            errorType,
+            el,
+            activeErrorInputs: []
         };
     };
 
@@ -153,24 +153,55 @@ const useSearchValidation = (
     const validateStandardSearch = () => {
         let searchValid = {
             errorType: null,
-            el: null,
-            activeErrorInputs: []
+            el: null
         };
 
         if (applicationErrors.active) {
             searchValid.errorType = applicationErrors.type;
             searchValid.el = applicationErrors.el;
         } else {
-            if (comboSearch.length === 0 && startDate === null && endDate === null) {
+            let multipleInputsActive = checkMultipleInputsActive({
+                comboSearch,
+                insuredName: advancedSearch.INSUREDNAME
+            });
+
+            //  Check all inputs blank
+            if (
+                comboSearch.length === 0 &&
+                advancedSearch.INSUREDNAME.length === 0 &&
+                searchValid.errorType === null
+            ) {
                 searchValid.errorType = 'GENERAL';
             }
+            //  Validate date range
+            // if (startDate !== null || endDate !== null) {
+            //     searchValid = validateDateRange();
+            // }
 
-            if (comboSearch.length < 3 && comboSearch.length > 0) {
+            // Validate main search input
+            if (
+                comboSearch.length < 3 &&
+                comboSearch.length > 0 &&
+                !multipleInputsActive &&
+                searchValid.errorType === null
+            ) {
                 searchValid.errorType = 'COMBOSEARCH';
             }
 
-            if (startDate !== null || endDate !== null) {
-                searchValid = validateDateRange();
+            //  Validate insured name input
+            if (
+                advancedSearch.INSUREDNAME.length < 3 &&
+                advancedSearch.INSUREDNAME.length > 0 &&
+                !multipleInputsActive &&
+                searchValid.errorType === null
+            ) {
+                let activeErrorInputs = validateInputs();
+
+                if (activeErrorInputs.errorInputs.length > 0) {
+                    searchValid.errorType = 'ADVANCED';
+                    searchValid.el = { pos: null, type: 'single' };
+                    searchValid.activeErrorInputs = activeErrorInputs.errorInputs;
+                }
             }
         }
 
