@@ -66,10 +66,10 @@ class App extends Component {
                 SECPAYLOAD: {
                     ENV: env,
                     OWNERSECURITYID: 1,
-                    // SECURITYID: 59,
-                    // BROKERID: 103,
-                    SECURITYID: 1713,
-                    BROKERID: 4011,
+                    SECURITYID: 59,
+                    BROKERID: 103,
+                    // SECURITYID: 1713,
+                    // BROKERID: 4011,
                     USERID: process.env.REACT_APP_USER,
                     IP: process.env.REACT_APP_IP
                 }
