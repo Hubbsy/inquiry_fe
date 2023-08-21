@@ -119,8 +119,8 @@ class Affidavits extends React.Component {
             }`,
             coverage: transaction.COVERAGE ?? '',
             risk: transaction.RISK ?? '',
-            batchView: transaction.BATCHLINKEDITVIEW ?? '',
-            batchLink: transaction.BATCHLINK ?? ''
+            batchView: transaction.TRANSACTIONLINKEDITVIEW ?? '',
+            batchLink: transaction.TRANSACTIONLINK ?? ''
         };
     }
 

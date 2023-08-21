@@ -18,7 +18,7 @@ const endpointConfig = (env) => {
                 break;
         }
     } else {
-        API_ENDPOINT = 'http://api-alpha.elany.org';
+        API_ENDPOINT = 'https://api-alpha.elany.org';
     }
     return API_ENDPOINT;
 };

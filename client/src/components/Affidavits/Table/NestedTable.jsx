@@ -115,8 +115,7 @@ const NestedTable = ({ rowData, dense }) => {
                             selected={
                                 selectedChild !== null &&
                                 c.TRANSACTION_ID === selectedChild.TRANSACTION_ID
-                            }
-                        >
+                            }>
                             <NestedTableCell dense='dense'>
                                 {c.AFFIDAVITNO ? c.AFFIDAVITNO : NO_VALUE}
                             </NestedTableCell>
@@ -164,8 +163,7 @@ const NestedTable = ({ rowData, dense }) => {
                                     item
                                     container
                                     justifyContent='space-between'
-                                    alignItems='center'
-                                >
+                                    alignItems='center'>
                                     {c.PROCESSEDSTATE.trim() === '' ? (
                                         <Typography variant='body2'>&emsp;&emsp;&emsp;</Typography>
                                     ) : (
@@ -193,8 +191,7 @@ const NestedTable = ({ rowData, dense }) => {
                                                         <Typography
                                                             sx={{ mb: 0 }}
                                                             variant='subtitle2'
-                                                            gutterBottom
-                                                        >
+                                                            gutterBottom>
                                                             Risk Address:
                                                         </Typography>
                                                     </Grid>
@@ -202,8 +199,7 @@ const NestedTable = ({ rowData, dense }) => {
                                                         <Stack>
                                                             <Typography
                                                                 variant='body2'
-                                                                sx={{ textTransform: 'none' }}
-                                                            >
+                                                                sx={{ textTransform: 'none' }}>
                                                                 {rowData.PARTA_TRANSACTION
                                                                     .companyDetails.address
                                                                     ? rowData.PARTA_TRANSACTION
@@ -213,8 +209,7 @@ const NestedTable = ({ rowData, dense }) => {
                                                             </Typography>
                                                             <Typography
                                                                 variant='body2'
-                                                                sx={{ textTransform: 'none' }}
-                                                            >
+                                                                sx={{ textTransform: 'none' }}>
                                                                 {rowData.PARTA_TRANSACTION
                                                                     .companyDetails.address
                                                                     ? rowData.PARTA_TRANSACTION
@@ -228,8 +223,7 @@ const NestedTable = ({ rowData, dense }) => {
                                                         <Typography
                                                             sx={{ mb: 0 }}
                                                             variant='subtitle2'
-                                                            gutterBottom
-                                                        >
+                                                            gutterBottom>
                                                             Company(s):
                                                         </Typography>
                                                     </Grid>
@@ -237,8 +231,7 @@ const NestedTable = ({ rowData, dense }) => {
                                                         <Stack>
                                                             <Typography
                                                                 variant='body2'
-                                                                sx={{ textTransform: 'none' }}
-                                                            >
+                                                                sx={{ textTransform: 'none' }}>
                                                                 {
                                                                     rowData.PARTA_TRANSACTION
                                                                         .companyDetails.company
@@ -250,8 +243,7 @@ const NestedTable = ({ rowData, dense }) => {
                                                         <Typography
                                                             sx={{ mb: 0 }}
                                                             variant='subtitle2'
-                                                            gutterBottom
-                                                        >
+                                                            gutterBottom>
                                                             Coverage:
                                                         </Typography>
                                                     </Grid>
@@ -259,8 +251,7 @@ const NestedTable = ({ rowData, dense }) => {
                                                         <Stack>
                                                             <Typography
                                                                 variant='body2'
-                                                                sx={{ textTransform: 'none' }}
-                                                            >
+                                                                sx={{ textTransform: 'none' }}>
                                                                 {
                                                                     rowData.PARTA_TRANSACTION
                                                                         .companyDetails.coverage
@@ -272,8 +263,7 @@ const NestedTable = ({ rowData, dense }) => {
                                                         <Typography
                                                             sx={{ mb: 0 }}
                                                             variant='subtitle2'
-                                                            gutterBottom
-                                                        >
+                                                            gutterBottom>
                                                             Risk:
                                                         </Typography>
                                                     </Grid>
@@ -281,8 +271,7 @@ const NestedTable = ({ rowData, dense }) => {
                                                         <Stack>
                                                             <Typography
                                                                 variant='body2'
-                                                                sx={{ textTransform: 'none' }}
-                                                            >
+                                                                sx={{ textTransform: 'none' }}>
                                                                 {
                                                                     rowData.PARTA_TRANSACTION
                                                                         .companyDetails.risk
@@ -295,21 +284,21 @@ const NestedTable = ({ rowData, dense }) => {
                                             actions={
                                                 <Grid item container justifyContent='flex-end'>
                                                     <Button
-                                                        href={selectedChild.BATCHLINK}
+                                                        href={selectedChild.TRANSACTIONLINK}
                                                         variant='outlined'
                                                         rel='noopener noreferrer'
                                                         target='_top'
                                                         startIcon={
-                                                            selectedChild.BATCHLINKEDITVIEW ===
+                                                            selectedChild.TRANSACTIONLINKEDITVIEW ===
                                                             'VIEW' ? (
                                                                 <FontDownloadIcon />
                                                             ) : (
                                                                 <ModeEditIcon />
                                                             )
                                                         }
-                                                        size='small'
-                                                    >
-                                                        {selectedChild.BATCHLINKEDITVIEW} Affidavit
+                                                        size='small'>
+                                                        {selectedChild.TRANSACTIONLINKEDITVIEW}{' '}
+                                                        Affidavit
                                                     </Button>
                                                 </Grid>
                                             }
