@@ -1,11 +1,11 @@
 version: "3.5"
 services:
-        app_dev:
-                build:
-                        context: ./
-                image: "inquiry_fe"
-                container_name: "inquiry_fe"
-                restart: unless-stopped
-                command: bash -c "node index.js"
-                ports:
-                        - "4051:4051"
+  app_dev:
+    build:
+      context: ./
+    image: "rsidevs/inquiry"
+    container_name: "inquiry_fe"
+    restart: unless-stopped
+    command: bash -c "node index.js"
+    ports:
+      - "4051:4051"
