@@ -7,6 +7,6 @@ services:
     image: "inquiry_app"
     container_name: inquiry_app
     restart: unless-stopped
-    command: bash -c "node index.js"
+    command: bash -c "node index.js -H, 0.0.0.0"
     ports:
-      - "4051:4051"
+      - 4051:4051

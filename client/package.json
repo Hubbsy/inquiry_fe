@@ -1,5 +1,5 @@
 {
-    "proxy": "http://localhost:4051",
+
     "homepage": ".",
     "name": "client",
     "version": "0.1.0",
