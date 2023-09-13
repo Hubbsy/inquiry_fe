@@ -6,5 +6,7 @@ services:
     image: "rsidevs/inquiry"
     restart: unless-stopped
     command: bash -c "node index.js"
+    volumes:
+      - ./:/app
     ports:
       - "4051:4051"
