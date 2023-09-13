@@ -9,10 +9,15 @@ const PORT = process.env.PORT;
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, "build")));
+// app.use(express.static(path.join(__dirname, "build")));
+const staticPath = path.resolve(__dirname, "../build/static");
+const buildPath = path.resolve(__dirname, "../build");
+const indexPath = path.resolve(__dirname, "../build/index.html");
+app.use("/", express.static(buildPath));
+app.use("/static", express.static(staticPath));
 
 app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
+  res.sendFile(indexPath);
 });
 
 app.listen(PORT, () => {
