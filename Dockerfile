@@ -1,20 +1,12 @@
-# Use the official Node.js image as the base image
-FROM node:lts-slim
+FROM node:17-buster-slim
 
-# Create the app directory
-WORKDIR /usr/src/app
+WORKDIR /server
 
-# Copy package.json and package-lock.json into the app directory
-COPY package*.json ./
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-# Install dependencies
-RUN npm install
+COPY ./server /server
+RUN cd /server && yarn install
 
-# Copy the rest of the application files into the app directory
-COPY . .
-
-# Expose the port on which the application will run
 EXPOSE 4051
 
-# Start the application
-CMD [ "npm", "start" ]
+USER node
