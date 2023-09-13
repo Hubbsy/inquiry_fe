@@ -7,4 +7,6 @@ RUN cd /server && yarn install
 
 WORKDIR /server
 
+EXPOSE 4051
+
 USER node

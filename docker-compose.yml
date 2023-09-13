@@ -1,10 +1,10 @@
 version: "3.5"
 services:
-  inquiry:
+  app_dev:
     build:
       context: ./
     image: "rsidevs/inquiry"
     restart: unless-stopped
     command: bash -c "node index.js"
     ports:
-      - "4002:4002"
+      - "4051:4051"
