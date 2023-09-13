@@ -8,3 +8,6 @@ RUN cd /server && yarn install
 WORKDIR /server
 
 USER node
+
+ENTRYPOINT ["ng", "serve", "-H", "0.0.0.0"]
+
