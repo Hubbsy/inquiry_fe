@@ -3,7 +3,8 @@ services:
   app_dev:
     build:
       context: ./
-    image: "rsidevs/inquiry"
+    image: "inquiry_fe"
+    container_name: inquiry_fe
     restart: unless-stopped
     command: bash -c "node index.js"
     volumes:
@@ -11,3 +12,5 @@ services:
       - /app/server/node_modules
     ports:
       - "4051:4051"
+    stdin_open: true
+    tty: true
