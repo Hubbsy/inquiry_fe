@@ -1,16 +1,21 @@
-version: "3.5"
+version: "3"
 services:
-  app_dev:
-    build:
-      context: ./
-    image: "inquiry_fe"
-    container_name: inquiry_fe
-    restart: unless-stopped
-    command: bash -c "node index.js"
-    volumes:
-      - ./server:/app/server
-      - /app/server/node_modules
+  frontend:
+    container_name: react_frontend
+    build: .
+    image: react_frontend_image
     ports:
       - "4051:4051"
-    stdin_open: true
-    tty: true
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  backend:
+    container_name: express_proxy_server
+    build: ./server
+    image: express_proxy_server_image
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
