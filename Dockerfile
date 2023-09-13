@@ -1,7 +1,7 @@
 FROM node:17-buster-slim
 
 # Create and set the working directory
-WORKDIR /app
+# WORKDIR ./
 
 # Copy package.json and package-lock.json to the working directory
 COPY client/package*.json ./client/
