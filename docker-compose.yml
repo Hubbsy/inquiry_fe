@@ -1,11 +1,16 @@
-version: "3"
+version: "3.5"
 services:
-  frontend:
-    container_name: inquiry_fe
+  app_dev:
     build:
-      context: ./client
-    image: inquiry_fe
+      context: ./
+    image: "inquiry_fe"
+    container_name: inquiry_fe
+    restart: unless-stopped
+    command: bash -c "node index.js"
+    volumes:
+      - ./server:/app/server
+      - /app/server/node_modules
     ports:
       - "4051:4051"
-    volumes:
-      - ./client:/usr/src/app
+    stdin_open: true
+    tty: true
