@@ -1,21 +1,11 @@
 version: "3"
 services:
   frontend:
-    container_name: react_frontend
-    build: .
-    image: react_frontend_image
+    container_name: inquiry_fe
+    build:
+      context: ./client
+    image: inquiry_fe
     ports:
       - "4051:4051"
     volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-
-  backend:
-    container_name: express_proxy_server
-    build: ./server
-    image: express_proxy_server_image
-    ports:
-      - "5000:5000"
-    volumes:
-      - ./server:/usr/src/app
-      - /usr/src/app/node_modules
+      - ./client:/usr/src/app
