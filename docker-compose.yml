@@ -7,6 +7,7 @@ services:
     restart: unless-stopped
     command: bash -c "node index.js"
     volumes:
-      - ./:/app
+      - ./server:/app/server
+      - /app/server/node_modules
     ports:
       - "4051:4051"
