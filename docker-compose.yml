@@ -1,11 +1,14 @@
 version: "3.5"
+
 services:
-  app_dev:
+  app:
     build:
       context: ./
-    image: "inquiry_fe"
-    container_name: inquiry_fe
+    image: "inquiry_app"
+    container_name: inquiry_app
     restart: unless-stopped
-    command: bash -c "node index.js"
+    command: bash -c "node index.js" # Start your application
     ports:
-      - "4051:4051"
+      - "4051:4051" # Expose the application's port
+    environment:
+      - NODE_ENV=development # Set your desired environment variables
