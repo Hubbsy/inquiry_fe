@@ -7,8 +7,6 @@ services:
     image: "inquiry_app"
     container_name: inquiry_app
     restart: unless-stopped
-    command: bash -c "node index.js" # Start your application
+    command: bash -c "node index.js"
     ports:
-      - "4051:4051" # Expose the application's port
-    environment:
-      - NODE_ENV=development # Set your desired environment variables
+      - "4051:4051"
