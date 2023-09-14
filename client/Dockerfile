@@ -4,6 +4,7 @@ FROM node:17-buster-slim
 WORKDIR /app
 # Copying all the tools and dependencies in the package.json file to the working directory `app`
 COPY package.json .
+COPY yarn.lock .
 #Installing all the tools and dependencies in the container
 RUN yarn install
 #Copying all the application source code and files to the working directory `app`
