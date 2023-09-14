@@ -27,8 +27,6 @@ services:
     volumes:
       # Bind-mounts configuration
       - ./server:/app
-      # Ignoring any changes made in the "node_modules" folder
-      - ./app/node_modules
   client:
     # Location to the client dockerfile
     build:
