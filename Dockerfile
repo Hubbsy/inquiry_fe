@@ -8,4 +8,3 @@ RUN cd /server && yarn install
 WORKDIR /server
 
 USER node
-
