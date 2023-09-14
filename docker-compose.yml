@@ -14,7 +14,7 @@ version: "3.9"
 services:
   # Add the node-js service
   server:
-    # Location to the node.js dockerfile
+    # Location to the server dockerfile
     build:
       context:
         ./server
@@ -28,7 +28,7 @@ services:
       # Bind-mounts configuration
       - ./server:/app
   client:
-    # Location to the react.js dockerfile
+    # Location to the client dockerfile
     build:
       context:
         ./client
