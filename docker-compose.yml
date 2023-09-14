@@ -8,4 +8,4 @@ services:
     restart: unless-stopped
     command: bash -c "node index.js"
     ports:
-      - "4005:4051"
+      - "4051:4051"
