@@ -20,13 +20,15 @@ services:
         ./server
         # Name of the dockerfile
       dockerfile: Dockerfile
-    container_name: react-server
+    # container_name: react-server
     ports:
       # Host port:Container port
       - "4005:4005"
     volumes:
       # Bind-mounts configuration
       - ./server:/app
+      # Ignoring any changes made in the "node_modules" folder
+      - ./app/node_modules
   client:
     # Location to the client dockerfile
     build:
@@ -34,7 +36,7 @@ services:
         ./client
         # Name of the dockerfile
       dockerfile: Dockerfile
-    container_name: react-client
+    # container_name: react-client
     ports:
       # Host port:Container port
       - "4051:4051"
