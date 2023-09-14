@@ -3,10 +3,9 @@ FROM node:17-buster-slim
 # Creating the working directory named `app`
 WORKDIR /client
 #Installing all the tools and dependencies in the container
-RUN yarn install
+RUN yarn install -g
 # Copying all the tools and dependencies in the package.json file to the working directory `app`
 COPY package.json .
-COPY yarn.lock .
 #Copying all the application source code and files to the working directory `app`
 COPY . .
 #Exposing the container to run on this port 3000

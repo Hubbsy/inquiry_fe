@@ -1,7 +1,7 @@
 # It uses node:18-alpine as the base image for the Node.js application
 FROM node:17-buster-slim
 # It installs the nodemon package globally for monitoring and watching the backend Express server
-RUN yarn install
+RUN yarn install -g
 # Creating the working directory named `app`
 WORKDIR /server
 # Copying all the tools and dependencies in the package.json file to the working directory `app`
