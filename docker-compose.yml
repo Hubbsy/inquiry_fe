@@ -1,11 +1,43 @@
-version: "3.5"
+# version: "3.5"
 
+# services:
+#   app_dev:
+#     build:
+#       context: ./
+#     image: "inquiry_fe"
+#     restart: unless-stopped
+#     command: bash -c "node index.js"
+#     ports:
+#       - "4051:4051"
+# Version of Docker-compose
+version: "3.9"
 services:
-  app_dev:
+  # Add the node-js service
+  server:
+    # Location to the node.js dockerfile
     build:
-      context: ./
-    image: "rsidevs/inquiry"
-    restart: unless-stopped
-    command: bash -c "node index.js"
+      context:
+        ./server
+        # Name of the dockerfile
+      dockerfile: Dockerfile
+    container_name: server-container
     ports:
+      # Host port:Container port
+      - "4005:4005"
+    volumes:
+      # Bind-mounts configuration
+      - ./server:/app
+      # Ignoring any changes made in "node_modules" folder
+      - ./app/node_modules
+  client:
+    # Location to the react.js dockerfile
+    build:
+      context:
+        ./client
+        # Name of the dockerfile
+      dockerfile: Dockerfile
+    container_name: react-client
+    ports:
+      # Host port:Container port
       - "4051:4051"
+    stdin_open: true
