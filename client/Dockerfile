@@ -1,15 +1,20 @@
-# It uses node:18-alpine as the base image for the frontend React.js application
-FROM node:18-alpine
-# Creating the working directory named `app`
-WORKDIR /client
-# Copying all the tools and dependencies in the package.json file to the working directory `app`
-COPY package.json .
-COPY package-lock.json .
-#Installing all the tools and dependencies in the container
-RUN yarn install
+FROM node:17-buster-slim
+
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
+# Creating the working directory named `client`
+WORKDIR /app
+
 #Copying all the application source code and files to the working directory `app`
 COPY . .
-#Exposing the container to run on this port 3000
+
+WORKDIR /server
+
+COPY ./server /server
+RUN cd /server && yarn install
+
 EXPOSE 4051
+
+USER node
 #Command to start the Docker container for the frontend React.js application
-CMD ["yarn", "start"]
+# CMD ["yarn", "start"]

@@ -1,8 +1,8 @@
 # It uses node:18-alpine as the base image for the Node.js application
-FROM node:18-alpine
+FROM node:17-buster-slim
 # It installs the nodemon package globally for monitoring and watching the backend Express server
 RUN yarn install
-# Creating the working directory named `app`
+# Creating the working directory named `server`
 WORKDIR /server
 # Copying all the tools and dependencies in the package.json file to the working directory `app`
 COPY package.json .
@@ -10,6 +10,7 @@ COPY package.json .
 RUN yarn install
 #Copying all the application source code and files to the working directory `app`
 COPY . .
+
 #Exposing the container to run on this port 4000
 EXPOSE 4005
 #Command to start the Docker container for the backed server application
