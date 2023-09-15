@@ -188,7 +188,7 @@ function Search(props) {
             <Grid item container alignItems='center' sx={{ pb: 1 }}>
                 <Grid item xs={5}>
                     <Typography variant='h6' gutterBottom>
-                        Affidavit Inquiry Baby!!!
+                        Affidavit Inquiry
                     </Typography>
                 </Grid>
                 <Grid
