@@ -1,5 +1,5 @@
 ---
-name: 01 Basic Docker Build
+name: RSI Automated Build
 # simplest workflow
 
 on:
@@ -13,8 +13,13 @@ jobs:
     name: Build Image
     runs-on: ubuntu-latest
     steps:
-      # - name: Yarn Build
-      #   run: yarn build
+      # Enable multi-arch builds
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # setup caching and use new Buildx Docker CLI
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -22,8 +27,28 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
+      # add Docker meta data for dynamic tagging
+      - name: Docker meta
+        id: docker_meta
+        uses: docker/metadata-action@v4
+        with:
+          images: rsidevs/inquiry
+          flavor: |
+            latest=false
+          tags: |
+            type=raw,value=04
+            type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
+            type=ref,event=pr
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+
+      # build and push image
       - name: Docker build
         uses: docker/build-push-action@v4
         with:
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: rsidevs/inquiry:latest,rsidevs/inquiry:01
+          push: true
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
