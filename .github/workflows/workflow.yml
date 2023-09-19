@@ -26,13 +26,10 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Checkout
-        uses: actions/checkout@v4
-
       # add Docker meta data for dynamic tagging
       - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v4
+        id: docker_meta
+        uses: docker/metadata-action@v5
         with:
           images: rsidevs/inquiry
           tags: |
