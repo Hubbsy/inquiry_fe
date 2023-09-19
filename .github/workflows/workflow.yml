@@ -33,7 +33,7 @@ jobs:
         with:
           images: rsidevs/inquiry
           flavor: |
-            latest=true
+            latest=auto
           tags: |
             type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
             type=ref,event=pr
