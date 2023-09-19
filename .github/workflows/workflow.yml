@@ -6,6 +6,8 @@ on:
   push:
     branches:
       - jwh-github-actions
+    tags:
+      - "v*"
   pull_request:
 
 jobs:
