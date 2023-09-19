@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - jwh-github-actions
+    tags:
+      - "v*"
   pull_request:
 
 jobs:
@@ -31,7 +33,7 @@ jobs:
 
       # add Docker meta data for dynamic tagging
       - name: Docker meta
-        id: docker_meta
+        id: meta
         uses: docker/metadata-action@v5
         with:
           images: rsidevs/inquiry
