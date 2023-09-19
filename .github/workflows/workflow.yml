@@ -1,6 +1,5 @@
 ---
 name: RSI Automated Build
-# simplest workflow
 
 on:
   push:
@@ -33,6 +32,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: rsidevs/inquiry
+          flavor: |
+            latest=true
           tags: |
             type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
             type=ref,event=pr
