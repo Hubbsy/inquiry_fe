@@ -5,7 +5,8 @@ on:
   push:
     branches:
       - jwh-github-actions
-    tags: -v1.**
+    tags:
+      - v1.**
   pull_request:
 
 jobs:
