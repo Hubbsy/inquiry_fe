@@ -5,8 +5,6 @@ on:
   push:
     branches:
       - jwh-github-actions
-    tags:
-      - "v*"
   pull_request:
 
 jobs:
@@ -38,7 +36,7 @@ jobs:
         with:
           images: rsidevs/inquiry
           flavor: |
-            latest=false
+            latest=true
           tags: |
             type=raw,value=1.0
             type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
