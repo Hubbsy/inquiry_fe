@@ -60,7 +60,7 @@ jobs:
           flavor: |
             latest=true
           tags: |
-            type=raw,value=007
+            type=raw,value=007-bookworm
             # type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
             # type=ref,event=branch
             # type=ref,event=pr

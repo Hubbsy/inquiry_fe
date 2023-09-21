@@ -1,4 +1,4 @@
-FROM node:17-buster-slim
+FROM node:lts-bookworm-slim
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
